@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9F88F5681B45873E000BA054 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F88F5671B45873E000BA054 /* main.m */; };
+		9F88F56B1B45873E000BA054 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F88F56A1B45873E000BA054 /* AppDelegate.m */; };
+		9F88F56E1B45873E000BA054 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F88F56D1B45873E000BA054 /* ViewController.m */; };
+		9F88F5711B45873E000BA054 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F88F56F1B45873E000BA054 /* Main.storyboard */; };
+		9F88F5731B45873E000BA054 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F88F5721B45873E000BA054 /* Images.xcassets */; };
+		9F88F5761B45873E000BA054 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F88F5741B45873E000BA054 /* LaunchScreen.xib */; };
+		9F88F5821B45873E000BA054 /* BlueToothBraceletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F88F5811B45873E000BA054 /* BlueToothBraceletTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9F88F57C1B45873E000BA054 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F88F55A1B45873E000BA054 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9F88F5611B45873E000BA054;
+			remoteInfo = BlueToothBracelet;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9F88F5621B45873E000BA054 /* BlueToothBracelet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueToothBracelet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F88F5661B45873E000BA054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F88F5671B45873E000BA054 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9F88F5691B45873E000BA054 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9F88F56A1B45873E000BA054 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9F88F56C1B45873E000BA054 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9F88F56D1B45873E000BA054 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		9F88F5701B45873E000BA054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9F88F5721B45873E000BA054 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9F88F5751B45873E000BA054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		9F88F57B1B45873E000BA054 /* BlueToothBraceletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueToothBraceletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F88F5801B45873E000BA054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F88F5811B45873E000BA054 /* BlueToothBraceletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlueToothBraceletTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9F88F55F1B45873E000BA054 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F88F5781B45873E000BA054 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9F88F5591B45873E000BA054 = {
+			isa = PBXGroup;
+			children = (
+				9F88F5641B45873E000BA054 /* BlueToothBracelet */,
+				9F88F57E1B45873E000BA054 /* BlueToothBraceletTests */,
+				9F88F5631B45873E000BA054 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9F88F5631B45873E000BA054 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F88F5621B45873E000BA054 /* BlueToothBracelet.app */,
+				9F88F57B1B45873E000BA054 /* BlueToothBraceletTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9F88F5641B45873E000BA054 /* BlueToothBracelet */ = {
+			isa = PBXGroup;
+			children = (
+				9F88F5691B45873E000BA054 /* AppDelegate.h */,
+				9F88F56A1B45873E000BA054 /* AppDelegate.m */,
+				9F88F56C1B45873E000BA054 /* ViewController.h */,
+				9F88F56D1B45873E000BA054 /* ViewController.m */,
+				9F88F56F1B45873E000BA054 /* Main.storyboard */,
+				9F88F5721B45873E000BA054 /* Images.xcassets */,
+				9F88F5741B45873E000BA054 /* LaunchScreen.xib */,
+				9F88F5651B45873E000BA054 /* Supporting Files */,
+			);
+			path = BlueToothBracelet;
+			sourceTree = "<group>";
+		};
+		9F88F5651B45873E000BA054 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9F88F5661B45873E000BA054 /* Info.plist */,
+				9F88F5671B45873E000BA054 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9F88F57E1B45873E000BA054 /* BlueToothBraceletTests */ = {
+			isa = PBXGroup;
+			children = (
+				9F88F5811B45873E000BA054 /* BlueToothBraceletTests.m */,
+				9F88F57F1B45873E000BA054 /* Supporting Files */,
+			);
+			path = BlueToothBraceletTests;
+			sourceTree = "<group>";
+		};
+		9F88F57F1B45873E000BA054 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9F88F5801B45873E000BA054 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9F88F5611B45873E000BA054 /* BlueToothBracelet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F88F5851B45873E000BA054 /* Build configuration list for PBXNativeTarget "BlueToothBracelet" */;
+			buildPhases = (
+				9F88F55E1B45873E000BA054 /* Sources */,
+				9F88F55F1B45873E000BA054 /* Frameworks */,
+				9F88F5601B45873E000BA054 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlueToothBracelet;
+			productName = BlueToothBracelet;
+			productReference = 9F88F5621B45873E000BA054 /* BlueToothBracelet.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9F88F57A1B45873E000BA054 /* BlueToothBraceletTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F88F5881B45873E000BA054 /* Build configuration list for PBXNativeTarget "BlueToothBraceletTests" */;
+			buildPhases = (
+				9F88F5771B45873E000BA054 /* Sources */,
+				9F88F5781B45873E000BA054 /* Frameworks */,
+				9F88F5791B45873E000BA054 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9F88F57D1B45873E000BA054 /* PBXTargetDependency */,
+			);
+			name = BlueToothBraceletTests;
+			productName = BlueToothBraceletTests;
+			productReference = 9F88F57B1B45873E000BA054 /* BlueToothBraceletTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9F88F55A1B45873E000BA054 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = dachen;
+				TargetAttributes = {
+					9F88F5611B45873E000BA054 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+					9F88F57A1B45873E000BA054 = {
+						CreatedOnToolsVersion = 6.3.2;
+						TestTargetID = 9F88F5611B45873E000BA054;
+					};
+				};
+			};
+			buildConfigurationList = 9F88F55D1B45873E000BA054 /* Build configuration list for PBXProject "BlueToothBracelet" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9F88F5591B45873E000BA054;
+			productRefGroup = 9F88F5631B45873E000BA054 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9F88F5611B45873E000BA054 /* BlueToothBracelet */,
+				9F88F57A1B45873E000BA054 /* BlueToothBraceletTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9F88F5601B45873E000BA054 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F88F5711B45873E000BA054 /* Main.storyboard in Resources */,
+				9F88F5761B45873E000BA054 /* LaunchScreen.xib in Resources */,
+				9F88F5731B45873E000BA054 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F88F5791B45873E000BA054 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9F88F55E1B45873E000BA054 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F88F56E1B45873E000BA054 /* ViewController.m in Sources */,
+				9F88F56B1B45873E000BA054 /* AppDelegate.m in Sources */,
+				9F88F5681B45873E000BA054 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F88F5771B45873E000BA054 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F88F5821B45873E000BA054 /* BlueToothBraceletTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9F88F57D1B45873E000BA054 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9F88F5611B45873E000BA054 /* BlueToothBracelet */;
+			targetProxy = 9F88F57C1B45873E000BA054 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9F88F56F1B45873E000BA054 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9F88F5701B45873E000BA054 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9F88F5741B45873E000BA054 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9F88F5751B45873E000BA054 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9F88F5831B45873E000BA054 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9F88F5841B45873E000BA054 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9F88F5861B45873E000BA054 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9F88F5871B45873E000BA054 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9F88F5891B45873E000BA054 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = BlueToothBraceletTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlueToothBracelet.app/BlueToothBracelet";
+			};
+			name = Debug;
+		};
+		9F88F58A1B45873E000BA054 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = BlueToothBraceletTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlueToothBracelet.app/BlueToothBracelet";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9F88F55D1B45873E000BA054 /* Build configuration list for PBXProject "BlueToothBracelet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F88F5831B45873E000BA054 /* Debug */,
+				9F88F5841B45873E000BA054 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9F88F5851B45873E000BA054 /* Build configuration list for PBXNativeTarget "BlueToothBracelet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F88F5861B45873E000BA054 /* Debug */,
+				9F88F5871B45873E000BA054 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9F88F5881B45873E000BA054 /* Build configuration list for PBXNativeTarget "BlueToothBraceletTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F88F5891B45873E000BA054 /* Debug */,
+				9F88F58A1B45873E000BA054 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9F88F55A1B45873E000BA054 /* Project object */;
+}
