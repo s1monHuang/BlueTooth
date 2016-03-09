@@ -16,12 +16,19 @@
     if (self) {
         _peripheral = peripheral;
         _connectable = [[advertisementData objectForKey:@"kCBAdvDataIsConnectable"] integerValue];
-        _name = [advertisementData objectForKey:@"kCBAdvDataLocalName"];
-        _UUIDs = [advertisementData objectForKey:@"kCBAdvDataServiceUUIDs"];
+        _name = peripheral.name;
+        NSArray *uuids = [advertisementData objectForKey:@"kCBAdvDataServiceUUIDs"];
         _level = [[advertisementData objectForKey:@"kCBAdvDataTxPowerLevel"] integerValue];
+        NSMutableArray *uuidStringArray = [[NSMutableArray alloc] init];
+        for (CBUUID *uuid in uuids) {
+            [uuidStringArray addObject:uuid.UUIDString];
+        }
+        _UUIDs = [[NSArray alloc] initWithArray:uuidStringArray];
     }
     return self;
 }
+
+
 
 
 @end

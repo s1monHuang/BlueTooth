@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "DataStoreHelper.h"
 #import "UserEntity.h"
+#import "PeripheralModel.h"
 
 #define CurrentUser       [UserManager currentUser]
 

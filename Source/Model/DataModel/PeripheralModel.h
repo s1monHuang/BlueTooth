@@ -13,7 +13,7 @@
 
 @property (nonatomic,strong)CBPeripheral *peripheral;
 @property (nonatomic,strong)NSString *name;
-@property (nonatomic,strong)NSArray<CBUUID *> *UUIDs;
+@property (nonatomic,strong)NSArray<NSString *> *UUIDs;
 
 @property (nonatomic,assign)NSInteger connectable;
 @property (nonatomic,assign)NSInteger level;
@@ -21,5 +21,6 @@
 
 - (instancetype)initWithPeripheral:(CBPeripheral *)peripheral
                  advertisementData:(NSDictionary *)advertisementData;
+
 
 @end

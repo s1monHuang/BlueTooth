@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "YTKKeyValueStore.h"
+#import "PeripheralModel.h"
+#import "BluetoothManager.h"
 
 #define DStoreHelper  [DataStoreHelper store]
 
@@ -18,5 +20,12 @@ extern NSString *const TBKeyUserInfo; // 用户个人信息
 
 + (YTKKeyValueStore *)store;
 + (void)clearAllTable;
+
++ (BOOL)savePeripheral:(PeripheralModel *)model;
+
++ (PeripheralModel *)getPeripheral;
+
++ (BOOL)isBindingPeripheral:(CBPeripheral *)peripheral
+          advertisementData:(NSDictionary *)advertisementData;
 
 @end

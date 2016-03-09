@@ -16,6 +16,7 @@
 		3E7532F01C8FCB7D009908ED /* BabySpeaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532E71C8FCB7D009908ED /* BabySpeaker.m */; };
 		3E7532F11C8FCB7D009908ED /* BabyToy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532E91C8FCB7D009908ED /* BabyToy.m */; };
 		3E7532F41C8FFDA0009908ED /* PeripheralModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F31C8FFDA0009908ED /* PeripheralModel.m */; };
+		3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F61C9019A5009908ED /* BluetoothManager.m */; };
 		9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B14581B7B8E01008CEF15 /* AgeViewController.m */; };
 		9F1B145C1B7B95A6008CEF15 /* SexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145B1B7B95A6008CEF15 /* SexViewController.m */; };
 		9F1B145F1B7B9834008CEF15 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145E1B7B9834008CEF15 /* HeightViewController.m */; };
@@ -265,6 +266,8 @@
 		3E7532E91C8FCB7D009908ED /* BabyToy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyToy.m; sourceTree = "<group>"; };
 		3E7532F21C8FFDA0009908ED /* PeripheralModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeripheralModel.h; sourceTree = "<group>"; };
 		3E7532F31C8FFDA0009908ED /* PeripheralModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeripheralModel.m; sourceTree = "<group>"; };
+		3E7532F51C9019A5009908ED /* BluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
+		3E7532F61C9019A5009908ED /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
 		9F1B14571B7B8E01008CEF15 /* AgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeViewController.h; sourceTree = "<group>"; };
 		9F1B14581B7B8E01008CEF15 /* AgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeViewController.m; sourceTree = "<group>"; };
 		9F1B145A1B7B95A6008CEF15 /* SexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SexViewController.h; sourceTree = "<group>"; };
@@ -1602,6 +1605,8 @@
 				9FE544A71B72578E0008D9BD /* UserManager.m */,
 				9FE544B01B725DFC0008D9BD /* DataStoreHelper.h */,
 				9FE544B11B725DFC0008D9BD /* DataStoreHelper.m */,
+				3E7532F51C9019A5009908ED /* BluetoothManager.h */,
+				3E7532F61C9019A5009908ED /* BluetoothManager.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1822,6 +1827,7 @@
 				9F88F5A61B458EBD000BA054 /* UtilityFunc.m in Sources */,
 				9FE544AF1B725DA20008D9BD /* YTKKeyValueStore.m in Sources */,
 				9F6883261B88C7C000A83273 /* AlertSettingsViewController.m in Sources */,
+				3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */,
 				9F88F5AB1B458EBD000BA054 /* DDFileManager.m in Sources */,
 				9F9D13521B75920F00BEBF98 /* FMResultSet.m in Sources */,
 				9F20F56D1B75A9680009AB38 /* NSOrderedSet+RACSequenceAdditions.m in Sources */,

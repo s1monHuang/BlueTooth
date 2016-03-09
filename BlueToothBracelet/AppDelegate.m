@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "BluetoothManager.h"
 #import "UserManager.h"
 #import "SportCtrl.h"
 #import "RankingCtrl.h"
@@ -28,6 +29,7 @@
     if([[UserManager defaultInstance] hasUser])
     {
         [self exchangeRootViewControllerToMain];
+        [BluetoothManager share];
     }
     else{
         [self exchangeRootViewControllerToLogin];

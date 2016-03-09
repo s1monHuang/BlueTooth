@@ -10,7 +10,7 @@
 #import "AddDeviceViewController.h"
 
 @interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate> {
-    
+    BOOL _isBindingPeripheral;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *titleArray;
@@ -23,12 +23,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.title  = @"设备管理";
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.tableFooterView = [UIView new];
     
-    self.titleArray = @[@"解除",@"添加设备"];
-    self.imageArray = @[@"remove",@"add"];
+    _isBindingPeripheral = [BluetoothManager share].isBindingPeripheral;
+    [self reloadData];
+}
+
+- (void)reloadData {
+    _titleArray = nil;
+    _imageArray = nil;
+    if (_isBindingPeripheral) {
+        _titleArray = @[@"解除"];
+        _imageArray = @[@"remove"];
+    } else {
+        _titleArray = @[@"添加设备"];
+        _imageArray = @[@"add"];
+    }
 }
 
 
@@ -40,8 +54,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger rowCount = 2;
-    return rowCount;
+    return self.titleArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -88,13 +101,16 @@
     switch (indexPath.row) {
         case 0:
         {
-            
-        }
-            break;
-        case 1:
-        {
-            AddDeviceViewController *VC = [[AddDeviceViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:YES];
+            if (_isBindingPeripheral) {
+                [[BluetoothManager share].baby cancelAllPeripheralsConnection];
+                [BluetoothManager share].isBindingPeripheral = NO;
+                _isBindingPeripheral = NO;
+                [self reloadData];
+                [tableView reloadData];
+            } else {
+                AddDeviceViewController *VC = [[AddDeviceViewController alloc] init];
+                [self.navigationController pushViewController:VC animated:YES];
+            }
         }
             break;
         default:
