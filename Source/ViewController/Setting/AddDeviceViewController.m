@@ -16,6 +16,7 @@
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *peripherals;
+@property (strong, nonatomic) NSMutableArray *peripheralModels;
 @end
 
 @implementation AddDeviceViewController
@@ -30,6 +31,7 @@
     [[BluetoothManager share] start];
     
     _peripherals = [[NSMutableArray alloc] init];
+    _peripheralModels = [[NSMutableArray alloc] init];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -42,7 +44,8 @@
     if (![_peripherals containsObject:peripheral]) {
         PeripheralModel *model = [[PeripheralModel alloc] initWithPeripheral:peripheral
                                                            advertisementData:advertisementData];
-        [_peripherals addObject:model];
+        [_peripherals addObject:peripheral];
+        [_peripheralModels addObject:model];
         [_tableView reloadData];
     }
 }
@@ -63,7 +66,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger rowCount = [_peripherals count];
+    NSInteger rowCount = [_peripheralModels count];
     return rowCount;
 }
 
@@ -80,7 +83,7 @@
     }
     
     cell.imageView.image = [UIImage imageNamed:@"add_bracelet"];
-    PeripheralModel *model = _peripherals[indexPath.row];
+    PeripheralModel *model = _peripheralModels[indexPath.row];
     cell.textLabel.text = model.name;
     
     return cell;
@@ -88,7 +91,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    PeripheralModel *model = _peripherals[indexPath.row];
+    PeripheralModel *model = _peripheralModels[indexPath.row];
     [BluetoothManager share].selecedPeripheral = model;
     [[BluetoothManager share] connectingBlueTooth:model.peripheral];
 }

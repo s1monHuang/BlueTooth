@@ -30,7 +30,7 @@
 
 @property (nonatomic,strong) PeripheralModel *bindingPeripheral;
 
-@property (nonatomic,strong) CBService *specifiedService;
+@property (nonatomic,strong) CBCharacteristic *characteristics;
 
 + (BluetoothManager *)share;
 
@@ -39,5 +39,11 @@
 - (void)stop;
 
 - (void)connectingBlueTooth:(CBPeripheral *)peripheral;
+
+- (void)startBindingPeripheral;
+
+- (void)confirmBindingPeripheral;
+
+- (void)clearBindingPeripheral;
 
 @end

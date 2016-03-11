@@ -59,7 +59,7 @@ static BluetoothManager *manager = nil;
 }
 
 -(void)connectingBlueTooth:(CBPeripheral *)peripheral {
-    _baby.having(peripheral).and.channel(channelOnPeropheralView).then.connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().discoverDescriptorsForCharacteristic().readValueForDescriptors().begin();
+    _baby.having(peripheral).and.then.connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().discoverDescriptorsForCharacteristic().readValueForDescriptors().begin();
 }
 
 //蓝牙网关初始化和委托方法设置
@@ -79,7 +79,7 @@ static BluetoothManager *manager = nil;
         if (weakSelf.isBindingPeripheral &&
             [DataStoreHelper isBindingPeripheral:peripheral advertisementData:advertisementData]) {
             [weakSelf connectingBlueTooth:peripheral];
-//            [weakSelf.baby cancelScan];
+            [weakSelf.baby cancelScan];
             weakSelf.bindingPeripheral.peripheral = peripheral;
             NSLog(@"自动连接已绑定设备");
             return ;
@@ -90,48 +90,34 @@ static BluetoothManager *manager = nil;
     }];
     
     //设置发现设备的Services的委托
-    [_baby setBlockOnDiscoverServicesAtChannel:channelOnPeropheralView block:^(CBPeripheral *peripheral, NSError *error) {
+    [_baby setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
         for (CBService *s in peripheral.services) {
             //查找到指定的服务
             if ([s.UUID.UUIDString isEqualToString:specifiedUUID]) {
-                weakSelf.specifiedService = s;
+//                weakSelf.specifiedService = s;
                 return ;
             }
         }
     }];
     
     //设置读取characteristics的委托
-    [_baby setBlockOnReadValueForCharacteristicAtChannel:channelOnPeropheralView block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+    [_baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
         NSLog(@"characteristic name:%@ value is:%@",characteristics.UUID,characteristics.value);
         if ([characteristics.UUID.UUIDString isEqualToString:@"FFF1"]) {
-            Byte final = (0xAA + 0xF1) % 256;
-            Byte b[] = {0xAA,0xF1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,final};
-            NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
-            if ([data isEqualToData:characteristics.value]) {
-                Byte final = (0xAA + 0xF1) % 256;
-                Byte b[] = {0xAA,0xF2,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,final};
-            }
-            [weakSelf.bindingPeripheral.peripheral writeValue:data
-                                            forCharacteristic:characteristics
-                                                         type:CBCharacteristicWriteWithResponse];
+            weakSelf.characteristics = characteristics;
+            [weakSelf handleCharacteristicsFFF1:characteristics weakSelf:weakSelf];
         }
     }];
     
     //设置写数据成功的block
-    [_baby setBlockOnDidWriteValueForCharacteristicAtChannel:channelOnPeropheralView block:^(CBCharacteristic *characteristic, NSError *error) {
+    [_baby setBlockOnDidWriteValueForCharacteristic:^(CBCharacteristic *characteristic, NSError *error) {
+        if ([characteristic.UUID.UUIDString isEqualToString:@"FFF1"]) {
+            Byte *byte = (Byte *)characteristic.value.bytes;
+            if (byte[1] == 0x0f) {
+                [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+            }
+        }
         NSLog(@"setBlockOnDidWriteValueForCharacteristicAtChannel characteristic:%@ and new value:%@",characteristic.UUID, characteristic.value);
-    }];
-    
-    //设置读取Descriptor的委托
-    [_baby setBlockOnReadValueForDescriptorsAtChannel:channelOnPeropheralView block:^(CBPeripheral *peripheral, CBDescriptor *descriptor, NSError *error) {
-//        for (int i =0 ; i<descriptors.count; i++) {
-//            if (descriptors[i]==descriptor) {
-//                UITableViewCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:2]];
-//                //                NSString *valueStr = [[NSString alloc]initWithData:descriptor.value encoding:NSUTF8StringEncoding];
-//                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",descriptor.value];
-//            }
-//        }
-        NSLog(@"CharacteristicViewController Descriptor name:%@ value is:%@",descriptor.characteristic.UUID, descriptor.value);
     }];
     
     //设置查找设备的过滤器
@@ -153,8 +139,9 @@ static BluetoothManager *manager = nil;
     }];
     
     //设置设备连接成功的委托,同一个baby对象，使用不同的channel切换委托回调
-    [_baby setBlockOnConnectedAtChannel:channelOnPeropheralView block:^(CBCentralManager *central, CBPeripheral *peripheral) {
+    [_baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         NSLog(@"设备：%@--连接成功",peripheral.name);
+        weakSelf.bindingPeripheral.peripheral = peripheral;
         if (!weakSelf.isBindingPeripheral) {
             [DataStoreHelper savePeripheral:weakSelf.selecedPeripheral];
         }
@@ -165,7 +152,7 @@ static BluetoothManager *manager = nil;
     }];
     
     //设置设备连接失败的委托
-    [_baby setBlockOnFailToConnectAtChannel:channelOnPeropheralView block:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
+    [_baby setBlockOnFailToConnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         NSLog(@"设备：%@--连接失败",peripheral.name);
         if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
             [weakSelf.deleagete didBindingPeripheral:NO];
@@ -173,8 +160,11 @@ static BluetoothManager *manager = nil;
     }];
     
     //设置设备断开连接的委托
-    [_baby setBlockOnDisconnectAtChannel:channelOnPeropheralView block:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
+    [_baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         NSLog(@"设备：%@--断开连接",peripheral.name);
+        if (weakSelf.isBindingPeripheral) {
+            [weakSelf connectingBlueTooth:peripheral];
+        }
     }];
     
     //扫描选项->CBCentralManagerScanOptionAllowDuplicatesKey:忽略同一个Peripheral端的多个发现事件被聚合成一个发现事件
@@ -189,12 +179,60 @@ static BluetoothManager *manager = nil;
                                      CBConnectPeripheralOptionNotifyOnDisconnectionKey:@YES,
                                      CBConnectPeripheralOptionNotifyOnNotificationKey:@YES};
     
-    [_baby setBabyOptionsAtChannel:channelOnPeropheralView
-     scanForPeripheralsWithOptions:scanForPeripheralsWithOptions
-      connectPeripheralWithOptions:connectOptions
-    scanForPeripheralsWithServices:nil
-              discoverWithServices:nil
-       discoverWithCharacteristics:nil];
+    
+    [_baby setBabyOptionsWithScanForPeripheralsWithOptions:scanForPeripheralsWithOptions
+                              connectPeripheralWithOptions:connectOptions
+                            scanForPeripheralsWithServices:nil
+                                      discoverWithServices:nil
+                               discoverWithCharacteristics:nil];
+}
+
+- (void)handleCharacteristicsFFF1:(CBCharacteristic *)characteristics weakSelf:(BluetoothManager *)weakSelf {
+    Byte *resultByte = (Byte *)characteristics.value.bytes;
+    if (resultByte[1] == 0x0F) {
+        [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
+    } else if (resultByte[1] == 0xF2) {
+        NSLog(@"设备已绑定,characteristics value is %@",characteristics.value);
+    } else {
+        [weakSelf startBindingPeripheral];
+    }
+}
+
+- (void)startBindingPeripheral {
+    Byte b[] = {0xAA,0xF1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
+    [self.bindingPeripheral.peripheral writeValue:data
+                                forCharacteristic:self.characteristics
+                                             type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)confirmBindingPeripheralWithValue:(NSData *)value {
+    Byte *b = (Byte *)value.bytes;
+    b[1] = 0xF2;
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
+    [self.bindingPeripheral.peripheral writeValue:data
+                                forCharacteristic:self.characteristics
+                                             type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)clearBindingPeripheral {
+    Byte b[] = {0xAA,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x02,0x00};
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
+    [self.bindingPeripheral.peripheral writeValue:data
+                                    forCharacteristic:self.characteristics
+                                                 type:CBCharacteristicWriteWithResponse];
+}
+
+
++ (Byte)calculateTotal:(Byte *)resultByte {
+    Byte byte;
+    for (int i = 0; i < 19; i++ ) {
+        byte += resultByte[i];
+    }
+    return byte % 256;
 }
 
 

@@ -105,6 +105,7 @@
                 [[BluetoothManager share].baby cancelAllPeripheralsConnection];
                 [BluetoothManager share].isBindingPeripheral = NO;
                 _isBindingPeripheral = NO;
+                [DataStoreHelper clearBindingPeripheral];
                 [self reloadData];
                 [tableView reloadData];
             } else {

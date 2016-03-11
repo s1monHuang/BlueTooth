@@ -25,6 +25,8 @@ extern NSString *const TBKeyUserInfo; // 用户个人信息
 
 + (PeripheralModel *)getPeripheral;
 
++ (BOOL)clearBindingPeripheral;
+
 + (BOOL)isBindingPeripheral:(CBPeripheral *)peripheral
           advertisementData:(NSDictionary *)advertisementData;
 

@@ -40,6 +40,16 @@ static YTKKeyValueStore *keyValueStore;
     return [defaults synchronize];
 }
 
++ (BOOL)clearBindingPeripheral {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:nil forKey:@"peripheralName"];
+    [defaults setObject:nil forKey:@"peripheralConnectable"];
+    [defaults setObject:nil forKey:@"peripheralUUIDs"];
+    [defaults setObject:nil forKey:@"peripheralLevel"];
+    [defaults setObject:nil forKey:@"isbindingPeripheral"];
+    return [defaults synchronize];
+}
+
 + (PeripheralModel *)getPeripheral {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     PeripheralModel *model = [[PeripheralModel alloc] init];
