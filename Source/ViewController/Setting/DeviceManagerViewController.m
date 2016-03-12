@@ -9,9 +9,8 @@
 #import "DeviceManagerViewController.h"
 #import "AddDeviceViewController.h"
 
-@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate> {
-    BOOL _isBindingPeripheral;
-}
+@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *titleArray;
 @property (strong, nonatomic) NSArray *imageArray;
@@ -28,15 +27,14 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.tableFooterView = [UIView new];
-    
-    _isBindingPeripheral = [BluetoothManager share].isBindingPeripheral;
+
     [self reloadData];
 }
 
 - (void)reloadData {
     _titleArray = nil;
     _imageArray = nil;
-    if (_isBindingPeripheral) {
+    if ([BluetoothManager share].isBindingPeripheral) {
         _titleArray = @[@"解除"];
         _imageArray = @[@"remove"];
     } else {
@@ -101,11 +99,11 @@
     switch (indexPath.row) {
         case 0:
         {
-            if (_isBindingPeripheral) {
+            if ([BluetoothManager share].isBindingPeripheral) {
+                [[BluetoothManager share] stop];
                 [[BluetoothManager share].baby cancelAllPeripheralsConnection];
                 [BluetoothManager share].isBindingPeripheral = NO;
-                _isBindingPeripheral = NO;
-                [DataStoreHelper clearBindingPeripheral];
+                [BluetoothManager clearBindingPeripheral];
                 [self reloadData];
                 [tableView reloadData];
             } else {

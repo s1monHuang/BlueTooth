@@ -21,12 +21,6 @@ extern NSString *const TBKeyUserInfo; // 用户个人信息
 + (YTKKeyValueStore *)store;
 + (void)clearAllTable;
 
-+ (BOOL)savePeripheral:(PeripheralModel *)model;
-
-+ (PeripheralModel *)getPeripheral;
-
-+ (BOOL)clearBindingPeripheral;
-
 + (BOOL)isBindingPeripheral:(CBPeripheral *)peripheral
           advertisementData:(NSDictionary *)advertisementData;
 

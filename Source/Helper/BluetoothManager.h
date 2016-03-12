@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "BabyBluetooth.h"
 
+typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
+    BluetoothConnectingNormal = 0,
+    BluetoothConnectingBinding,
+    BluetoothConnectingConfirmBinding,
+    BluetoothConnectingRead,
+    BluetoothConnectingSuccess
+};
+
 @protocol BluetoothManagerDelegate <NSObject>
 
 - (void)didSearchPeripheral:(CBPeripheral *)peripheral
@@ -23,7 +31,6 @@
 }
 
 @property (strong, nonatomic) BabyBluetooth *baby;
-@property (strong, nonatomic) PeripheralModel *selecedPeripheral;
 @property (assign, nonatomic) id<BluetoothManagerDelegate> deleagete;
 
 @property (assign, nonatomic) BOOL isBindingPeripheral;         //是否绑定过蓝牙设备
@@ -31,6 +38,8 @@
 @property (nonatomic,strong) PeripheralModel *bindingPeripheral;
 
 @property (nonatomic,strong) CBCharacteristic *characteristics;
+
+@property (assign, nonatomic) BluetoothConnectingType type;
 
 + (BluetoothManager *)share;
 
@@ -42,8 +51,6 @@
 
 - (void)startBindingPeripheral;
 
-- (void)confirmBindingPeripheral;
-
-- (void)clearBindingPeripheral;
++ (BOOL)clearBindingPeripheral;
 
 @end

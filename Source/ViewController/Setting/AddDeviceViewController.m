@@ -28,6 +28,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [BluetoothManager share].deleagete = self;
+    [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
     
     _peripherals = [[NSMutableArray alloc] init];
@@ -52,7 +53,9 @@
 
 - (void)didBindingPeripheral:(BOOL)success {
     if (success) {
+        [BluetoothManager share].bindingPeripheral = _selecedPeripheral;
         [self.navigationController popToRootViewControllerAnimated:YES];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } else {
         
     }
@@ -92,8 +95,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PeripheralModel *model = _peripheralModels[indexPath.row];
-    [BluetoothManager share].selecedPeripheral = model;
+    _selecedPeripheral = model;
+    [[BluetoothManager share] stop];
     [[BluetoothManager share] connectingBlueTooth:model.peripheral];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
