@@ -17,6 +17,8 @@
 		3E7532F11C8FCB7D009908ED /* BabyToy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532E91C8FCB7D009908ED /* BabyToy.m */; };
 		3E7532F41C8FFDA0009908ED /* PeripheralModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F31C8FFDA0009908ED /* PeripheralModel.m */; };
 		3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F61C9019A5009908ED /* BluetoothManager.m */; };
+		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
+		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B14581B7B8E01008CEF15 /* AgeViewController.m */; };
 		9F1B145C1B7B95A6008CEF15 /* SexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145B1B7B95A6008CEF15 /* SexViewController.m */; };
 		9F1B145F1B7B9834008CEF15 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145E1B7B9834008CEF15 /* HeightViewController.m */; };
@@ -268,6 +270,9 @@
 		3E7532F31C8FFDA0009908ED /* PeripheralModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeripheralModel.m; sourceTree = "<group>"; };
 		3E7532F51C9019A5009908ED /* BluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
 		3E7532F61C9019A5009908ED /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
+		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
+		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
+		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
 		9F1B14571B7B8E01008CEF15 /* AgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeViewController.h; sourceTree = "<group>"; };
 		9F1B14581B7B8E01008CEF15 /* AgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeViewController.m; sourceTree = "<group>"; };
 		9F1B145A1B7B95A6008CEF15 /* SexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SexViewController.h; sourceTree = "<group>"; };
@@ -1310,6 +1315,9 @@
 				9F718F4D1B46E14800E16298 /* RegisterCtrl.h */,
 				9F718F4E1B46E14800E16298 /* RegisterCtrl.m */,
 				9F718F4F1B46E14800E16298 /* RegisterCtrl.xib */,
+				3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */,
+				3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */,
+				3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1708,6 +1716,7 @@
 				9F9D121F1B803B0100B7D75C /* RecommendViewController.xib in Resources */,
 				9F6883221B88C1D500A83273 /* AlarmClockViewController.xib in Resources */,
 				9F88F5761B45873E000BA054 /* LaunchScreen.xib in Resources */,
+				3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */,
 				9F6883271B88C7C000A83273 /* AlertSettingsViewController.xib in Resources */,
 				9FA3F22B1B6F6DEC00977D2B /* RankingCell.xib in Resources */,
 				9F88F5D71B45922C000BA054 /* RankingCtrl.xib in Resources */,
@@ -1892,6 +1901,7 @@
 				9F20F5961B75A9680009AB38 /* RACSignalProvider.d in Sources */,
 				9F6A9BA41B703D3700487088 /* HistoryDataViewController.m in Sources */,
 				9F20F56E1B75A9680009AB38 /* NSSet+RACSequenceAdditions.m in Sources */,
+				3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */,
 				9F88F6251B4597A5000BA054 /* MTLTransformerErrorHandling.m in Sources */,
 				9F88F5A91B458EBD000BA054 /* UtilityUI+ProgressHUD.m in Sources */,
 				9F88F5681B45873E000BA054 /* main.m in Sources */,

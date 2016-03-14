@@ -10,6 +10,9 @@
 
 @interface RegisterCtrl ()
 
+@property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
 @end
 
 @implementation RegisterCtrl
@@ -26,6 +29,19 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)clickRegister:(id)sender {
+    if (![_userNameTextField.text containsString:@"@"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                        message:@"账号格式不正确"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    
 }
 
 /*

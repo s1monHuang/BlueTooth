@@ -7,6 +7,7 @@
 //
 
 #import "LoginCtrl.h"
+#import "ForgotPasswordCtrl.h"
 #import "RegisterCtrl.h"
 #import "OperateViewModel.h"
 
@@ -96,6 +97,8 @@
 }
 
 - (IBAction)btnFindPwdClick:(id)sender {
+    ForgotPasswordCtrl *ctl = [[ForgotPasswordCtrl alloc] init];
+    [self.navigationController pushViewController:ctl animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
