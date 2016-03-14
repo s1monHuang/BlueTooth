@@ -6,13 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "movement1@2x.png"
+      "filename" : "shurukuang@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "movement1@3x.png"
+      "filename" : "shurukuang@3x.png"
     }
   ],
   "info" : {
