@@ -107,35 +107,40 @@ static BluetoothManager *manager = nil;
     
     //设置读取characteristics的委托
     [_baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-        NSLog(@"characteristic name:%@ value is:%@",characteristics.UUID,characteristics.value);
+//        NSLog(@"characteristic name:%@ value is:%@",characteristics.UUID,characteristics.value);
         if ([characteristics.UUID.UUIDString isEqualToString:@"FFF1"] ) {
             if (!weakSelf.characteristics) {
                 weakSelf.characteristics = characteristics;
             }
             switch (weakSelf.type) {
+                //绑定请求发送后,要再次确认绑定蓝牙设备
                 case BluetoothConnectingBinding: {
                     [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
+                    NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                 }
                     break;
-                case BluetoothConnectingRead: {
-                    [weakSelf readBindingPeripheralDataWithValue:characteristics.value];
+                //成功绑定蓝牙设备后,读取运动数据
+                case BluetoothConnectingReadSportData: {
+                    [weakSelf readSportDataWithValue:characteristics.value];
+                    NSLog(@"绑定蓝牙设备成功,开始获取运动数据 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                 }
                     break;
                 case BluetoothConnectingSuccess: {
-
+                    NSLog(@"获取蓝牙设备中的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                 }
                     break;
                 default: {
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     if (byte[1] == 0x0F) {
                         [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
+                        NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                     } else {
                         [weakSelf startBindingPeripheral];
+                        NSLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                     }
                 }
                     break;
             }
-            
         }
     }];
     
@@ -143,15 +148,18 @@ static BluetoothManager *manager = nil;
     [_baby setBlockOnDidWriteValueForCharacteristic:^(CBCharacteristic *characteristic, NSError *error) {
         if ([characteristic.UUID.UUIDString isEqualToString:@"FFF1"]) {
             switch (weakSelf.type) {
+                //绑定请求发送成功,需要要再次确认绑定蓝牙设备
                 case BluetoothConnectingBinding: {
                     weakSelf.type = BluetoothConnectingConfirmBinding;
                 }
                     break;
+                //成功绑定蓝牙设备,需要读取运动数据
                 case BluetoothConnectingConfirmBinding: {
-                    weakSelf.type = BluetoothConnectingRead;
+                    weakSelf.type = BluetoothConnectingReadSportData;
                 }
                     break;
-                case BluetoothConnectingRead: {
+                //成功读取蓝牙设备中的运动数据,
+                case BluetoothConnectingReadSportData: {
                     weakSelf.type = BluetoothConnectingSuccess;
                 }
                     break;
@@ -160,7 +168,7 @@ static BluetoothManager *manager = nil;
             }
             [weakSelf.bindingPeripheral.peripheral readValueForCharacteristic:characteristic];
         }
-        NSLog(@"setBlockOnDidWriteValueForCharacteristicAtChannel cha racteristic:%@ and new value:%@",characteristic.UUID, characteristic.value);
+//        NSLog(@"setBlockOnDidWriteValueForCharacteristicAtChannel cha racteristic:%@ and new value:%@",characteristic.UUID, characteristic.value);
     }];
     
     //设置查找设备的过滤器
@@ -230,6 +238,13 @@ static BluetoothManager *manager = nil;
                                discoverWithCharacteristics:nil];
 }
 
+#pragma mark - 读取蓝牙中的数据,写入数据成功
+
+//- (void)readNewData:()
+
+
+#pragma mark -
+
 - (void)handleCharacteristicsFFF1:(CBCharacteristic *)characteristics weakSelf:(BluetoothManager *)weakSelf {
     Byte *resultByte = (Byte *)characteristics.value.bytes;
     if (resultByte[1] == 0x0F) {
@@ -282,10 +297,20 @@ static BluetoothManager *manager = nil;
                                                  type:CBCharacteristicWriteWithResponse];
 }
 
-- (void)readBindingPeripheralDataWithValue:(NSData *)value {
-    _type = BluetoothConnectingRead;
+//- (void)readBindingPeripheralDataWithValue:(NSData *)value {
+//    _type = BluetoothConnectingRead;
+//    Byte *b = (Byte *)value.bytes;
+//    b[1] = 0xB1;
+//    b[19] = [BluetoothManager calculateTotal:b];
+//    NSData *data = [NSData dataWithBytes:b length:value.length];
+//    [self.bindingPeripheral.peripheral writeValue:data
+//                                forCharacteristic:self.characteristics
+//                                             type:CBCharacteristicWriteWithResponse];
+//}
+
+- (void)readSportDataWithValue:(NSData *)value {
+    _type = BluetoothConnectingReadSportData;
     Byte *b = (Byte *)value.bytes;
-//    Byte b[20] = {0xAA,0xB1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
     b[1] = 0xB1;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];

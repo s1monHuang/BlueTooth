@@ -13,8 +13,9 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
     BluetoothConnectingNormal = 0,
     BluetoothConnectingBinding,
     BluetoothConnectingConfirmBinding,
-    BluetoothConnectingRead,
+    BluetoothConnectingReadSportData,
     BluetoothConnectingSuccess
+    
 };
 
 @protocol BluetoothManagerDelegate <NSObject>
