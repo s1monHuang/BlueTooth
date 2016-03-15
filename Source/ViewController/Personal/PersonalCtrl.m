@@ -14,6 +14,7 @@
 #import "GTMBase64.h"
 #import "AlarmClockViewController.h"
 #import "AlertSettingsViewController.h"
+#import "myDataController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -113,8 +114,8 @@
     switch (indexPath.row) {
         case 0:
         {
-            SexViewController *VC = [[SexViewController alloc] init];
-            VC.isJump = YES;
+            myDataController *VC = [[myDataController alloc] init];
+//            VC.isJump = YES;
             VC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:VC animated:YES];
         }

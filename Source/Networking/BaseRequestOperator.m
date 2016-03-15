@@ -92,7 +92,7 @@
     DLog(@"\nHTTP Requesting === %@, %@", [request.URL absoluteString] , parameters);
     [self.afRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         //DLog(@"\nHTTP Request success === %@ , %@ \n Response === %@ ", urlPath, parameters , [[responseObject description] logUTF8String]);
-        
+        DLog(@"^^^^^^^^^^%@",responseObject);
         if(callBackBlock) callBackBlock(YES, responseObject, nil);
     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {

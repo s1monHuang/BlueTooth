@@ -32,6 +32,7 @@
 #import "UIViewController+ProgressHUD.h"
 #import "UserManager.h"
 #import "MBProgressHUD.h"
+#import "UIView+Extension.h"
 #endif
 
 

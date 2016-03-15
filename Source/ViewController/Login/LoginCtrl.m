@@ -73,19 +73,24 @@
 
 - (IBAction)btnLoginClick:(id)sender {
     @weakify(self);
-//    [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
-//    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
-//        @strongify(self);
-//        if (finished) {
-    
-//            [[UserManager defaultInstance] saveUser:userInfo];
-    [[UserManager defaultInstance] saveUser:@{}];
+    if (self.txtUserAccount.text.length > 0 && [self.txtUserAccount.text rangeOfString:@"@"].location != NSNotFound ) {
+        [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
+    }else
+    {
+        [MBProgressHUD showHUDByContent:@"账号格式不正确" view:self.view afterDelay:2];
+    }
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+        @strongify(self);
+        if (finished) {
+            DLog(@"------%@",userInfo);
+            [[UserManager defaultInstance] saveUser:userInfo];
+//    [[UserManager defaultInstance] saveUser:@{}];
             [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
             
-//        } else {
-//            [self showHUDText:userInfo];
-//        }
-//    };
+        } else {
+            [self showHUDText:userInfo];
+        }
+    };
     
 }
 

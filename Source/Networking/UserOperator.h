@@ -15,13 +15,19 @@
                  password:(NSString *)password
                  callBack:(BaseNetworkCallBack)callBack;
 
+// 注册
+- (void)registWithUserName:(NSString *)userName
+                 password:(NSString *)password
+                 callBack:(BaseNetworkCallBack)callBack;
+
 // 忘记密码
 - (void)forgetPasswordWithEmail:(NSString *)email
                        callBack:(BaseNetworkCallBack)callBack;
 
 // 获取排名数据
-- (void)requestRankingList:(NSString *)dateType
-                  callBack:(BaseNetworkCallBack)callBack;
+- (void)requestRankingListStartDate:(NSString *)startDate
+                            endDate:(NSString *)endDate
+                           callBack:(BaseNetworkCallBack)callBack;
 
 // 设置用户头像
 - (void)setHeaderImage:(NSString *)headImage
@@ -32,50 +38,43 @@
 
 
 // 编辑用户信息
-- (void)editWithUserName:(NSString *)userId
-                password:(NSString *)nickName
-                     sex: (NSString *)sex
-                    high: (NSString *)high
-                  weight: (NSString *)weight
-                     age: (NSString *)age
-                stepLong: (NSString *)stepLong
-                callBack:(BaseNetworkCallBack)callBack;
+- (void)editWithUserNickName:(NSString *)nickName
+                         sex: (NSString *)sex
+                        high: (NSString *)high
+                      weight: (NSString *)weight
+                         age: (NSString *)age
+                    stepLong: (NSString *)stepLong
+                    callBack:(BaseNetworkCallBack)callBack;
 // 生产外设id
 - (void)createExdeviceId:(BaseNetworkCallBack)callBack;
 
 // 绑定设备
-- (void)bindExdevice:(NSString *)userId
-          exDeviceId:(NSString *)exDeviceId
+- (void)bindExdevice:(NSString *)exDeviceId
             callBack:(BaseNetworkCallBack)callBack;
 
 // 保存步数
-- (void)saveStepData:(NSString *)userId
-          recordDate:(NSString *)recordDate
+- (void)saveStepDataRecordDate:(NSString *)recordDate
              stepNum: (NSString *)stepNum
             callBack:(BaseNetworkCallBack)callBack;
 
 // 获取计步数据
-- (void)getStepData:(NSString *)userId
-          startDate:(NSString *)startDate
+- (void)getStepDataStartDate:(NSString *)startDate
             endDate: (NSString *)endDate
            callBack:(BaseNetworkCallBack)callBack;
 
 // 保存睡眠数据
-- (void)saveSleepData:(NSString *)userId
-            sleepDate:(NSString *)sleepDate
+- (void)saveSleepDataSleepDate:(NSString *)sleepDate
               gsmTime: (NSString *)gsmTime
               ssmTime: (NSString *)ssmTime
              callBack:(BaseNetworkCallBack)callBack;
 
 // 获取睡眠数据
-- (void)getSleepData:(NSString *)userId
-           startDate: (NSString *)startDate
+- (void)getSleepDataStartDate: (NSString *)startDate
              endDate: (NSString *)endDate
             callBack:(BaseNetworkCallBack)callBack;
 
 // 关联用户信息
-- (void)relateUserInfo:(NSString *)userId
-            inviteCode: (NSString *)inviteCode
+- (void)relateUserInfoInviteCode: (NSString *)inviteCode
               callBack:(BaseNetworkCallBack)callBack;
 
 @end
