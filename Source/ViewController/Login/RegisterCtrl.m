@@ -7,11 +7,14 @@
 //
 
 #import "RegisterCtrl.h"
+#import "OperateViewModel.h"
 
 @interface RegisterCtrl ()
 
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+@property (nonatomic,strong) OperateViewModel *operateVM;
 
 @end
 
@@ -32,7 +35,7 @@
 }
 
 - (IBAction)clickRegister:(id)sender {
-    if (![_userNameTextField.text containsString:@"@"]) {
+    if ([_userNameTextField.text rangeOfString:@"@"].location == NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
                                                         message:@"账号格式不正确"
                                                        delegate:nil
@@ -40,6 +43,18 @@
                                               otherButtonTitles:nil, nil];
         [alert show];
         return;
+    }else
+    {
+        __weak RegisterCtrl *blockSelf = self;
+        [self.operateVM registerWithUserName:_userNameTextField.text passsword:_passwordTextField.text];
+        
+        self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
+            if (finished) {
+                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+            }else{
+                
+            }
+        };
     }
     
 }

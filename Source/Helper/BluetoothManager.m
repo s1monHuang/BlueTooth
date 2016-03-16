@@ -127,6 +127,11 @@ static BluetoothManager *manager = nil;
                     break;
                 case BluetoothConnectingSuccess: {
                     NSLog(@"获取蓝牙设备中的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+//                    Byte *byte = (Byte *)characteristics.value.bytes;
+                    Byte byte[5] = {0xAA,0x30,0x75,0xB3,0x01};
+                    NSInteger step = (byte[2] << 8) + byte[1];
+                    NSInteger distance = (byte[4] << 8) + byte[3];
+                    NSLog(@"%ld    %ld",step,distance);
                 }
                     break;
                 default: {

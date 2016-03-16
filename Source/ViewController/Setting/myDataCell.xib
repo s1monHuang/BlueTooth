@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="KGk-i7-Jjw" customClass="myDataCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBS-KB-Ycg" userLabel="项目">
+                        <rect key="frame" x="15" y="11" width="40" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="w49-Rf-aS8"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lB3-qO-bKC" userLabel="数值">
+                        <rect key="frame" x="212" y="11" width="60" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="roP-Jd-1z0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="lB3-qO-bKC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="4pM-jD-U2W"/>
+                    <constraint firstItem="sBS-KB-Ycg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="8Z3-u5-RUW"/>
+                    <constraint firstAttribute="bottom" secondItem="lB3-qO-bKC" secondAttribute="bottom" constant="11" id="B2O-zS-w2f"/>
+                    <constraint firstAttribute="bottom" secondItem="sBS-KB-Ycg" secondAttribute="bottom" constant="11" id="Hic-kT-4ur"/>
+                    <constraint firstItem="sBS-KB-Ycg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="KiF-Zz-Mtt"/>
+                    <constraint firstAttribute="trailing" secondItem="lB3-qO-bKC" secondAttribute="trailing" constant="15" id="Xvq-gl-fbp"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="keyLabel" destination="sBS-KB-Ycg" id="nvr-pW-eaI"/>
+                <outlet property="valueLabel" destination="lB3-qO-bKC" id="E6e-QF-M6Y"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
