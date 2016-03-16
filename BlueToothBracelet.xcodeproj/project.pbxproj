@@ -19,6 +19,11 @@
 		3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F61C9019A5009908ED /* BluetoothManager.m */; };
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
+		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
+		47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E15D0F1C9902DB00D094A8 /* nickNameController.xib */; };
+		47E413C21C98244900871664 /* myDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413C11C98244900871664 /* myDataController.m */; };
+		47E413C61C9824D000871664 /* myDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413C41C9824D000871664 /* myDataCell.m */; };
+		47E413CC1C982B2900871664 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413CB1C982B2900871664 /* UIView+Extension.m */; };
 		9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B14581B7B8E01008CEF15 /* AgeViewController.m */; };
 		9F1B145C1B7B95A6008CEF15 /* SexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145B1B7B95A6008CEF15 /* SexViewController.m */; };
 		9F1B145F1B7B9834008CEF15 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145E1B7B9834008CEF15 /* HeightViewController.m */; };
@@ -273,6 +278,15 @@
 		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
 		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
+		47E15D0D1C9902DB00D094A8 /* nickNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nickNameController.h; sourceTree = "<group>"; };
+		47E15D0E1C9902DB00D094A8 /* nickNameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = nickNameController.m; sourceTree = "<group>"; };
+		47E15D0F1C9902DB00D094A8 /* nickNameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = nickNameController.xib; sourceTree = "<group>"; };
+		47E413C01C98244900871664 /* myDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myDataController.h; sourceTree = "<group>"; };
+		47E413C11C98244900871664 /* myDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myDataController.m; sourceTree = "<group>"; };
+		47E413C31C9824CF00871664 /* myDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myDataCell.h; path = Source/ViewController/Setting/myDataCell.h; sourceTree = SOURCE_ROOT; };
+		47E413C41C9824D000871664 /* myDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myDataCell.m; path = Source/ViewController/Setting/myDataCell.m; sourceTree = SOURCE_ROOT; };
+		47E413CA1C982B2900871664 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		47E413CB1C982B2900871664 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		9F1B14571B7B8E01008CEF15 /* AgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeViewController.h; sourceTree = "<group>"; };
 		9F1B14581B7B8E01008CEF15 /* AgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeViewController.m; sourceTree = "<group>"; };
 		9F1B145A1B7B95A6008CEF15 /* SexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SexViewController.h; sourceTree = "<group>"; };
@@ -757,6 +771,15 @@
 			path = BabyBluetooth;
 			sourceTree = "<group>";
 		};
+		47E413C91C982B1C00871664 /* other */ = {
+			isa = PBXGroup;
+			children = (
+				47E413CA1C982B2900871664 /* UIView+Extension.h */,
+				47E413CB1C982B2900871664 /* UIView+Extension.m */,
+			);
+			path = other;
+			sourceTree = "<group>";
+		};
 		9F20F4881B75A4C70009AB38 /* BaseViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,6 +1038,9 @@
 				9F1B145E1B7B9834008CEF15 /* HeightViewController.m */,
 				9F1B14601B7B9E57008CEF15 /* WeightViewController.h */,
 				9F1B14611B7B9E57008CEF15 /* WeightViewController.m */,
+				47E15D0D1C9902DB00D094A8 /* nickNameController.h */,
+				47E15D0E1C9902DB00D094A8 /* nickNameController.m */,
+				47E15D0F1C9902DB00D094A8 /* nickNameController.xib */,
 				9F9D121B1B803B0100B7D75C /* RecommendViewController.h */,
 				9F9D121C1B803B0100B7D75C /* RecommendViewController.m */,
 				9F9D121D1B803B0100B7D75C /* RecommendViewController.xib */,
@@ -1024,6 +1050,8 @@
 				9F6883231B88C7C000A83273 /* AlertSettingsViewController.h */,
 				9F6883241B88C7C000A83273 /* AlertSettingsViewController.m */,
 				9F6883251B88C7C000A83273 /* AlertSettingsViewController.xib */,
+				47E413C01C98244900871664 /* myDataController.h */,
+				47E413C11C98244900871664 /* myDataController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1121,6 +1149,7 @@
 		9F88F58E1B458AB9000BA054 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				47E413C91C982B1C00871664 /* other */,
 				3E7532D91C8FCB7D009908ED /* BabyBluetooth */,
 				9FD089361B837B38005C63D0 /* GTMBase64 */,
 				9F20F4991B75A9680009AB38 /* ReactiveCocoa */,
@@ -1234,6 +1263,8 @@
 		9F88F5C01B45917A000BA054 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				47E413C31C9824CF00871664 /* myDataCell.h */,
+				47E413C41C9824D000871664 /* myDataCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1721,6 +1752,7 @@
 				9FA3F22B1B6F6DEC00977D2B /* RankingCell.xib in Resources */,
 				9F88F5D71B45922C000BA054 /* RankingCtrl.xib in Resources */,
 				9F59A3971B65073800C7B8D9 /* AddDeviceViewController.xib in Resources */,
+				47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */,
 				9FC578AD1B4901F600108462 /* LICENSE in Resources */,
 				9F88F5CD1B45917A000BA054 /* PersonalCtrl.xib in Resources */,
 				9F88F5731B45873E000BA054 /* Images.xcassets in Resources */,
@@ -1767,6 +1799,7 @@
 				9F20F5691B75A9680009AB38 /* NSObject+RACKVOWrapper.m in Sources */,
 				9F20F56C1B75A9680009AB38 /* NSObject+RACSelectorSignal.m in Sources */,
 				9F20F5991B75A9680009AB38 /* RACStringSequence.m in Sources */,
+				47E413C21C98244900871664 /* myDataController.m in Sources */,
 				9F88F6341B4597A5000BA054 /* MASViewConstraint.m in Sources */,
 				9F20F5721B75A9680009AB38 /* NSURLConnection+RACSupport.m in Sources */,
 				9F59A3961B65073800C7B8D9 /* AddDeviceViewController.m in Sources */,
@@ -1854,10 +1887,12 @@
 				9FC578D81B490CDE00108462 /* PNCircleChart.m in Sources */,
 				9FC5787A1B48FBE800108462 /* UINavigationBar+FlatUI.m in Sources */,
 				9F20F59C1B75A9680009AB38 /* RACSubscriptingAssignmentTrampoline.m in Sources */,
+				47E413CC1C982B2900871664 /* UIView+Extension.m in Sources */,
 				9F20F5751B75A9680009AB38 /* RACBehaviorSubject.m in Sources */,
 				9F20F5821B75A9680009AB38 /* RACErrorSignal.m in Sources */,
 				9F1B14621B7B9E57008CEF15 /* WeightViewController.m in Sources */,
 				9F718F4A1B46E06F00E16298 /* LoginCtrl.m in Sources */,
+				47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */,
 				9F20F5A61B75A9680009AB38 /* UIAlertView+RACSignalSupport.m in Sources */,
 				9F88F62B1B4597A5000BA054 /* NSError+MTLModelException.m in Sources */,
 				9FC5789C1B49017A00108462 /* AFSecurityPolicy.m in Sources */,
@@ -1952,6 +1987,7 @@
 				9F20F5941B75A9680009AB38 /* RACSignal+Operations.m in Sources */,
 				9F718F501B46E14800E16298 /* RegisterCtrl.m in Sources */,
 				3E7532F11C8FCB7D009908ED /* BabyToy.m in Sources */,
+				47E413C61C9824D000871664 /* myDataCell.m in Sources */,
 				9F20F5A71B75A9680009AB38 /* UIBarButtonItem+RACCommandSupport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
