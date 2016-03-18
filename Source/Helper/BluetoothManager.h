@@ -14,6 +14,8 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
     BluetoothConnectingBinding,
     BluetoothConnectingConfirmBinding,
     BluetoothConnectingReadSportData,
+    BluetoothConnecting3DaysReadSportData,
+    BluetoothConnectingHeartRate,
     BluetoothConnectingSuccess
     
 };
