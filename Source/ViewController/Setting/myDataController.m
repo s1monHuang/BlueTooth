@@ -9,6 +9,11 @@
 #import "myDataController.h"
 #import "myDataCell.h"
 #import "StepLongController.h"
+#import "HeightViewController.h"
+#import "WeightViewController.h"
+#import "SexViewController.h"
+#import "AgeViewController.h"
+#import "nickNameController.h"
 
 @interface myDataController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -19,6 +24,10 @@
 @property (nonatomic , strong) NSArray *valueArray;
 
 @property (nonatomic , strong) UIView *bottomView;
+
+@property (nonatomic , copy) NSString *setValue;
+
+@property (nonatomic , strong) myDataCell *selectedCell;
 
 
 @end
@@ -53,16 +62,28 @@ static NSString* identifier =@"PersonalCell";
     
     //bottomView
     [self setUpBottomView];
+    
+    //昵称改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNickNameValue:) name:nickNameNotification object:nil];
+    //年龄改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAgeValue:) name:ageNotification object:nil];
+    //性别改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetSexValue:) name:sexNotification object:nil];
+    //身高改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetHeightValue:) name:heightNotification object:nil];
+    //体重改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseWeightValue:) name:weightNotification object:nil];
+    //步长改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseStepLongValue:) name:stepLongNotification object:nil];
+    
 }
 
 - (void)setUpTableView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44 * 6) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 10, self.view.width, 44 * 6) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-//    [_tableView registerNib:[UINib nibWithNibName: @"myDataCell" bundle:nil] forCellReuseIdentifier:identifier];
-    
-    [self.view addSubview:_tableView];
+        [self.view addSubview:_tableView];
 }
 
 - (void)setUpBottomView
@@ -74,30 +95,57 @@ static NSString* identifier =@"PersonalCell";
     
     CGFloat buttonWidth = (self.view.width - 45) *0.5;
     
-    UIButton *resetBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, buttonWidth, 40)];
+    UIButton *resetBtn = [[UIButton alloc] initWithFrame:CGRectMake((self.view.width - buttonWidth) / 2, 10, buttonWidth, 40)];
     resetBtn.backgroundColor = KThemeGreenColor;
     [resetBtn setTitle:@"重新设置" forState:UIControlStateNormal];
     [resetBtn addTarget:self action:@selector(resetClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:resetBtn];
     
-    UIButton *measureBtn = [[UIButton alloc] initWithFrame:CGRectMake(buttonWidth + 30, 10, buttonWidth, 40)];
-    measureBtn.backgroundColor = KThemeGreenColor;
-    [measureBtn setTitle:@"检测" forState:UIControlStateNormal];
-    [measureBtn addTarget:self action:@selector(measureClick) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:measureBtn];
-    
     [self.view addSubview:bottomView];
     
+}
+
+#pragma mark - 通知方法
+
+- (void)resetNickNameValue:(NSNotification *)sender
+{
+    _setValue = sender.object;
+    _selectedCell.valueLabel.text = _setValue;
+}
+
+- (void)resetAgeValue:(NSNotification *)sender
+{
+    _setValue = sender.object;
+    _selectedCell.valueLabel.text = _setValue;
+}
+
+- (void)resetSexValue:(NSNotification *)sender
+{
+    _setValue = sender.object;
+    _selectedCell.valueLabel.text = _setValue;
+}
+
+- (void)resetHeightValue:(NSNotification *)sender
+{
+    _setValue = sender.object;
+    _selectedCell.valueLabel.text = _setValue;
+}
+
+- (void)reseWeightValue:(NSNotification *)sender
+{
+    _setValue = sender.object;
+    _selectedCell.valueLabel.text = _setValue;
+}
+
+- (void)reseStepLongValue:(NSNotification *)sender
+{
+    _setValue = sender.object;
+    _selectedCell.valueLabel.text = _setValue;
 }
 
 #pragma mark - buttonClick
 
 - (void)resetClick
-{
-    
-}
-
-- (void)measureClick
 {
     
 }
@@ -127,8 +175,45 @@ static NSString* identifier =@"PersonalCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    StepLongController *vc = [[StepLongController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    _selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    switch (indexPath.row) {
+        case 0:{
+            nickNameController *nickNameCtl = [[nickNameController alloc] init];
+            [self.navigationController pushViewController:nickNameCtl animated:YES];
+        }
+            break;
+        case 1:{
+            SexViewController *sexCtl = [[SexViewController alloc] init];
+            [self.navigationController pushViewController:sexCtl animated:YES];
+        }
+            break;
+        case 2:{
+            AgeViewController *ageCtl = [[AgeViewController alloc] init];
+            [self.navigationController pushViewController:ageCtl animated:YES];
+        }
+            
+            break;
+        case 3:{
+            HeightViewController *heightCtl = [[HeightViewController alloc] init];
+            [self.navigationController pushViewController:heightCtl animated:YES];
+        }
+            
+            break;
+        case 4:{
+            WeightViewController *weightCtl = [[WeightViewController alloc] init];
+            [self.navigationController pushViewController:weightCtl animated:YES];
+        }
+            
+            break;
+        case 5:{
+            StepLongController *stepLongCtl = [[StepLongController alloc] init];
+            [self.navigationController pushViewController:stepLongCtl animated:YES];
+        }
+            break;
+        default:
+            break;
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

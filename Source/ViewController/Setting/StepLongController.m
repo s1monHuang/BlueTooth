@@ -104,8 +104,9 @@
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _stepLabel.text = valueStr;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:stepLongNotification object:valueStr];
+    NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
+    CurrentUser.stepLong = stepLongStr;
+    [[NSNotificationCenter defaultCenter] postNotificationName:stepLongNotification object:stepLongStr];
 }
 
 - (void)didReceiveMemoryWarning {

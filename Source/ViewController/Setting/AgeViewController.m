@@ -39,6 +39,7 @@
     lblAge.text = @"年龄";
     lblAge.font = [UIFont systemFontOfSize:18];
     lblAge.textAlignment = NSTextAlignmentCenter;
+    lblAge.textColor = KThemeGreenColor;
     [self.view addSubview:lblAge];
     
     self.lblAgeValue = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120+28, 110, 20)];
@@ -133,6 +134,8 @@
      //获取对应列，对应行的数据
      NSString *age= self.ageArray[row];
      self.lblAgeValue.text = age;
+     CurrentUser.age = age;
+     [[NSNotificationCenter defaultCenter] postNotificationName:ageNotification object:age];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -36,8 +36,8 @@
                         <action selector="btnClick:" destination="-1" eventType="touchUpInside" id="IFm-AV-K1G"/>
                     </connections>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="点击输入昵称" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s1V-J6-Xsb">
-                    <rect key="frame" x="20" y="59" width="555" height="35"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="点击输入昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s1V-J6-Xsb">
+                    <rect key="frame" x="25" y="59" width="550" height="35"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="wQM-Tc-7Dv"/>
                     </constraints>
@@ -47,7 +47,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="s1V-J6-Xsb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="VBO-2a-wvq"/>
+                <constraint firstItem="s1V-J6-Xsb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="VBO-2a-wvq"/>
                 <constraint firstItem="qeV-Es-kz1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="VQ6-KK-5kT"/>
                 <constraint firstItem="qeV-Es-kz1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="14" id="cIM-7U-Uip"/>
                 <constraint firstItem="zKK-ed-9rj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="eG1-qZ-Fqh"/>
