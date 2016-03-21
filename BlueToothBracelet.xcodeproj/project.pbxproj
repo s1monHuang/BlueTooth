@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E5CAB621C9BD58200430442 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CAB611C9BD58200430442 /* DBManager.m */; };
+		3E5CAB651C9BEA8F00430442 /* SportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CAB641C9BEA8F00430442 /* SportDataModel.m */; };
 		3E7532EA1C8FCB7D009908ED /* BabyBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532DB1C8FCB7D009908ED /* BabyBluetooth.m */; };
 		3E7532EB1C8FCB7D009908ED /* BabyCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532DD1C8FCB7D009908ED /* BabyCallback.m */; };
 		3E7532EC1C8FCB7D009908ED /* BabyCentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532DF1C8FCB7D009908ED /* BabyCentralManager.m */; };
@@ -17,6 +19,7 @@
 		3E7532F11C8FCB7D009908ED /* BabyToy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532E91C8FCB7D009908ED /* BabyToy.m */; };
 		3E7532F41C8FFDA0009908ED /* PeripheralModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F31C8FFDA0009908ED /* PeripheralModel.m */; };
 		3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F61C9019A5009908ED /* BluetoothManager.m */; };
+		3E7ED37F1C9F8AD4000E460C /* HistroySportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7ED37E1C9F8AD4000E460C /* HistroySportDataModel.m */; };
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
@@ -255,6 +258,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E5CAB601C9BD58200430442 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		3E5CAB611C9BD58200430442 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		3E5CAB631C9BEA8F00430442 /* SportDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportDataModel.h; sourceTree = "<group>"; };
+		3E5CAB641C9BEA8F00430442 /* SportDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportDataModel.m; sourceTree = "<group>"; };
 		3E7532DA1C8FCB7D009908ED /* BabyBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyBluetooth.h; sourceTree = "<group>"; };
 		3E7532DB1C8FCB7D009908ED /* BabyBluetooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyBluetooth.m; sourceTree = "<group>"; };
 		3E7532DC1C8FCB7D009908ED /* BabyCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCallback.h; sourceTree = "<group>"; };
@@ -275,6 +282,8 @@
 		3E7532F31C8FFDA0009908ED /* PeripheralModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeripheralModel.m; sourceTree = "<group>"; };
 		3E7532F51C9019A5009908ED /* BluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
 		3E7532F61C9019A5009908ED /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
+		3E7ED37D1C9F8AD4000E460C /* HistroySportDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistroySportDataModel.h; sourceTree = "<group>"; };
+		3E7ED37E1C9F8AD4000E460C /* HistroySportDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistroySportDataModel.m; sourceTree = "<group>"; };
 		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
 		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
@@ -1362,6 +1371,10 @@
 				9FE544AA1B7257AC0008D9BD /* UserEntity.m */,
 				3E7532F21C8FFDA0009908ED /* PeripheralModel.h */,
 				3E7532F31C8FFDA0009908ED /* PeripheralModel.m */,
+				3E5CAB631C9BEA8F00430442 /* SportDataModel.h */,
+				3E5CAB641C9BEA8F00430442 /* SportDataModel.m */,
+				3E7ED37D1C9F8AD4000E460C /* HistroySportDataModel.h */,
+				3E7ED37E1C9F8AD4000E460C /* HistroySportDataModel.m */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1646,6 +1659,8 @@
 				9FE544B11B725DFC0008D9BD /* DataStoreHelper.m */,
 				3E7532F51C9019A5009908ED /* BluetoothManager.h */,
 				3E7532F61C9019A5009908ED /* BluetoothManager.m */,
+				3E5CAB601C9BD58200430442 /* DBManager.h */,
+				3E5CAB611C9BD58200430442 /* DBManager.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1841,6 +1856,7 @@
 				9FC578981B49017A00108462 /* AFHTTPRequestOperation.m in Sources */,
 				9F718F451B46DFB300E16298 /* MBProgressHUD.m in Sources */,
 				9FC578DE1B490CDE00108462 /* PNPieChart.m in Sources */,
+				3E7ED37F1C9F8AD4000E460C /* HistroySportDataModel.m in Sources */,
 				9F20F57A1B75A9680009AB38 /* RACCompoundDisposableProvider.d in Sources */,
 				9FC578B51B4904D700108462 /* UserOperator.m in Sources */,
 				9F6883211B88C1D500A83273 /* AlarmClockViewController.m in Sources */,
@@ -1938,6 +1954,7 @@
 				9F20F56E1B75A9680009AB38 /* NSSet+RACSequenceAdditions.m in Sources */,
 				3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */,
 				9F88F6251B4597A5000BA054 /* MTLTransformerErrorHandling.m in Sources */,
+				3E5CAB651C9BEA8F00430442 /* SportDataModel.m in Sources */,
 				9F88F5A91B458EBD000BA054 /* UtilityUI+ProgressHUD.m in Sources */,
 				9F88F5681B45873E000BA054 /* main.m in Sources */,
 				9F20F5891B75A9680009AB38 /* RACKVOTrampoline.m in Sources */,
@@ -1957,6 +1974,7 @@
 				9F20F5761B75A9680009AB38 /* RACBlockTrampoline.m in Sources */,
 				9F20F5AD1B75A9680009AB38 /* UIGestureRecognizer+RACSignalSupport.m in Sources */,
 				9F20F5871B75A9680009AB38 /* RACKVOChannel.m in Sources */,
+				3E5CAB621C9BD58200430442 /* DBManager.m in Sources */,
 				9F20F5B11B75A9680009AB38 /* UISlider+RACSignalSupport.m in Sources */,
 				9FC5789F1B49017A00108462 /* AFURLResponseSerialization.m in Sources */,
 				9F20F5611B75A9680009AB38 /* NSDictionary+RACSequenceAdditions.m in Sources */,

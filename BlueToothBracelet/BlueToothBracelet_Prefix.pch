@@ -34,6 +34,7 @@
 #import "MBProgressHUD.h"
 #import "BluetoothManager.h"
 #import "UIView+Extension.h"
+#import "DBManager.h"
 #endif
 
 

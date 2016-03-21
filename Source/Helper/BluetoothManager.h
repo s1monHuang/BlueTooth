@@ -14,11 +14,22 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
     BluetoothConnectingBinding,
     BluetoothConnectingConfirmBinding,
     BluetoothConnectingReadSportData,
-    BluetoothConnecting3DaysReadSportData,
+    BluetoothConnectingHistroyReadSportData,
     BluetoothConnectingHeartRate,
     BluetoothConnectingSuccess
-    
 };
+
+typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
+    BluetoothConnectingNormalSuccess = 0,
+    BluetoothConnectingBindingSuccess,
+    BluetoothConnectingConfirmBindingSuccess,
+    BluetoothConnectingReadSportDataSuccess,
+    BluetoothConnectingHistroyReadSportDataSuccess,
+    BluetoothConnectingHeartRateSuccess,
+    BluetoothConnectingAllSuccess
+};
+
+
 
 @protocol BluetoothManagerDelegate <NSObject>
 
@@ -37,12 +48,14 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
 @property (assign, nonatomic) id<BluetoothManagerDelegate> deleagete;
 
 @property (assign, nonatomic) BOOL isBindingPeripheral;         //是否绑定过蓝牙设备
+@property (assign, nonatomic) BOOL isReadedPripheralAllData;    //是否读取过蓝牙设备中所有数据(绑定后需要获取所有数据)
 
 @property (nonatomic,strong) PeripheralModel *bindingPeripheral;
 
 @property (nonatomic,strong) CBCharacteristic *characteristics;
 
-@property (assign, nonatomic) BluetoothConnectingType type;
+@property (assign, nonatomic) BluetoothConnectingType connectionType;
+@property (assign, nonatomic) BluetoothConnectingSuccessType successType;
 
 + (BluetoothManager *)share;
 
