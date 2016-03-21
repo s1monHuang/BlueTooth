@@ -14,14 +14,17 @@
 
 @implementation myDataCell
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _keyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 50, self.height)];
+        [self addSubview:_keyLabel];
+        
+        _valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 110, 0, 80, self.height)];
+        _valueLabel.textAlignment = NSTextAlignmentRight;
+        [self addSubview:_valueLabel];
+    }
+    return self;
 }
 
 @end

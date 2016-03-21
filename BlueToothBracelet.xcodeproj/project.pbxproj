@@ -24,6 +24,10 @@
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
 		47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E15D0F1C9902DB00D094A8 /* nickNameController.xib */; };
+		47E2C5CE1C9FD52900CD07A9 /* StepLongController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5CD1C9FD52900CD07A9 /* StepLongController.m */; };
+		47E2C5D11C9FD7C000CD07A9 /* StepLongView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5D01C9FD7C000CD07A9 /* StepLongView.m */; };
+		47E2C5D61C9FE0F100CD07A9 /* ZHRulerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5D31C9FE0F100CD07A9 /* ZHRulerScrollView.m */; };
+		47E2C5D71C9FE0F100CD07A9 /* ZHRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5D51C9FE0F100CD07A9 /* ZHRulerView.m */; };
 		47E413C21C98244900871664 /* myDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413C11C98244900871664 /* myDataController.m */; };
 		47E413C61C9824D000871664 /* myDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413C41C9824D000871664 /* myDataCell.m */; };
 		47E413CC1C982B2900871664 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413CB1C982B2900871664 /* UIView+Extension.m */; };
@@ -290,6 +294,14 @@
 		47E15D0D1C9902DB00D094A8 /* nickNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nickNameController.h; sourceTree = "<group>"; };
 		47E15D0E1C9902DB00D094A8 /* nickNameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = nickNameController.m; sourceTree = "<group>"; };
 		47E15D0F1C9902DB00D094A8 /* nickNameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = nickNameController.xib; sourceTree = "<group>"; };
+		47E2C5CC1C9FD52900CD07A9 /* StepLongController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepLongController.h; sourceTree = "<group>"; };
+		47E2C5CD1C9FD52900CD07A9 /* StepLongController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StepLongController.m; sourceTree = "<group>"; };
+		47E2C5CF1C9FD7C000CD07A9 /* StepLongView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StepLongView.h; path = Source/ViewController/Setting/StepLongView.h; sourceTree = SOURCE_ROOT; };
+		47E2C5D01C9FD7C000CD07A9 /* StepLongView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StepLongView.m; path = Source/ViewController/Setting/StepLongView.m; sourceTree = SOURCE_ROOT; };
+		47E2C5D21C9FE0F100CD07A9 /* ZHRulerScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHRulerScrollView.h; sourceTree = "<group>"; };
+		47E2C5D31C9FE0F100CD07A9 /* ZHRulerScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHRulerScrollView.m; sourceTree = "<group>"; };
+		47E2C5D41C9FE0F100CD07A9 /* ZHRulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHRulerView.h; sourceTree = "<group>"; };
+		47E2C5D51C9FE0F100CD07A9 /* ZHRulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHRulerView.m; sourceTree = "<group>"; };
 		47E413C01C98244900871664 /* myDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myDataController.h; sourceTree = "<group>"; };
 		47E413C11C98244900871664 /* myDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myDataController.m; sourceTree = "<group>"; };
 		47E413C31C9824CF00871664 /* myDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myDataCell.h; path = Source/ViewController/Setting/myDataCell.h; sourceTree = SOURCE_ROOT; };
@@ -785,6 +797,10 @@
 			children = (
 				47E413CA1C982B2900871664 /* UIView+Extension.h */,
 				47E413CB1C982B2900871664 /* UIView+Extension.m */,
+				47E2C5D21C9FE0F100CD07A9 /* ZHRulerScrollView.h */,
+				47E2C5D31C9FE0F100CD07A9 /* ZHRulerScrollView.m */,
+				47E2C5D41C9FE0F100CD07A9 /* ZHRulerView.h */,
+				47E2C5D51C9FE0F100CD07A9 /* ZHRulerView.m */,
 			);
 			path = other;
 			sourceTree = "<group>";
@@ -1050,6 +1066,8 @@
 				47E15D0D1C9902DB00D094A8 /* nickNameController.h */,
 				47E15D0E1C9902DB00D094A8 /* nickNameController.m */,
 				47E15D0F1C9902DB00D094A8 /* nickNameController.xib */,
+				47E2C5CC1C9FD52900CD07A9 /* StepLongController.h */,
+				47E2C5CD1C9FD52900CD07A9 /* StepLongController.m */,
 				9F9D121B1B803B0100B7D75C /* RecommendViewController.h */,
 				9F9D121C1B803B0100B7D75C /* RecommendViewController.m */,
 				9F9D121D1B803B0100B7D75C /* RecommendViewController.xib */,
@@ -1274,6 +1292,8 @@
 			children = (
 				47E413C31C9824CF00871664 /* myDataCell.h */,
 				47E413C41C9824D000871664 /* myDataCell.m */,
+				47E2C5CF1C9FD7C000CD07A9 /* StepLongView.h */,
+				47E2C5D01C9FD7C000CD07A9 /* StepLongView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1890,6 +1910,7 @@
 				9F9D13521B75920F00BEBF98 /* FMResultSet.m in Sources */,
 				9F20F56D1B75A9680009AB38 /* NSOrderedSet+RACSequenceAdditions.m in Sources */,
 				9F88F62C1B4597A5000BA054 /* NSObject+MTLComparisonAdditions.m in Sources */,
+				47E2C5D71C9FE0F100CD07A9 /* ZHRulerView.m in Sources */,
 				9F88F6331B4597A5000BA054 /* MASViewAttribute.m in Sources */,
 				9F9D121E1B803B0100B7D75C /* RecommendViewController.m in Sources */,
 				9F88F6321B4597A5000BA054 /* MASLayoutConstraint.m in Sources */,
@@ -1919,11 +1940,13 @@
 				9F20F5A11B75A9680009AB38 /* RACTupleSequence.m in Sources */,
 				9F20F5651B75A9680009AB38 /* NSInvocation+RACTypeParsing.m in Sources */,
 				9FC578D61B490CDE00108462 /* PNBarChart.m in Sources */,
+				47E2C5D61C9FE0F100CD07A9 /* ZHRulerScrollView.m in Sources */,
 				9FC578DD1B490CDE00108462 /* PNLineChartDataItem.m in Sources */,
 				9F88F6361B4597A5000BA054 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				9F88F62D1B4597A5000BA054 /* NSValueTransformer+MTLInversionAdditions.m in Sources */,
 				9F20F5911B75A9680009AB38 /* RACScopedDisposable.m in Sources */,
 				9F20F59B1B75A9680009AB38 /* RACSubscriber.m in Sources */,
+				47E2C5CE1C9FD52900CD07A9 /* StepLongController.m in Sources */,
 				9F20F57C1B75A9680009AB38 /* RACDisposable.m in Sources */,
 				9F20F5B81B75A9680009AB38 /* README.md in Sources */,
 				9F88F6221B4597A5000BA054 /* MTLModel+NSCoding.m in Sources */,
@@ -1940,6 +1963,7 @@
 				9F88F6291B4597A5000BA054 /* NSDictionary+MTLManipulationAdditions.m in Sources */,
 				3E7532EB1C8FCB7D009908ED /* BabyCallback.m in Sources */,
 				9F20F59A1B75A9680009AB38 /* RACSubject.m in Sources */,
+				47E2C5D11C9FD7C000CD07A9 /* StepLongView.m in Sources */,
 				9F88F6231B4597A5000BA054 /* MTLModel.m in Sources */,
 				9F88F6201B4597A5000BA054 /* EXTScope.m in Sources */,
 				9F9D13501B75920F00BEBF98 /* FMDatabasePool.m in Sources */,

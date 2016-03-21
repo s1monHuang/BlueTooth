@@ -10,8 +10,9 @@
 
 @interface myDataCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *keyLabel;
+@property (nonatomic , strong) UILabel *keyLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+@property (nonatomic , strong) UILabel *valueLabel;
+
 
 @end

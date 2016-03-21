@@ -8,7 +8,7 @@
 
 #import "myDataController.h"
 #import "myDataCell.h"
-#import "myDataCell.h"
+#import "StepLongController.h"
 
 @interface myDataController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -60,7 +60,7 @@ static NSString* identifier =@"PersonalCell";
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44 * 6) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    [_tableView registerNib:[UINib nibWithNibName: @"myDataCell" bundle:nil] forCellReuseIdentifier:identifier];
+//    [_tableView registerNib:[UINib nibWithNibName: @"myDataCell" bundle:nil] forCellReuseIdentifier:identifier];
     
     [self.view addSubview:_tableView];
 }
@@ -75,12 +75,14 @@ static NSString* identifier =@"PersonalCell";
     CGFloat buttonWidth = (self.view.width - 45) *0.5;
     
     UIButton *resetBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, buttonWidth, 40)];
-    resetBtn.backgroundColor = kThemeTintColor;
+    resetBtn.backgroundColor = KThemeGreenColor;
+    [resetBtn setTitle:@"重新设置" forState:UIControlStateNormal];
     [resetBtn addTarget:self action:@selector(resetClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:resetBtn];
     
     UIButton *measureBtn = [[UIButton alloc] initWithFrame:CGRectMake(buttonWidth + 30, 10, buttonWidth, 40)];
-    measureBtn.backgroundColor = kThemeColor;
+    measureBtn.backgroundColor = KThemeGreenColor;
+    [measureBtn setTitle:@"检测" forState:UIControlStateNormal];
     [measureBtn addTarget:self action:@selector(measureClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:measureBtn];
     
@@ -110,14 +112,12 @@ static NSString* identifier =@"PersonalCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    myDataCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-//    
-//    for (UIView *subview in cell.contentView.subviews)
-//    {
-//        [subview removeFromSuperview];
-//    }
+    myDataCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[myDataCell alloc] init];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     cell.textLabel.text = self.keyArray[indexPath.row];
-    [cell.keyLabel setText:self.keyArray[indexPath.row]];
     [cell.valueLabel setText:self.valueArray[indexPath.row]];
     cell.valueLabel.textAlignment = NSTextAlignmentRight;
     
@@ -127,7 +127,8 @@ static NSString* identifier =@"PersonalCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    StepLongController *vc = [[StepLongController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
