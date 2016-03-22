@@ -48,8 +48,9 @@
     _targetSlider.maximumTrackTintColor = [UIColor clearColor];
     
     [_targetSlider addTarget:self action:@selector(valueChange) forControlEvents:UIControlEventValueChanged];
+    [self.view bringSubviewToFront:_targetSlider];
     
-    _stepCountLabel.text = [NSString stringWithFormat:@"%.0lf步",_targetSlider.value * 10000];
+    _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf步",_targetSlider.value * 10000];
     _stepCountLabel.textColor = KThemeGreenColor;
     _stepCountLabel.textAlignment = NSTextAlignmentCenter;
     _stepCountLabel.font = [UIFont systemFontOfSize:25];
@@ -63,8 +64,8 @@
 
 - (void)setUpGreenBar
 {
-    CGFloat greenBarX = _targetSlider.x + 5;
-    CGFloat greenBarY = _targetSlider.y;
+    CGFloat greenBarX = _targetSlider.x;
+    CGFloat greenBarY = _targetSlider.y + 10;
     CGFloat greenBarW = (kScreenWidth - 100) / 3;
     CGFloat greenBarH = 20;
     UIImageView *leftGreen = [[UIImageView alloc] initWithFrame:CGRectMake(greenBarX, greenBarY, greenBarW, greenBarH)];
@@ -90,7 +91,8 @@
 //改变步数
 - (void)valueChange
 {
-    _stepCountLabel.text = [NSString stringWithFormat:@"%.0lf步",_targetSlider.value * 10000];
+    NSInteger count = ((NSInteger)(_targetSlider.value * 10000 ) % 100) > 49 ? (100 - (NSInteger)(_targetSlider.value * 10000 ) % 100 + (NSInteger)(_targetSlider.value * 10000)) : ((NSInteger)(_targetSlider.value * 10000) - (NSInteger)(_targetSlider.value * 10000 ) % 100 );
+    _stepCountLabel.text = [NSString stringWithFormat:@"%ld步",count];
     _stepCountLabel.textColor = KThemeGreenColor;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
