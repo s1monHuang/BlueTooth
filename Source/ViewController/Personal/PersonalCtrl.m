@@ -16,6 +16,7 @@
 #import "AlertSettingsViewController.h"
 #import "myDataController.h"
 #import "LoginCtrl.h"
+#import "TrainTargetController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -135,7 +136,12 @@
         }
             break;
         case 1:
-        {}
+        {
+            TrainTargetController *trainCtl = [[TrainTargetController alloc] init];
+            trainCtl.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:trainCtl animated:YES];
+        
+        }
             break;
         case 2:
         {
