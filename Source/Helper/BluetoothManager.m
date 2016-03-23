@@ -131,6 +131,11 @@ static BluetoothManager *manager = nil;
                         weakSelf.successType = BluetoothConnectingConfirmBindingSuccess;
                     }
                         break;
+                        //成功设置基本信息
+                    case BluetoothConnectingSetBasicInfomation: {
+                        weakSelf.successType = BluetoothConnectingSetBasicInfomationSuccess;
+                    }
+                        break;
                         //成功读取蓝牙设备中的运动数据,
                     case BluetoothConnectingReadSportData: {
                         weakSelf.successType = BluetoothConnectingReadSportDataSuccess;
@@ -241,8 +246,14 @@ static BluetoothManager *manager = nil;
                 NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
                 break;
-                //成功绑定蓝牙设备后,读取运动数据
+                //成功绑定蓝牙设备后,设置基本信息
             case BluetoothConnectingConfirmBindingSuccess: {
+                [weakSelf setBasicInfomation:[DBManager selectBasicInfomation]];
+                NSLog(@"绑定蓝牙设备成功,开始设置基本信息 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+            }
+                break;
+                //成功设置基本信息后,读取运动数据
+            case BluetoothConnectingSetBasicInfomationSuccess: {
                 [weakSelf readSportDataWithValue:characteristics.value];
                 NSLog(@"绑定蓝牙设备成功,开始获取运动数据 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
@@ -486,8 +497,19 @@ static BluetoothManager *manager = nil;
     b[10] = model.clockSwitch;
     b[11] = model.clockHour;
     b[12] = model.clockMinute;
-//    b[13] = ?
-//    b[14] = 
+    b[13] = model.clockInterval;
+    b[14] = model.sportSwitch;
+    b[15] = model.startTime;
+    b[16] = model.endTime;
+    b[17] = model.sportInterval;
+    b[18] = model.target;
+    b[19] = [BluetoothManager calculateTotal:b];
+    
+    NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
+    [self.bindingPeripheral.peripheral writeValue:data
+                                forCharacteristic:self.characteristics
+                                             type:CBCharacteristicWriteWithResponse];
+    
 }
 
 

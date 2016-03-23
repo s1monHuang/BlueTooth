@@ -183,6 +183,7 @@ static NSString *dbPath = nil;
             model.endTime = [result intForColumn:@"endTime"];
             model.sportInterval = [result intForColumn:@"sportInterval"];
             model.target = [result intForColumn:@"target"];
+            [result close];
         }
     }];
     return model;
@@ -233,6 +234,7 @@ static NSString *dbPath = nil;
             model.calorie = [result intForColumn:@"calorie"];
             model.target = [result intForColumn:@"target"];
             model.battery = [result intForColumn:@"battery"];
+            [result close];
         }
     }];
     return model;
@@ -282,6 +284,7 @@ static NSString *dbPath = nil;
             model.sleep = [result intForColumn:@"sleep"];
             model.battery = [result intForColumn:@"battery"];
             model.date = [result dateForColumn:@"date"];
+            [result close];
         }
     }];
     return model;
