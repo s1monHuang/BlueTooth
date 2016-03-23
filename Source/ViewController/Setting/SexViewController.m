@@ -55,7 +55,15 @@
 {
     NSString *sexValue = @"男";
     CurrentUser.sex = sexValue;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:sexNotification object:sexValue];
+    
+    //修改数据库信息
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.gender = sexValue;
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改性别失败");
+    }
+    
     [self PushToVC];
 }
 
@@ -63,7 +71,15 @@
 {
     NSString *sexValue = @"女";
     CurrentUser.sex = sexValue;
-    [[NSNotificationCenter defaultCenter] postNotificationName:sexNotification object:sexValue];
+    
+    //修改数据库信息
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.gender = sexValue;
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改性别失败");
+    }
+    
     [self PushToVC];
 }
 
