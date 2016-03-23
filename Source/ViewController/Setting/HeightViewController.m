@@ -33,8 +33,8 @@
     if(self.isJump)
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    CGFloat labelX = self.view.width / 2 - 40;
-    CGFloat labelY = 30;
+    CGFloat labelX = self.view.width / 2 - 50;
+    CGFloat labelY = 20;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
     label.text = @"身高";
     [self.view addSubview:label];
@@ -55,7 +55,8 @@
     
     NSString *sexNamed = [CurrentUser.sex isEqualToString:@"男"]?@"man2":@"woman2";
     
-    UIImageView *heightView = [[UIImageView alloc] initWithFrame:CGRectMake(48, 80, 100, 350)];
+    CGFloat heightViewHeight = kScreenHeight > 480 ? 350 : 280;
+    UIImageView *heightView = [[UIImageView alloc] initWithFrame:CGRectMake(48, 80, 100, heightViewHeight)];
     heightView.image = [UIImage imageNamed:sexNamed];
     [self.view addSubview:heightView];
     
@@ -81,9 +82,9 @@
 - (void)setUpRulerView
 {
     CGFloat rulerX = kScreenWidth / 2 + 20;
-    CGFloat rulerY = CGRectGetMaxY(_heightLabel.frame) + 40;
+    CGFloat rulerY = CGRectGetMaxY(_heightLabel.frame) + 10;
     CGFloat rulerWidth = kScreenWidth / 2 - 60;
-    CGFloat rulerHeight = 250;
+    CGFloat rulerHeight = kScreenHeight > 480 ? 350 : 280;
     
     CGRect rulerFrame = CGRectMake(rulerX, rulerY, rulerWidth, rulerHeight);
     
@@ -125,7 +126,7 @@
     _heightLabel.text = valueStr;
     NSString *heightStr = [NSString stringWithFormat:@"%@cm",valueStr];
     CurrentUser.high = heightStr;
-    [[NSNotificationCenter defaultCenter] postNotificationName:heightNotification object:heightStr];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:heightNotification object:heightStr];
 }
 
 - (void)didReceiveMemoryWarning {

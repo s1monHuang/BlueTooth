@@ -55,7 +55,7 @@
 {
     NSString *sexValue = @"男";
     CurrentUser.sex = sexValue;
-    [[NSNotificationCenter defaultCenter] postNotificationName:sexNotification object:sexValue];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:sexNotification object:sexValue];
     [self PushToVC];
 }
 

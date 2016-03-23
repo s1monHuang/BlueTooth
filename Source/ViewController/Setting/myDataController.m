@@ -44,13 +44,13 @@ static NSString* identifier =@"PersonalCell";
     return _keyArray;
 }
 
-- (NSArray *)valueArray
-{
-    if (!_valueArray) {
-        _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
-    }
-    return _valueArray;
-}
+//- (NSArray *)valueArray
+//{
+//    if (!_valueArray) {
+//        _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
+//    }
+//    return _valueArray;
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -63,19 +63,26 @@ static NSString* identifier =@"PersonalCell";
     //bottomView
     [self setUpBottomView];
     
-    //昵称改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNickNameValue:) name:nickNameNotification object:nil];
-    //年龄改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAgeValue:) name:ageNotification object:nil];
-    //性别改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetSexValue:) name:sexNotification object:nil];
-    //身高改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetHeightValue:) name:heightNotification object:nil];
-    //体重改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseWeightValue:) name:weightNotification object:nil];
-    //步长改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseStepLongValue:) name:stepLongNotification object:nil];
-    
+//    //昵称改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNickNameValue:) name:nickNameNotification object:nil];
+//    //年龄改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAgeValue:) name:ageNotification object:nil];
+//    //性别改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetSexValue:) name:sexNotification object:nil];
+//    //身高改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetHeightValue:) name:heightNotification object:nil];
+//    //体重改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseWeightValue:) name:weightNotification object:nil];
+//    //步长改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseStepLongValue:) name:stepLongNotification object:nil];
+//    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
+    [_tableView reloadData];
 }
 
 - (void)setUpTableView
@@ -107,42 +114,6 @@ static NSString* identifier =@"PersonalCell";
 
 #pragma mark - 通知方法
 
-- (void)resetNickNameValue:(NSNotification *)sender
-{
-    _setValue = sender.object;
-    _selectedCell.valueLabel.text = _setValue;
-}
-
-- (void)resetAgeValue:(NSNotification *)sender
-{
-    _setValue = sender.object;
-    _selectedCell.valueLabel.text = _setValue;
-}
-
-- (void)resetSexValue:(NSNotification *)sender
-{
-    _setValue = sender.object;
-    _selectedCell.valueLabel.text = _setValue;
-}
-
-- (void)resetHeightValue:(NSNotification *)sender
-{
-    _setValue = sender.object;
-    _selectedCell.valueLabel.text = _setValue;
-}
-
-- (void)reseWeightValue:(NSNotification *)sender
-{
-    _setValue = sender.object;
-    _selectedCell.valueLabel.text = _setValue;
-}
-
-- (void)reseStepLongValue:(NSNotification *)sender
-{
-    _setValue = sender.object;
-    _selectedCell.valueLabel.text = _setValue;
-}
-
 #pragma mark - buttonClick
 
 - (void)resetClick
@@ -167,6 +138,7 @@ static NSString* identifier =@"PersonalCell";
     }
     cell.textLabel.text = self.keyArray[indexPath.row];
     [cell.valueLabel setText:self.valueArray[indexPath.row]];
+
     cell.valueLabel.textAlignment = NSTextAlignmentRight;
     
     return cell;

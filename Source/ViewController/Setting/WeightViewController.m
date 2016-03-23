@@ -55,8 +55,8 @@
     [self.view addSubview:otherLabel];
     
     NSString *sexNamed = [CurrentUser.sex isEqualToString:@"男"]?@"man3":@"woman3";
-    
-    UIImageView *heightView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 70)/2, 80, 70, 260)];
+    CGFloat heightViewHeight = kScreenHeight > 480 ? 260 : 220;
+    UIImageView *heightView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 70)/2, 80, 70, heightViewHeight)];
     heightView.image = [UIImage imageNamed:sexNamed];
     [self.view addSubview:heightView];
     
@@ -81,7 +81,7 @@
 - (void)setUpRulerView
 {
     CGFloat rulerX = 20;
-    CGFloat rulerY = kScreenHeight - 180;
+    CGFloat rulerY = kScreenHeight > 480 ? kScreenHeight - 220 : kScreenHeight - 180;
     CGFloat rulerWidth = kScreenWidth  - 40;
     CGFloat rulerHeight = 60;
     
@@ -126,7 +126,7 @@
     _weightLabel.text = valueStr;
     NSString *weightStr = [NSString stringWithFormat:@"%@kg",valueStr];
     CurrentUser.weight = weightStr;
-    [[NSNotificationCenter defaultCenter] postNotificationName:weightNotification object:weightStr];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:weightNotification object:weightStr];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -28,7 +28,7 @@
     
     NSString *nickName = _nickNameTextField.text;
     CurrentUser.nickName = nickName;
-    [[NSNotificationCenter defaultCenter] postNotificationName:nickNameNotification object:nickName];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:nickNameNotification object:nickName];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

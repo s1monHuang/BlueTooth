@@ -51,8 +51,8 @@
     for (int i = 1; i < 100; i++) {
         [self.ageArray addObject:[@(i) stringValue]];
     }
-    
-    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 60 + 120+80, ScreenWidth, 200)];
+    CGFloat pickerViewHeight = kScreenHeight > 480 ? 200 : 160;
+    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 60 + 120+60, ScreenWidth, pickerViewHeight)];
     self.pickerView.dataSource = self;
     self.pickerView.delegate = self;
     self.pickerView.backgroundColor = [UIColor whiteColor];
@@ -135,7 +135,7 @@
      NSString *age= self.ageArray[row];
      self.lblAgeValue.text = age;
      CurrentUser.age = age;
-     [[NSNotificationCenter defaultCenter] postNotificationName:ageNotification object:age];
+//     [[NSNotificationCenter defaultCenter] postNotificationName:ageNotification object:age];
 }
 
 - (void)didReceiveMemoryWarning {
