@@ -24,6 +24,7 @@
     
     self.title = @"个人";
     self.view.backgroundColor = kThemeGrayColor;
+    self.navigationItem.leftBarButtonItem.title = @"";
     self.ageArray = @[].mutableCopy;
     // 设置
     UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithTitle:@"跳过" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonClick:)];
@@ -80,6 +81,21 @@
     [self.view addSubview:btnNext];
     
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.size = CGSizeMake(40, 40);
+        button.alpha = 0;
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+        self.navigationItem.leftBarButtonItem = item;
+    }
+    
+}
+
 
 - (void)btnPreClick:(id)sender
 {

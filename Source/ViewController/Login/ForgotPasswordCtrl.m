@@ -12,6 +12,8 @@
 @interface ForgotPasswordCtrl()
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UIButton *sendEmailBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *inputIcon;
 
 @property (nonatomic , strong) OperateViewModel *operateVM;
 
@@ -29,15 +31,17 @@
 {
     self.title = @"找回密码";
     self.view.backgroundColor = kThemeGrayColor;
+    self.operateVM = [OperateViewModel viewModel];
     
     _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth / 2 - 20, 30, 40, 40)];
-    _iconView.image = [UIImage imageNamed:@"star-green"];
+    
     _iconView.alpha = 0;
     [self.view addSubview:_iconView];
     
     _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth / 2 - 120, 80, 240, 30)];
     _detailLabel.textAlignment = NSTextAlignmentCenter;
     _detailLabel.alpha = 0;
+    _detailLabel.textColor = [UIColor grayColor];
     [self.view addSubview:_detailLabel];
     
     _resendBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 130, kScreenWidth - 30, 35)];
@@ -66,11 +70,24 @@
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
             if (finished) {
 //                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
-                 blockSelf.emailTextField.alpha = 0;
-                
+                blockSelf.emailTextField.alpha = 0;
+                blockSelf.sendEmailBtn.alpha = 0;
+                blockSelf.inputIcon.alpha = 0;
+                blockSelf.iconView.alpha = 1;
+                blockSelf.detailLabel.text = userInfo;
+                blockSelf.iconView.image = [UIImage imageNamed:@"chenggong"];
+                blockSelf.detailLabel.alpha = 1;
                 
             }else{
-                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+                blockSelf.emailTextField.alpha = 0;
+                blockSelf.sendEmailBtn.alpha = 0;
+                blockSelf.inputIcon.alpha = 0;
+                blockSelf.iconView.alpha = 1;
+                blockSelf.detailLabel.text = userInfo;
+                blockSelf.iconView.image = [UIImage imageNamed:@"shibai"];
+                blockSelf.detailLabel.alpha = 1;
+                blockSelf.resendBtn.alpha = 1;
+//                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
             }
         };
     }
@@ -84,10 +101,20 @@
     
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
         if (finished) {
-            [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
-            
+            blockSelf.emailTextField.alpha = 0;
+            blockSelf.sendEmailBtn.alpha = 0;
+            blockSelf.inputIcon.alpha = 0;
+            blockSelf.iconView.alpha = 1;
+            blockSelf.detailLabel.text = userInfo;
+            blockSelf.detailLabel.alpha = 1;
         }else{
-            [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+            blockSelf.emailTextField.alpha = 0;
+            blockSelf.sendEmailBtn.alpha = 0;
+            blockSelf.inputIcon.alpha = 0;
+            blockSelf.iconView.alpha = 1;
+            blockSelf.detailLabel.text = userInfo;
+            blockSelf.detailLabel.alpha = 1;
+            blockSelf.resendBtn.alpha = 1;
         }
     };
 }

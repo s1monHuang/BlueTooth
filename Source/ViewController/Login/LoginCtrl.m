@@ -13,6 +13,7 @@
 
 #import "UserEntity.h"
 #import "UserManager.h"
+#import "nickNameController.h"
 
 @interface LoginCtrl ()<UITextFieldDelegate>
 
@@ -28,6 +29,8 @@
 @property (strong, nonatomic)  UITextField *txtUserAccount;
 @property (strong, nonatomic)  UITextField *txtUserPassword;
 
+@property (nonatomic , assign) NSInteger firstDownload;
+
 - (IBAction)btnLoginClick:(id)sender;
 - (IBAction)btnRegisterClick:(id)sender;
 - (IBAction)btnFindPwdClick:(id)sender;
@@ -39,7 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
     self.title = @"登录";
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
@@ -69,12 +72,33 @@
     self.txtUserPassword.placeholder = @"请输入密码";
     [self.passwordbgbox addSubview:self.txtUserPassword];
     
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
+    if (!first) {
+        DLog(@"第一次登陆");
+        _firstDownload = 1;
+        [[NSUserDefaults standardUserDefaults] setObject:@(_firstDownload) forKey:@"firstDownload"];
+    }else{
+        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    button.size = CGSizeMake(40, 40);
+    button.alpha = 0;
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = item;
 }
 
 - (IBAction)btnLoginClick:(id)sender {
     @weakify(self);
     if (self.txtUserAccount.text.length > 0 && [self.txtUserAccount.text rangeOfString:@"@"].location != NSNotFound ) {
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
+        [[NSUserDefaults standardUserDefaults] setObject:self.txtUserAccount.text forKey:@"userName"];
+        [[NSUserDefaults standardUserDefaults] setObject:self.txtUserPassword.text forKey:@"password"];
+        
     }else
     {
         [MBProgressHUD showHUDByContent:@"账号格式不正确" view:UI_Window afterDelay:2];
@@ -95,8 +119,12 @@
             if (!Info) {
                 DLog(@"存入用户信息失败");
             }
+            if (_firstDownload == 1) {
+                nickNameController *nickNameCtl = [[nickNameController alloc] init];
+                [self.navigationController pushViewController:nickNameCtl animated:YES];
+            }else{
             [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-            
+            }
         } else {
             [self showHUDText:userInfo];
         }

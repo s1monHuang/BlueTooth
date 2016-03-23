@@ -7,6 +7,7 @@
 //
 
 #import "TrainTargetController.h"
+#import "myDataController.h"
 
 @interface TrainTargetController ()
 @property (weak, nonatomic) IBOutlet UILabel *everydayTrainLabel;
@@ -19,6 +20,13 @@
 @property (weak, nonatomic) IBOutlet UISlider *targetSlider;
 @property (weak, nonatomic) IBOutlet UILabel *otherLabel;
 
+@property (nonatomic , strong) UIButton *btnPre;
+
+@property (nonatomic , strong) UIButton *btnNext;
+
+@property (nonatomic , strong) UIButton *rightBtn;
+
+
 @end
 
 @implementation TrainTargetController
@@ -26,7 +34,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的资料";
+    self.view.backgroundColor = kThemeGrayColor;
+    self.navigationItem.leftBarButtonItem.title = @"";
     UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    _rightBtn = rightBtn;
     [rightBtn setTitle:@"完成" forState:UIControlStateNormal];
     [rightBtn addTarget:self action:@selector(changeTrainTarget) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
@@ -42,7 +53,7 @@
     _targetSlider.minimumValue = 0.5;
     _targetSlider.maximumValue = 3;
     _targetSlider.value = 1;
-    UIImage *thumbImage = [self OriginImage:[UIImage imageNamed:@"pic-distance"] scaleToSize:CGSizeMake(30, 30)];
+    UIImage *thumbImage = [self OriginImage:[UIImage imageNamed:@"tuodong"] scaleToSize:CGSizeMake(20, 35)];
     [_targetSlider setThumbImage:thumbImage forState:UIControlStateNormal];
     _targetSlider.minimumTrackTintColor = [UIColor clearColor];
     _targetSlider.maximumTrackTintColor = [UIColor clearColor];
@@ -60,26 +71,53 @@
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     _rightLabel.text = [NSString stringWithFormat:@"%.0lf千卡",fireEnergy];
     
+    UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+    _btnPre = btnPre;
+    _btnPre.alpha = 0;
+    [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+    [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
+    [self.view addSubview:btnPre];
+    
+    UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+    _btnNext = btnNext;
+    _btnNext.alpha = 0;
+    [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
+    [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
+    [self.view addSubview:btnNext];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.size = CGSizeMake(40, 40);
+        button.alpha = 0;
+        _rightBtn.alpha = 0;
+        _btnPre.alpha = 1;
+        _btnNext.alpha = 1;
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+        self.navigationItem.leftBarButtonItem = item;
+    }
+    
 }
 
 - (void)setUpGreenBar
 {
     CGFloat greenBarX = _targetSlider.x;
-    CGFloat greenBarY = _targetSlider.y + 10;
-    CGFloat greenBarW = (kScreenWidth - 100) / 3;
-    CGFloat greenBarH = 20;
-    UIImageView *leftGreen = [[UIImageView alloc] initWithFrame:CGRectMake(greenBarX, greenBarY, greenBarW, greenBarH)];
-    UIImageView *middleGreen = [[UIImageView alloc] initWithFrame:CGRectMake(greenBarX + greenBarW, greenBarY, greenBarW, greenBarH)];
-    UIImageView *rightGreen = [[UIImageView alloc] initWithFrame:CGRectMake(greenBarX + (2 * greenBarW), greenBarY, greenBarW, greenBarH)];
-    leftGreen.backgroundColor = KThemeGreenColor;
-    middleGreen.backgroundColor = KThemeGreenColor;
-    rightGreen.backgroundColor = KThemeGreenColor;
-    leftGreen.alpha = 0.3;
-    middleGreen.alpha = 0.5;
-    rightGreen.alpha = 0.7;
-    [self.view addSubview:leftGreen];
-    [self.view addSubview:middleGreen];
-    [self.view addSubview:rightGreen];
+    CGFloat greenBarY = _targetSlider.y + 22;
+    CGFloat greenBarW = (kScreenWidth - 80);
+    CGFloat greenBarH = 10;
+    UIImageView *greenBar = [[UIImageView alloc] initWithFrame:CGRectMake(greenBarX, greenBarY, greenBarW, greenBarH)];
+    greenBar.image = [UIImage imageNamed:@"chibiao"];
+    [self.view addSubview:greenBar];
+    
 }
 
 //完成按钮点击
@@ -99,6 +137,16 @@
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     _rightLabel.text = [NSString stringWithFormat:@"%.0lf千卡",fireEnergy];
+    
+    
+    //修改数据库信息
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.distance = [_leftLabel.text floatValue] * 10;
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改步长失败");
+    }
+
 }
 
 //滑块图片大小
@@ -116,6 +164,29 @@
     
     return scaledImage;
     
+}
+
+- (void)btnPreClick:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)btnNextClick:(id)sender
+{
+    
+    [self PushToVC];
+}
+
+- (void)rightBarButtonClick:(id)sender
+{
+    [self PushToVC];
+}
+
+- (void)PushToVC
+{
+    myDataController *VC = [[myDataController alloc] init];
+    //    VC.isJump = self.isJump;
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

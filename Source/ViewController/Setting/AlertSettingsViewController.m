@@ -56,6 +56,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"提醒";
+    self.navigationItem.leftBarButtonItem.title = @"";
+    self.view.backgroundColor = kThemeGrayColor;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView setTableFooterView:[UIView new]];

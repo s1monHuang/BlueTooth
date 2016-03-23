@@ -60,7 +60,7 @@ static NSString* identifier =@"PersonalCell";
     self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationController.navigationBar.backgroundColor = kThemeColor;
-    
+    self.navigationItem.leftBarButtonItem.title = @"";
     self.operateVM = [OperateViewModel viewModel];
     //tableView
     [self setUpTableView];
@@ -86,6 +86,14 @@ static NSString* identifier =@"PersonalCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.size = CGSizeMake(40, 40);
+        button.alpha = 0;
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+        self.navigationItem.leftBarButtonItem = item;
+    }
     _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
     [_tableView reloadData];
 }
@@ -126,9 +134,17 @@ static NSString* identifier =@"PersonalCell";
     [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         if (finished) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-               [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
-            });
+            
+            NSInteger isFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+            if (isFirst == 1) {
+                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
+                [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
+                [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+                return;
+            }else{
+                
+            }
+            
             
         }
     };

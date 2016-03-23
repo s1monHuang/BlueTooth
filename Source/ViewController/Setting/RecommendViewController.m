@@ -22,6 +22,7 @@
     
     self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
+    self.navigationItem.leftBarButtonItem.title = @"";
     
     UILabel *lblTip = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, ScreenWidth - 15*2, 20)];
     lblTip.text = @"依据您的年龄、身高，我们评估您现在实际的体重如下:";

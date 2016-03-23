@@ -83,9 +83,9 @@
             
             if([responseObject[@"retCode"] isEqualToString:@"000"])
             {
-                if (self.finishHandler) self.finishHandler(YES, responseObject[@"retMsg"]);
+                if (self.finishHandler) self.finishHandler(YES, @"邮件发送成功");
             }else{
-                if (self.finishHandler) self.finishHandler(YES, responseObject[@"retMsg"]);
+                if (self.finishHandler) self.finishHandler(NO, responseObject[@"retMsg"]);
             }
             
         } else {

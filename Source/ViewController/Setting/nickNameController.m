@@ -19,7 +19,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"昵称";
+    self.view.backgroundColor = kThemeGrayColor;
+    self.navigationItem.leftBarButtonItem.title = @"";
+    
     UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
     [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
     [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
@@ -36,13 +39,29 @@
    
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.size = CGSizeMake(40, 40);
+        button.alpha = 0;
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+        self.navigationItem.leftBarButtonItem = item;
+    }
+    
+}
+
 
 - (IBAction)btnClick:(id)sender {
     
     NSString *nickName = _nickNameTextField.text;
+    if (!nickName || nickName.length < 4 || nickName.length > 16 ) {
+        [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
+        return;
+    }
     CurrentUser.nickName = nickName;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:nickNameNotification object:nickName];
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -53,6 +72,11 @@
 
 - (void)btnNextClick:(id)sender
 {
+    NSString *nickName = _nickNameTextField.text;
+    if (!nickName || nickName.length < 4 || nickName.length > 16 ) {
+        [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
+        return;
+    }
     CurrentUser.age = _nickNameTextField.text;
     [self PushToVC];
 }

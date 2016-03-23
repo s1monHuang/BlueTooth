@@ -18,6 +18,8 @@
 
 @interface AppDelegate ()
 
+@property (nonatomic,strong) OperateViewModel *operateVM;
+
 @end
 
 @implementation AppDelegate
@@ -26,6 +28,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [DBManager initApplicationsDB];
+    self.operateVM = [OperateViewModel viewModel];
     if([[UserManager defaultInstance] hasUser])
     {
         [self exchangeRootViewControllerToMain];
@@ -54,6 +57,30 @@
 
 - (void)exchangeRootViewControllerToMain
 {
+    //自动登陆
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+    
+    [self.operateVM loginWithUserName:userName password:password];
+    
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+        if (finished) {
+            [[UserManager defaultInstance] saveUser:userInfo];
+            
+            BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
+            infoModel.nickName = CurrentUser.nickName;
+            infoModel.gender = CurrentUser.sex;
+            infoModel.age = CurrentUser.age;
+            infoModel.height = [CurrentUser.high integerValue];
+            infoModel.weight = [CurrentUser.weight integerValue];
+            infoModel.distance = [CurrentUser.stepLong integerValue];
+            BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
+            if (!Info) {
+                DLog(@"存入用户信息失败");
+            }
+        }
+    };
+    
     SportCtrl *sportVC = [[SportCtrl alloc] init];
     UINavigationController *navSport
     = [[UINavigationController alloc] initWithRootViewController:sportVC];

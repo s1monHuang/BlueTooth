@@ -26,6 +26,7 @@
     
     self.title = @"注册";
     self.view.backgroundColor = kThemeGrayColor;
+    self.operateVM = [OperateViewModel viewModel];
     
 }
 
@@ -51,8 +52,13 @@
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
             if (finished) {
                 [MBProgressHUD showHUDByContent:@"注册成功" view:blockSelf.view afterDelay:2];
-            }else{
+                CurrentUser.userId = userInfo;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [blockSelf.navigationController popViewControllerAnimated:YES];
+                });
                 
+            }else{
+                [MBProgressHUD showHUDByContent:userInfo view:UI_Window afterDelay:2];
             }
         };
     }
