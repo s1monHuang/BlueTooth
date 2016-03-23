@@ -14,6 +14,7 @@
 #import "SexViewController.h"
 #import "AgeViewController.h"
 #import "nickNameController.h"
+#import "OperateViewModel.h"
 
 @interface myDataController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -28,6 +29,8 @@
 @property (nonatomic , copy) NSString *setValue;
 
 @property (nonatomic , strong) myDataCell *selectedCell;
+
+@property (nonatomic,strong) OperateViewModel *operateVM;
 
 
 @end
@@ -57,6 +60,8 @@ static NSString* identifier =@"PersonalCell";
     self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationController.navigationBar.backgroundColor = kThemeColor;
+    
+    self.operateVM = [OperateViewModel viewModel];
     //tableView
     [self setUpTableView];
     
@@ -118,7 +123,15 @@ static NSString* identifier =@"PersonalCell";
 
 - (void)resetClick
 {
-    
+    [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+        if (finished) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+               [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
+            });
+            
+        }
+    };
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource

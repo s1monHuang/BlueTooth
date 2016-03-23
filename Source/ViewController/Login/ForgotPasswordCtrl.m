@@ -15,6 +15,11 @@
 
 @property (nonatomic , strong) OperateViewModel *operateVM;
 
+@property (nonatomic , strong) UIImageView *iconView;
+
+@property (nonatomic , strong) UILabel *detailLabel;
+
+@property (nonatomic , strong) UIButton *resendBtn;
 
 @end
 
@@ -24,6 +29,24 @@
 {
     self.title = @"找回密码";
     self.view.backgroundColor = kThemeGrayColor;
+    
+    _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth / 2 - 20, 30, 40, 40)];
+    _iconView.image = [UIImage imageNamed:@"star-green"];
+    _iconView.alpha = 0;
+    [self.view addSubview:_iconView];
+    
+    _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth / 2 - 120, 80, 240, 30)];
+    _detailLabel.textAlignment = NSTextAlignmentCenter;
+    _detailLabel.alpha = 0;
+    [self.view addSubview:_detailLabel];
+    
+    _resendBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 130, kScreenWidth - 30, 35)];
+    _resendBtn.backgroundColor = KThemeGreenColor;
+    [_resendBtn setTitle:@"重新发送密码到邮箱" forState:UIControlStateNormal];
+    [_resendBtn addTarget:self action:@selector(resendEmail) forControlEvents:UIControlEventTouchUpInside];
+    _resendBtn.alpha = 0;
+    [self.view addSubview:_resendBtn];
+    
 }
 
 - (IBAction)forgotPassword:(id)sender {
@@ -42,13 +65,32 @@
         
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
             if (finished) {
-                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
-            }else{
+//                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+                 blockSelf.emailTextField.alpha = 0;
                 
+                
+            }else{
+                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
             }
         };
     }
 
 }
+
+- (void)resendEmail
+{
+    __weak ForgotPasswordCtrl *blockSelf = self;
+    [self.operateVM forgetPasswordWithEmail:_emailTextField.text];
+    
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
+        if (finished) {
+            [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+            
+        }else{
+            [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+        }
+    };
+}
+
 
 @end

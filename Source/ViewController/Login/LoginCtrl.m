@@ -77,12 +77,13 @@
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
     }else
     {
-        [MBProgressHUD showHUDByContent:@"账号格式不正确" view:self.view afterDelay:2];
+        [MBProgressHUD showHUDByContent:@"账号格式不正确" view:UI_Window afterDelay:2];
     }
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         @strongify(self);
         if (finished) {
             [[UserManager defaultInstance] saveUser:userInfo];
+            
             BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
             infoModel.nickName = CurrentUser.nickName;
             infoModel.gender = CurrentUser.sex;
