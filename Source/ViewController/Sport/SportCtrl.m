@@ -9,12 +9,12 @@
 #import "SportCtrl.h"
 #import "PNCircleChart.h"
 #import "OperateViewModel.h"
+#import "SportDataModel.h"
 
 @interface SportCtrl ()
 
 @property (strong,nonatomic) UIView *chartView;
 @property (strong,nonatomic) UIView *circleBgView;
-
 @property (strong,nonatomic) UIView *footerView;
 
 @property (nonatomic) PNCircleChart * circleChart;
@@ -22,6 +22,16 @@
 @property (nonatomic) UILabel *complateValue;
 @property (nonatomic) UILabel *complateStep;
 @property (nonatomic) UILabel *totalStep;
+
+@property (nonatomic) UILabel *lblBoxoneValue;      //当天步数
+@property (nonatomic) UILabel *lblBoxtwoValue;      //当天距离
+@property (nonatomic) UILabel *lblBoxthreeValue;    //当天消耗能量
+
+@property (nonatomic) UIButton *refreshBututton;
+@property (nonatomic) UIProgressView *progressView;
+
+
+@property (nonatomic,strong) SportDataModel *sportModel;
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
@@ -35,6 +45,11 @@
     
     self.title = @"运动";
     self.view.backgroundColor = kThemeGrayColor;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshSportDataSuccess:)
+                                                 name:READ_SPORTDATA_SUCCESS
+                                               object:nil];
+    _sportModel = [DBManager selectSportData];
     
     //自动登录
     [self autoDownload];
@@ -49,11 +64,12 @@
     
     self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,50.0, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
                                                       total:@100
-                                                    current:@32
+                                                    current:_sportModel?@(_sportModel.step / _sportModel.target * 100):@(0)
                                                   clockwise:YES shadow:YES shadowColor:[UIColor whiteColor]];
     
     self.circleChart.backgroundColor = [UIColor clearColor];
-    self.circleChart.lineWidth = @20;
+//    self.circleChart.lineWidth = _sportModel?@(_sportModel.step / _sportModel.target * 100):@(0);
+    self.circleChart.lineWidth = @(20);
     [self.circleChart setStrokeColor:[UtilityUI stringTOColor:@"#6dabff"]];
     //[self.circleChart setStrokeColorGradientStart:[UIColor clearColor]];
     [self.circleChart strokeChart];
@@ -68,20 +84,24 @@
     [_circleChart addSubview:tempView];
     
     _complateValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2,tempView.frame.size.width, 20)];
-    _complateValue.text = @"完成率72%";
+    CGFloat completionRateFloat = _sportModel.target?_sportModel.step / (double)_sportModel.target * 100:0;
+    NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
+    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    _complateValue.text = completionRate;
     _complateValue.textAlignment = NSTextAlignmentCenter;
     _complateValue.textColor = [UIColor blackColor];
     [tempView addSubview:_complateValue];
     
     _complateStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35,tempView.frame.size.width, 30)];
-    _complateStep.text = @"140526";
+    _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
     _complateStep.font = [UIFont systemFontOfSize:28];
     _complateStep.textAlignment = NSTextAlignmentCenter;
     _complateStep.textColor = [UIColor blackColor];
     [tempView addSubview:_complateStep];
     
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
-    _totalStep.text = @"目标 150526";
+    NSString *target = [NSString stringWithFormat:@"目标 %@",_sportModel?@(_sportModel.target).stringValue:@(0).stringValue];
+    _totalStep.text = target;
     _totalStep.textAlignment = NSTextAlignmentCenter;
     _totalStep.textColor = [UIColor blackColor];
     [tempView addSubview:_totalStep];
@@ -93,11 +113,11 @@
     CGFloat boxWidth = ScreenWidth - 20;
     
     // 步数
-    UILabel *lblBoxoneValue = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, boxWidth/3, 22)];
-    lblBoxoneValue.textAlignment = NSTextAlignmentCenter;
-    lblBoxoneValue.font = [UIFont systemFontOfSize:22];
-    lblBoxoneValue.text = @"140526";
-    [threeBox addSubview:lblBoxoneValue];
+    _lblBoxoneValue = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, boxWidth/3, 22)];
+    _lblBoxoneValue.textAlignment = NSTextAlignmentCenter;
+    _lblBoxoneValue.font = [UIFont systemFontOfSize:22];
+    _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
+    [threeBox addSubview:_lblBoxoneValue];
     
     UILabel *lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(0, 20+22+10, boxWidth/3, 22)];
     lblBoxoneText.textAlignment = NSTextAlignmentCenter;
@@ -106,11 +126,11 @@
     [threeBox addSubview:lblBoxoneText];
     
     // 距离
-    UILabel *lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
-    lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
-    lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
-    lblBoxtwoValue.text = @"10.8";
-    [threeBox addSubview:lblBoxtwoValue];
+    _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
+    _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
+    _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.distance).stringValue:@(0).stringValue];
+    [threeBox addSubview:_lblBoxtwoValue];
     
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
     lblBoxtwoText.textAlignment = NSTextAlignmentCenter;
@@ -118,12 +138,12 @@
     lblBoxtwoText.text = @"活动距离(km)";
     [threeBox addSubview:lblBoxtwoText];
     
-    // 距离
-    UILabel *lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20, boxWidth/3, 22)];
-    lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
-    lblBoxthreeValue.font = [UIFont systemFontOfSize:22];
-    lblBoxthreeValue.text = @"10086";
-    [threeBox addSubview:lblBoxthreeValue];
+    // 消耗能量
+    _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20, boxWidth/3, 22)];
+    _lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
+    _lblBoxthreeValue.font = [UIFont systemFontOfSize:22];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
+    [threeBox addSubview:_lblBoxthreeValue];
     
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20+22+10, boxWidth/3, 22)];
     lblBoxthreeText.textAlignment = NSTextAlignmentCenter;
@@ -131,7 +151,23 @@
     lblBoxthreeText.text = @"消耗能量(kCall)";
     [threeBox addSubview:lblBoxthreeText];
     
-    [self performSelector:@selector(updateData) withObject:self afterDelay:2.5];
+    _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
+                                                                  _circleChart.height + _circleChart.y,
+                                                                  35,
+                                                                  35)];
+    [_refreshBututton setBackgroundImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
+    [_refreshBututton addTarget:self
+                        action:@selector(refreshSportData)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_refreshBututton];
+    
+    _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
+                                                                     _circleChart.height + _circleChart.y + (35 / 2),
+                                                                     50,
+                                                                     20)];
+    _progressView.tintColor = [UIColor greenColor];
+    _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
+    [self.view addSubview:_progressView];
     
 }
 
@@ -179,14 +215,45 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)refreshSportData {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
+        return;
+    }
+    [[BluetoothManager share] readSportData];
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+    rotationAnimation.duration = 2;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = NSIntegerMax;
+    
+    [_refreshBututton.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
-*/
+
+- (void)refreshSportDataSuccess:(NSNotification *)notification {
+    [_refreshBututton.layer removeAllAnimations];
+    _sportModel = [notification object];
+    
+    self.circleChart.lineWidth = _sportModel?@(_sportModel.step / _sportModel.target * 100):@(0);
+    
+    CGFloat completionRateFloat = _sportModel.target?_sportModel.step / (double)_sportModel.target * 100:0;
+    NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
+    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    _complateValue.text = completionRate;
+    _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
+    NSString *target = [NSString stringWithFormat:@"目标 %@",_sportModel?@(_sportModel.target).stringValue:@(0).stringValue];
+    _totalStep.text = target;
+    
+    _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.distance).stringValue:@(0).stringValue];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
+    
+    _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end

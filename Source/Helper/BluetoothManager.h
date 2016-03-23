@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "BabyBluetooth.h"
 
+
+#define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"
+
+
+
 typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
     BluetoothConnectingNormal = 0,
     BluetoothConnectingBinding,
@@ -70,5 +75,20 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
 - (void)startBindingPeripheral;
 
 + (BOOL)clearBindingPeripheral;
+
+
+
+
+
+/*!
+ *  读取运动数据
+ *
+ *  @param value
+ */
+- (void)readSportData;
+
+
+
+- (BOOL)isExistCharacteristic;
 
 @end
