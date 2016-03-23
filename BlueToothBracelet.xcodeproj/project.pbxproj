@@ -32,6 +32,8 @@
 		47E413C21C98244900871664 /* myDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413C11C98244900871664 /* myDataController.m */; };
 		47E413C61C9824D000871664 /* myDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413C41C9824D000871664 /* myDataCell.m */; };
 		47E413CC1C982B2900871664 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413CB1C982B2900871664 /* UIView+Extension.m */; };
+		47E504E01CA0D1B2005F18F0 /* TrainTargetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */; };
+		47E504E11CA0D1B2005F18F0 /* TrainTargetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */; };
 		9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B14581B7B8E01008CEF15 /* AgeViewController.m */; };
 		9F1B145C1B7B95A6008CEF15 /* SexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145B1B7B95A6008CEF15 /* SexViewController.m */; };
 		9F1B145F1B7B9834008CEF15 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145E1B7B9834008CEF15 /* HeightViewController.m */; };
@@ -311,6 +313,9 @@
 		47E413C41C9824D000871664 /* myDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myDataCell.m; path = Source/ViewController/Setting/myDataCell.m; sourceTree = SOURCE_ROOT; };
 		47E413CA1C982B2900871664 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		47E413CB1C982B2900871664 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		47E504DD1CA0D1B2005F18F0 /* TrainTargetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrainTargetController.h; sourceTree = "<group>"; };
+		47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrainTargetController.m; sourceTree = "<group>"; };
+		47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrainTargetController.xib; sourceTree = "<group>"; };
 		9F1B14571B7B8E01008CEF15 /* AgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeViewController.h; sourceTree = "<group>"; };
 		9F1B14581B7B8E01008CEF15 /* AgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeViewController.m; sourceTree = "<group>"; };
 		9F1B145A1B7B95A6008CEF15 /* SexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SexViewController.h; sourceTree = "<group>"; };
@@ -1082,6 +1087,9 @@
 				9F6883251B88C7C000A83273 /* AlertSettingsViewController.xib */,
 				47E413C01C98244900871664 /* myDataController.h */,
 				47E413C11C98244900871664 /* myDataController.m */,
+				47E504DD1CA0D1B2005F18F0 /* TrainTargetController.h */,
+				47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */,
+				47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1789,6 +1797,7 @@
 				9F88F5761B45873E000BA054 /* LaunchScreen.xib in Resources */,
 				3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */,
 				9F6883271B88C7C000A83273 /* AlertSettingsViewController.xib in Resources */,
+				47E504E11CA0D1B2005F18F0 /* TrainTargetController.xib in Resources */,
 				9FA3F22B1B6F6DEC00977D2B /* RankingCell.xib in Resources */,
 				9F88F5D71B45922C000BA054 /* RankingCtrl.xib in Resources */,
 				9F59A3971B65073800C7B8D9 /* AddDeviceViewController.xib in Resources */,
@@ -1877,6 +1886,7 @@
 				9F20F5951B75A9680009AB38 /* RACSignal.m in Sources */,
 				9F20F5B61B75A9680009AB38 /* UITextField+RACSignalSupport.m in Sources */,
 				9F20F5741B75A9680009AB38 /* RACArraySequence.m in Sources */,
+				47E504E01CA0D1B2005F18F0 /* TrainTargetController.m in Sources */,
 				9F20F5601B75A9680009AB38 /* NSData+RACSupport.m in Sources */,
 				9FC578981B49017A00108462 /* AFHTTPRequestOperation.m in Sources */,
 				9F718F451B46DFB300E16298 /* MBProgressHUD.m in Sources */,

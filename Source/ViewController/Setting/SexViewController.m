@@ -53,14 +53,17 @@
 
 - (void)btnfaleClick:(id)sender
 {
-    CurrentUser.sex = @"男";
+    NSString *sexValue = @"男";
+    CurrentUser.sex = sexValue;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:sexNotification object:sexValue];
     [self PushToVC];
 }
 
 - (void)btnMefaleClick:(id)sender
 {
-    CurrentUser.sex = @"女";
-    NSLog(@"%@",CurrentUser.sex);
+    NSString *sexValue = @"女";
+    CurrentUser.sex = sexValue;
+    [[NSNotificationCenter defaultCenter] postNotificationName:sexNotification object:sexValue];
     [self PushToVC];
 }
 

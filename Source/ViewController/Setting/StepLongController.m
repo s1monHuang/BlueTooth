@@ -82,9 +82,9 @@
 - (void)setUpRulerView
 {
     CGFloat rulerX = kScreenWidth / 2 + 20;
-    CGFloat rulerY = CGRectGetMaxY(_stepLabel.frame) + 40;
+    CGFloat rulerY = CGRectGetMaxY(_stepLabel.frame) + 20;
     CGFloat rulerWidth = kScreenWidth / 2 - 60;
-    CGFloat rulerHeight = 250;
+    CGFloat rulerHeight = kScreenHeight > 480 ? 350 : 300;
     
     CGRect rulerFrame = CGRectMake(rulerX, rulerY, rulerWidth, rulerHeight);
     
@@ -104,8 +104,9 @@
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _stepLabel.text = valueStr;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:stepLongNotification object:valueStr];
+    NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
+    CurrentUser.stepLong = stepLongStr;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:stepLongNotification object:stepLongStr];
 }
 
 - (void)didReceiveMemoryWarning {

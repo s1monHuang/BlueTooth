@@ -8,8 +8,15 @@
 
 #import "WeightViewController.h"
 #import "RecommendViewController.h"
+#import "ZHRulerView.h"
 
-@interface WeightViewController ()
+@interface WeightViewController () <ZHRulerViewDelegate>
+
+@property (nonatomic , strong) ZHRulerView *rulerView;
+
+@property (nonatomic , strong) UILabel *weightLabel;
+
+
 
 @end
 
@@ -27,15 +34,29 @@
     if(self.isJump)
         self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    UILabel *lblman = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 200)/2, 30, 200, 20)];
-    lblman.text = @"体重 86 kg";
-    lblman.font = [UIFont systemFontOfSize:20];
-    lblman.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:lblman];
+    CGFloat labelX = self.view.width / 2 - 60;
+    CGFloat labelY = 30;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
+    label.text = @"体重";
+    [self.view addSubview:label];
+    
+    CGFloat weightLabelX = CGRectGetMaxX(label.frame) + 10;
+    UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 40, 40)];
+    _weightLabel = weightLabel;
+    weightLabel.text = @"50";
+    weightLabel.font = [UIFont systemFontOfSize:22];
+    weightLabel.textColor = KThemeGreenColor;
+    [self.view addSubview:weightLabel];
+    
+    CGFloat otherLabelX = CGRectGetMaxX(weightLabel.frame) + 10;
+    UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
+    otherLabel.text = @"kg";
+    otherLabel.textColor = KThemeGreenColor;
+    [self.view addSubview:otherLabel];
     
     NSString *sexNamed = [CurrentUser.sex isEqualToString:@"男"]?@"man3":@"woman3";
-    
-    UIImageView *heightView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 70)/2, 80, 70, 260)];
+    CGFloat heightViewHeight = kScreenHeight > 480 ? 260 : 220;
+    UIImageView *heightView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 70)/2, 80, 70, heightViewHeight)];
     heightView.image = [UIImage imageNamed:sexNamed];
     [self.view addSubview:heightView];
     
@@ -53,6 +74,27 @@
     [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
     [self.view addSubview:btnNext];
     
+    [self setUpRulerView];
+    
+}
+
+- (void)setUpRulerView
+{
+    CGFloat rulerX = 20;
+    CGFloat rulerY = kScreenHeight > 480 ? kScreenHeight - 220 : kScreenHeight - 180;
+    CGFloat rulerWidth = kScreenWidth  - 40;
+    CGFloat rulerHeight = 60;
+    
+    CGRect rulerFrame = CGRectMake(rulerX, rulerY, rulerWidth, rulerHeight);
+    
+    ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:220 showType:rulerViewshowHorizontalType rulerMultiple:10];
+    _rulerView = rulerView;
+    rulerView.backgroundColor = [UIColor whiteColor];
+    rulerView.defaultVaule = 50;
+    rulerView.delegate = self;
+    rulerView.frame = rulerFrame;
+    
+    [self.view addSubview:rulerView];
 }
 
 - (void)btnPreClick:(id)sender
@@ -76,6 +118,15 @@
     VC.isJump = self.isJump;
     [self.navigationController pushViewController:VC animated:YES];
     
+}
+
+#pragma mark - rulerviewDelagete
+-(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
+    NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
+    _weightLabel.text = valueStr;
+    NSString *weightStr = [NSString stringWithFormat:@"%@kg",valueStr];
+    CurrentUser.weight = weightStr;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:weightNotification object:weightStr];
 }
 
 - (void)didReceiveMemoryWarning {

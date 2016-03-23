@@ -9,6 +9,7 @@
 #import "nickNameController.h"
 
 @interface nickNameController ()
+
 @property (weak, nonatomic) IBOutlet UITextField *nickNameTextField;
 
 @end
@@ -18,24 +19,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+   
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if (!self.nickName) {
-        self.nickName(_nickNameTextField.text);
-    }
-}
 
 - (IBAction)btnClick:(id)sender {
+    
+    NSString *nickName = _nickNameTextField.text;
+    CurrentUser.nickName = nickName;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:nickNameNotification object:nickName];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)returnNickName:(nickNameCallBack)nickName
-{
-    self.nickName = nickName;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

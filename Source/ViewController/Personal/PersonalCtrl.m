@@ -15,6 +15,8 @@
 #import "AlarmClockViewController.h"
 #import "AlertSettingsViewController.h"
 #import "myDataController.h"
+#import "LoginCtrl.h"
+#import "TrainTargetController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -37,6 +39,12 @@
     
     self.title = @"个人";
     self.view.backgroundColor = kThemeGrayColor;
+    UIButton *unDownloadBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    [unDownloadBtn setImage:[UIImage imageNamed:@"exit"] forState:UIControlStateNormal];
+    [unDownloadBtn addTarget:self action:@selector(exitDownload) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:unDownloadBtn];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
     
     imageArray = @[@"data",@"target",@"bell",@"clock",@"setup",@"i",@"datacenter"];
     dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"提醒设置",@"智能闹钟",@"设备管理",@"关于我们",@"数据中心", nil];
@@ -70,6 +78,13 @@
     
     _imageActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相册",@"相机",nil];
     
+}
+
+#pragma mark - exitClick
+- (void)exitDownload
+{
+    LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
+    [self presentViewController:loginCtl animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource && UITableViewDelegate
@@ -121,7 +136,12 @@
         }
             break;
         case 1:
-        {}
+        {
+            TrainTargetController *trainCtl = [[TrainTargetController alloc] init];
+            trainCtl.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:trainCtl animated:YES];
+        
+        }
             break;
         case 2:
         {
