@@ -7,9 +7,6 @@
 //
 
 #import "DBManager.h"
-#import "SportDataModel.h"
-#import "HistroySportDataModel.h"
-#import "BasicInfomationModel.h"
 #import "UserManager.h"
 
 #define DB_FILENAME @"bluetooth.sqlite"
