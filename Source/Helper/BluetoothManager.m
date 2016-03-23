@@ -9,6 +9,7 @@
 #import "BluetoothManager.h"
 #import "SportDataModel.h"
 #import "HistroySportDataModel.h"
+#import "BasicInfomationModel.h"
 
 
 #define BlueToothIsReadedPripheralAllData @"isReadedPripheralAllData"
@@ -458,7 +459,7 @@ static BluetoothManager *manager = nil;
          characteristic:self.characteristics];
 }
 
-- (void)basicInfomationByHeight:(NSInteger)height weight:(NSInteger)weight distance:(NSInteger)distance clockSwitch:(NSInteger)clockSwitch clockHour:(NSInteger)clockHour clockMinute:(NSInteger)clockMinute  sportSwith:(NSInteger)sportSwith startTime:(NSInteger)startTime endTime:(NSInteger)endTime {
+- (void)setBasicInfomation:(BasicInfomationModel *)model {
     
     NSDate *date = [NSDate date];
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -479,12 +480,12 @@ static BluetoothManager *manager = nil;
     b[4] = [comps day];
     b[5] = [comps hour];
     b[6] = [comps minute];
-    b[7] = height;
-    b[8] = weight;
-    b[9] = distance;
-    b[10] = clockSwitch;
-    b[11] = clockHour;
-    b[12] = clockMinute;
+    b[7] = model.height;
+    b[8] = model.weight;
+    b[9] = model.distance;
+    b[10] = model.clockSwitch;
+    b[11] = model.clockHour;
+    b[12] = model.clockMinute;
 //    b[13] = ?
 //    b[14] = 
 }

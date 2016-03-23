@@ -62,21 +62,6 @@ static NSString *dbPath = nil;
     
 }
 
-//@property (nonatomic,assign) NSInteger height;              //身高
-//@property (nonatomic,assign) NSInteger weight;              //体重
-//@property (nonatomic,assign) NSInteger distance;            //步距
-//@property (nonatomic,assign) NSInteger clockSwith;          //闹钟开关
-//@property (nonatomic,assign) NSInteger clockHour;           //时(闹钟)
-//@property (nonatomic,assign) NSInteger clockMinute;         //分(闹钟)
-//@property (nonatomic,assign) NSInteger clockInterval;       //提醒间隔(闹钟)
-//
-//@property (nonatomic,assign) NSInteger sportSwith;          //运动提醒开关
-//@property (nonatomic,assign) NSInteger startTime;           //开始时间(运动提醒)
-//@property (nonatomic,assign) NSInteger endTime;             //结束时间(运动提醒)
-//@property (nonatomic,assign) NSInteger sportInterval;       //提醒间隔(运动提醒)
-//
-//@property (nonatomic,assign) NSInteger target;              //每天的运动目标
-
 + (BOOL)createBasicInfomationTable:(FMDatabase *)db {
     NSString *createAppsSql = @"CREATE TABLE IF NOT EXISTS 'basic_infomation_table' (\
     'user_id' TEXT PRIMARY KEY NOT NULL ,\
@@ -86,11 +71,11 @@ static NSString *dbPath = nil;
     'height' INTEGER,\
     'weight' INTEGER,\
     'distance' INTEGER,\
-    'clockSwith' INTEGER,\
+    'clockSwitch' INTEGER,\
     'clockHour' INTEGER,\
     'clockMinute' INTEGER,\
     'clockInterval' INTEGER,\
-    'sportSwith' INTEGER,\
+    'sportSwitch' INTEGER,\
     'startTime' INTEGER,\
     'endTime' INTEGER,\
     'sportInterval' INTEGER,\
@@ -132,11 +117,11 @@ static NSString *dbPath = nil;
                          'height',\
                          'weight',\
                          'distance',\
-                         'clockSwith',\
+                         'clockSwitch',\
                          'clockHour',\
                          'clockMinute',\
                          'clockInterval',\
-                         'sportSwith',\
+                         'sportSwitch',\
                          'startTime',\
                          'endTime',\
                          'sportInterval',\
@@ -165,11 +150,11 @@ static NSString *dbPath = nil;
                          @(model.height),
                          @(model.weight),
                          @(model.distance),
-                         @(model.clockSwith),
+                         @(model.clockSwitch),
                          @(model.clockHour),
                          @(model.clockMinute),
                          @(model.clockInterval),
-                         @(model.sportSwith),
+                         @(model.sportSwitch),
                          @(model.startTime),
                          @(model.endTime),
                          @(model.sportInterval),
@@ -189,11 +174,11 @@ static NSString *dbPath = nil;
             model.height = [result intForColumn:@"height"];
             model.weight = [result intForColumn:@"weight"];
             model.distance = [result intForColumn:@"distance"];
-            model.clockSwith = [result intForColumn:@"clockSwith"];
+            model.clockSwitch = [result intForColumn:@"clockSwitch"];
             model.clockHour = [result intForColumn:@"clockHour"];
             model.clockMinute = [result intForColumn:@"clockMinute"];
             model.clockInterval = [result intForColumn:@"clockInterval"];
-            model.sportSwith = [result intForColumn:@"sportSwith"];
+            model.sportSwitch = [result intForColumn:@"sportSwitch"];
             model.startTime = [result intForColumn:@"startTime"];
             model.endTime = [result intForColumn:@"endTime"];
             model.sportInterval = [result intForColumn:@"sportInterval"];
