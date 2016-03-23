@@ -84,7 +84,8 @@
 - (void)exitDownload
 {
     LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
-    [self presentViewController:loginCtl animated:YES completion:nil];
+    loginCtl.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:loginCtl animated:YES];
 }
 
 #pragma mark - UITableViewDataSource && UITableViewDelegate

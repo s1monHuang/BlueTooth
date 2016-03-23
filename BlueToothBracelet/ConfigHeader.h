@@ -37,6 +37,8 @@
 #define kScreenWidth          [[UIScreen mainScreen] bounds].size.width           //(e.g. 320)
 #define kScreenHeight         [[UIScreen mainScreen] bounds].size.height          //包含状态bar的高度(e.g. 480)
 
+#define UI_Window    [[[UIApplication sharedApplication] delegate] window] //获得window
+
 #define stepLongNotification   @"stepLongNotification"         //步长改变通知
 #define nickNameNotification   @"nickNameNotification"         //昵称改变通知
 #define ageNotification        @"ageNotification"              //年龄改变通知

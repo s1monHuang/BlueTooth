@@ -160,6 +160,28 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	return [NSArray arrayWithArray:huds];
 }
 
+
+
++ (void)showHUDByContent:(NSString *)content view:(UIView *)view afterDelay:(NSInteger)delay {
+    dispatch_block_t block = ^ {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.detailsLabelText = content;
+        hud.detailsLabelFont = [UIFont systemFontOfSize:14];
+        hud.margin = 10.f;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hide:YES afterDelay:delay];
+    };
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block();
+        });
+    }
+}
+
+
 #pragma mark - Lifecycle
 
 - (id)initWithFrame:(CGRect)frame {
@@ -995,26 +1017,6 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		
 		CGContextFillPath(context);
 	}
-}
-
-
-+ (void)showHUDByContent:(NSString *)content view:(UIView *)view afterDelay:(NSInteger)delay {
-    dispatch_block_t block = ^ {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-        hud.mode = MBProgressHUDModeText;
-        hud.detailsLabelText = content;
-        hud.detailsLabelFont = [UIFont systemFontOfSize:14];
-        hud.margin = 10.f;
-        hud.removeFromSuperViewOnHide = YES;
-        [hud hide:YES afterDelay:delay];
-    };
-    if ([NSThread isMainThread]) {
-        block();
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            block();
-        });
-    }
 }
 
 #pragma mark - KVO

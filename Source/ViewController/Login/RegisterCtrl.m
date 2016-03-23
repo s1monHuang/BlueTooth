@@ -50,7 +50,7 @@
         
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
             if (finished) {
-                [MBProgressHUD showHUDByContent:userInfo view:blockSelf.view afterDelay:2];
+                [MBProgressHUD showHUDByContent:@"注册成功" view:blockSelf.view afterDelay:2];
             }else{
                 
             }

@@ -17,9 +17,9 @@
         _sportInterval = 0;
         _startTime = 0;
         _endTime = 0;
-        _sportSwith = 0;
+        _sportSwitch = 0;
         _clockHour = 0;
-        _clockSwith = 0;
+        _clockSwitch = 0;
         _clockMinute = 0;
         _clockInterval = 0;
     }

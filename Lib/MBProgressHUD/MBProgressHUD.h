@@ -165,6 +165,8 @@ typedef void (^MBProgressHUDCompletionBlock)();
  */
 + (NSArray *)allHUDsForView:(UIView *)view;
 
++ (void)showHUDByContent:(NSString *)content view:(UIView *)view afterDelay:(NSInteger)delay;
+
 /**
  * A convenience constructor that initializes the HUD with the window's bounds. Calls the designated constructor with
  * window.bounds as the parameter.
@@ -269,7 +271,7 @@ typedef void (^MBProgressHUDCompletionBlock)();
 - (void)showAnimated:(BOOL)animated whileExecutingBlock:(dispatch_block_t)block onQueue:(dispatch_queue_t)queue
 		  completionBlock:(MBProgressHUDCompletionBlock)completion;
 
-+ (void)showHUDByContent:(NSString *)content view:(UIView *)view afterDelay:(NSInteger)delay;
+
 
 /**
  * A block that gets called after the HUD was completely hidden.

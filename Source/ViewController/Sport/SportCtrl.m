@@ -8,6 +8,7 @@
 
 #import "SportCtrl.h"
 #import "PNCircleChart.h"
+#import "OperateViewModel.h"
 
 @interface SportCtrl ()
 
@@ -22,6 +23,7 @@
 @property (nonatomic) UILabel *complateStep;
 @property (nonatomic) UILabel *totalStep;
 
+@property (nonatomic,strong) OperateViewModel *operateVM;
 
 @end
 
@@ -33,6 +35,9 @@
     
     self.title = @"运动";
     self.view.backgroundColor = kThemeGrayColor;
+    
+    //自动登录
+    [self autoDownload];
     
     _chartView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 200)];
     _chartView.backgroundColor = [UIColor clearColor];
@@ -129,6 +134,39 @@
     [self performSelector:@selector(updateData) withObject:self afterDelay:2.5];
     
 }
+
+- (void)autoDownload
+{
+    
+    self.operateVM = [OperateViewModel viewModel];
+    @weakify(self);
+    
+//        [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
+    
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+        @strongify(self);
+        if (finished) {
+            [[UserManager defaultInstance] saveUser:userInfo];
+            
+            BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
+            infoModel.nickName = CurrentUser.nickName;
+            infoModel.gender = CurrentUser.sex;
+            infoModel.age = CurrentUser.age;
+            infoModel.height = [CurrentUser.high integerValue];
+            infoModel.weight = [CurrentUser.weight integerValue];
+            infoModel.distance = [CurrentUser.stepLong integerValue];
+            BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
+            if (!Info) {
+                DLog(@"存入用户信息失败");
+            }
+            [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+            
+        } else {
+            [self showHUDText:userInfo];
+        }
+    };
+}
+
 
 
 - (void)updateData
