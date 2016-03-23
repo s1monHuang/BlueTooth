@@ -25,7 +25,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    [DBManager initApplicationsDB];
     if([[UserManager defaultInstance] hasUser])
     {
         [self exchangeRootViewControllerToMain];

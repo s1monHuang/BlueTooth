@@ -196,8 +196,10 @@ static BluetoothManager *manager = nil;
     [_baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         NSLog(@"设备：%@--断开连接",peripheral.name);
         if (weakSelf.isBindingPeripheral) {
-            [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
-                         characteristic:weakSelf.characteristics];
+            if (weakSelf.bindingPeripheral.peripheral && weakSelf.characteristics) {
+                [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                             characteristic:weakSelf.characteristics];
+            }
             weakSelf.connectionType = BluetoothConnectingNormal;
             weakSelf.characteristics = nil;
             [weakSelf connectingBlueTooth:peripheral];
@@ -295,6 +297,7 @@ static BluetoothManager *manager = nil;
     model.calorie = (byte[6] << 8) + byte[5];           //卡路里
     model.target = (byte[8] << 8) + byte[7];            //目标
     model.battery = byte[9];                            //电量
+    [DBManager insertOrReplaceSportData:model];
     NSLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
 }
 
@@ -312,7 +315,7 @@ static BluetoothManager *manager = nil;
     [df setDateFormat:@"yyyy-MM-DD HH:mm:ss"];
     NSString *myDataString = @"2000-01-01 0:0:00";
     model.date = [NSDate dateWithTimeInterval:timeInterval sinceDate:[df dateFromString:myDataString]];
-    
+    [DBManager insertOrReplaceHistroySportData:model];
     NSLog(@"时间 = %ld 步数 = %ld  卡路里 = %ld  睡眠动作次数 = %ld  电量 = %ld  日期 = %@",model.time,model.step,model.calorie,model.sleep,model.battery,model.date);
 }
 
@@ -453,6 +456,37 @@ static BluetoothManager *manager = nil;
                                              type:CBCharacteristicWriteWithResponse];
     [_baby cancelNotify:self.bindingPeripheral.peripheral
          characteristic:self.characteristics];
+}
+
+- (void)basicInfomationByHeight:(NSInteger)height weight:(NSInteger)weight distance:(NSInteger)distance clockSwitch:(NSInteger)clockSwitch clockHour:(NSInteger)clockHour clockMinute:(NSInteger)clockMinute  sportSwith:(NSInteger)sportSwith startTime:(NSInteger)startTime endTime:(NSInteger)endTime {
+    
+    NSDate *date = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSYearCalendarUnit |
+    NSMonthCalendarUnit |
+    NSDayCalendarUnit |
+    NSWeekdayCalendarUnit |
+    NSHourCalendarUnit |
+    NSMinuteCalendarUnit;
+    comps = [calendar components:unitFlags fromDate:date];
+
+    Byte b[20];
+    b[0] = 0xAA;
+    b[1] = 0x00;
+    b[2] = [comps year];
+    b[3] = [comps month];
+    b[4] = [comps day];
+    b[5] = [comps hour];
+    b[6] = [comps minute];
+    b[7] = height;
+    b[8] = weight;
+    b[9] = distance;
+    b[10] = clockSwitch;
+    b[11] = clockHour;
+    b[12] = clockMinute;
+//    b[13] = ?
+//    b[14] = 
 }
 
 
