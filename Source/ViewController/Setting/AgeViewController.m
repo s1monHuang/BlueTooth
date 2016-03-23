@@ -89,6 +89,15 @@
 - (void)btnNextClick:(id)sender
 {
     CurrentUser.age = self.lblAgeValue.text;
+    NSString *ageStr = self.lblAgeValue.text;
+    //修改数据库信息
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.age = ageStr;
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改年龄失败");
+    }
+    
     [self PushToVC];
 }
 
@@ -135,6 +144,14 @@
      NSString *age= self.ageArray[row];
      self.lblAgeValue.text = age;
      CurrentUser.age = age;
+     //修改数据库信息
+     BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+     changeModel.age = age;
+     BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+     if (!change) {
+         DLog(@"修改年龄失败");
+     }
+
 //     [[NSNotificationCenter defaultCenter] postNotificationName:ageNotification object:age];
 }
 

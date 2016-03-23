@@ -7,6 +7,7 @@
 //
 
 #import "nickNameController.h"
+#import "SexViewController.h"
 
 @interface nickNameController ()
 
@@ -19,7 +20,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+    [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+    [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
+    [self.view addSubview:btnPre];
     
+    UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+    [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
+    [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
+    [self.view addSubview:btnNext];
    
 }
 
@@ -31,6 +44,29 @@
 //    [[NSNotificationCenter defaultCenter] postNotificationName:nickNameNotification object:nickName];
     
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)btnPreClick:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)btnNextClick:(id)sender
+{
+    CurrentUser.age = _nickNameTextField.text;
+    [self PushToVC];
+}
+
+- (void)rightBarButtonClick:(id)sender
+{
+    [self PushToVC];
+}
+
+- (void)PushToVC
+{
+    SexViewController *VC = [[SexViewController alloc] init];
+//    VC.isJump = self.isJump;
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 

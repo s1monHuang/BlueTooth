@@ -9,6 +9,7 @@
 #import "WeightViewController.h"
 #import "RecommendViewController.h"
 #import "ZHRulerView.h"
+#import "StepLongController.h"
 
 @interface WeightViewController () <ZHRulerViewDelegate>
 
@@ -114,8 +115,9 @@
 
 - (void)PushToVC{
     
-    RecommendViewController *VC = [[RecommendViewController alloc] init];
-    VC.isJump = self.isJump;
+//    RecommendViewController *VC = [[RecommendViewController alloc] init];
+//    VC.isJump = self.isJump;
+    StepLongController *VC = [[StepLongController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
     
 }
@@ -126,6 +128,12 @@
     _weightLabel.text = valueStr;
     NSString *weightStr = [NSString stringWithFormat:@"%@kg",valueStr];
     CurrentUser.weight = weightStr;
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.weight = [valueStr integerValue];
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改体重失败");
+    }
 //    [[NSNotificationCenter defaultCenter] postNotificationName:weightNotification object:weightStr];
 }
 
