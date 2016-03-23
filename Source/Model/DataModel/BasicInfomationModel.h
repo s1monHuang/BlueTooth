@@ -10,6 +10,10 @@
 
 @interface BasicInfomationModel : NSObject
 
+@property (nonatomic,strong) NSString *nickName;            //昵称
+@property (nonatomic,strong) NSString *gender;              //性别
+@property (nonatomic,strong) NSString *age;                 //年龄
+
 @property (nonatomic,assign) NSInteger height;              //身高
 @property (nonatomic,assign) NSInteger weight;              //体重
 @property (nonatomic,assign) NSInteger distance;            //步距

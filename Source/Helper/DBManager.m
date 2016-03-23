@@ -83,6 +83,9 @@ static NSString *dbPath = nil;
 + (BOOL)createBasicInfomationTable:(FMDatabase *)db {
     NSString *createAppsSql = @"CREATE TABLE IF NOT EXISTS 'basic_infomation_table' (\
     'user_id' TEXT PRIMARY KEY NOT NULL ,\
+    'nick_name' TEXT,\
+    'gender' TEXT,\
+    'age' TEXT,\
     'height' INTEGER,\
     'weight' INTEGER,\
     'distance' INTEGER,\
@@ -126,6 +129,9 @@ static NSString *dbPath = nil;
     [dbQueue inDatabase:^(FMDatabase *db) {
         NSString *sql = [NSString stringWithFormat:@"INSERT OR REPLACE INTO 'basic_infomation_table' (\
                          'user_id',\
+                         'nick_name',\
+                         'gender',\
+                         'age',\
                          'height',\
                          'weight',\
                          'distance',\
@@ -151,8 +157,14 @@ static NSString *dbPath = nil;
                          '%@',\
                          '%@',\
                          '%@',\
+                         '%@',\
+                         '%@',\
+                         '%@',\
                          '%@')",
                          CurrentUser.userId,
+                         model.nickName,
+                         model.gender,
+                         model.age,
                          @(model.height),
                          @(model.weight),
                          @(model.distance),
