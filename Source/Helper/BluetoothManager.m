@@ -157,7 +157,6 @@ static BluetoothManager *manager = nil;
             }
             [weakSelf.bindingPeripheral.peripheral readValueForCharacteristic:characteristic];
         }
-//        NSLog(@"setBlockOnDidWriteValueForCharacteristicAtChannel cha racteristic:%@ and new value:%@",characteristic.UUID, characteristic.value);
     }];
     
     //设置查找设备的过滤器
@@ -471,7 +470,7 @@ static BluetoothManager *manager = nil;
 }
 
 - (void)setBasicInfomation:(BasicInfomationModel *)model {
-    
+    _connectionType = BluetoothConnectingSetBasicInfomation;
     NSDate *date = [NSDate date];
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
