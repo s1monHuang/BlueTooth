@@ -8,7 +8,7 @@
 
 #import "BluetoothManager.h"
 #import "SportDataModel.h"
-#import "HistroySportDataModel.h"
+#import "HistorySportDataModel.h"
 #import "BasicInfomationModel.h"
 
 
@@ -46,6 +46,9 @@ static BluetoothManager *manager = nil;
             //设置委托后直接可以使用，无需等待CBCentralManagerStatePoweredOn状态。
             _baby.scanForPeripherals().begin();
         }
+        
+        _connectionType = BluetoothConnectingNormal;
+        _successType = BluetoothConnectingNormalSuccess;
     }
     return self;
 }
@@ -208,6 +211,7 @@ static BluetoothManager *manager = nil;
                              characteristic:weakSelf.characteristics];
             }
             weakSelf.connectionType = BluetoothConnectingNormal;
+            weakSelf.successType = BluetoothConnectingNormalSuccess;
             weakSelf.characteristics = nil;
             [weakSelf connectingBlueTooth:peripheral];
         }
@@ -308,12 +312,60 @@ static BluetoothManager *manager = nil;
             weakSelf.characteristics = characteristic;
         }
         switch (weakSelf.successType) {
+            case BluetoothConnectingNormalSuccess: {
+                Byte *byte = (Byte *)characteristic.value.bytes;
+                if (byte[1] == 0x0F) {
+                    [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+                    NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                } else {
+                    [weakSelf startBindingPeripheral];
+                    NSLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                }
+            }
+                break;
+                //绑定请求发送后,要再次确认绑定蓝牙设备
+            case BluetoothConnectingBindingSuccess: {
+                [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+                NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+            }
+                break;
+                //读取运动数据成功
             case BluetoothConnectingReadSportDataSuccess: {
                 SportDataModel *model = [weakSelf sportDataModelWithData:characteristic.value];
                 [weakSelf saveNewSportData:characteristic.value];
                 NSLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
                 [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
                                                                     object:model];
+            }
+                break;
+                //设置基本信息成功
+            case BluetoothConnectingSetBasicInfomationSuccess: {
+                HistorySportDataModel *model = [weakSelf histroySportDataModelWithData:characteristic.value];
+                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
+                                                                    object:model];
+                NSLog(@"时间 = %ld 步数 = %ld  卡路里 = %ld  睡眠动作次数 = %ld  电量 = %ld  日期 = %@",model.time,model.step,model.calorie,model.sleep,model.battery,model.date);
+            }
+                break;
+                //成功读取蓝牙设备中的72小时内的运动数据后(每次获取一小时的,获取72次),
+                //如果还没获取完72小时数据,继续获取下一个小时的数据
+                //如果获取完,
+            case BluetoothConnectingHistroyReadSportDataSuccess: {
+                NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                Byte *byte = (Byte *)characteristic.value.bytes;
+                NSInteger time = byte[1];
+                [weakSelf saveNewHistroyData:characteristic.value time:time];
+                //获取72小时内的历史数据
+                if (time < 71) {
+                    [weakSelf readHistroySportDataWithValue:characteristic.value time:++time];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+                                                                        object:nil];
+                }
+            }
+                break;
+                
+            case BluetoothConnectingHeartRateSuccess: {
+                NSLog(@"打开获取心率成功");
             }
                 break;
                 
@@ -335,15 +387,9 @@ static BluetoothManager *manager = nil;
     return model;
 }
 
-#pragma mark - 读取蓝牙中的数据,写入数据成功
-
-- (void)saveNewSportData:(NSData *)data {
-    SportDataModel *model = [self sportDataModelWithData:data];
-    [DBManager insertOrReplaceSportData:model];
-}
-
-- (void)saveNewHistroyData:(NSData *)data time:(NSInteger)time {
-    HistroySportDataModel *model = [[HistroySportDataModel alloc] init];
+- (HistorySportDataModel *)histroySportDataModelWithData:(NSData *)data {
+    
+    HistorySportDataModel *model = [[HistorySportDataModel alloc] init];
     Byte *byte = (Byte *)data.bytes;
     model.time = byte[1];                               //前几个小时的数据
     model.step = (byte[3] << 8) + byte[2];              //步数
@@ -356,27 +402,25 @@ static BluetoothManager *manager = nil;
     [df setDateFormat:@"yyyy-MM-DD HH:mm:ss"];
     NSString *myDataString = @"2000-01-01 0:0:00";
     model.date = [NSDate dateWithTimeInterval:timeInterval sinceDate:[df dateFromString:myDataString]];
+    
+    return model;
+    
+}
+
+#pragma mark - 读取蓝牙中的数据,写入数据成功
+
+- (void)saveNewSportData:(NSData *)data {
+    SportDataModel *model = [self sportDataModelWithData:data];
+    [DBManager insertOrReplaceSportData:model];
+}
+
+- (void)saveNewHistroyData:(NSData *)data time:(NSInteger)time {
+    HistorySportDataModel *model = [self histroySportDataModelWithData:data];
     [DBManager insertOrReplaceHistroySportData:model];
-    NSLog(@"时间 = %ld 步数 = %ld  卡路里 = %ld  睡眠动作次数 = %ld  电量 = %ld  日期 = %@",model.time,model.step,model.calorie,model.sleep,model.battery,model.date);
 }
 
 
 #pragma mark - 写数据到蓝牙设备中
-
-- (void)handleCharacteristicsFFF1:(CBCharacteristic *)characteristics weakSelf:(BluetoothManager *)weakSelf {
-    Byte *resultByte = (Byte *)characteristics.value.bytes;
-    if (resultByte[1] == 0x0F) {
-        [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
-    } else if (resultByte[1] == 0xF2) {
-        NSLog(@"设备已绑定,characteristics value is %@",characteristics.value);
-    } else {
-        [weakSelf startBindingPeripheral];
-    }
-}
-
-- (void)handleBindingPeripheral:(CBCharacteristic *)characteristics weakSelf:(BluetoothManager *)weakSelf {
-    
-}
 
 /*!
  *  开始绑定蓝牙设备
@@ -442,12 +486,26 @@ static BluetoothManager *manager = nil;
                                              type:CBCharacteristicWriteWithResponse];
 }
 
+
+- (void)readHistroySportDataWithTime:(Byte)time {
+    _connectionType = BluetoothConnectingHistroyReadSportData;
+    Byte b[20];
+    b[0] = 0xAA;
+    b[1] = 0xA1;
+    b[2] = time;
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
+    [self.bindingPeripheral.peripheral writeValue:data
+                                forCharacteristic:self.characteristics
+                                             type:CBCharacteristicWriteWithResponse];
+}
+
 /*!
  *  读取72小时内的运动数据
  *
  *  @param value
  */
-- (void)readHistroySportDataWithValue:(NSData *)value time:(Byte)time{
+- (void)readHistroySportDataWithValue:(NSData *)value time:(Byte)time {
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xA1;
@@ -464,14 +522,15 @@ static BluetoothManager *manager = nil;
  *
  *  @param value
  */
-- (void)readHeartRateWithValue:(NSData *)value {
-    _connectionType = BluetoothConnectingReadSportData;
-    Byte *b = (Byte *)value.bytes;
+- (void)readHeartRate {
+    _connectionType = BluetoothConnectingHeartRate;
+    Byte b[20];
+    b[0] = 0xAA;
     b[1] = 0xE0;
     b[2] = 0x01;
-    b[3] = 0x02;
+    b[3] = 0x01;
     b[19] = [BluetoothManager calculateTotal:b];
-    NSData *data = [NSData dataWithBytes:b length:value.length];
+    NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [self.bindingPeripheral.peripheral writeValue:data
                                 forCharacteristic:self.characteristics
                                              type:CBCharacteristicWriteWithResponse];
@@ -480,10 +539,11 @@ static BluetoothManager *manager = nil;
     [_baby notify:self.bindingPeripheral.peripheral
    characteristic:self.characteristics
             block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                NSLog(@"获取心率 : %@",characteristics.value);
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [weakSelf closeReadHeartRate];
-                });
+                Byte *byte = (Byte *)characteristics.value.bytes;
+                weakSelf.heartRate = byte[1];
+                [[NSNotificationCenter defaultCenter] postNotificationName:READ_HEARTRATE_SUCCESS
+                                                                    object:nil];
+                NSLog(@"获取心率 : %@      %@",characteristics.value,@(weakSelf.heartRate).stringValue);
             }];
 }
 

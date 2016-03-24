@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HistroySportDataModel : NSObject
+@interface HistorySportDataModel : NSObject
 
 @property(assign) NSInteger time;              //前几个小时的数据
 @property(assign) NSInteger step;              //步数

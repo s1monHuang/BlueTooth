@@ -171,6 +171,9 @@ static NSString *dbPath = nil;
         FMResultSet *result = [db executeQuery:sql];
         if (result.next) {
             model = [[BasicInfomationModel alloc] init];
+            model.nickName = [result stringForColumn:@"nick_name"];
+            model.gender = [result stringForColumn:@"gender"];
+            model.age = [result stringForColumn:@"age"];
             model.height = [result intForColumn:@"height"];
             model.weight = [result intForColumn:@"weight"];
             model.distance = [result intForColumn:@"distance"];
@@ -240,7 +243,7 @@ static NSString *dbPath = nil;
     return model;
 }
 
-+ (BOOL)insertOrReplaceHistroySportData:(HistroySportDataModel *)model {
++ (BOOL)insertOrReplaceHistroySportData:(HistorySportDataModel *)model {
     __block BOOL success = NO;
     [dbQueue inDatabase:^(FMDatabase *db) {
         success = [self insertOrReplaceHistroySportData:model database:db];
@@ -248,7 +251,7 @@ static NSString *dbPath = nil;
     return success;
 }
 
-+ (BOOL)insertOrReplaceHistroySportData:(HistroySportDataModel *)model database:(FMDatabase *)db {
++ (BOOL)insertOrReplaceHistroySportData:(HistorySportDataModel *)model database:(FMDatabase *)db {
     NSString *sql = [NSString stringWithFormat:@"INSERT OR REPLACE INTO 'histroy_sport_table' (\
                      'user_id',\
                      'time',\
@@ -272,13 +275,13 @@ static NSString *dbPath = nil;
     return [db executeUpdate:sql];
 }
 
-+ (HistroySportDataModel *)selectHistroySportDataByTime:(NSInteger)time {
-    __block HistroySportDataModel *model;
++ (HistorySportDataModel *)selectHistorySportDataByTime:(NSInteger)time {
+    __block HistorySportDataModel *model;
     [dbQueue inDatabase:^(FMDatabase *db) {
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@'",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         if (result.next) {
-            model = [[HistroySportDataModel alloc] init];
+            model = [[HistorySportDataModel alloc] init];
             model.time = [result intForColumn:@"time"];
             model.calorie = [result intForColumn:@"calorie"];
             model.sleep = [result intForColumn:@"sleep"];
@@ -290,6 +293,24 @@ static NSString *dbPath = nil;
     return model;
 }
 
++ (NSArray *)selectOneDayHistorySportData {
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' ORDER BY time ASC LIMIT 24",CurrentUser.userId];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            HistorySportDataModel *model = [[HistorySportDataModel alloc] init];
+            model.time = [result intForColumn:@"time"];
+            model.calorie = [result intForColumn:@"calorie"];
+            model.sleep = [result intForColumn:@"sleep"];
+            model.battery = [result intForColumn:@"battery"];
+            model.date = [result dateForColumn:@"date"];
+            [array addObject:model];
+        }
+        [result close];
+    }];
+    return array;
+}
 
 
 

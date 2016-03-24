@@ -10,7 +10,13 @@
 #import "BabyBluetooth.h"
 
 
-#define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"
+#define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"                        //获取运动数据
+#define READ_HISTORY_SPORTDATA_SUCCESS @"READ_HISTORY_SPORTDATA_SUCCESS"        //获取历史运动数据
+#define READ_HEARTRATE_SUCCESS @"READ_HEARTRATE_SUCCESS"                        //获取心率数据
+
+#define SET_BASICINFOMATION_SUCCESS @"SET_BASICINFOMATION_SUCCESS"
+
+@class BasicInfomationModel;
 
 
 
@@ -64,6 +70,10 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
 @property (assign, nonatomic) BluetoothConnectingType connectionType;
 @property (assign, nonatomic) BluetoothConnectingSuccessType successType;
 
+
+
+@property (assign, nonatomic) NSInteger heartRate;              //心率
+
 + (BluetoothManager *)share;
 
 - (void)start;
@@ -87,6 +97,16 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
  */
 - (void)readSportData;
 
+- (void)setBasicInfomation:(BasicInfomationModel *)model;
+
+- (void)readHistroySportDataWithTime:(Byte)time;
+
+
+
+
+- (void)readHeartRate;
+
+- (void)closeReadHeartRate;
 
 
 - (BOOL)isExistCharacteristic;

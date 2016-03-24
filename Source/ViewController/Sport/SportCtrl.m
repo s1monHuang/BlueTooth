@@ -165,7 +165,7 @@
                                                                      _circleChart.height + _circleChart.y + (35 / 2),
                                                                      50,
                                                                      20)];
-    _progressView.tintColor = [UIColor greenColor];
+    _progressView.tintColor = KThemeGreenColor;
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     [self.view addSubview:_progressView];
     
@@ -219,6 +219,7 @@
     if (![[BluetoothManager share] isExistCharacteristic]) {
         return;
     }
+    _refreshBututton.userInteractionEnabled = NO;
     [[BluetoothManager share] readSportData];
     CABasicAnimation* rotationAnimation;
     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
@@ -234,7 +235,7 @@
     [_refreshBututton.layer removeAllAnimations];
     _sportModel = [notification object];
     
-    self.circleChart.lineWidth = _sportModel?@(_sportModel.step / _sportModel.target * 100):@(0);
+    [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.step / _sportModel.target * 100):@(0)];
     
     CGFloat completionRateFloat = _sportModel.target?_sportModel.step / (double)_sportModel.target * 100:0;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
@@ -249,6 +250,7 @@
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
+    _refreshBututton.userInteractionEnabled = YES;
 }
 
 - (void)dealloc

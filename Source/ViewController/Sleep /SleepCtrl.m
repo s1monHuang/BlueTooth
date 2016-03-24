@@ -8,6 +8,9 @@
 
 #import "SleepCtrl.h"
 #import "PNCircleChart.h"
+#import "BluetoothManager.h"
+#import "HistorySportDataModel.h"
+#import "DBManager.h"
 
 @interface SleepCtrl ()
 
@@ -16,8 +19,21 @@
 
 @property (strong,nonatomic) UIView *footerView;
 
+@property (nonatomic) UIButton *refreshBututton;
+
+@property (nonatomic) UILabel *sleepTimeValue;      //显示睡眠时长
+@property (nonatomic) UILabel *ssleepTimeValue;     //深睡眠时长
+@property (nonatomic) UILabel *qsleepTimeValue;     //浅睡眠时长
+
 @property (nonatomic) PNCircleChart * circleChart;
 
+@property (nonatomic) NSArray *historys;
+
+@property (nonatomic,assign) NSInteger sleepValue;
+@property (nonatomic,assign) NSInteger deepSleepValue;
+@property (nonatomic,assign) NSInteger shallowSleepValue;
+
+@property (nonatomic,assign) NSInteger deepSleepPercent;
 
 @end
 
@@ -30,6 +46,8 @@
     self.title = @"睡眠";
     self.view.backgroundColor = kThemeGrayColor;
     
+    [self resetSleepValue];
+    
     _chartView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 200)];
     _chartView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_chartView];
@@ -40,7 +58,7 @@
     
     self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,50.0, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
                                                       total:@100
-                                                    current:@68
+                                                    current:@(_deepSleepPercent)
                                                   clockwise:YES shadow:YES shadowColor:[UtilityUI stringTOColor:@"#6dabff"]];
     
     self.circleChart.backgroundColor = [UIColor clearColor];
@@ -62,65 +80,37 @@
     UILabel *sleepTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2,tempView.frame.size.width, 20)];
     sleepTimeText.text = @"睡眠时长";
     sleepTimeText.textAlignment = NSTextAlignmentCenter;
-    sleepTimeText.textColor = [UIColor blackColor];
+    sleepTimeText.textColor = [UIColor grayColor];
     [tempView addSubview:sleepTimeText];
     
-    UILabel *sleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32,tempView.frame.size.width, 20)];
-    sleepTimeValue.text = @"7小时23分钟";
-    sleepTimeValue.textAlignment = NSTextAlignmentCenter;
-    sleepTimeValue.textColor = [UIColor blackColor];
-    [tempView addSubview:sleepTimeValue];
+    _sleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32,tempView.frame.size.width, 20)];
+    _sleepTimeValue.textAlignment = NSTextAlignmentCenter;
+    _sleepTimeValue.textColor = [UIColor grayColor];
+    [tempView addSubview:_sleepTimeValue];
     
-    UILabel *ssleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32+30,tempView.frame.size.width, 20)];
-    ssleepTimeValue.text = @"★深睡4小时03分钟";
-    ssleepTimeValue.font = [UIFont systemFontOfSize:12];
-    ssleepTimeValue.textAlignment = NSTextAlignmentCenter;
-    ssleepTimeValue.textColor = [UIColor blackColor];
-    [tempView addSubview:ssleepTimeValue];
+    _ssleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32+30,tempView.frame.size.width, 20)];
+    _ssleepTimeValue.font = [UIFont systemFontOfSize:12];
+    _ssleepTimeValue.textAlignment = NSTextAlignmentCenter;
+    _ssleepTimeValue.textColor = [UIColor grayColor];
+    [tempView addSubview:_ssleepTimeValue];
     
-    UILabel *qsleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32+50,tempView.frame.size.width, 20)];
-    qsleepTimeValue.text = @"☆浅睡3小时20分钟";
-    qsleepTimeValue.font = [UIFont systemFontOfSize:12];
-    qsleepTimeValue.textAlignment = NSTextAlignmentCenter;
-    qsleepTimeValue.textColor = [UIColor blackColor];
-    [tempView addSubview:qsleepTimeValue];
+    _qsleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32+50,tempView.frame.size.width, 20)];
+    _qsleepTimeValue.font = [UIFont systemFontOfSize:12];
+    _qsleepTimeValue.textAlignment = NSTextAlignmentCenter;
+    _qsleepTimeValue.textColor = [UIColor grayColor];
+    [tempView addSubview:_qsleepTimeValue];
     
-    UIImageView *threeBox = [[UIImageView alloc] initWithFrame:CGRectMake(10, ScreenHeight - 148 - 108, ScreenWidth - 20, 108)];
-    threeBox.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:threeBox];
+    _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
+                                                                  _circleChart.height + _circleChart.y,
+                                                                  35,
+                                                                  35)];
+    [_refreshBututton setBackgroundImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
+    [_refreshBututton addTarget:self
+                         action:@selector(refreshSleepData)
+               forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_refreshBututton];
     
-    UIImageView *startSleep = [[UIImageView alloc] initWithFrame:CGRectMake(10, threeBox.frame.origin.y+threeBox.frame.size.height+10, 14, 14)];
-    startSleep.image = [UIImage imageNamed:@"moon"];
-    [self.view addSubview:startSleep];
-    
-    UILabel *startSleepTime = [[UILabel alloc] initWithFrame:CGRectMake(30, threeBox.frame.origin.y+threeBox.frame.size.height+7,60, 20)];
-    startSleepTime.text = @"23:20";
-    startSleepTime.font = [UIFont systemFontOfSize:13];
-    startSleepTime.textAlignment = NSTextAlignmentLeft;
-    startSleepTime.textColor = [UIColor blackColor];
-    [self.view addSubview:startSleepTime];
-    
-    
-    UIImageView *endSleep = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 10 - 15, threeBox.frame.origin.y+threeBox.frame.size.height+10, 14, 14)];
-    endSleep.image = [UIImage imageNamed:@"sun"];
-    [self.view addSubview:endSleep];
-    
-    UILabel *endSleepTime = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 10 - 15 - 66, threeBox.frame.origin.y+threeBox.frame.size.height+7,60, 20)];
-    endSleepTime.text = @"7:03";
-    endSleepTime.font = [UIFont systemFontOfSize:13];
-    endSleepTime.textAlignment = NSTextAlignmentRight;
-    endSleepTime.textColor = [UIColor blackColor];
-    [self.view addSubview:endSleepTime];
-    
-    CGFloat boxWidth = (ScreenWidth - 30)/12;
-    
-    for (int i = 0; i < 12; i++) {
-        
-        UIView *boxView = [[UIView alloc] initWithFrame:CGRectMake(5+boxWidth*i, i%2==0?20:64, boxWidth, i%2==0?88:44)];
-        boxView.backgroundColor = i%2==0?[UtilityUI stringTOColor:@"#1b6cff"]:[UtilityUI stringTOColor:@"#6dabff"];
-        
-        [threeBox addSubview:boxView];
-    }
+    [self setSleepTimeValues];
     
 }
 
@@ -129,14 +119,75 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//重置睡眠时间
+- (void)resetSleepValue {
+    _sleepValue = 0;
+    _deepSleepValue = 0;
+    _shallowSleepValue = 0;
+    
+    _historys = [DBManager selectOneDayHistorySportData];
+    for (HistorySportDataModel *model in _historys) {
+        //小于255代表在睡眠时间内
+        if (model.sleep < 255) {
+            _sleepValue += 1;
+            //如果动作次数小于10,深睡眠+1
+            if (model.sleep < 10) {
+                _deepSleepValue += 1;
+            }
+            //如果动作次数大于等于10,浅睡眠+1
+            else {
+                _shallowSleepValue += 1;
+            }
+        }
+    }
+    _deepSleepPercent = (_deepSleepValue * 1.0 / _sleepValue) * 100;
 }
-*/
+
+- (void)refreshSleepData {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
+        return;
+    }
+    _refreshBututton.userInteractionEnabled = NO;
+    [[BluetoothManager share] readHistroySportDataWithTime:0];
+    
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+    rotationAnimation.duration = 2;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = NSIntegerMax;
+    [_refreshBututton.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
+- (void)refreshSleepDataSuccess {
+    [_refreshBututton.layer removeAllAnimations];
+    [self resetSleepValue];
+    [_circleChart updateChartByCurrent:@(_deepSleepPercent) byTotal:@(100)];
+    [self setSleepTimeValues];
+    _refreshBututton.userInteractionEnabled = YES;
+}
+
+- (void)setSleepTimeValues {
+    NSRange sleepHourRange = NSMakeRange(0, _sleepValue >= 10? 2:1);
+    NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + 2, 2);
+    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时00分钟",@(_sleepValue).stringValue]];
+    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
+                              range:sleepHourRange];
+    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
+                              range:sleepMinuteRagne];
+    _sleepTimeValue.attributedText = sleepValueString;
+    
+    NSRange deepSleepRange = NSMakeRange(0, 3);
+    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★深睡%@小时00分钟",@(_deepSleepValue).stringValue]];
+    [deepSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#1b6cff"]}
+                              range:deepSleepRange];
+    _ssleepTimeValue.attributedText = deepSleepValueString;
+    
+    NSRange shallowSleepRange = NSMakeRange(0, 3);
+    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆浅睡%@小时00分钟",@(_shallowSleepValue).stringValue]];
+    [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
+                              range:shallowSleepRange];
+    _qsleepTimeValue.attributedText = shallowSleepValueString;
+}
 
 @end

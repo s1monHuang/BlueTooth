@@ -6,9 +6,9 @@
 //  Copyright © 2016年 dachen. All rights reserved.
 //
 
-#import "HistroySportDataModel.h"
+#import "HistorySportDataModel.h"
 
-@implementation HistroySportDataModel
+@implementation HistorySportDataModel
 
 
 

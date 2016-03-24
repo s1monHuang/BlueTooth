@@ -14,6 +14,8 @@
 
 @property (nonatomic) PNLineChart * lineChart;
 
+@property (nonatomic) UILabel *lblHeartBeatNumber;
+
 @end
 
 @implementation HeartbeatCtrl
@@ -25,100 +27,63 @@
     self.title = @"心跳";
     self.view.backgroundColor = kThemeGrayColor;
     
-    UILabel *lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, ScreenWidth - 40, 30)];
-    lblHeartBeatNumber.text = @"83次/分钟";
-    lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:30];
-    lblHeartBeatNumber.textAlignment = NSTextAlignmentCenter;
-    lblHeartBeatNumber.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
-    [self.view addSubview:lblHeartBeatNumber];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(readHeartRateSuccess)
+                                                 name:READ_HEARTRATE_SUCCESS
+                                               object:nil];
     
-    UIImageView *TipView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 70, SCREEN_WIDTH - 40, 10)];
+    _lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 40, 30)];
+    _lblHeartBeatNumber.text = @"0次/分钟";
+    _lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:30];
+    _lblHeartBeatNumber.textAlignment = NSTextAlignmentCenter;
+    _lblHeartBeatNumber.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
+    [self.view addSubview:_lblHeartBeatNumber];
+    
+    UIImageView *TipView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 150, SCREEN_WIDTH - 40, 10)];
     TipView.image = [UIImage imageNamed:@"scope"];
     [self.view addSubview:TipView];
     
-    UILabel *lblNumber01 = [[UILabel alloc] initWithFrame:CGRectMake(20, 90, (SCREEN_WIDTH - 40)/3, 20)];
+    UILabel *lblNumber01 = [[UILabel alloc] initWithFrame:CGRectMake(20, 170, (SCREEN_WIDTH - 40)/3, 20)];
     lblNumber01.text = @"< 60";
     lblNumber01.font = [UIFont boldSystemFontOfSize:13];
     lblNumber01.textAlignment = NSTextAlignmentCenter;
     lblNumber01.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
     [self.view addSubview:lblNumber01];
     
-    UILabel *lblNumber02 = [[UILabel alloc] initWithFrame:CGRectMake(20+(SCREEN_WIDTH - 40)/3, 90, (SCREEN_WIDTH - 40)/3, 20)];
+    UILabel *lblNumber02 = [[UILabel alloc] initWithFrame:CGRectMake(20+(SCREEN_WIDTH - 40)/3, 170, (SCREEN_WIDTH - 40)/3, 20)];
     lblNumber02.text = @" 60 - 90 ";
     lblNumber02.font = [UIFont boldSystemFontOfSize:13];
     lblNumber02.textAlignment = NSTextAlignmentCenter;
     lblNumber02.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
     [self.view addSubview:lblNumber02];
     
-    UILabel *lblNumber03 = [[UILabel alloc] initWithFrame:CGRectMake(20+(SCREEN_WIDTH - 40)/3*2, 90, (SCREEN_WIDTH - 40)/3, 20)];
+    UILabel *lblNumber03 = [[UILabel alloc] initWithFrame:CGRectMake(20+(SCREEN_WIDTH - 40)/3*2, 170, (SCREEN_WIDTH - 40)/3, 20)];
     lblNumber03.text = @"> 90";
     lblNumber03.font = [UIFont boldSystemFontOfSize:13];
     lblNumber03.textAlignment = NSTextAlignmentCenter;
     lblNumber03.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
     [self.view addSubview:lblNumber03];
     
-    UIView *chartBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 130, SCREEN_WIDTH, 260)];
-    chartBgView.backgroundColor = [UtilityUI stringTOColor:@"#353e47"];
-    [self.view addSubview:chartBgView];
+    UITextView *remindTextView = [[UITextView alloc] initWithFrame:CGRectMake(10,
+                                                                              lblNumber03.height + lblNumber03.y + 100 ,
+                                                                              SCREEN_WIDTH - 20,
+                                                                              50)];
+    remindTextView.backgroundColor = [UIColor clearColor];
+    remindTextView.font = [UIFont systemFontOfSize:16];
+    remindTextView.text = @"运动后心跳加快属正常现象,请不要担心.心跳信息仅提供参考.";
+    [self.view addSubview:remindTextView];
+
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  50,
+                                                                  30)];
+    [button setTitle:@"开始" forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(clickButton:)
+     forControlEvents:UIControlEventTouchUpInside];
     
-    self.lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 60.0, SCREEN_WIDTH, 200.0)];
-    self.lineChart.yLabelFormat = @"%1.1f";
-    self.lineChart.backgroundColor = [UIColor clearColor];
-    [self.lineChart setXLabelColor:[UIColor whiteColor]];
-    [self.lineChart setXLabels:@[@"0",@"6",@"12",@"18",@"24"]];
-    self.lineChart.showCoordinateAxis = NO;
-    self.lineChart.yFixedValueMax = 150.0;
-    self.lineChart.yFixedValueMin = 0.0;
-    [self.lineChart setYLabelColor:[UIColor whiteColor]];
-    [self.lineChart setYLabels:@[
-                                 @"0",
-                                 @"60",
-                                 @"90",
-                                 @"120",
-                                 @"150",
-                                 ]
-     ];
-    
-    
-    NSArray * dataArray = @[@139.1, @60.1, @26.4, @86.2, @86.2];
-    PNLineChartData *data = [PNLineChartData new];
-    data.dataTitle = @"Beta";
-    data.color = PNTwitterColor;
-    data.alpha = 0.8f;
-    data.itemCount = dataArray.count;
-    data.inflexionPointStyle = PNLineChartPointStyleCircle;
-    data.getData = ^(NSUInteger index) {
-        CGFloat yValue = [dataArray[index] floatValue];
-        return [PNLineChartDataItem dataItemWithY:yValue];
-    };
-    self.lineChart.chartData = @[data];
-    [self.lineChart strokeChart];
-    self.lineChart.delegate = self;
-    [chartBgView addSubview:self.lineChart];
-    
-    CGFloat lineWidth = 0;
-    if(Iphone5Screen)
-        lineWidth = 202;
-    if(Iphone6Screen)
-        lineWidth = 250;
-    if(Iphone6PScreen)
-        lineWidth = 276;
-    
-    UIImageView *line01Box = [[UIImageView alloc] initWithFrame:CGRectMake(75,203, lineWidth, 1)];
-    line01Box.image = [UIImage imageNamed:@"line-dotted"];
-    [self.view addSubview:line01Box];
-    
-    UIImageView *line02Box = [[UIImageView alloc] initWithFrame:CGRectMake(75,263, lineWidth, 1)];
-    line02Box.image = [UIImage imageNamed:@"line-dotted"];
-    [self.view addSubview:line02Box];
-    
-    UIImageView *line03Box = [[UIImageView alloc] initWithFrame:CGRectMake(75,293, lineWidth, 1)];
-    line03Box.image = [UIImage imageNamed:@"line-dotted"];
-    [self.view addSubview:line03Box];
-    
-    UIImageView *lineBox = [[UIImageView alloc] initWithFrame:CGRectMake(75,293+30, lineWidth, 1)];
-    lineBox.image = [UIImage imageNamed:@"line"];
-    [self.view addSubview:lineBox];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = item;
     
 }
 
@@ -127,14 +92,27 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)clickButton:(UIButton *)button {
+    if (![BluetoothManager share].characteristics) {
+        return;
+    }
+    if (button.selected) {
+        [button setTitle:@"开始" forState:UIControlStateNormal];
+        [[BluetoothManager share] closeReadHeartRate];
+        [MBProgressHUD hideHUDForView:self.view
+                             animated:YES];
+    } else {
+        [button setTitle:@"取消" forState:UIControlStateNormal];
+        [[BluetoothManager share] readHeartRate];
+        [MBProgressHUD showHUDByContent:@"测定心率中…"
+                                   view:self.view
+                             afterDelay:INT_MAX];
+    }
+    button.selected = !button.selected;
 }
-*/
+
+- (void)readHeartRateSuccess {
+    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@次/分钟",@([BluetoothManager share].heartRate).stringValue];
+}
 
 @end

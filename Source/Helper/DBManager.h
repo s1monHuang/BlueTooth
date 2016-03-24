@@ -10,7 +10,7 @@
 #import "FMDB.h"
 #import "SportDataModel.h"
 #import "BasicInfomationModel.h"
-#import "HistroySportDataModel.h"
+#import "HistorySportDataModel.h"
 
 
 @interface DBManager : NSObject
@@ -70,7 +70,7 @@
  *
  *  @return
  */
-+ (BOOL)insertOrReplaceHistroySportData:(HistroySportDataModel *)model;
++ (BOOL)insertOrReplaceHistroySportData:(HistorySportDataModel *)model;
 
 
 /*!
@@ -81,7 +81,7 @@
  *
  *  @return
  */
-+ (BOOL)insertOrReplaceHistroySportData:(HistroySportDataModel *)model
++ (BOOL)insertOrReplaceHistroySportData:(HistorySportDataModel *)model
                                database:(FMDatabase *)db;
 
 
@@ -92,6 +92,9 @@
  *
  *  @return HistroySportDataModel
  */
-+ (HistroySportDataModel *)selectHistroySportDataByTime:(NSInteger)time;
++ (HistorySportDataModel *)selectHistroySportDataByTime:(NSInteger)time;
+
+
++ (NSArray *)selectOneDayHistorySportData;
 
 @end
