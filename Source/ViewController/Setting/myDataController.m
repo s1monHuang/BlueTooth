@@ -134,18 +134,37 @@ static NSString* identifier =@"PersonalCell";
     [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         if (finished) {
+            //修改数据库信息
+            BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+            if (!changeModel) {
+                changeModel = [[BasicInfomationModel alloc] init];
+            }
+            changeModel.nickName = CurrentUser.nickName;
+            changeModel.gender = CurrentUser.sex;
+            changeModel.height = [CurrentUser.high integerValue];
+            changeModel.weight = [CurrentUser.weight integerValue];
+            changeModel.age = CurrentUser.age;
+            changeModel.distance = [CurrentUser.stepLong integerValue];
+            BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+            if (!change) {
+                DLog(@"修改用户信息失败");
+            }
             
             NSInteger isFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
             if (isFirst == 1) {
+                
                 [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
                 [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
                 [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
                 return;
             }else{
-                
+                [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
             }
             
             
+        }else
+        {
+            [MBProgressHUD showHUDByContent:userInfo view:UI_Window afterDelay:2];
         }
     };
 }

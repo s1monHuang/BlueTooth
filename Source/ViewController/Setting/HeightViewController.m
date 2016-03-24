@@ -143,13 +143,13 @@
     NSString *heightStr = [NSString stringWithFormat:@"%@cm",valueStr];
     CurrentUser.high = heightStr;
     
-    //修改数据库信息
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    changeModel.height = [valueStr integerValue];
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"修改身高失败");
-    }
+//    //修改数据库信息
+//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+//    changeModel.height = [valueStr integerValue];
+//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+//    if (!change) {
+//        DLog(@"修改身高失败");
+//    }
 //    [[NSNotificationCenter defaultCenter] postNotificationName:heightNotification object:heightStr];
 }
 

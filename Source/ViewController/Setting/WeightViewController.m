@@ -144,12 +144,12 @@
     _weightLabel.text = valueStr;
     NSString *weightStr = [NSString stringWithFormat:@"%@kg",valueStr];
     CurrentUser.weight = weightStr;
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    changeModel.weight = [valueStr integerValue];
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"修改体重失败");
-    }
+//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+//    changeModel.weight = [valueStr integerValue];
+//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+//    if (!change) {
+//        DLog(@"修改体重失败");
+//    }
 //    [[NSNotificationCenter defaultCenter] postNotificationName:weightNotification object:weightStr];
 }
 

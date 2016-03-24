@@ -123,7 +123,13 @@
 //完成按钮点击
 - (void)changeTrainTarget
 {
-    DLog(@"~~~~");
+    //修改数据库信息
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.distance = [_leftLabel.text floatValue] * 10;
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改步长失败");
+    }
 }
 
 //改变步数
@@ -138,14 +144,7 @@
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     _rightLabel.text = [NSString stringWithFormat:@"%.0lf千卡",fireEnergy];
     
-    
-    //修改数据库信息
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    changeModel.distance = [_leftLabel.text floatValue] * 10;
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"修改步长失败");
-    }
+   
 
 }
 
@@ -186,6 +185,13 @@
 {
     myDataController *VC = [[myDataController alloc] init];
     //    VC.isJump = self.isJump;
+    //修改数据库信息
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    changeModel.distance = [_leftLabel.text floatValue] * 10;
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"修改步长失败");
+    }
     [self.navigationController pushViewController:VC animated:YES];
 }
 

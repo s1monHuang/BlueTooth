@@ -62,7 +62,12 @@
         return;
     }
     CurrentUser.nickName = nickName;
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        [self PushToVC];
+    }else{
     [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)btnPreClick:(id)sender
