@@ -123,12 +123,11 @@
 //完成按钮点击
 - (void)changeTrainTarget
 {
-    //修改数据库信息
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    changeModel.distance = [_leftLabel.text floatValue] * 10;
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"修改步长失败");
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
+        [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
+        
     }
 }
 
@@ -185,13 +184,8 @@
 {
     myDataController *VC = [[myDataController alloc] init];
     //    VC.isJump = self.isJump;
-    //修改数据库信息
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    changeModel.distance = [_leftLabel.text floatValue] * 10;
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"修改步长失败");
-    }
+    NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
+    [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
     [self.navigationController pushViewController:VC animated:YES];
 }
 

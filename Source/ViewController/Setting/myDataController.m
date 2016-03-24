@@ -15,6 +15,7 @@
 #import "AgeViewController.h"
 #import "nickNameController.h"
 #import "OperateViewModel.h"
+#import "TrainTargetController.h"
 
 @interface myDataController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -26,7 +27,7 @@
 
 @property (nonatomic , strong) UIView *bottomView;
 
-@property (nonatomic , copy) NSString *setValue;
+@property (nonatomic , assign) NSInteger targetValue;
 
 @property (nonatomic , strong) myDataCell *selectedCell;
 
@@ -47,14 +48,6 @@ static NSString* identifier =@"PersonalCell";
     return _keyArray;
 }
 
-//- (NSArray *)valueArray
-//{
-//    if (!_valueArray) {
-//        _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
-//    }
-//    return _valueArray;
-//}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的资料";
@@ -68,8 +61,8 @@ static NSString* identifier =@"PersonalCell";
     //bottomView
     [self setUpBottomView];
     
-//    //昵称改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNickNameValue:) name:nickNameNotification object:nil];
+    //训练目标改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTargetValue:) name:targetNotification object:nil];
 //    //年龄改变通知
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAgeValue:) name:ageNotification object:nil];
 //    //性别改变通知
@@ -127,10 +120,16 @@ static NSString* identifier =@"PersonalCell";
 
 #pragma mark - 通知方法
 
+- (void)resetTargetValue:(NSNotification *)sender
+{
+    self.targetValue = [sender.object integerValue];
+}
+
 #pragma mark - buttonClick
 
 - (void)resetClick
 {
+    __weak myDataController *blockSelf = self;
     [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         if (finished) {
@@ -145,6 +144,7 @@ static NSString* identifier =@"PersonalCell";
             changeModel.weight = [CurrentUser.weight integerValue];
             changeModel.age = CurrentUser.age;
             changeModel.distance = [CurrentUser.stepLong integerValue];
+            changeModel.target = blockSelf.targetValue;
             BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
             if (!change) {
                 DLog(@"修改用户信息失败");

@@ -162,15 +162,7 @@
     _stepLabel.text = valueStr;
     NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
     CurrentUser.stepLong = stepLongStr;
-    
-//    //修改数据库信息
-//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-//    changeModel.distance = [valueStr integerValue];
-//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-//    if (!change) {
-//        DLog(@"修改步长失败");
-//    }
-
+  
 //    [[NSNotificationCenter defaultCenter] postNotificationName:stepLongNotification object:stepLongStr];
 }
 

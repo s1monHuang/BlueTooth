@@ -106,23 +106,23 @@
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         @strongify(self);
         if (finished) {
-            [[UserManager defaultInstance] saveUser:userInfo];
-            
-            BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
-            infoModel.nickName = CurrentUser.nickName;
-            infoModel.gender = CurrentUser.sex;
-            infoModel.age = CurrentUser.age;
-            infoModel.height = [CurrentUser.high integerValue];
-            infoModel.weight = [CurrentUser.weight integerValue];
-            infoModel.distance = [CurrentUser.stepLong integerValue];
-           BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
-            if (!Info) {
-                DLog(@"存入用户信息失败");
-            }
             if (_firstDownload == 1) {
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];
                 [self.navigationController pushViewController:nickNameCtl animated:YES];
             }else{
+                [[UserManager defaultInstance] saveUser:userInfo];
+                
+                BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
+                infoModel.nickName = CurrentUser.nickName;
+                infoModel.gender = CurrentUser.sex;
+                infoModel.age = CurrentUser.age;
+                infoModel.height = [CurrentUser.high integerValue];
+                infoModel.weight = [CurrentUser.weight integerValue];
+                infoModel.distance = [CurrentUser.stepLong integerValue];
+                BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
+                if (!Info) {
+                    DLog(@"存入用户信息失败");
+                }
             [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
             }
         } else {

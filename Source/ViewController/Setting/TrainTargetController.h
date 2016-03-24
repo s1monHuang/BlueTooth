@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define targetNotification @"targetNotification"
+
 @interface TrainTargetController : UIViewController
 
 @end
