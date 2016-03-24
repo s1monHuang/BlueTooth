@@ -155,10 +155,16 @@ static NSString* identifier =@"PersonalCell";
                 
                 [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
                 [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
-                [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+                });
+                
                 return;
             }else{
-                [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
+               
+                   [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
+                
+                
             }
             
             
@@ -239,6 +245,11 @@ static NSString* identifier =@"PersonalCell";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
