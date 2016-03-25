@@ -10,11 +10,11 @@
 
 @interface RankingEntity : NSObject
 
-@property (nonatomic,strong) NSString *UserID;
-@property (nonatomic,strong) NSString *headerPicFileName;
-@property (nonatomic,strong) NSString *RankNo;
-@property (nonatomic,strong) NSString *RankName;
-@property (nonatomic,strong) NSString *StepNumber;
+@property (nonatomic,strong) NSString *userId;
+//@property (nonatomic,strong) NSString *headerPicFileName;
+//@property (nonatomic,strong) NSString *RankNo;
+@property (nonatomic,strong) NSString *userName;
+@property (nonatomic,strong) NSString *sumSteps;
 
 - (instancetype)initRankingEntityWithDic:(NSDictionary *)dict;
 

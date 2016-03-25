@@ -15,11 +15,11 @@
     self = [super init];
     if (self)
     {
-        self.UserID = [NSString stringWithFormat:@"%@",dict[@"UserID"]];
-        self.headerPicFileName = [NSString stringWithFormat:@"%@",dict[@"headerPicFileName"]];
-        self.RankNo = [NSString stringWithFormat:@"%@",dict[@"RankNo"]];
-        self.RankName = [NSString stringWithFormat:@"%@",dict[@"RankName"]];
-        self.StepNumber = [NSString stringWithFormat:@"%@",dict[@"StepNumber"]];
+        self.userId = [NSString stringWithFormat:@"%@",dict[@"userId"]];
+//        self.headerPicFileName = [NSString stringWithFormat:@"%@",dict[@"headerPicFileName"]];
+//        self.RankNo = [NSString stringWithFormat:@"%@",dict[@"RankNo"]];
+        self.userName = [NSString stringWithFormat:@"%@",dict[@"userName"]];
+        self.sumSteps = [NSString stringWithFormat:@"%@",dict[@"sumSteps"]];
     }
     return self;
 }

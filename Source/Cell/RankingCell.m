@@ -24,9 +24,9 @@
     // Initialization code
 }
 
-- (void)configRankingCell:(RankingEntity *)rankEntity
+- (void)configRankingCell:(RankingEntity *)rankEntity rankNo:(NSInteger)row
 {
-    switch ([rankEntity.RankNo integerValue]) {
+    switch (row) {
         case 1:
         {
             self.lblRankNo.hidden = YES;
@@ -64,8 +64,8 @@
             break;
     }
     
-    self.lblRankName.text = rankEntity.RankName;
-    self.lblStepNumber.text = [NSString stringWithFormat:@"%@步",rankEntity.StepNumber];
+    self.lblRankName.text = rankEntity.userName;
+    self.lblStepNumber.text = [NSString stringWithFormat:@"%@步",rankEntity.sumSteps];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -23,6 +23,8 @@
 @property (nonatomic, strong) NSString *age;
 @property (nonatomic, strong) NSString *token;
 
+@property (nonatomic , copy) NSString *inviteCode;    //邀请码
+
 - (instancetype)initUserEntityWithDic:(NSDictionary *)dict;
 
 @end

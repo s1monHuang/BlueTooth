@@ -57,7 +57,7 @@
         self.deviceId = [NSString stringWithFormat:@"%@",dict[@"deviceId"]];
         self.age = [NSString stringWithFormat:@"%@",dict[@"age"]];
         self.token = [NSString stringWithFormat:@"%@",dict[@"token"]];
-        
+        self.inviteCode = [NSString stringWithFormat:@"%@",dict[@"inviteCode"]];
     }
     return self;
 }

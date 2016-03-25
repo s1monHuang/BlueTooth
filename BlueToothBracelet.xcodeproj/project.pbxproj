@@ -25,6 +25,16 @@
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
 		47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E15D0F1C9902DB00D094A8 /* nickNameController.xib */; };
+		47E1CA711CA527BD0070FEE1 /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA5E1CA527BD0070FEE1 /* MJExtensionConst.m */; };
+		47E1CA721CA527BD0070FEE1 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA601CA527BD0070FEE1 /* MJFoundation.m */; };
+		47E1CA731CA527BD0070FEE1 /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA621CA527BD0070FEE1 /* MJProperty.m */; };
+		47E1CA741CA527BD0070FEE1 /* MJPropertyKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA641CA527BD0070FEE1 /* MJPropertyKey.m */; };
+		47E1CA751CA527BD0070FEE1 /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA661CA527BD0070FEE1 /* MJPropertyType.m */; };
+		47E1CA761CA527BD0070FEE1 /* NSObject+MJClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA681CA527BD0070FEE1 /* NSObject+MJClass.m */; };
+		47E1CA771CA527BD0070FEE1 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA6A1CA527BD0070FEE1 /* NSObject+MJCoding.m */; };
+		47E1CA781CA527BD0070FEE1 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA6C1CA527BD0070FEE1 /* NSObject+MJKeyValue.m */; };
+		47E1CA791CA527BD0070FEE1 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA6E1CA527BD0070FEE1 /* NSObject+MJProperty.m */; };
+		47E1CA7A1CA527BD0070FEE1 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA701CA527BD0070FEE1 /* NSString+MJExtension.m */; };
 		47E2C5CE1C9FD52900CD07A9 /* StepLongController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5CD1C9FD52900CD07A9 /* StepLongController.m */; };
 		47E2C5D11C9FD7C000CD07A9 /* StepLongView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5D01C9FD7C000CD07A9 /* StepLongView.m */; };
 		47E2C5D61C9FE0F100CD07A9 /* ZHRulerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E2C5D31C9FE0F100CD07A9 /* ZHRulerScrollView.m */; };
@@ -301,6 +311,27 @@
 		47E15D0F1C9902DB00D094A8 /* nickNameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = nickNameController.xib; sourceTree = "<group>"; };
 		47E1CA591CA507820070FEE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		47E1CA5A1CA507820070FEE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		47E1CA5C1CA527BD0070FEE1 /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
+		47E1CA5D1CA527BD0070FEE1 /* MJExtensionConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtensionConst.h; sourceTree = "<group>"; };
+		47E1CA5E1CA527BD0070FEE1 /* MJExtensionConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJExtensionConst.m; sourceTree = "<group>"; };
+		47E1CA5F1CA527BD0070FEE1 /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
+		47E1CA601CA527BD0070FEE1 /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
+		47E1CA611CA527BD0070FEE1 /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
+		47E1CA621CA527BD0070FEE1 /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
+		47E1CA631CA527BD0070FEE1 /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
+		47E1CA641CA527BD0070FEE1 /* MJPropertyKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyKey.m; sourceTree = "<group>"; };
+		47E1CA651CA527BD0070FEE1 /* MJPropertyType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyType.h; sourceTree = "<group>"; };
+		47E1CA661CA527BD0070FEE1 /* MJPropertyType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyType.m; sourceTree = "<group>"; };
+		47E1CA671CA527BD0070FEE1 /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
+		47E1CA681CA527BD0070FEE1 /* NSObject+MJClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJClass.m"; sourceTree = "<group>"; };
+		47E1CA691CA527BD0070FEE1 /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
+		47E1CA6A1CA527BD0070FEE1 /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
+		47E1CA6B1CA527BD0070FEE1 /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
+		47E1CA6C1CA527BD0070FEE1 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
+		47E1CA6D1CA527BD0070FEE1 /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
+		47E1CA6E1CA527BD0070FEE1 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
+		47E1CA6F1CA527BD0070FEE1 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
+		47E1CA701CA527BD0070FEE1 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
 		47E2C5CC1C9FD52900CD07A9 /* StepLongController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepLongController.h; sourceTree = "<group>"; };
 		47E2C5CD1C9FD52900CD07A9 /* StepLongController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StepLongController.m; sourceTree = "<group>"; };
 		47E2C5CF1C9FD7C000CD07A9 /* StepLongView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StepLongView.h; path = Source/ViewController/Setting/StepLongView.h; sourceTree = SOURCE_ROOT; };
@@ -802,6 +833,34 @@
 			path = BabyBluetooth;
 			sourceTree = "<group>";
 		};
+		47E1CA5B1CA527BD0070FEE1 /* MJExtension */ = {
+			isa = PBXGroup;
+			children = (
+				47E1CA5C1CA527BD0070FEE1 /* MJExtension.h */,
+				47E1CA5D1CA527BD0070FEE1 /* MJExtensionConst.h */,
+				47E1CA5E1CA527BD0070FEE1 /* MJExtensionConst.m */,
+				47E1CA5F1CA527BD0070FEE1 /* MJFoundation.h */,
+				47E1CA601CA527BD0070FEE1 /* MJFoundation.m */,
+				47E1CA611CA527BD0070FEE1 /* MJProperty.h */,
+				47E1CA621CA527BD0070FEE1 /* MJProperty.m */,
+				47E1CA631CA527BD0070FEE1 /* MJPropertyKey.h */,
+				47E1CA641CA527BD0070FEE1 /* MJPropertyKey.m */,
+				47E1CA651CA527BD0070FEE1 /* MJPropertyType.h */,
+				47E1CA661CA527BD0070FEE1 /* MJPropertyType.m */,
+				47E1CA671CA527BD0070FEE1 /* NSObject+MJClass.h */,
+				47E1CA681CA527BD0070FEE1 /* NSObject+MJClass.m */,
+				47E1CA691CA527BD0070FEE1 /* NSObject+MJCoding.h */,
+				47E1CA6A1CA527BD0070FEE1 /* NSObject+MJCoding.m */,
+				47E1CA6B1CA527BD0070FEE1 /* NSObject+MJKeyValue.h */,
+				47E1CA6C1CA527BD0070FEE1 /* NSObject+MJKeyValue.m */,
+				47E1CA6D1CA527BD0070FEE1 /* NSObject+MJProperty.h */,
+				47E1CA6E1CA527BD0070FEE1 /* NSObject+MJProperty.m */,
+				47E1CA6F1CA527BD0070FEE1 /* NSString+MJExtension.h */,
+				47E1CA701CA527BD0070FEE1 /* NSString+MJExtension.m */,
+			);
+			path = MJExtension;
+			sourceTree = "<group>";
+		};
 		47E413C91C982B1C00871664 /* other */ = {
 			isa = PBXGroup;
 			children = (
@@ -1189,6 +1248,7 @@
 		9F88F58E1B458AB9000BA054 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				47E1CA5B1CA527BD0070FEE1 /* MJExtension */,
 				47E413C91C982B1C00871664 /* other */,
 				3E7532D91C8FCB7D009908ED /* BabyBluetooth */,
 				9FD089361B837B38005C63D0 /* GTMBase64 */,
@@ -1867,9 +1927,12 @@
 				9F88F5A81B458EBD000BA054 /* UtilityUI+ErrorImageView.m in Sources */,
 				9F20F59E1B75A9680009AB38 /* RACTargetQueueScheduler.m in Sources */,
 				9FE544A81B72578E0008D9BD /* UserManager.m in Sources */,
+				47E1CA761CA527BD0070FEE1 /* NSObject+MJClass.m in Sources */,
 				9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */,
 				3E7532EF1C8FCB7D009908ED /* BabyRhythm.m in Sources */,
 				9FC5789E1B49017A00108462 /* AFURLRequestSerialization.m in Sources */,
+				47E1CA791CA527BD0070FEE1 /* NSObject+MJProperty.m in Sources */,
+				47E1CA711CA527BD0070FEE1 /* MJExtensionConst.m in Sources */,
 				9FC578A01B49017A00108462 /* AFURLSessionManager.m in Sources */,
 				9F88F5DD1B459295000BA054 /* SportCtrl.m in Sources */,
 				9FC578D51B490CDE00108462 /* PNBar.m in Sources */,
@@ -1907,6 +1970,7 @@
 				9FC578E01B490CDE00108462 /* PNScatterChart.m in Sources */,
 				9F20F59D1B75A9680009AB38 /* RACSubscriptionScheduler.m in Sources */,
 				3E7532EC1C8FCB7D009908ED /* BabyCentralManager.m in Sources */,
+				47E1CA751CA527BD0070FEE1 /* MJPropertyType.m in Sources */,
 				9F20F5671B75A9680009AB38 /* NSObject+RACDeallocating.m in Sources */,
 				9FC578AE1B4901F600108462 /* README.md in Sources */,
 				9F20F5B01B75A9680009AB38 /* UISegmentedControl+RACSignalSupport.m in Sources */,
@@ -1926,12 +1990,14 @@
 				9F9D13521B75920F00BEBF98 /* FMResultSet.m in Sources */,
 				9F20F56D1B75A9680009AB38 /* NSOrderedSet+RACSequenceAdditions.m in Sources */,
 				9F88F62C1B4597A5000BA054 /* NSObject+MTLComparisonAdditions.m in Sources */,
+				47E1CA741CA527BD0070FEE1 /* MJPropertyKey.m in Sources */,
 				47E2C5D71C9FE0F100CD07A9 /* ZHRulerView.m in Sources */,
 				9F88F6331B4597A5000BA054 /* MASViewAttribute.m in Sources */,
 				9F9D121E1B803B0100B7D75C /* RecommendViewController.m in Sources */,
 				9F88F6321B4597A5000BA054 /* MASLayoutConstraint.m in Sources */,
 				9F20F5AE1B75A9680009AB38 /* UIImagePickerController+RACSignalSupport.m in Sources */,
 				9F20F5801B75A9680009AB38 /* RACEmptySequence.m in Sources */,
+				47E1CA781CA527BD0070FEE1 /* NSObject+MJKeyValue.m in Sources */,
 				9F88F62F1B4597A5000BA054 /* MASCompositeConstraint.m in Sources */,
 				9F20F5781B75A9680009AB38 /* RACCommand.m in Sources */,
 				9F20F4961B75A7A40009AB38 /* NSString+Loging.m in Sources */,
@@ -2002,8 +2068,11 @@
 				9F20F5731B75A9680009AB38 /* NSUserDefaults+RACSupport.m in Sources */,
 				9F20F5701B75A9680009AB38 /* NSString+RACSequenceAdditions.m in Sources */,
 				9F20F5901B75A9680009AB38 /* RACScheduler.m in Sources */,
+				47E1CA771CA527BD0070FEE1 /* NSObject+MJCoding.m in Sources */,
+				47E1CA721CA527BD0070FEE1 /* MJFoundation.m in Sources */,
 				9F20F5A31B75A9680009AB38 /* RACUnit.m in Sources */,
 				9F20F5A91B75A9680009AB38 /* UICollectionReusableView+RACSignalSupport.m in Sources */,
+				47E1CA7A1CA527BD0070FEE1 /* NSString+MJExtension.m in Sources */,
 				9F20F5A21B75A9680009AB38 /* RACUnarySequence.m in Sources */,
 				9F20F56F1B75A9680009AB38 /* NSString+RACKeyPathUtilities.m in Sources */,
 				9F59A3911B65071900C7B8D9 /* DeviceManagerViewController.m in Sources */,
@@ -2036,6 +2105,7 @@
 				9F20F56B1B75A9680009AB38 /* NSObject+RACPropertySubscribing.m in Sources */,
 				9FC578E21B490CDE00108462 /* PNScatterChartDataItem.m in Sources */,
 				9F20F5661B75A9680009AB38 /* NSNotificationCenter+RACSupport.m in Sources */,
+				47E1CA731CA527BD0070FEE1 /* MJProperty.m in Sources */,
 				9FC578AF1B4901F600108462 /* Base64.m in Sources */,
 				9F88F5CB1B45917A000BA054 /* HeartbeatCtrl.m in Sources */,
 				9FC578831B49011200108462 /* BaseRequestOperator.m in Sources */,
