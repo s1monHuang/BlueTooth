@@ -14,6 +14,10 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     TimePickerSelectedFrequency
 };
 
+#define alertSwitchIsOpen  @"alertSwitchIsOpen"         //提醒设置开关
+
+#define whichDayIsOpen     @"whichDayIsOpen"            //哪天开
+
 @interface AlertSettingsViewController ()<UITableViewDelegate,UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -34,10 +38,10 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 @property (nonatomic , strong) NSMutableArray *timeArray;
 
 @property (nonatomic , strong) UIView *coverView;
-
-@property (nonatomic , strong) NSDateFormatter *formatter;
-
-@property (nonatomic , strong) UIDatePicker *TimePicker;
+//
+//@property (nonatomic , strong) NSDateFormatter *formatter;
+//
+//@property (nonatomic , strong) UIDatePicker *TimePicker;
 
 @property (nonatomic , strong) UIToolbar *toolBar;
 
@@ -49,9 +53,23 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 
 @property (nonatomic , assign) NSInteger alertDay;
 
+@property (nonatomic , strong) UISwitch *alertSwitch;
+
+@property (nonatomic , strong) NSMutableArray *alertArray;
+
+
+
 @end
 
 @implementation AlertSettingsViewController
+
+- (NSMutableArray *)alertArray
+{
+    if (!_alertArray) {
+        _alertArray = [NSMutableArray array];
+    }
+    return _alertArray;
+}
 
 - (NSMutableArray *)timeArray
 {
@@ -94,13 +112,131 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     backBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftBarButton;
+    
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    if (!changeModel) {
+        changeModel = [[BasicInfomationModel alloc] init];
+    }
+    CGRect labelFrame = CGRectMake(kScreenWidth - 80, 0, 60, 44);
+    
+    _startLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    NSString *startStr ;
+    if (changeModel.startTime) {
+        if (changeModel.startTime < 10) {
+            startStr = [NSString stringWithFormat:@"0%ld:00",changeModel.clockHour];
+        }
+        _startLabel.text = [NSString stringWithFormat:@"%@",startStr];
+    }else{
+        _startLabel.text = @"07:00";
+    }
+    
+    _endLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    NSString *endStr ;
+    if (changeModel.endTime) {
+        if (changeModel.endTime < 10) {
+            endStr = [NSString stringWithFormat:@"0%ld:00",changeModel.endTime];
+        }
+        _endLabel.text = [NSString stringWithFormat:@"%@",endStr];
+    }else{
+        _endLabel.text = @"18:00";
+    }
+
+    
+    _frequencyLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    if (changeModel.sportInterval) {
+        _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",changeModel.clockInterval];
+    }else{
+        _frequencyLabel.text = @"15分钟";
+    }
+    
+    UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    _alertSwitch = clockSwitch;
+    BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:alertSwitchIsOpen];
+    if (switchOpen) {
+        [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:alertSwitchIsOpen] boolValue]];
+        if (_alertSwitch.isOn) {
+            _alertDay = changeModel.sportSwitch;
+        }else{
+            _alertDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
+        }
+    }else{
+        [clockSwitch setOn:NO];
+    }
+    
+    [clockSwitch addTarget:self action:@selector(openAlarmSetting:) forControlEvents:UIControlEventValueChanged];
+    [self openClockDay];
 }
 
 - (void)clickBack
 {
+    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+    if (!changeModel) {
+        changeModel = [[BasicInfomationModel alloc] init];
+    }
+    if (_startLabel.text && _frequencyStr) {
+        changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
+        changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
+        changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
+    }
+    if (_alertSwitch.isOn) {
+        changeModel.sportSwitch = _alertDay;
+    }else{
+        changeModel.sportSwitch = 0;
+        [[NSUserDefaults standardUserDefaults] setObject:@(_alertDay) forKey:alertSwitchIsOpen];
+//        _alertDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
+    }
+    
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+    if (!change) {
+        DLog(@"存储闹钟失败");
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@(_alertSwitch.isOn) forKey:alertSwitchIsOpen];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+//  十进制转二进制
+- (NSString *)toBinarySystemWithDecimalSystem:(NSInteger )num
+{
+    
+    NSInteger remainder = 0;      //余数
+    NSInteger divisor = 0;        //除数
+    
+    NSString * prepare = @"";
+    
+    while (true)
+    {
+        remainder = num%2;
+        divisor = num/2;
+        num = divisor;
+        prepare = [prepare stringByAppendingFormat:@"%ld",remainder];
+        
+        if (divisor == 0)
+        {
+            break;
+        }
+    }
+    NSString * result = @"";
+    for (NSInteger i = prepare.length - 1; i >= 0; i --)
+    {
+        result = [result stringByAppendingFormat:@"%@",
+                  [prepare substringWithRange:NSMakeRange(i , 1)]];
+    }
+    
+    return result;
+}
+
+- (void)openClockDay
+{
+    NSString *clockStr = [self toBinarySystemWithDecimalSystem:_alertDay];
+    for (NSInteger i = 0; i < clockStr.length; i++) {
+        NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
+        [self.alertArray addObject:subStr];
+    }
+    NSInteger tempInteger = 8 - self.alertArray.count;
+    for (NSInteger i = 0; i < tempInteger; i++) {
+        [self.alertArray addObject:@"0"];
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -137,30 +273,20 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     cell.textLabel.text = self.dataArray[count];
     
     if (indexPath.section == 0) {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        [mySwitch setOn:NO];
-        [mySwitch addTarget:self action:@selector(openAlarmSetting:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = mySwitch;
+        cell.accessoryView = _alertSwitch;
     }
     if (indexPath.section == 1) {
-        _startLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
-        _startLabel.text = @"7:00";
         [cell.contentView addSubview:_startLabel];
     }
     if (indexPath.section == 2) {
-        _endLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
-        _endLabel.text = @"18:00";
         [cell.contentView addSubview:_endLabel];
     }
     if (indexPath.section == 3) {
-        _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
-        _frequencyLabel.text = @"15分钟";
         [cell.contentView addSubview:_frequencyLabel];
     }
     if (indexPath.section == 4) {
         cell.imageView.image = [UIImage imageNamed:@"dot-green"];
-        cell.imageView.hidden = YES;
+        cell.imageView.hidden = ![self.alertArray[indexPath.row] boolValue];
     }
     
     return cell;
@@ -197,6 +323,16 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         {
             UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             selectedCell.imageView.hidden = !selectedCell.imageView.hidden;
+            BOOL showImage = !selectedCell.imageView.hidden;
+            //            DLog(@"%d",showImage);
+            NSInteger addCount = 0;
+            addCount = pow(2, indexPath.row);
+            if (showImage) {
+                _alertDay += addCount;
+            }else
+            {
+                _alertDay -= addCount;
+            }
             
         }
             break;
@@ -242,7 +378,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
             
         case TimePickerSelectedStart:{
             if (!_timeStr) {
-                _timeStr = @"7:00";
+                _timeStr = @"07:00";
             }
             _startLabel.text = _timeStr;
         }
@@ -272,15 +408,15 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     [_coverView removeFromSuperview];
 }
 
-- (void)timeChange
-{
-    NSDate *date = _TimePicker.date;
-    if (!_formatter) {
-        _formatter = [[NSDateFormatter alloc] init];
-        [_formatter setDateFormat:@"HH:mm"];
-    }
-    _timeStr = [_formatter stringFromDate:date];
-}
+//- (void)timeChange
+//{
+//    NSDate *date = _TimePicker.date;
+//    if (!_formatter) {
+//        _formatter = [[NSDateFormatter alloc] init];
+//        [_formatter setDateFormat:@"HH:mm"];
+//    }
+//    _timeStr = [_formatter stringFromDate:date];
+//}
 
 //提醒时长选择
 - (void)setUpMiniPickerView
@@ -293,7 +429,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         [self setUpCoverView];
     }
     [_coverView addSubview:self.miniPickerView];
-    _TimePicker.alpha = 0;
+//    _TimePicker.alpha = 0;
     [self.view addSubview:_coverView];
 }
 

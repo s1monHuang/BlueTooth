@@ -8,6 +8,9 @@
 
 #import "AlarmClockViewController.h"
 
+#define switchIsOpen @"switchIsOpen"      //闹钟开关
+#define whichDayIsOpen @"whichDayIsOpen"  //哪天开
+
 @interface AlarmClockViewController ()<UITableViewDataSource,UITableViewDelegate , UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -89,18 +92,43 @@
     }
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
-    _timeLabel.text = [NSString stringWithFormat:@"%ld:%ld",changeModel.clockHour,changeModel.clockMinute];
+    NSString *hourStr ;
+    NSString *minStr;
+    if (changeModel.clockHour || changeModel.clockMinute) {
+        if (changeModel.clockHour < 10) {
+            hourStr = [NSString stringWithFormat:@"0%ld",changeModel.clockHour];
+        }
+        if (changeModel.clockMinute < 10) {
+            minStr = [NSString stringWithFormat:@"0%ld",changeModel.clockMinute];
+        }
+      _timeLabel.text = [NSString stringWithFormat:@"%@:%@",hourStr,minStr];
+    }else{
+      _timeLabel.text = @"18:00";
+    }
     
+     _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
+    if (changeModel.clockInterval) {
+      _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",changeModel.clockInterval];
+    }else{
+       _frequencyLabel.text = @"15分钟";
+    }
     
-    _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
-    _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",changeModel.clockInterval];
-    
-    _clockDay = changeModel.clockSwitch;
     
     
     UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     _clockSwitch = clockSwitch;
-    [clockSwitch setOn:self.clockDay];
+    BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen];
+    if (switchOpen) {
+        [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen] boolValue]];
+        if (_clockSwitch.isOn) {
+            _clockDay = changeModel.clockSwitch;
+        }else{
+            _clockDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
+        }
+    }else{
+        [clockSwitch setOn:NO];
+    }
+    
     [clockSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
     [self openClockDay];
     
@@ -141,23 +169,13 @@
 {
     NSString *clockStr = [self toBinarySystemWithDecimalSystem:_clockDay];
     for (NSInteger i = 0; i < clockStr.length; i++) {
-        NSString *subStr = [clockStr substringFromIndex:i];
+        NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
         [self.clockArray addObject:subStr];
     }
-}
-
-- (BOOL)showImage:(NSInteger)row
-{
-    NSArray *tempArray = [NSArray arrayWithArray:self.clockArray];
-    if (row > tempArray.count) {
-        return NO;
-    }else{
-        for (NSInteger i = 0; i <= row; i++) {
-            BOOL isShow = [tempArray[i] boolValue];
-            return isShow;
-        }
+    NSInteger tempInteger = 8 - self.clockArray.count;
+    for (NSInteger i = 0; i < tempInteger; i++) {
+        [self.clockArray addObject:@"0"];
     }
-    return NO;
 }
 
 - (void)clickBack
@@ -166,14 +184,23 @@
     if (!changeModel) {
         changeModel = [[BasicInfomationModel alloc] init];
     }
-    changeModel.clockHour = [[_timeLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
-    changeModel.clockMinute = [[_timeLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
-    changeModel.clockInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
-    changeModel.clockSwitch = _clockDay;
+    if (_timeLabel.text && _frequencyStr) {
+        changeModel.clockHour = [[_timeLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
+        changeModel.clockMinute = [[_timeLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
+        changeModel.clockInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
+    }
+    if (_clockSwitch.isOn) {
+        changeModel.clockSwitch = _clockDay;
+    }else{
+        changeModel.clockSwitch = 0;
+        [[NSUserDefaults standardUserDefaults] setObject:@(_clockDay) forKey:whichDayIsOpen];
+        //        _alertDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
+    }
     BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
     if (!change) {
         DLog(@"存储闹钟失败");
     }
+    [[NSUserDefaults standardUserDefaults] setObject:@(_clockSwitch.isOn) forKey:switchIsOpen];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -227,7 +254,8 @@
     }
     if (indexPath.section == 3) {
         cell.imageView.image = [UIImage imageNamed:@"dot-green"];
-        cell.imageView.hidden = YES;
+        cell.imageView.hidden = ![self.clockArray[indexPath.row] boolValue];
+        
     }
     
     return cell;
@@ -257,25 +285,20 @@
         {
             UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             selectedCell.imageView.hidden = !selectedCell.imageView.hidden;
-            switch (indexPath.row) {
-                case 0:
-                    break;
-                    
-                default:
-                    break;
+            BOOL showImage = !selectedCell.imageView.hidden;
+            NSInteger addCount = 0;
+            addCount = pow(2, indexPath.row);
+            if (showImage) {
+                self.clockDay += addCount;
+            }else
+            {
+                self.clockDay -= addCount;
             }
-            
-            
         }
             break;
         default:
             break;
     }
-}
-
-- (void)selectedClockDay: (NSIndexPath *)indexPath
-{
-    
 }
 
 - (void)touchRemoveCoverView
