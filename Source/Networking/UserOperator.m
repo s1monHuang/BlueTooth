@@ -76,7 +76,7 @@
     
     [self requestNetworkWithPath:path parameters:params callBackBlock:^(BOOL success, id responseObject, NSError *error) {
         if (success) {
-            if (callBack) callBack(YES, responseObject[@"data"], nil);
+            if (callBack) callBack(YES, responseObject, nil);
         } else {
             if (callBack) callBack(NO, responseObject, error);
         }

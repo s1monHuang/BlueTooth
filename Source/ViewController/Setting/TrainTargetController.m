@@ -108,6 +108,17 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (first == 1) {
+        NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
+        [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
+        
+    }
+}
+
 - (void)setUpGreenBar
 {
     CGFloat greenBarX = _targetSlider.x;
@@ -124,10 +135,23 @@
 - (void)changeTrainTarget
 {
     NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
     if (first == 1) {
-        NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
         [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
-        
+        myDataController *VC = [[myDataController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }else
+    {
+        //修改数据库信息
+        BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
+        if (!changeModel) {
+            changeModel = [[BasicInfomationModel alloc] init];
+        }
+        changeModel.target = targetInteger;
+        BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
+        if (!change) {
+            DLog(@"修改训练目标失败");
+        }
     }
 }
 

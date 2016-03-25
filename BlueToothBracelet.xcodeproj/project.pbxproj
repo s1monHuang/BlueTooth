@@ -299,6 +299,8 @@
 		47E15D0D1C9902DB00D094A8 /* nickNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nickNameController.h; sourceTree = "<group>"; };
 		47E15D0E1C9902DB00D094A8 /* nickNameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = nickNameController.m; sourceTree = "<group>"; };
 		47E15D0F1C9902DB00D094A8 /* nickNameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = nickNameController.xib; sourceTree = "<group>"; };
+		47E1CA591CA507820070FEE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		47E1CA5A1CA507820070FEE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		47E2C5CC1C9FD52900CD07A9 /* StepLongController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepLongController.h; sourceTree = "<group>"; };
 		47E2C5CD1C9FD52900CD07A9 /* StepLongController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StepLongController.m; sourceTree = "<group>"; };
 		47E2C5CF1C9FD7C000CD07A9 /* StepLongView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StepLongView.h; path = Source/ViewController/Setting/StepLongView.h; sourceTree = SOURCE_ROOT; };
@@ -1768,7 +1770,6 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 			);
 			mainGroup = 9F88F5591B45873E000BA054;
@@ -2073,6 +2074,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				9F88F5701B45873E000BA054 /* Base */,
+				47E1CA591CA507820070FEE1 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -2081,6 +2083,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				9F88F5751B45873E000BA054 /* Base */,
+				47E1CA5A1CA507820070FEE1 /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";

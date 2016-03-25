@@ -35,7 +35,6 @@
             if([responseObject[@"retCode"] isEqualToString:@"000"])
             {
                 if (self.finishHandler) self.finishHandler(YES, responseObject[@"userInfo"]);
-//                [MBProgressHUD showHUDByContent:@"登录" view:UI_Window afterDelay:1];
             }else{
                 if (self.finishHandler) self.finishHandler(NO, responseObject[@"retMsg"]);
             }

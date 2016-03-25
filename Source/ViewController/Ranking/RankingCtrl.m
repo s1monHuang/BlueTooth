@@ -10,6 +10,7 @@
 #import "RankingCell.h"
 #import "RankingEntity.h"
 #import "SheJiaoViewController.h"
+#import "OperateViewModel.h"
 
 @interface RankingCtrl ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -17,6 +18,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *rankingtable;
 @property (strong, nonatomic) RankingEntity *mRankEntity;
 @property (strong, nonatomic) NSMutableArray *dataArray;
+
+@property (nonatomic , strong) OperateViewModel *operateVM;
+
 
 @end
 
@@ -28,6 +32,11 @@
     
     self.title = @"排名";
     self.view.backgroundColor = kThemeGrayColor;
+    self.operateVM = [[OperateViewModel alloc] init];
+    [self.operateVM requestRankingListStartDate:@"2016-03-12" endDate:@"2016-03-17"];
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        
+    };
     
     self.dataArray = @[].mutableCopy;
     [self queryRankingList];
