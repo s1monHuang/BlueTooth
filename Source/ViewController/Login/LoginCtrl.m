@@ -107,6 +107,7 @@
         @strongify(self);
         if (finished) {
             if (_firstDownload == 1) {
+                [[UserManager defaultInstance] saveUser:userInfo];
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];
                 [self.navigationController pushViewController:nickNameCtl animated:YES];
             }else{

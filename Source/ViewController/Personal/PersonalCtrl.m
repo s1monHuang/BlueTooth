@@ -62,7 +62,7 @@
     [self.view addSubview:headerImageBg];
     
     UILabel *lblUserName = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 30, 26)];
-    lblUserName.text = @"赵大虎";
+    lblUserName.text = CurrentUser.nickName;
     lblUserName.font = [UIFont boldSystemFontOfSize:20];
     lblUserName.textAlignment = NSTextAlignmentCenter;
     lblUserName.textColor = [UIColor whiteColor];
