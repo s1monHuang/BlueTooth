@@ -215,6 +215,8 @@ static BluetoothManager *manager = nil;
             weakSelf.characteristics = nil;
             [weakSelf connectingBlueTooth:peripheral];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECT_PERIPHERAL
+                                                            object:nil];
     }];
     
     //扫描选项->CBCentralManagerScanOptionAllowDuplicatesKey:忽略同一个Peripheral端的多个发现事件被聚合成一个发现事件
@@ -340,10 +342,10 @@ static BluetoothManager *manager = nil;
                 break;
                 //设置基本信息成功
             case BluetoothConnectingSetBasicInfomationSuccess: {
-                HistorySportDataModel *model = [weakSelf histroySportDataModelWithData:characteristic.value];
-                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
-                                                                    object:model];
-                NSLog(@"时间 = %ld 步数 = %ld  卡路里 = %ld  睡眠动作次数 = %ld  电量 = %ld  日期 = %@",model.time,model.step,model.calorie,model.sleep,model.battery,model.date);
+//                HistorySportDataModel *model = [weakSelf histroySportDataModelWithData:characteristic.value];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
+//                                                                    object:model];
+//                NSLog(@"时间 = %ld 步数 = %ld  卡路里 = %ld  睡眠动作次数 = %ld  电量 = %ld  日期 = %@",model.time,model.step,model.calorie,model.sleep,model.battery,model.date);
             }
                 break;
                 //成功读取蓝牙设备中的72小时内的运动数据后(每次获取一小时的,获取72次),
@@ -428,6 +430,7 @@ static BluetoothManager *manager = nil;
 - (void)startBindingPeripheral {
     _connectionType = BluetoothConnectingBinding;
     Byte b[20] = {0xAA,0xF1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    b[6] = [self.deviceID integerValue];
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
     [self.bindingPeripheral.peripheral writeValue:data
@@ -644,6 +647,7 @@ static BluetoothManager *manager = nil;
     }
     return YES;
 }
+
 
 
 @end

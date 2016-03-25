@@ -15,6 +15,7 @@
 @property (nonatomic) PNLineChart * lineChart;
 
 @property (nonatomic) UILabel *lblHeartBeatNumber;
+@property (nonatomic) UIButton *button;
 
 @end
 
@@ -30,6 +31,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(readHeartRateSuccess)
                                                  name:READ_HEARTRATE_SUCCESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
                                                object:nil];
     
     _lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 40, 30)];
@@ -73,16 +79,16 @@
     remindTextView.text = @"运动后心跳加快属正常现象,请不要担心.心跳信息仅提供参考.";
     [self.view addSubview:remindTextView];
 
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+    _button = [[UIButton alloc] initWithFrame:CGRectMake(0,
                                                                   0,
                                                                   50,
                                                                   30)];
-    [button setTitle:@"开始" forState:UIControlStateNormal];
-    [button addTarget:self
+    [_button setTitle:@"开始" forState:UIControlStateNormal];
+    [_button addTarget:self
                action:@selector(clickButton:)
      forControlEvents:UIControlEventTouchUpInside];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_button];
     self.navigationItem.rightBarButtonItem = item;
     
 }
@@ -114,5 +120,12 @@
 - (void)readHeartRateSuccess {
     _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@次/分钟",@([BluetoothManager share].heartRate).stringValue];
 }
+
+- (void)disConnectPeripheral {
+    [_button setTitle:@"开始" forState:UIControlStateNormal];
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
+}
+
 
 @end

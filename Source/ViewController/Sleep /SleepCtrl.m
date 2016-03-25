@@ -46,6 +46,16 @@
     self.title = @"睡眠";
     self.view.backgroundColor = kThemeGrayColor;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshSleepDataSuccess)
+                                                 name:READ_HISTORY_SPORTDATA_SUCCESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
+                                               object:nil];
+    
     [self resetSleepValue];
     
     _chartView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 200)];
@@ -188,6 +198,11 @@
     [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
                               range:shallowSleepRange];
     _qsleepTimeValue.attributedText = shallowSleepValueString;
+}
+
+- (void)disConnectPeripheral {
+    [_refreshBututton.layer removeAllAnimations];
+    _refreshBututton.userInteractionEnabled = YES;
 }
 
 @end

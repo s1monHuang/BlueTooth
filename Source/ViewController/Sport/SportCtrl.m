@@ -45,10 +45,16 @@
     
     self.title = @"运动";
     self.view.backgroundColor = kThemeGrayColor;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshSportDataSuccess:)
                                                  name:READ_SPORTDATA_SUCCESS
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
+                                               object:nil];
+    
     _sportModel = [DBManager selectSportData];
     
     //自动登录
@@ -64,7 +70,7 @@
     
     self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,50.0, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
                                                       total:@100
-                                                    current:_sportModel?@(_sportModel.step / _sportModel.target * 100):@(0)
+                                                    current:_sportModel?@(_sportModel.target):@(0)
                                                   clockwise:YES shadow:YES shadowColor:[UIColor whiteColor]];
     
     self.circleChart.backgroundColor = [UIColor clearColor];
@@ -235,21 +241,25 @@
     [_refreshBututton.layer removeAllAnimations];
     _sportModel = [notification object];
     
-    [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.step / _sportModel.target * 100):@(0)];
-    
-    CGFloat completionRateFloat = _sportModel.target?_sportModel.step / (double)_sportModel.target * 100:0;
-    NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
-    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
-    _complateValue.text = completionRate;
+    _complateValue.text = [NSString stringWithFormat:@"完成率%@%%",_sportModel?@(_sportModel.target).stringValue:@(0).stringValue];
     _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
-    NSString *target = [NSString stringWithFormat:@"目标 %@",_sportModel?@(_sportModel.target).stringValue:@(0).stringValue];
+    
+    CGFloat targetFloat = _sportModel?_sportModel.step / (_sportModel.target / 100.0):0;
+    NSString *target = [NSString stringWithFormat:@"目标 %0.lf",targetFloat];
     _totalStep.text = target;
+    
+    [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.target):@(0)];
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.distance).stringValue:@(0).stringValue];
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
+    _refreshBututton.userInteractionEnabled = YES;
+}
+
+- (void)disConnectPeripheral {
+    [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
 }
 

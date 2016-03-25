@@ -10,13 +10,16 @@
 #import "BabyBluetooth.h"
 #import "PeripheralModel.h"
 #import "BluetoothManager.h"
+#import "OperateViewModel.h"
 
 @interface AddDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,BluetoothManagerDelegate> {
-    PeripheralModel *_selecedPeripheral;
+    OperateViewModel *_operateViewModel;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *peripherals;
 @property (strong, nonatomic) NSMutableArray *peripheralModels;
+
+@property (strong, nonatomic)PeripheralModel *selecedPeripheral;
 @end
 
 @implementation AddDeviceViewController
@@ -30,6 +33,16 @@
     [BluetoothManager share].deleagete = self;
     [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
+    
+    _operateViewModel = [[OperateViewModel alloc] init];
+    
+    __weak AddDeviceViewController *weakSelf = self;
+    
+    [_operateViewModel setFinishHandler:^(BOOL finished, id userInfo) {
+        [[BluetoothManager share] stop];
+        [BluetoothManager share].deviceID = userInfo;
+        [[BluetoothManager share] connectingBlueTooth:weakSelf.selecedPeripheral.peripheral];
+    }];
     
     _peripherals = [[NSMutableArray alloc] init];
     _peripheralModels = [[NSMutableArray alloc] init];
@@ -96,8 +109,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PeripheralModel *model = _peripheralModels[indexPath.row];
     _selecedPeripheral = model;
-    [[BluetoothManager share] stop];
-    [[BluetoothManager share] connectingBlueTooth:model.peripheral];
+    
+    [_operateViewModel createExdeviceId];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 

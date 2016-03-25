@@ -14,7 +14,7 @@
 #define READ_HISTORY_SPORTDATA_SUCCESS @"READ_HISTORY_SPORTDATA_SUCCESS"        //获取历史运动数据
 #define READ_HEARTRATE_SUCCESS @"READ_HEARTRATE_SUCCESS"                        //获取心率数据
 
-#define SET_BASICINFOMATION_SUCCESS @"SET_BASICINFOMATION_SUCCESS"
+#define DISCONNECT_PERIPHERAL @"DISCONNECT_PERIPHERAL"                            //与蓝牙设备断开
 
 @class BasicInfomationModel;
 
@@ -69,6 +69,8 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
 
 @property (assign, nonatomic) BluetoothConnectingType connectionType;
 @property (assign, nonatomic) BluetoothConnectingSuccessType successType;
+
+@property (strong, nonatomic) NSString *deviceID;               //服务器返回的设备ID
 
 
 
