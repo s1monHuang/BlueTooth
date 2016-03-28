@@ -64,7 +64,14 @@
 {
     __weak RankingCtrl *blockSelf = self;
     
-    [self.operateVM requestRankingListStartDate:@"2016-03-12" endDate:@"2016-03-17"];
+    NSDate *startDate = [NSDate date];
+    NSDate *endDate = [startDate dateByAddingTimeInterval:(-24 * 60 * 60)];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSString *startDateStr = [formatter stringFromDate:startDate];
+     NSString *endDateStr = [formatter stringFromDate:endDate];
+    [self.operateVM requestRankingListStartDate:startDateStr endDate:endDateStr];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
         if (finished) {
             
@@ -89,7 +96,16 @@
             }
         }else
         {
-            blockSelf.mRankEntity = blockSelf.dataArray[0];
+            if (blockSelf.dataArray.count) {
+               blockSelf.mRankEntity = blockSelf.dataArray[0];
+            }else{
+                blockSelf.mRankEntity = [[RankingEntity alloc] init];
+                blockSelf.mRankEntity.sumSteps = @"0";
+                blockSelf.mRankEntity.userName = CurrentUser.nickName;
+                blockSelf.mRankEntity.userId = CurrentUser.userId;
+                blockSelf.myRankNo = 0;
+            }
+            
         }
             blockSelf.rankingtable.delegate = blockSelf;
             blockSelf.rankingtable.dataSource = blockSelf;

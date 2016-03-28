@@ -39,12 +39,6 @@
 
 #define UI_Window    [[[UIApplication sharedApplication] delegate] window] //获得window
 
-#define stepLongNotification   @"stepLongNotification"         //步长改变通知
-#define nickNameNotification   @"nickNameNotification"         //昵称改变通知
-#define ageNotification        @"ageNotification"              //年龄改变通知
-#define sexNotification        @"sexNotification"              //性别改变通知
-#define heightNotification     @"heightNotification"           //身高改变通知
-#define weightNotification     @"weightNotification"           //体重改变通知
 
 #endif
 
