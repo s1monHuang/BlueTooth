@@ -96,27 +96,32 @@
 
 - (void)resendEmail
 {
-    __weak ForgotPasswordCtrl *blockSelf = self;
-    [self.operateVM forgetPasswordWithEmail:_emailTextField.text];
-    
-    self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
-        if (finished) {
-            blockSelf.emailTextField.alpha = 0;
-            blockSelf.sendEmailBtn.alpha = 0;
-            blockSelf.inputIcon.alpha = 0;
-            blockSelf.iconView.alpha = 1;
-            blockSelf.detailLabel.text = userInfo;
-            blockSelf.detailLabel.alpha = 1;
-        }else{
-            blockSelf.emailTextField.alpha = 0;
-            blockSelf.sendEmailBtn.alpha = 0;
-            blockSelf.inputIcon.alpha = 0;
-            blockSelf.iconView.alpha = 1;
-            blockSelf.detailLabel.text = userInfo;
-            blockSelf.detailLabel.alpha = 1;
-            blockSelf.resendBtn.alpha = 1;
-        }
-    };
+//    __weak ForgotPasswordCtrl *blockSelf = self;
+//    [self.operateVM forgetPasswordWithEmail:_emailTextField.text];
+//    
+//    self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
+//        if (finished) {
+//            blockSelf.emailTextField.alpha = 0;
+//            blockSelf.sendEmailBtn.alpha = 0;
+//            blockSelf.inputIcon.alpha = 0;
+//            blockSelf.iconView.alpha = 1;
+//            blockSelf.detailLabel.text = userInfo;
+//            blockSelf.detailLabel.alpha = 1;
+//        }else{
+//            blockSelf.emailTextField.alpha = 0;
+//            blockSelf.sendEmailBtn.alpha = 0;
+//            blockSelf.inputIcon.alpha = 0;
+//            blockSelf.iconView.alpha = 1;
+//            blockSelf.detailLabel.text = userInfo;
+//            blockSelf.detailLabel.alpha = 1;
+//            blockSelf.resendBtn.alpha = 1;
+//        }
+//    };
+    self.emailTextField.alpha = 1;
+    self.sendEmailBtn.alpha = 1;
+    self.inputIcon.alpha = 1;
+    self.iconView.alpha = 0;
+    self.detailLabel.alpha = 0;
 }
 
 

@@ -38,6 +38,9 @@
     self.operateVM = [[OperateViewModel alloc] init];
 //    [self getRankData];
     self.dataArray = @[].mutableCopy;
+//    self.rankingtable.delegate = self;
+//    self.rankingtable.dataSource = self;
+    self.rankingtable.alpha = 0;
     
     // 设置
     UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"more"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonClick:)];
@@ -90,6 +93,7 @@
         }
             blockSelf.rankingtable.delegate = blockSelf;
             blockSelf.rankingtable.dataSource = blockSelf;
+            blockSelf.rankingtable.alpha = 1;
             [blockSelf.rankingtable setTableFooterView:[UIView new]];
             [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
         }else
@@ -127,7 +131,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 50;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -162,7 +166,7 @@
     }
     
     if (indexPath.section == 0) {
-        [cell configRankingCell:self.mRankEntity rankNo:self.myRankNo];
+        [cell configRankingCell:self.mRankEntity rankNo:self.myRankNo + 1];
     }else{
     
         RankingEntity *rankEntity = self.dataArray[indexPath.row];
