@@ -12,6 +12,7 @@
 #import "StepDataModel.h"
 #import "SleepDataModel.h"
 #import "FSCalendar.h"
+#import "PNCircleChart.h"
 
 @interface HistoryDataViewController () <UIGestureRecognizerDelegate,FSCalendarDataSource,FSCalendarDelegate>
 @property (nonatomic,strong) NSMutableArray *sportDataArray;
@@ -25,15 +26,22 @@
 
 @property (nonatomic , strong) UIButton *monthBtn;
 
-@property (nonatomic , strong) OperateViewModel *operateVM1;
+@property (nonatomic , strong) OperateViewModel *operateVM;
 
-@property (nonatomic , strong) OperateViewModel *operateVM2;
-
+//步数
 @property (nonatomic , assign) NSInteger dayStepCount;
-
 @property (nonatomic , assign) NSInteger weekStepCount;
-
 @property (nonatomic , assign) NSInteger monthStepCount;
+
+//浅睡眠
+@property (nonatomic , assign) NSInteger dayQsmCount;
+@property (nonatomic , assign) NSInteger weekQsmCount;
+@property (nonatomic , assign) NSInteger monthQsmCount;
+
+//深睡眠
+@property (nonatomic , assign) NSInteger daySsmCount;
+@property (nonatomic , assign) NSInteger weekSsmCount;
+@property (nonatomic , assign) NSInteger monthSsmCount;
 
 @property (nonatomic , strong) UIView *centerView;
 
@@ -52,6 +60,23 @@
 @property (nonatomic , strong) NSDate *selectedDate;
 
 @property (nonatomic , strong) UIView *rightView;
+
+@property (nonatomic , strong) UIView *bottomView;
+
+@property (nonatomic , strong) UIView *sleepView;
+
+@property (nonatomic) PNCircleChart * circleChart;
+
+@property (nonatomic) UILabel *sleepTimeValue;      //显示睡眠时长
+@property (nonatomic) UILabel *ssleepTimeValue;     //深睡眠时长
+@property (nonatomic) UILabel *qsleepTimeValue;     //浅睡眠时长
+
+@property (strong,nonatomic) UIView *chartView;
+@property (strong,nonatomic) UIView *circleBgView;
+
+@property (nonatomic , strong) UILabel *selectedDateLabel;
+
+@property (nonatomic , strong) UIView *backgroundView;
 
 
 
@@ -81,13 +106,21 @@
     
     self.title = @"数据中心";
     self.view.backgroundColor = kThemeGrayColor;
-    self.operateVM1 = [[OperateViewModel alloc] init];
-    
-    self.operateVM2 = [[OperateViewModel alloc] init];
+    self.operateVM = [OperateViewModel defaultInstance];
+    self.dataType = 0;
     
     _dayStepCount = 0;
     _weekStepCount = 0;
     _monthStepCount = 0;
+    
+    //浅睡眠
+    _dayQsmCount = 0;
+    _weekQsmCount = 0;
+    _monthQsmCount = 0;
+    //深睡眠
+    _daySsmCount = 0;
+    _weekSsmCount = 0;
+    _monthSsmCount = 0;
     
     //
     [self setUpRightBarButtonItem];
@@ -95,7 +128,10 @@
     [self getHistoryData];
     //分页,日周月按钮
     [self setUpBtn];
+    //步数
     [self setUpStepView];
+    //睡眠时间
+    [self setUpSleepView];
 }
 
 - (void)setUpRightBarButtonItem
@@ -103,6 +139,7 @@
     UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
     _rightView = rightView;
     UILabel *selectedDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 20)];
+    _selectedDateLabel = selectedDateLabel;
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM-dd"];
@@ -191,6 +228,12 @@
     [_dayBtn addTarget:self action:@selector(dayBtnClick) forControlEvents:UIControlEventTouchUpOutside];
     [self.view addSubview:_dayBtn];
     
+    UIView *backgroundView = [[UIView alloc] initWithFrame:_dayBtn.frame];
+    backgroundView.backgroundColor = KThemeGreenColor;
+    [self.view addSubview:backgroundView];
+    _backgroundView = backgroundView;
+    [self.view bringSubviewToFront:_dayBtn];
+    
     //周按钮
     _weekBtn = [[UIButton alloc] initWithFrame:CGRectMake(60 + btnWidth, 60, btnWidth, 50)];
     [_weekBtn setTitle:@"周" forState:UIControlStateNormal];
@@ -229,6 +272,7 @@
     CGFloat bottomViewW = (kScreenWidth - 20) / 3;
     CGFloat bottomViewH = 60;
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(10, kScreenHeight - 164, kScreenWidth - 20, bottomViewH)];
+    _bottomView = bottomView;
     bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bottomView];
     
@@ -275,40 +319,117 @@
     
 }
 
+//睡眠时间
+- (void)setUpSleepView
+{
+    _chartView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_dayBtn.frame), ScreenWidth, ScreenHeight - 250)];
+    _chartView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_chartView];
+    
+    _circleBgView = [[UIView alloc] initWithFrame:CGRectMake(50, 50, (_chartView.frame.size.width - 100), (_chartView.frame.size.width - 100))];
+    _circleBgView.backgroundColor = [UIColor clearColor];
+    [_chartView addSubview:_circleBgView];
+    
+    self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,50.0, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
+                                                      total:@100
+                                                    current:@100
+                                                  clockwise:YES shadow:YES shadowColor:[UtilityUI stringTOColor:@"#6dabff"]];
+    
+    self.circleChart.backgroundColor = [UIColor clearColor];
+    self.circleChart.lineWidth = @20;
+    self.circleChart.lineCap = @"kCALineCapButt";
+    [self.circleChart setStrokeColor:[UtilityUI stringTOColor:@"#1b6cff"]];
+    //[self.circleChart setStrokeColorGradientStart:[UIColor clearColor]];
+    [self.circleChart strokeChart];
+    [_chartView addSubview:self.circleChart];
+    
+    UIView *tempView = [[UIView alloc] initWithFrame:CGRectMake(26, 26, self.circleChart.frame.size.width - 52, self.circleChart.frame.size.width - 52)];
+    tempView.contentMode = UIViewContentModeScaleAspectFill;
+    tempView.clipsToBounds = YES;
+    [tempView.layer setCornerRadius:CGRectGetHeight([tempView bounds])/2];
+    tempView.layer.masksToBounds = YES;
+    tempView.backgroundColor = [UIColor whiteColor];
+    [_circleChart addSubview:tempView];
+    
+    UILabel *sleepTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2,tempView.frame.size.width, 20)];
+    sleepTimeText.text = @"睡眠时长";
+    sleepTimeText.textAlignment = NSTextAlignmentCenter;
+    sleepTimeText.textColor = [UIColor grayColor];
+    [tempView addSubview:sleepTimeText];
+    
+    _sleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32,tempView.frame.size.width, 20)];
+    _sleepTimeValue.textAlignment = NSTextAlignmentCenter;
+    _sleepTimeValue.textColor = [UIColor grayColor];
+    [tempView addSubview:_sleepTimeValue];
+    
+    _ssleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32+30,tempView.frame.size.width, 20)];
+    _ssleepTimeValue.font = [UIFont systemFontOfSize:12];
+    _ssleepTimeValue.textAlignment = NSTextAlignmentCenter;
+    _ssleepTimeValue.textColor = [UIColor grayColor];
+    [tempView addSubview:_ssleepTimeValue];
+    
+    _qsleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32+50,tempView.frame.size.width, 20)];
+    _qsleepTimeValue.font = [UIFont systemFontOfSize:12];
+    _qsleepTimeValue.textAlignment = NSTextAlignmentCenter;
+    _qsleepTimeValue.textColor = [UIColor grayColor];
+    [tempView addSubview:_qsleepTimeValue];
+    _chartView.hidden = YES;
+    [self setSleepLabelTextWithQsmCount:_dayQsmCount ssmCount:_daySsmCount];
+}
+
 #pragma mark - 日 周 月按钮点击
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
     _selectedDate = [NSDate dateWithTimeInterval:(8 * 60 * 60) sinceDate:date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSString *dateStr = [formatter stringFromDate:_selectedDate];
+    _selectedDateLabel.text = dateStr;
     DLog(@"%@",_selectedDate);
 }
 
 - (void)dayBtnClick
 {
+    [UIView animateWithDuration:0.2 animations:^{
+        _backgroundView.frame =_dayBtn.frame;
+        [self.view bringSubviewToFront:_dayBtn];
+        [self.view setNeedsDisplay];
+    }];
     if (_segmentedControl.selectedSegmentIndex == 0) {
         [self setLabelText:self.dayStepCount];
-            }else{
-        
+    }else{
+        [self setSleepLabelTextWithQsmCount:_dayQsmCount ssmCount:_daySsmCount];
     }
     
 }
 
 - (void)weekBtnClick
 {
+    [UIView animateWithDuration:0.2 animations:^{
+        _backgroundView.frame =_weekBtn.frame;
+        [self.view bringSubviewToFront:_weekBtn];
+        [self.view setNeedsDisplay];
+    }];
     if (_segmentedControl.selectedSegmentIndex == 0) {
         [self setLabelText:self.weekStepCount];
     }else{
-        
+        [self setSleepLabelTextWithQsmCount:_weekQsmCount ssmCount:_weekSsmCount];
     }
 }
 
 - (void)monthBtnClick
 {
+    [UIView animateWithDuration:0.2 animations:^{
+        _backgroundView.frame =_monthBtn.frame;
+        [self.view bringSubviewToFront:_monthBtn];
+        [self.view setNeedsDisplay];
+    }];
     if (_segmentedControl.selectedSegmentIndex == 0) {
         [self setLabelText:self.monthStepCount];
         
     }else{
-        
+        [self setSleepLabelTextWithQsmCount:_monthQsmCount ssmCount:_monthSsmCount];
     }
 }
 
@@ -325,6 +446,38 @@
     [self.view setNeedsDisplay];
 }
 
+- (void)setSleepLabelTextWithQsmCount:(NSInteger)qsmCount ssmCount:(NSInteger)ssmCount
+{
+    NSInteger count = 1;
+    
+    if (qsmCount + ssmCount > 10) {
+        count = 2;
+    }else if (qsmCount + ssmCount > 100){
+        count = 3;
+    }
+    NSRange sleepHourRange = NSMakeRange(0, count);
+    NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + 2, 2);
+    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时00分钟",@((qsmCount + ssmCount)).stringValue]];
+    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
+                              range:sleepHourRange];
+    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
+                              range:sleepMinuteRagne];
+    _sleepTimeValue.attributedText = sleepValueString;
+    
+    NSRange deepSleepRange = NSMakeRange(0, 3);
+    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★深睡%@小时00分钟",@(ssmCount).stringValue]];
+    [deepSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#1b6cff"]}
+                                  range:deepSleepRange];
+    _ssleepTimeValue.attributedText = deepSleepValueString;
+    
+    NSRange shallowSleepRange = NSMakeRange(0, 3);
+    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆浅睡%@小时00分钟",@(qsmCount).stringValue]];
+    [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
+                                     range:shallowSleepRange];
+    _qsleepTimeValue.attributedText = shallowSleepValueString;
+    
+}
+
 
 -(void)selected:(id)sender{
     UISegmentedControl* control = (UISegmentedControl*)sender;
@@ -332,13 +485,31 @@
         case 0:
         {
             self.dataType = 0;
-            [self getHistoryData];
+            if (_selectedDate) {
+                [self getDayData:_selectedDate];
+                [self getWeekData:_selectedDate];
+                [self getMonthData:_selectedDate];
+            }else{
+                [self getHistoryData];
+            }
+            _chartView.hidden = YES;
+            _centerView.hidden = NO;
+            _bottomView.hidden = NO;
         }
             break;
         case 1:
         {
             self.dataType = 1;
+            if (_selectedDate) {
+                [self getDayData:_selectedDate];
+                [self getWeekData:_selectedDate];
+                [self getMonthData:_selectedDate];
+            }else{
             [self getHistoryData];
+            }
+            _chartView.hidden = NO;
+            _centerView.hidden = YES;
+            _bottomView.hidden = YES;
         }
             break;
         default:
@@ -348,26 +519,11 @@
 
 - (void)getHistoryData
 {
-    __weak HistoryDataViewController *blockSelf = self;
-    
     NSDate *startDate = [NSDate date];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY-MM"];
+    //获取运动睡眠历史数据
     [self getDayData:startDate];
     [self getWeekData:startDate];
     [self getMonthData:startDate];
-    
-    NSString *sleepDateStr = [formatter stringFromDate:startDate];
-    [blockSelf.operateVM2 getSleepDataStartDate:sleepDateStr endDate:sleepDateStr];
-    blockSelf.operateVM2.finishHandler = ^(BOOL finished, id userInfo) {
-        if (finished) {
-            blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
-        }else{
-            
-        }
-    };
-    
-    
 }
 
 - (NSArray *)getDateFromWeek:(NSDate*)date
@@ -384,10 +540,10 @@
         firstDiff =  - weekday + 2;
         lastDiff = 8 - weekday;    }
     NSInteger day = [dateComponents day];
-    NSDateComponents *firstComponents = [calendar components:NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *firstComponents = [calendar components:NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
     [firstComponents setDay:day+firstDiff];
     NSDate *firstDay = [calendar dateFromComponents:firstComponents];
-    NSDateComponents *lastComponents = [calendar components:NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *lastComponents = [calendar components:NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
     [lastComponents setDay:day+lastDiff];
     NSDate *lastDay = [calendar dateFromComponents:lastComponents];
     NSDate *monDate = [firstDay dateByAddingTimeInterval:(8 * 60 * 60)];
@@ -413,18 +569,36 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM-dd"];
     NSString *dateStr = [formatter stringFromDate:date];
-    [blockSelf.operateVM1 getStepDataStartDate:dateStr endDate:dateStr];
-    blockSelf.operateVM1.finishHandler = ^(BOOL finished, id userInfo) {
-        if (finished) {
-            blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
-            for (StepDataModel *model in blockSelf.sportDataArray) {
-                blockSelf.dayStepCount += [model.stepNum integerValue];
+    if (self.dataType == 0) {
+        [blockSelf.operateVM getStepDataStartDate:dateStr endDate:dateStr];
+        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+            if (finished) {
+                blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
+                for (StepDataModel *model in blockSelf.sportDataArray) {
+                    blockSelf.dayStepCount += [model.stepNum integerValue];
+                }
+                
+            }else{
+                
             }
-            
-        }else{
-            
-        }
-    };
+        };
+    }else{
+        [blockSelf.operateVM getSleepDataStartDate:dateStr endDate:dateStr];
+        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+            if (finished) {
+                blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
+                for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.daySsmCount += [model.ssmTime integerValue];
+                }
+                for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.dayQsmCount += [model.qsmTime integerValue];
+                }
+            }else{
+                
+            }
+        };
+    }
+    
 }
 
 //周数据
@@ -436,18 +610,36 @@
     NSArray *tempArray = [self getDateFromWeek:date];
     NSString *startDateStr = [formatter stringFromDate:tempArray[0]];
     NSString *endDateStr = [formatter stringFromDate:tempArray[1]];
-    [blockSelf.operateVM1 getStepDataStartDate:startDateStr endDate:endDateStr];
-    blockSelf.operateVM1.finishHandler = ^(BOOL finished, id userInfo) {
-        if (finished) {
-            blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
-            for (StepDataModel *model in blockSelf.sportDataArray) {
-                blockSelf.weekStepCount += [model.stepNum integerValue];
+    if (self.dataType == 0) {
+        [blockSelf.operateVM getStepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+            if (finished) {
+                blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
+                for (StepDataModel *model in blockSelf.sportDataArray) {
+                    blockSelf.weekStepCount += [model.stepNum integerValue];
+                }
+                
+            }else{
+                
             }
-            
-        }else{
-            
-        }
-    };
+        };
+    }else{
+        [blockSelf.operateVM getSleepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+            if (finished) {
+                blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
+                for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.weekSsmCount += [model.ssmTime integerValue];
+                }
+                for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.weekQsmCount += [model.qsmTime integerValue];
+                }
+            }else{
+                
+            }
+        };
+    }
+    
 }
 
 
@@ -456,25 +648,43 @@
 {
     __weak HistoryDataViewController *blockSelf = self;
     
-    NSDate *startDate = [NSDate date];
+//    NSDate *startDate = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM"];
-    NSString *startStr = [formatter stringFromDate:startDate];
+    NSString *startStr = [formatter stringFromDate:date];
     NSString *startDateStr = [NSString stringWithFormat:@"%@-01",startStr];
     NSInteger dayCount = [self dayCountFromMonth:date];
     NSString *endDateStr = [NSString stringWithFormat:@"%@-%ld",startStr,dayCount];
-    [blockSelf.operateVM1 getStepDataStartDate:startDateStr endDate:endDateStr];
-    blockSelf.operateVM1.finishHandler = ^(BOOL finished, id userInfo) {
-        if (finished) {
-            blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
-            for (StepDataModel *model in blockSelf.sportDataArray) {
-                blockSelf.monthStepCount += [model.stepNum integerValue];
+    if (self.dataType == 0) {
+        [blockSelf.operateVM getStepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+            if (finished) {
+                blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
+                for (StepDataModel *model in blockSelf.sportDataArray) {
+                    blockSelf.monthStepCount += [model.stepNum integerValue];
+                }
+                
+            }else{
+                
             }
-            
-        }else{
-            
-        }
-    };
+        };
+    }else{
+        [blockSelf.operateVM getSleepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+            if (finished) {
+                blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
+                for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.monthSsmCount += [model.ssmTime integerValue];
+                }
+                for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.monthQsmCount += [model.qsmTime integerValue];
+                }
+            }else{
+                
+            }
+        };
+    }
+    
 }
 
 

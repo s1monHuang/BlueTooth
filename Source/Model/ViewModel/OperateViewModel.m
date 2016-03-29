@@ -16,6 +16,16 @@
 
 @implementation OperateViewModel
 
++ (instancetype)defaultInstance
+{
+    static OperateViewModel *_shareInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shareInstance = [[self alloc] init];
+    });
+    return _shareInstance;
+}
+
 - (UserOperator *)userOperator
 {
     if(!_userOperator){
