@@ -175,14 +175,16 @@
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchRemoveCoverView)];
 //    [coverView addGestureRecognizer:tap];
     
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 114, kScreenWidth, 300)];
+    CGFloat calendarH = kScreenHeight > 480 ? 300 : 200;
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 60, kScreenWidth, calendarH)];
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     calendar.backgroundColor = [UIColor whiteColor];
     [self.coverView addSubview:calendar];
     _fsCalender = calendar;
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 414, kScreenWidth, 50)];
+    CGFloat toolBarY = CGRectGetMaxY(_fsCalender.frame);
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
     _toolBar = toolBar;
     toolBar.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
@@ -224,30 +226,32 @@
     _dayBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 60, btnWidth, 50)];
     [_dayBtn setTitle:@"日" forState:UIControlStateNormal];
     [_dayBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_dayBtn setImage:[UIImage imageNamed:@"dot-blue"] forState:UIControlStateHighlighted];
-    [_dayBtn addTarget:self action:@selector(dayBtnClick) forControlEvents:UIControlEventTouchUpOutside];
+    [_dayBtn addTarget:self action:@selector(dayBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_dayBtn];
     
-    UIView *backgroundView = [[UIView alloc] initWithFrame:_dayBtn.frame];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(_dayBtn.x + 15, _dayBtn.y, 50, 50)];
+    _backgroundView = backgroundView;
+    _backgroundView.center = _dayBtn.center;
+    backgroundView.clipsToBounds = YES;
+    [backgroundView.layer setCornerRadius:CGRectGetWidth([backgroundView bounds])/2];
+    backgroundView.layer.masksToBounds = YES;
     backgroundView.backgroundColor = KThemeGreenColor;
     [self.view addSubview:backgroundView];
-    _backgroundView = backgroundView;
+    
     [self.view bringSubviewToFront:_dayBtn];
     
     //周按钮
     _weekBtn = [[UIButton alloc] initWithFrame:CGRectMake(60 + btnWidth, 60, btnWidth, 50)];
     [_weekBtn setTitle:@"周" forState:UIControlStateNormal];
     [_weekBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_weekBtn setImage:[UIImage imageNamed:@"dot-blue"] forState:UIControlStateHighlighted];
-    [_weekBtn addTarget:self action:@selector(weekBtnClick) forControlEvents:UIControlEventTouchUpOutside];
+    [_weekBtn addTarget:self action:@selector(weekBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_weekBtn];
     
     //月按钮
     _monthBtn = [[UIButton alloc] initWithFrame:CGRectMake(100 + 2 * btnWidth, 60, btnWidth, 50)];
     [_monthBtn setTitle:@"月" forState:UIControlStateNormal];
     [_monthBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_monthBtn setImage:[UIImage imageNamed:@"dot-blue"] forState:UIControlStateHighlighted];
-    [_monthBtn addTarget:self action:@selector(monthBtnClick) forControlEvents:UIControlEventTouchUpOutside];
+    [_monthBtn addTarget:self action:@selector(monthBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_monthBtn];
     
     
@@ -392,7 +396,8 @@
 - (void)dayBtnClick
 {
     [UIView animateWithDuration:0.2 animations:^{
-        _backgroundView.frame =_dayBtn.frame;
+        _backgroundView.frame = CGRectMake(_dayBtn.x+ 15, _dayBtn.y, 50, 50);
+        _backgroundView.center = _dayBtn.center;
         [self.view bringSubviewToFront:_dayBtn];
         [self.view setNeedsDisplay];
     }];
@@ -407,7 +412,8 @@
 - (void)weekBtnClick
 {
     [UIView animateWithDuration:0.2 animations:^{
-        _backgroundView.frame =_weekBtn.frame;
+        _backgroundView.frame = CGRectMake(_weekBtn.x+ 15, _weekBtn.y, 50, 50);
+        _backgroundView.center = _weekBtn.center;
         [self.view bringSubviewToFront:_weekBtn];
         [self.view setNeedsDisplay];
     }];
@@ -421,7 +427,8 @@
 - (void)monthBtnClick
 {
     [UIView animateWithDuration:0.2 animations:^{
-        _backgroundView.frame =_monthBtn.frame;
+        _backgroundView.frame = CGRectMake(_monthBtn.x + 15, _monthBtn.y, 50, 50);
+        _backgroundView.center = _monthBtn.center;
         [self.view bringSubviewToFront:_monthBtn];
         [self.view setNeedsDisplay];
     }];
@@ -435,7 +442,7 @@
 
 - (void)setLabelText:(NSInteger)stepNum
 {
-    CGFloat distance = (stepNum * [CurrentUser.stepLong floatValue] ) / 10;
+    CGFloat distance = (stepNum * [CurrentUser.stepLong floatValue] ) / 100000;
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     
     _stepLabel.text = [NSString stringWithFormat:@"%ld步",stepNum];
@@ -538,7 +545,8 @@
         lastDiff = 0;
     }else {
         firstDiff =  - weekday + 2;
-        lastDiff = 8 - weekday;    }
+        lastDiff = 8 - weekday;
+    }
     NSInteger day = [dateComponents day];
     NSDateComponents *firstComponents = [calendar components:NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
     [firstComponents setDay:day+firstDiff];
@@ -648,7 +656,6 @@
 {
     __weak HistoryDataViewController *blockSelf = self;
     
-//    NSDate *startDate = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM"];
     NSString *startStr = [formatter stringFromDate:date];

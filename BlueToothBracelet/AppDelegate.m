@@ -20,6 +20,8 @@
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
+@property (nonatomic , assign) NSInteger firstDownload;
+
 @end
 
 @implementation AppDelegate
@@ -29,7 +31,15 @@
     // Override point for customization after application launch.
     [DBManager initApplicationsDB];
     self.operateVM = [OperateViewModel viewModel];
-    if([[UserManager defaultInstance] hasUser])
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
+    if (!first) {
+        DLog(@"第一次登陆");
+        _firstDownload = 1;
+        [[NSUserDefaults standardUserDefaults] setObject:@(_firstDownload) forKey:@"firstDownload"];
+    }else{
+        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    }
+    if([[UserManager defaultInstance] hasUser] && _firstDownload == 2)
     {
         [self exchangeRootViewControllerToMain];
         [BluetoothManager share];

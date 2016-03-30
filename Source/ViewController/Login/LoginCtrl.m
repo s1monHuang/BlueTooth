@@ -58,7 +58,7 @@
     usericon.image = [UIImage imageNamed:@"user"];
     [self.usernamebgbox addSubview:usericon];
     self.txtUserAccount = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
-    self.txtUserAccount.text = @"377977004@qq.com";
+//    self.txtUserAccount.text = @"377977004@qq.com";
     self.txtUserAccount.placeholder = @"请输入用户名";
     [self.usernamebgbox addSubview:self.txtUserAccount];
     
@@ -68,7 +68,7 @@
     passwordicon.image = [UIImage imageNamed:@"password"];
     [self.passwordbgbox addSubview:passwordicon];
     self.txtUserPassword = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
-    self.txtUserPassword.text = @"111111";
+//    self.txtUserPassword.text = @"111111";
     self.txtUserPassword.placeholder = @"请输入密码";
     [self.passwordbgbox addSubview:self.txtUserPassword];
     

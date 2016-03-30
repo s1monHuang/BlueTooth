@@ -161,9 +161,8 @@ static NSString* identifier =@"PersonalCell";
                 
                 return;
             }else{
-               
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:CurrentUser.nickName];
                    [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
-                
                 
             }
             
