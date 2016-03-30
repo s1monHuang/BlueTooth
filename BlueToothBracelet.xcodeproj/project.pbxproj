@@ -21,6 +21,7 @@
 		3E7532F41C8FFDA0009908ED /* PeripheralModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F31C8FFDA0009908ED /* PeripheralModel.m */; };
 		3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F61C9019A5009908ED /* BluetoothManager.m */; };
 		3E7ED37F1C9F8AD4000E460C /* HistorySportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7ED37E1C9F8AD4000E460C /* HistorySportDataModel.m */; };
+		3E956E261CAB6D51005DDF35 /* ShareCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E956E251CAB6D51005DDF35 /* ShareCtrl.xib */; };
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
@@ -318,6 +319,7 @@
 		3E7532F61C9019A5009908ED /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
 		3E7ED37D1C9F8AD4000E460C /* HistorySportDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorySportDataModel.h; sourceTree = "<group>"; };
 		3E7ED37E1C9F8AD4000E460C /* HistorySportDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySportDataModel.m; sourceTree = "<group>"; };
+		3E956E251CAB6D51005DDF35 /* ShareCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareCtrl.xib; sourceTree = "<group>"; };
 		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
 		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
@@ -1514,6 +1516,7 @@
 				9F6A9BA71B70590200487088 /* SheJiaoViewController.xib */,
 				9F20F5B91B77977B0009AB38 /* ShareCtrl.h */,
 				9F20F5BA1B77977B0009AB38 /* ShareCtrl.m */,
+				3E956E251CAB6D51005DDF35 /* ShareCtrl.xib */,
 			);
 			path = Ranking;
 			sourceTree = "<group>";
@@ -1931,6 +1934,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E956E261CAB6D51005DDF35 /* ShareCtrl.xib in Resources */,
 				9F59A3921B65071900C7B8D9 /* DeviceManagerViewController.xib in Resources */,
 				9F718F441B46DFB300E16298 /* LICENSE in Resources */,
 				9F718F4B1B46E06F00E16298 /* LoginCtrl.xib in Resources */,

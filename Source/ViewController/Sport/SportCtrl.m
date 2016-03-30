@@ -10,6 +10,7 @@
 #import "PNCircleChart.h"
 #import "OperateViewModel.h"
 #import "SportDataModel.h"
+#import "ShareCtrl.h"
 
 @interface SportCtrl ()
 
@@ -186,6 +187,13 @@
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     [self.view addSubview:_progressView];
     
+    // 设置
+    UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share2"]
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(rightBarButtonClick:)];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
+    
 }
 
 //- (void)autoDownload
@@ -285,6 +293,11 @@
 - (void)disConnectPeripheral {
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
+}
+
+- (void)rightBarButtonClick:(id)sender {
+    ShareCtrl *share = [[ShareCtrl alloc] init];
+    [self presentViewController:share animated:YES completion:nil];
 }
 
 - (void)dealloc
