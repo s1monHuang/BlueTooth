@@ -150,7 +150,7 @@
     [selectedDateLabel setTextColor:[UIColor whiteColor]];
     [rightView addSubview:selectedDateLabel];
     UIImageView *rightImage = [[UIImageView alloc] initWithFrame:CGRectMake(60, 0, 20, 20)];
-    rightImage.image = [UIImage imageNamed:@"sun"];
+    rightImage.image = [UIImage imageNamed:@"calendar"];
     [rightView addSubview:rightImage];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightItemSelectedDate)];
     [rightView addGestureRecognizer:tap];
