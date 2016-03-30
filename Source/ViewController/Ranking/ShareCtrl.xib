@@ -133,9 +133,41 @@
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hOK-jL-nyW">
                     <rect key="frame" x="0.0" y="506" width="600" height="94"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_wechat" translatesAutoresizingMaskIntoConstraints="NO" id="QSD-U2-mCq">
+                            <rect key="frame" x="30" y="17" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="QBN-B2-l1L"/>
+                                <constraint firstAttribute="width" constant="60" id="biY-To-Bsy"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_weibo" translatesAutoresizingMaskIntoConstraints="NO" id="FJz-nI-Huj">
+                            <rect key="frame" x="210" y="17" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="bIP-nE-AQ5"/>
+                                <constraint firstAttribute="height" constant="60" id="cMC-Ga-QPg"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_wechat_friend" translatesAutoresizingMaskIntoConstraints="NO" id="dhY-pJ-6Pp">
+                            <rect key="frame" x="120" y="17" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="20F-eH-nzL"/>
+                                <constraint firstAttribute="width" constant="60" id="3h2-1c-iUW"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="dhY-pJ-6Pp" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="120" id="79c-kw-C2x"/>
+                        <constraint firstAttribute="bottom" secondItem="dhY-pJ-6Pp" secondAttribute="bottom" constant="17" id="AtW-Sv-PMq"/>
+                        <constraint firstItem="FJz-nI-Huj" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="210" id="G1W-3P-Q2O"/>
+                        <constraint firstItem="dhY-pJ-6Pp" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="17" id="IH7-rt-XtU"/>
                         <constraint firstAttribute="height" constant="94" id="NBU-az-ZWP"/>
+                        <constraint firstItem="QSD-U2-mCq" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="30" id="e0k-hE-QSS"/>
+                        <constraint firstItem="FJz-nI-Huj" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="17" id="oGh-Ea-W1L"/>
+                        <constraint firstAttribute="bottom" secondItem="FJz-nI-Huj" secondAttribute="bottom" constant="17" id="tJ1-cY-QyX"/>
+                        <constraint firstAttribute="bottom" secondItem="QSD-U2-mCq" secondAttribute="bottom" constant="17" id="uaa-CI-hw6"/>
+                        <constraint firstItem="QSD-U2-mCq" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="17" id="xD7-9A-0gg"/>
                     </constraints>
                 </view>
             </subviews>
@@ -191,5 +223,8 @@
         <image name="man" width="110" height="110"/>
         <image name="portrait" width="100" height="101"/>
         <image name="share-bg" width="320" height="214"/>
+        <image name="share_wechat" width="60" height="60"/>
+        <image name="share_wechat_friend" width="60" height="60"/>
+        <image name="share_weibo" width="60" height="60"/>
     </resources>
 </document>
