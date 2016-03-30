@@ -29,7 +29,8 @@
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
-    CGFloat labelX = self.view.width / 2 - 40;
+    CGFloat tempX = kScreenWidth > 320 ? 40 : 50;
+    CGFloat labelX = self.view.width / 2 - tempX;
     CGFloat labelY = 30;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
     label.text = @"步长";
@@ -88,42 +89,35 @@
 
 - (void)setUpFootView
 {
-    CGFloat imageViewX = 30;
-    CGFloat imageViewY = 150;
-    CGFloat imageViewW = 40;
-    CGFloat imageViewH = 60;
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(imageViewX, imageViewY, 120, 200)];
+    CGFloat imageViewX = 45;
+    CGFloat imageViewY = kScreenHeight > 480 ? 150 : 120;
+    CGFloat imageViewW = 80;
+    CGFloat imageViewH = kScreenHeight > 480 ? 250 : 200;
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH)];
     _footView = footView;
     _footView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_footView];
     
-    StepLongView *stepLongView = [[StepLongView alloc] initWithFrame:CGRectMake(30, 0 , 60, 140)];
-    stepLongView.backgroundColor = [UIColor clearColor];
-    [_footView addSubview:stepLongView];
-    
-    UIImageView *rightFoot = [[UIImageView alloc] initWithFrame:CGRectMake(80, 0, imageViewW, imageViewH)];
-    rightFoot.image = [UIImage imageNamed:@"pic-foot"];
+    UIImageView *rightFoot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 , imageViewW, imageViewH)];
+    rightFoot.image = [UIImage imageNamed:@"jiaochicun"];
     [_footView addSubview:rightFoot];
-    
-    UIImageView *leftFoot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 140, imageViewW, imageViewH)];
-    leftFoot.image = [UIImage imageNamed:@"pic-foot"];
-    [_footView addSubview:leftFoot];
    
 }
 
 - (void)setUpRulerView
 {
     CGFloat rulerX = kScreenWidth / 2 + 20;
-    CGFloat rulerY = CGRectGetMaxY(_stepLabel.frame) + 20;
+    CGFloat tempY = kScreenHeight > 480 ? 20 : 10;
+    CGFloat rulerY = CGRectGetMaxY(_stepLabel.frame) + tempY;
     CGFloat rulerWidth = kScreenWidth / 2 - 60;
-    CGFloat rulerHeight = kScreenHeight > 480 ? 350 : 300;
+    CGFloat rulerHeight = kScreenHeight > 480 ? 350 : 250;
     
     CGRect rulerFrame = CGRectMake(rulerX, rulerY, rulerWidth, rulerHeight);
     
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = 50;
+    rulerView.defaultVaule = 70;
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     

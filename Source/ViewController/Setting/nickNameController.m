@@ -36,6 +36,7 @@
     [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
     [self.view addSubview:btnNext];
+    
    
 }
 

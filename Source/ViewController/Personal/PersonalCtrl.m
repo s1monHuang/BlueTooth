@@ -29,6 +29,9 @@
 
 @property (strong, nonatomic) UITableView *personalTable;
 
+@property (nonatomic , strong) UILabel *lblUserName;
+
+
 @end
 
 @implementation PersonalCtrl
@@ -58,10 +61,12 @@
     [headerView addGestureRecognizer:recognizer];
     
     UIImageView *headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 80)/2, 10, 80, 80)];
-    headerImageBg.image = [UIImage imageNamed:@"portrait2"];
+    NSString *imageStr = [CurrentUser.sex isEqualToString:@"男"] ? @"man":@"woman";
+    headerImageBg.image = [UIImage imageNamed:imageStr];
     [self.view addSubview:headerImageBg];
     
     UILabel *lblUserName = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 30, 26)];
+    _lblUserName = lblUserName;
     lblUserName.text = CurrentUser.nickName;
     lblUserName.font = [UIFont boldSystemFontOfSize:20];
     lblUserName.textAlignment = NSTextAlignmentCenter;
@@ -77,10 +82,16 @@
     [self.view addSubview:self.personalTable];
     
     _imageActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相册",@"相机",nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNickName:) name:@"changeNickName" object:nil];
 }
 
 #pragma mark - exitClick
+
+- (void)changeNickName:(NSNotification *)sender
+{
+    _lblUserName.text = sender.object;
+}
+
 - (void)exitDownload
 {
     LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
@@ -255,5 +266,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end

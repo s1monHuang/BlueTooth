@@ -111,14 +111,14 @@
         lblUserName.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lblUserName];
         
-        UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 52, 50, 20)];
+        UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 52, 60, 20)];
         lblShareNumber.text = @"分享码:";
         lblShareNumber.font = [UIFont boldSystemFontOfSize:16];
         lblShareNumber.textAlignment = NSTextAlignmentLeft;
         lblShareNumber.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lblShareNumber];
         
-        UILabel *inviteCodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(155, 40, ScreenWidth - 180, 35)];
+        UILabel *inviteCodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 40, ScreenWidth - 180, 35)];
         inviteCodeLabel.text = CurrentUser.inviteCode;
         inviteCodeLabel.textColor = KThemeGreenColor;
         inviteCodeLabel.font = [UIFont systemFontOfSize:25];
@@ -146,19 +146,19 @@
         
     }else{
         
-        UILabel *lbltiqutext = [[UILabel alloc] initWithFrame:CGRectMake(20, 35, 60, 20)];
+        UILabel *lbltiqutext = [[UILabel alloc] initWithFrame:CGRectMake(10, 35, 60, 20)];
         lbltiqutext.text = @"提取码";
         lbltiqutext.font = [UIFont boldSystemFontOfSize:16];
         lbltiqutext.textAlignment = NSTextAlignmentLeft;
         lbltiqutext.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lbltiqutext];
         
-        UITextField *txtqueryCode = [[UITextField alloc] initWithFrame:CGRectMake(88, 32, 145, 30)];
+        UITextField *txtqueryCode = [[UITextField alloc] initWithFrame:CGRectMake(78, 32, 145, 30)];
         txtqueryCode.background = [UIImage imageNamed:@"share_inputbox"];
         _txtqueryCode = txtqueryCode;
         [cell.contentView addSubview:txtqueryCode];
         
-        UIButton *btnAddShare = [[UIButton alloc] initWithFrame:CGRectMake(txtqueryCode.frame.origin.x+txtqueryCode.frame.size.width+20, 32, 75, 30)];
+        UIButton *btnAddShare = [[UIButton alloc] initWithFrame:CGRectMake(txtqueryCode.x+txtqueryCode.width+10, 32, 75, 30)];
         [btnAddShare setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [btnAddShare setTitle:@"添加" forState:UIControlStateNormal];
         [btnAddShare setBackgroundImage:[UIImage imageNamed:@"share_button"] forState:UIControlStateNormal];
