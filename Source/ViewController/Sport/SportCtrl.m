@@ -80,7 +80,8 @@
     _circleBgView.backgroundColor = [UIColor clearColor];
     [_chartView addSubview:_circleBgView];
     
-    self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,50.0, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
+    CGFloat circleChartY = kScreenHeight > 480 ? 50 : 20;
+    self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,circleChartY, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
                                                       total:@100
                                                     current:_sportModel?@(_sportModel.target):@(0)
                                                   clockwise:YES shadow:YES shadowColor:[UIColor whiteColor]];
@@ -168,8 +169,9 @@
     lblBoxthreeText.text = @"消耗能量(kCall)";
     [threeBox addSubview:lblBoxthreeText];
     
+    CGFloat refreshY = kScreenHeight > 480 ? 0 : 20;
     _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
-                                                                  _circleChart.height + _circleChart.y,
+                                                                  _circleChart.height + _circleChart.y - refreshY,
                                                                   35,
                                                                   35)];
     [_refreshBututton setBackgroundImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
@@ -179,7 +181,7 @@
     [self.view addSubview:_refreshBututton];
     
     _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
-                                                                     _circleChart.height + _circleChart.y + (35 / 2),
+                                                                     _circleChart.height + _circleChart.y + (35 / 2 - refreshY),
                                                                      50,
                                                                      20)];
     _progressView.tintColor = KThemeGreenColor;
