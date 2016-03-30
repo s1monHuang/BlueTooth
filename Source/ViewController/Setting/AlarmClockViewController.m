@@ -117,13 +117,15 @@
         }
       _timeLabel.text = [NSString stringWithFormat:@"%@:%@",hourStr,minStr];
     }else{
-      _timeLabel.text = @"18:00";
+        _timeStr =  @"00:00";
+      _timeLabel.text = _timeStr;
     }
     
      _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
     if (_changeModel.clockInterval) {
       _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
     }else{
+        _frequencyStr =  @"15分钟";
        _frequencyLabel.text = @"15分钟";
     }
     

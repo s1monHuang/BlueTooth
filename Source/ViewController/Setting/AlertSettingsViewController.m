@@ -78,7 +78,12 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (!_timeArray) {
         _timeArray = [NSMutableArray array];
         for (NSInteger i = 0; i < 24; i++) {
-            NSString *time = [NSString stringWithFormat:@"%ld:00",i];
+            NSString *time;
+            if (i < 10) {
+                time = [NSString stringWithFormat:@"0%ld:00",i];
+            }else{
+                time = [NSString stringWithFormat:@"%ld:00",i];
+            }
             [_timeArray addObject:time];
         }
     }
@@ -135,23 +140,23 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     _startLabel = [[UILabel alloc] initWithFrame:labelFrame];
     NSString *startStr ;
     if (_changeModel.startTime) {
-        if (_changeModel.startTime < 10) {
-            startStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.clockHour];
-        }
+//        if (_changeModel.startTime < 10) {
+//            startStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.clockHour];
+//        }
         _startLabel.text = [NSString stringWithFormat:@"%@",startStr];
     }else{
-        _startLabel.text = @"07:00";
+        _startLabel.text = @"00:00";
     }
     
     _endLabel = [[UILabel alloc] initWithFrame:labelFrame];
     NSString *endStr ;
     if (_changeModel.endTime) {
-        if (_changeModel.endTime < 10) {
-            endStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.endTime];
-        }
+//        if (_changeModel.endTime < 10) {
+//            endStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.endTime];
+//        }
         _endLabel.text = [NSString stringWithFormat:@"%@",endStr];
     }else{
-        _endLabel.text = @"18:00";
+        _endLabel.text = @"00:00";
     }
 
     
@@ -159,7 +164,8 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (_changeModel.sportInterval) {
         _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
     }else{
-        _frequencyLabel.text = @"15分钟";
+        _frequencyStr =  @"15分钟";
+        _frequencyLabel.text = _frequencyStr;
     }
     
     UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
@@ -517,9 +523,9 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         return;
     }
     [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-    if (_startLabel.text && _frequencyStr) {
+    if (_startLabel.text && _endLabel.text) {
         _changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
-        _changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
+        _changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
         _changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
     }
     if (_alertSwitch.isOn) {
