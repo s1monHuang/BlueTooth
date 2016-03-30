@@ -39,13 +39,7 @@
 
 @implementation SleepCtrl
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    self.title = @"睡眠";
-    self.view.backgroundColor = kThemeGrayColor;
-    
+- (void)viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshSleepDataSuccess)
                                                  name:READ_HISTORY_SPORTDATA_SUCCESS
@@ -55,6 +49,23 @@
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
                                                object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_refreshBututton.layer removeAllAnimations];
+    _refreshBututton.userInteractionEnabled = YES;
+    [[BluetoothManager share] cancel];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    self.title = @"睡眠";
+    self.view.backgroundColor = kThemeGrayColor;
+    
+    
     
     [self resetSleepValue];
     
@@ -175,6 +186,16 @@
     [_circleChart updateChartByCurrent:@(_deepSleepPercent) byTotal:@(100)];
     [self setSleepTimeValues];
     _refreshBututton.userInteractionEnabled = YES;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSDate *date = [NSDate date];
+    NSString *string = [formatter stringFromDate:date];
+    
+    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
+    [operateViewModel saveSleepDataSleepDate:string
+                                     qsmTime:@(_shallowSleepValue).stringValue
+                                     ssmTime:@(_deepSleepValue).stringValue];
 }
 
 - (void)setSleepTimeValues {

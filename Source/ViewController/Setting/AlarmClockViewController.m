@@ -44,6 +44,8 @@
 
 @property (nonatomic , strong) NSMutableArray *clockArray;
 
+@property (nonatomic , strong) BasicInfomationModel *changeModel;
+
 
 
 @end
@@ -66,6 +68,18 @@
     return _miniArray;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setBasicInfomationSuccess:)
+                                                 name:SET_BASICINFOMATION_SUCCESS
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -86,20 +100,20 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    if (!changeModel) {
-        changeModel = [[BasicInfomationModel alloc] init];
+    _changeModel = [DBManager selectBasicInfomation];
+    if (!_changeModel) {
+        _changeModel = [[BasicInfomationModel alloc] init];
     }
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
     NSString *hourStr ;
     NSString *minStr;
-    if (changeModel.clockHour || changeModel.clockMinute) {
-        if (changeModel.clockHour < 10) {
-            hourStr = [NSString stringWithFormat:@"0%ld",changeModel.clockHour];
+    if (_changeModel.clockHour || _changeModel.clockMinute) {
+        if (_changeModel.clockHour < 10) {
+            hourStr = [NSString stringWithFormat:@"0%ld",_changeModel.clockHour];
         }
-        if (changeModel.clockMinute < 10) {
-            minStr = [NSString stringWithFormat:@"0%ld",changeModel.clockMinute];
+        if (_changeModel.clockMinute < 10) {
+            minStr = [NSString stringWithFormat:@"0%ld",_changeModel.clockMinute];
         }
       _timeLabel.text = [NSString stringWithFormat:@"%@:%@",hourStr,minStr];
     }else{
@@ -107,8 +121,8 @@
     }
     
      _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
-    if (changeModel.clockInterval) {
-      _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",changeModel.clockInterval];
+    if (_changeModel.clockInterval) {
+      _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
     }else{
        _frequencyLabel.text = @"15分钟";
     }
@@ -121,7 +135,7 @@
     if (switchOpen) {
         [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen] boolValue]];
         if (_clockSwitch.isOn) {
-            _clockDay = changeModel.clockSwitch;
+            _clockDay = _changeModel.clockSwitch;
         }else{
             _clockDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
         }
@@ -131,6 +145,18 @@
     
     [clockSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
     [self openClockDay];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                         0,
+                                                         50,
+                                                         30)];
+    [button setTitle:@"确定" forState:UIControlStateNormal];
+    [button addTarget:self
+                action:@selector(clickButton:)
+      forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = item;
     
 }
 
@@ -180,27 +206,6 @@
 
 - (void)clickBack
 {
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    if (!changeModel) {
-        changeModel = [[BasicInfomationModel alloc] init];
-    }
-    if (_timeLabel.text && _frequencyStr) {
-        changeModel.clockHour = [[_timeLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
-        changeModel.clockMinute = [[_timeLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
-        changeModel.clockInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
-    }
-    if (_clockSwitch.isOn) {
-        changeModel.clockSwitch = _clockDay;
-    }else{
-        changeModel.clockSwitch = 0;
-        [[NSUserDefaults standardUserDefaults] setObject:@(_clockDay) forKey:whichDayIsOpen];
-        //        _alertDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
-    }
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"存储闹钟失败");
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:@(_clockSwitch.isOn) forKey:switchIsOpen];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -444,5 +449,35 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)clickButton:(UIButton *)button {
+    if (![BluetoothManager share].characteristics) {
+        return;
+    }
+    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+    if (_timeLabel.text && _frequencyStr) {
+        _changeModel.clockHour = [[_timeLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
+        _changeModel.clockMinute = [[_timeLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
+        _changeModel.clockInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
+    }
+    if (_clockSwitch.isOn) {
+        _changeModel.clockSwitch = _clockDay;
+    }else{
+        _changeModel.clockSwitch = 0;
+        [[NSUserDefaults standardUserDefaults] setObject:@(_clockDay) forKey:whichDayIsOpen];
+    }
+
+    [[BluetoothManager share] setBasicInfomation:_changeModel];
+    [[NSUserDefaults standardUserDefaults] setObject:@(_clockSwitch.isOn) forKey:switchIsOpen];
+}
+
+- (void)setBasicInfomationSuccess:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+    if (!change) {
+        DLog(@"存储闹钟失败");
+    }
+}
+
 
 @end

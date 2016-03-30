@@ -36,6 +36,7 @@
 #import "UIView+Extension.h"
 #import "DBManager.h"
 #import "OperateViewModel.h"
+#import "BluetoothManager.h"
 #endif
 
 

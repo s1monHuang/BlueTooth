@@ -248,10 +248,10 @@
 
 // 保存睡眠数据
 - (void)saveSleepDataSleepDate:(NSString *)sleepDate
-                       gsmTime: (NSString *)gsmTime
+                       qsmTime: (NSString *)qsmTime
                        ssmTime: (NSString *)ssmTime
 {
-    [self.userOperator saveSleepDataSleepDate:sleepDate gsmTime:gsmTime ssmTime:ssmTime callBack:^(BOOL success, id responseObject, NSError *error) {
+    [self.userOperator saveSleepDataSleepDate:sleepDate qsmTime:qsmTime ssmTime:ssmTime callBack:^(BOOL success, id responseObject, NSError *error) {
         self.startLoading = NO;
         if (success) {
             

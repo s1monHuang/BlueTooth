@@ -53,7 +53,7 @@
 // 绑定设备
 - (void)bindExdevice:(NSString *)exDeviceId;
 
-// 保存步数
+// 保存步数  例:2016-03-14
 - (void)saveStepDataRecordDate:(NSString *)recordDate
                        stepNum: (NSString *)stepNum;
 
@@ -63,7 +63,7 @@
 
 // 保存睡眠数据
 - (void)saveSleepDataSleepDate:(NSString *)sleepDate
-                       gsmTime: (NSString *)gsmTime
+                       qsmTime: (NSString *)qsmTime
                        ssmTime: (NSString *)ssmTime;
 
 // 获取睡眠数据

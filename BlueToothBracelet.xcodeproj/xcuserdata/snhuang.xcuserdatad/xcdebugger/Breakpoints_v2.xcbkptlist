@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/ViewController/Sport/SportCtrl.m"
-            timestampString = "480560649.047985"
+            timestampString = "480940720.601124"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
             landmarkName = "-autoDownload"
             landmarkType = "5">
          </BreakpointContent>
@@ -36,12 +36,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "480560649.047985"
+            timestampString = "480941174.117185"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "521"
-            endingLineNumber = "521"
-            landmarkName = "-readHistroySportDataWithValue:time:"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
+            landmarkName = "-readHeartRate"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

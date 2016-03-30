@@ -64,7 +64,7 @@
 
 // 保存睡眠数据
 - (void)saveSleepDataSleepDate:(NSString *)sleepDate
-              gsmTime: (NSString *)gsmTime
+              qsmTime: (NSString *)qsmTime
               ssmTime: (NSString *)ssmTime
              callBack:(BaseNetworkCallBack)callBack;
 

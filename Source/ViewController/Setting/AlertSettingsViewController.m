@@ -57,6 +57,8 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 
 @property (nonatomic , strong) NSMutableArray *alertArray;
 
+@property (nonatomic , strong) BasicInfomationModel *changeModel;
+
 
 
 @end
@@ -91,6 +93,17 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     return _miniArray;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setBasicInfomationSuccess:)
+                                                 name:SET_BASICINFOMATION_SUCCESS
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -113,17 +126,17 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    if (!changeModel) {
-        changeModel = [[BasicInfomationModel alloc] init];
+    _changeModel = [DBManager selectBasicInfomation];
+    if (!_changeModel) {
+        _changeModel = [[BasicInfomationModel alloc] init];
     }
     CGRect labelFrame = CGRectMake(kScreenWidth - 80, 0, 60, 44);
     
     _startLabel = [[UILabel alloc] initWithFrame:labelFrame];
     NSString *startStr ;
-    if (changeModel.startTime) {
-        if (changeModel.startTime < 10) {
-            startStr = [NSString stringWithFormat:@"0%ld:00",changeModel.clockHour];
+    if (_changeModel.startTime) {
+        if (_changeModel.startTime < 10) {
+            startStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.clockHour];
         }
         _startLabel.text = [NSString stringWithFormat:@"%@",startStr];
     }else{
@@ -132,9 +145,9 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     
     _endLabel = [[UILabel alloc] initWithFrame:labelFrame];
     NSString *endStr ;
-    if (changeModel.endTime) {
-        if (changeModel.endTime < 10) {
-            endStr = [NSString stringWithFormat:@"0%ld:00",changeModel.endTime];
+    if (_changeModel.endTime) {
+        if (_changeModel.endTime < 10) {
+            endStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.endTime];
         }
         _endLabel.text = [NSString stringWithFormat:@"%@",endStr];
     }else{
@@ -143,8 +156,8 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 
     
     _frequencyLabel = [[UILabel alloc] initWithFrame:labelFrame];
-    if (changeModel.sportInterval) {
-        _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",changeModel.clockInterval];
+    if (_changeModel.sportInterval) {
+        _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
     }else{
         _frequencyLabel.text = @"15分钟";
     }
@@ -155,7 +168,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (switchOpen) {
         [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:alertSwitchIsOpen] boolValue]];
         if (_alertSwitch.isOn) {
-            _alertDay = changeModel.sportSwitch;
+            _alertDay = _changeModel.sportSwitch;
         }else{
             _alertDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
         }
@@ -165,32 +178,22 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     
     [clockSwitch addTarget:self action:@selector(openAlarmSetting:) forControlEvents:UIControlEventValueChanged];
     [self openClockDay];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  50,
+                                                                  30)];
+    [button setTitle:@"确定" forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(clickButton:)
+     forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 - (void)clickBack
 {
-    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-    if (!changeModel) {
-        changeModel = [[BasicInfomationModel alloc] init];
-    }
-    if (_startLabel.text && _frequencyStr) {
-        changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
-        changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
-        changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
-    }
-    if (_alertSwitch.isOn) {
-        changeModel.sportSwitch = _alertDay;
-    }else{
-        changeModel.sportSwitch = 0;
-        [[NSUserDefaults standardUserDefaults] setObject:@(_alertDay) forKey:alertSwitchIsOpen];
-//        _alertDay = [[[NSUserDefaults standardUserDefaults] objectForKey:whichDayIsOpen] integerValue];
-    }
-    
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-    if (!change) {
-        DLog(@"存储闹钟失败");
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:@(_alertSwitch.isOn) forKey:alertSwitchIsOpen];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -509,5 +512,33 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     // Dispose of any resources that can be recreated.
 }
 
+- (void)clickButton:(UIButton *)button {
+    if (![BluetoothManager share].characteristics) {
+        return;
+    }
+    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+    if (_startLabel.text && _frequencyStr) {
+        _changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
+        _changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
+        _changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
+    }
+    if (_alertSwitch.isOn) {
+        _changeModel.sportSwitch = _alertDay;
+    }else{
+        _changeModel.sportSwitch = 0;
+        [[NSUserDefaults standardUserDefaults] setObject:@(_alertDay) forKey:alertSwitchIsOpen];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@(_alertSwitch.isOn) forKey:alertSwitchIsOpen];
+    [[BluetoothManager share] setBasicInfomation:_changeModel];
+}
+
+- (void)setBasicInfomationSuccess:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+    if (!change) {
+        DLog(@"存储闹钟失败");
+    }
+}
 
 @end

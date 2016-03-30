@@ -32,6 +32,7 @@
 
 
 @property (nonatomic,strong) SportDataModel *sportModel;
+@property (nonatomic,strong) BasicInfomationModel *infomationModel;
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
@@ -39,13 +40,7 @@
 
 @implementation SportCtrl
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    self.title = @"运动";
-    self.view.backgroundColor = kThemeGrayColor;
-    
+- (void)viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshSportDataSuccess:)
                                                  name:READ_SPORTDATA_SUCCESS
@@ -54,8 +49,25 @@
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
                                                object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_refreshBututton.layer removeAllAnimations];
+    _refreshBututton.userInteractionEnabled = YES;
+    [[BluetoothManager share] cancel];
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    self.title = @"运动";
+    self.view.backgroundColor = kThemeGrayColor;
     
     _sportModel = [DBManager selectSportData];
+    _infomationModel = [DBManager selectBasicInfomation];
     
     //自动登录
     [self autoDownload];
@@ -74,10 +86,8 @@
                                                   clockwise:YES shadow:YES shadowColor:[UIColor whiteColor]];
     
     self.circleChart.backgroundColor = [UIColor clearColor];
-//    self.circleChart.lineWidth = _sportModel?@(_sportModel.step / _sportModel.target * 100):@(0);
     self.circleChart.lineWidth = @(20);
     [self.circleChart setStrokeColor:[UtilityUI stringTOColor:@"#6dabff"]];
-    //[self.circleChart setStrokeColorGradientStart:[UIColor clearColor]];
     [self.circleChart strokeChart];
     [_chartView addSubview:self.circleChart];
     
@@ -89,10 +99,11 @@
     tempView.backgroundColor = [UIColor whiteColor];
     [_circleChart addSubview:tempView];
     
-    _complateValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2,tempView.frame.size.width, 20)];
-    CGFloat completionRateFloat = _sportModel.target?_sportModel.step / (double)_sportModel.target * 100:0;
+    CGFloat completionRateFloat = _infomationModel.target == 0?0:_sportModel.step / (double)_infomationModel.target * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    
+    _complateValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2,tempView.frame.size.width, 20)];
     _complateValue.text = completionRate;
     _complateValue.textAlignment = NSTextAlignmentCenter;
     _complateValue.textColor = [UIColor blackColor];
@@ -105,8 +116,8 @@
     _complateStep.textColor = [UIColor blackColor];
     [tempView addSubview:_complateStep];
     
+    NSString *target = [NSString stringWithFormat:@"目标 %@",@(_infomationModel?_infomationModel.target:0).stringValue];
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
-    NSString *target = [NSString stringWithFormat:@"目标 %@",_sportModel?@(_sportModel.target).stringValue:@(0).stringValue];
     _totalStep.text = target;
     _totalStep.textAlignment = NSTextAlignmentCenter;
     _totalStep.textColor = [UIColor blackColor];
@@ -241,12 +252,14 @@
     [_refreshBututton.layer removeAllAnimations];
     _sportModel = [notification object];
     
-    _complateValue.text = [NSString stringWithFormat:@"完成率%@%%",_sportModel?@(_sportModel.target).stringValue:@(0).stringValue];
+    CGFloat completionRateFloat = _infomationModel.target == 0?0:_sportModel.step / (double)_infomationModel.target * 100;
+    NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
+    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    _complateValue.text = completionRate;
+    
     _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
     
-    CGFloat targetFloat = _sportModel?_sportModel.step / (_sportModel.target / 100.0):0;
-    NSString *target = [NSString stringWithFormat:@"目标 %0.lf",targetFloat];
-    _totalStep.text = target;
+    _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_infomationModel?_infomationModel.target:0).stringValue];
     
     [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.target):@(0)];
     
@@ -256,6 +269,17 @@
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     _refreshBututton.userInteractionEnabled = YES;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSDate *date = [NSDate date];
+    NSString *string = [formatter stringFromDate:date];
+    
+    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
+    [operateViewModel saveStepDataRecordDate:string
+                                     stepNum:@(_sportModel.step).stringValue];
+    
+    
 }
 
 - (void)disConnectPeripheral {

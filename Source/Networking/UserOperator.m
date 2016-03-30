@@ -225,14 +225,14 @@
 
 // 保存睡眠数据
 - (void)saveSleepDataSleepDate:(NSString *)sleepDate
-              gsmTime: (NSString *)gsmTime
+              qsmTime: (NSString *)qsmTime
               ssmTime: (NSString *)ssmTime
              callBack:(BaseNetworkCallBack)callBack
 {
     NSString *path = @"rest/ring/save-sleep-data";
     NSDictionary *params = @{@"id" : CurrentUser.userId,
                              @"sleepDate" :  sleepDate,
-                             @"gsmTime" :  gsmTime,
+                             @"qsmTime" :  qsmTime,
                              @"ssmTime" :  ssmTime
                              };
     
