@@ -7,8 +7,25 @@
 //
 
 #import "ShareCtrl.h"
+#import "SportDataModel.h"
+#import "WXApi.h"
+#import "WXApiObject.h"
 
 @interface ShareCtrl ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *headImageView;
+@property (weak, nonatomic) IBOutlet UITextField *nickNameView;
+@property (weak, nonatomic) IBOutlet UITextField *dateView;
+@property (weak, nonatomic) IBOutlet UILabel *stepLabel;
+@property (weak, nonatomic) IBOutlet UILabel *stepDetailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *expendLabel;
+@property (weak, nonatomic) IBOutlet UILabel *expendDetailLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *shareWechatButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareWechatFriendButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareWeiboButton;
+
+@property (weak, nonatomic) IBOutlet UIView *bottomView;
 
 @end
 
@@ -17,28 +34,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    SportDataModel *model = [DBManager selectSportData];
+    
     self.view.backgroundColor = kThemeGrayColor;
-//    UIImageView *sharebg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 214)];
-//    sharebg.image = [UIImage imageNamed:@"share-bg"];
-//    [self.view addSubview:sharebg];
-//    
-//    UIImageView *headerbg = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 100)/2, 50, 100, 100)];
-//    headerbg.image = [UIImage imageNamed:@"portrait"];
-//    [self.view addSubview:headerbg];
-//    
-//    UIImageView *rankbg = [[UIImageView alloc] initWithFrame:CGRectMake(26, 60, 60, 75)];
-//    rankbg.image = [UIImage imageNamed:@"flag"];
-//    [self.view addSubview:rankbg];
-//    
-//    UIImageView *flagbg = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 172)/2, 157, 172, 37)];
-//    flagbg.image = [UIImage imageNamed:@"flag2"];
-//    [self.view addSubview:flagbg];
-//    
     UIButton *btnClosed = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - 21 - 15, 20+10, 21, 21)];
     [btnClosed addTarget:self action:@selector(rightBarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [btnClosed setBackgroundImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
     [self.view addSubview:btnClosed];
     
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM月dd日"];
+    NSString *dateString = [formatter stringFromDate:[NSDate date]];
+    if ([CurrentUser.sex isEqualToString:@"女"]) {
+        _headImageView.image = [UIImage imageNamed:@"woman"];
+    } else {
+        _headImageView.image = [UIImage imageNamed:@"man"];
+    }
+    _nickNameView.text = CurrentUser.nickName;
+    _dateView.text = dateString;
+    _stepLabel.text = @(model.step).stringValue;
+    NSString *stepDetail = [NSString stringWithFormat:@"步行了%@公里",@(model.distance).stringValue];
+    _stepDetailLabel.text = stepDetail;
+    _expendLabel.text = @(model.calorie).stringValue;
+    NSString *expendDetail = [NSString stringWithFormat:@"≈%@个雪糕",@(model.calorie / 147).stringValue];
+    _expendDetailLabel.text = expendDetail;
 }
 
 - (void)rightBarButtonClick:(id)sender
@@ -51,14 +71,51 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)shareToWechat:(id)sender {
+    [self sendImageContentWithScene:WXSceneSession];
 }
-*/
+
+- (IBAction)sendToWechatFrends:(id)sender {
+    [self sendImageContentWithScene:WXSceneTimeline];
+}
+
+//scene : WXSceneSession 消息 WXSceneTimeline 朋友圈
+- (void) sendImageContentWithScene:(int)scene
+{
+    WXMediaMessage *message = [WXMediaMessage message];
+    UIImage *image = [self screenView:self.view];
+    [message setThumbImage:image];
+    
+    WXImageObject *ext = [WXImageObject object];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"res5thumb" ofType:@"png"];
+    NSLog(@"filepath :%@",filePath);
+    ext.imageData = [NSData dataWithContentsOfFile:filePath];
+    
+//    UIImage* image = [UIImage imageWithData:ext.imageData];
+    ext.imageData = UIImagePNGRepresentation(image);
+    
+    message.mediaObject = ext;
+    
+    SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
+    req.bText = NO;
+    req.message = message;
+    req.scene = scene;
+    
+    [WXApi sendReq:req];
+}
+
+- (UIImage*)screenView:(UIView *)view{
+    _bottomView.hidden = YES;
+    CGRect rect = view.frame;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [view.layer renderInContext:context];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _bottomView.hidden = NO;
+    return img;
+}
+
+
 
 @end

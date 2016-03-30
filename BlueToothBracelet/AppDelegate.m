@@ -15,8 +15,9 @@
 #import "HeartbeatCtrl.h"
 #import "PersonalCtrl.h"
 #import "LoginCtrl.h"
+#import "WXApi.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <WXApiDelegate>
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
@@ -29,6 +30,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [WXApi registerApp:@"wx5ac8c621e7ca98a9"];
     [DBManager initApplicationsDB];
     self.operateVM = [OperateViewModel viewModel];
     BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
@@ -187,6 +189,14 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(nonnull NSURL *)url {
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
+    return [WXApi handleOpenURL:url delegate:self];
 }
 
 @end

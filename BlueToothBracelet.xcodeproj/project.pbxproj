@@ -22,6 +22,12 @@
 		3E7532F71C9019A5009908ED /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7532F61C9019A5009908ED /* BluetoothManager.m */; };
 		3E7ED37F1C9F8AD4000E460C /* HistorySportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7ED37E1C9F8AD4000E460C /* HistorySportDataModel.m */; };
 		3E956E261CAB6D51005DDF35 /* ShareCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E956E251CAB6D51005DDF35 /* ShareCtrl.xib */; };
+		3E956E311CABFCAB005DDF35 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E301CABFCAB005DDF35 /* libWeChatSDK.a */; };
+		3E956E331CABFDA7005DDF35 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E321CABFDA7005DDF35 /* SystemConfiguration.framework */; };
+		3E956E351CABFDBC005DDF35 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E341CABFDBC005DDF35 /* libz.tbd */; };
+		3E956E401CAC0091005DDF35 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E361CABFDC8005DDF35 /* libc++.tbd */; };
+		3E956E441CAC0122005DDF35 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E431CAC0122005DDF35 /* CoreTelephony.framework */; };
+		3E956E461CAC015C005DDF35 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E451CAC015C005DDF35 /* libsqlite3.tbd */; };
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
@@ -235,7 +241,6 @@
 		9F9D13501B75920F00BEBF98 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9D13481B75920F00BEBF98 /* FMDatabasePool.m */; };
 		9F9D13511B75920F00BEBF98 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9D134A1B75920F00BEBF98 /* FMDatabaseQueue.m */; };
 		9F9D13521B75920F00BEBF98 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9D134D1B75920F00BEBF98 /* FMResultSet.m */; };
-		9F9D13551B75929900BEBF98 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F9D13541B75929900BEBF98 /* libsqlite3.dylib */; };
 		9FA3F2221B6F631C00977D2B /* RankingEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3F2211B6F631C00977D2B /* RankingEntity.m */; };
 		9FA3F22A1B6F6DEC00977D2B /* RankingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3F2281B6F6DEC00977D2B /* RankingCell.m */; };
 		9FA3F22B1B6F6DEC00977D2B /* RankingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA3F2291B6F6DEC00977D2B /* RankingCell.xib */; };
@@ -320,6 +325,16 @@
 		3E7ED37D1C9F8AD4000E460C /* HistorySportDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorySportDataModel.h; sourceTree = "<group>"; };
 		3E7ED37E1C9F8AD4000E460C /* HistorySportDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySportDataModel.m; sourceTree = "<group>"; };
 		3E956E251CAB6D51005DDF35 /* ShareCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareCtrl.xib; sourceTree = "<group>"; };
+		3E956E2C1CABF912005DDF35 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		3E956E2D1CABF912005DDF35 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		3E956E2E1CABF912005DDF35 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		3E956E301CABFCAB005DDF35 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		3E956E321CABFDA7005DDF35 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3E956E341CABFDBC005DDF35 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		3E956E361CABFDC8005DDF35 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		3E956E3C1CABFE5F005DDF35 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		3E956E431CAC0122005DDF35 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		3E956E451CAC015C005DDF35 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
 		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
@@ -751,7 +766,6 @@
 		9F9D134B1B75920F00BEBF98 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
 		9F9D134C1B75920F00BEBF98 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
 		9F9D134D1B75920F00BEBF98 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
-		9F9D13541B75929900BEBF98 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		9FA3F2201B6F631C00977D2B /* RankingEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingEntity.h; sourceTree = "<group>"; };
 		9FA3F2211B6F631C00977D2B /* RankingEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingEntity.m; sourceTree = "<group>"; };
 		9FA3F2271B6F6DEC00977D2B /* RankingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingCell.h; sourceTree = "<group>"; };
@@ -843,7 +857,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F9D13551B75929900BEBF98 /* libsqlite3.dylib in Frameworks */,
+				3E956E461CAC015C005DDF35 /* libsqlite3.tbd in Frameworks */,
+				3E956E441CAC0122005DDF35 /* CoreTelephony.framework in Frameworks */,
+				3E956E401CAC0091005DDF35 /* libc++.tbd in Frameworks */,
+				3E956E351CABFDBC005DDF35 /* libz.tbd in Frameworks */,
+				3E956E331CABFDA7005DDF35 /* SystemConfiguration.framework in Frameworks */,
+				3E956E311CABFCAB005DDF35 /* libWeChatSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -878,6 +897,17 @@
 				3E7532E91C8FCB7D009908ED /* BabyToy.m */,
 			);
 			path = BabyBluetooth;
+			sourceTree = "<group>";
+		};
+		3E956E2A1CABF912005DDF35 /* Wechat */ = {
+			isa = PBXGroup;
+			children = (
+				3E956E301CABFCAB005DDF35 /* libWeChatSDK.a */,
+				3E956E2C1CABF912005DDF35 /* WechatAuthSDK.h */,
+				3E956E2D1CABF912005DDF35 /* WXApi.h */,
+				3E956E2E1CABF912005DDF35 /* WXApiObject.h */,
+			);
+			path = Wechat;
 			sourceTree = "<group>";
 		};
 		47E1CA5B1CA527BD0070FEE1 /* MJExtension */ = {
@@ -1328,6 +1358,7 @@
 		9F88F58E1B458AB9000BA054 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				3E956E2A1CABF912005DDF35 /* Wechat */,
 				47E349D81CA950240026707C /* FSCalendar */,
 				47E1CA5B1CA527BD0070FEE1 /* MJExtension */,
 				47E413C91C982B1C00871664 /* other */,
@@ -1688,7 +1719,12 @@
 		9F9D13531B75928700BEBF98 /* FrameWork */ = {
 			isa = PBXGroup;
 			children = (
-				9F9D13541B75929900BEBF98 /* libsqlite3.dylib */,
+				3E956E451CAC015C005DDF35 /* libsqlite3.tbd */,
+				3E956E431CAC0122005DDF35 /* CoreTelephony.framework */,
+				3E956E3C1CABFE5F005DDF35 /* CFNetwork.framework */,
+				3E956E361CABFDC8005DDF35 /* libc++.tbd */,
+				3E956E341CABFDBC005DDF35 /* libz.tbd */,
+				3E956E321CABFDA7005DDF35 /* SystemConfiguration.framework */,
 			);
 			path = FrameWork;
 			sourceTree = "<group>";
@@ -2351,6 +2387,10 @@
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Lib/Wechat",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -2363,6 +2403,10 @@
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Lib/Wechat",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
