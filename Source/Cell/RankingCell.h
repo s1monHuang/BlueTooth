@@ -12,6 +12,6 @@
 
 @interface RankingCell : UITableViewCell
 
-- (void)configRankingCell:(RankingEntity *)rankEntity;
+- (void)configRankingCell:(RankingEntity *)rankEntity rankNo:(NSInteger)row;
 
 @end

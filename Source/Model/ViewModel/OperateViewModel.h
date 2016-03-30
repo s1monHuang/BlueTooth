@@ -11,6 +11,8 @@
 
 @interface OperateViewModel : BaseViewModel
 
+
++ (instancetype)defaultInstance;
 // 登录
 - (void)loginWithUserName:(NSString *)userName
                  password:(NSString *)password;

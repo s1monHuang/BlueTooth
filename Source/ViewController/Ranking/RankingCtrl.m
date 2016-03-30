@@ -10,13 +10,19 @@
 #import "RankingCell.h"
 #import "RankingEntity.h"
 #import "SheJiaoViewController.h"
+#import "OperateViewModel.h"
+#import "MJExtension.h"
 
-@interface RankingCtrl ()<UITableViewDelegate,UITableViewDataSource>
+@interface RankingCtrl ()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UITableView *rankingtable;
 @property (strong, nonatomic) RankingEntity *mRankEntity;
 @property (strong, nonatomic) NSMutableArray *dataArray;
+
+@property (nonatomic , strong) OperateViewModel *operateVM;
+
+@property (nonatomic , assign) NSInteger myRankNo;
 
 @end
 
@@ -26,21 +32,99 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    
     self.title = @"排名";
     self.view.backgroundColor = kThemeGrayColor;
-    
+    self.operateVM = [[OperateViewModel alloc] init];
+//    [self getRankData];
     self.dataArray = @[].mutableCopy;
-    [self queryRankingList];
-    
-    _rankingtable.delegate = self;
-    _rankingtable.dataSource = self;
-    [_rankingtable setTableFooterView:[UIView new]];
-    [_rankingtable reloadData];
+//    self.rankingtable.delegate = self;
+//    self.rankingtable.dataSource = self;
+    self.rankingtable.alpha = 0;
     
     // 设置
     UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"more"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonClick:)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
+    
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRankData) name:@"getRankInfo" object:nil];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getRankData];
+    [MBProgressHUD showHUDByContent:@"排名信息加载中..." view:UI_Window afterDelay:INT_MAX];
+    
+}
+
+- (void)getRankData
+{
+    __weak RankingCtrl *blockSelf = self;
+    
+    NSDate *startDate = [NSDate date];
+    NSDate *endDate = [startDate dateByAddingTimeInterval:(-24 * 60 * 60)];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSString *startDateStr = [formatter stringFromDate:startDate];
+     NSString *endDateStr = [formatter stringFromDate:endDate];
+    [self.operateVM requestRankingListStartDate:startDateStr endDate:endDateStr];
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        if (finished) {
+            
+        blockSelf.dataArray = [RankingEntity mj_objectArrayWithKeyValuesArray:userInfo];
+        if (blockSelf.dataArray.count > 1) {
+            NSArray *tempArray = [NSArray arrayWithArray:blockSelf.dataArray];
+            for (NSInteger i = 0; i < blockSelf.dataArray.count; i++) {
+                for (NSInteger j = 0; j < i; j++) {
+                    RankingEntity *model = tempArray[i];
+                    RankingEntity *otherModel = tempArray[j];
+                    if ([model.sumSteps integerValue] < [otherModel.sumSteps integerValue]) {
+                        [blockSelf.dataArray exchangeObjectAtIndex:i withObjectAtIndex:j];
+                    }
+                }
+            }
+            for (NSInteger i = 0; i < tempArray.count; i++) {
+                RankingEntity *entity = blockSelf.dataArray[i];
+                if ([entity.userId isEqualToString:CurrentUser.userId]) {
+                    blockSelf.mRankEntity = entity;
+                    blockSelf.myRankNo = i;
+                }
+            }
+        }else
+        {
+            if (blockSelf.dataArray.count) {
+               blockSelf.mRankEntity = blockSelf.dataArray[0];
+            }else{
+                blockSelf.mRankEntity = [[RankingEntity alloc] init];
+                blockSelf.mRankEntity.sumSteps = @"0";
+                blockSelf.mRankEntity.userName = CurrentUser.nickName;
+                blockSelf.mRankEntity.userId = CurrentUser.userId;
+                blockSelf.myRankNo = 0;
+            }
+            
+        }
+            blockSelf.rankingtable.delegate = blockSelf;
+            blockSelf.rankingtable.dataSource = blockSelf;
+            blockSelf.rankingtable.alpha = 1;
+            [blockSelf.rankingtable setTableFooterView:[UIView new]];
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+        }else
+        {
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"排名信息获取失败" message:nil delegate:blockSelf cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    };
+
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDataSource && UITableViewDelegate
@@ -56,14 +140,14 @@
     {
         numberOfRows = 1;
     }else{
-        numberOfRows = 5;
+        numberOfRows = self.dataArray.count;
     }
     return numberOfRows;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 50;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -98,11 +182,11 @@
     }
     
     if (indexPath.section == 0) {
-        [cell configRankingCell:self.mRankEntity];
+        [cell configRankingCell:self.mRankEntity rankNo:self.myRankNo + 1];
     }else{
     
         RankingEntity *rankEntity = self.dataArray[indexPath.row];
-        [cell configRankingCell:rankEntity];
+        [cell configRankingCell:rankEntity rankNo:indexPath.row + 1];
         
     }
     return cell;
@@ -144,23 +228,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)queryRankingList
-{
-    NSArray *dataArray = @[@{@"RankNo":@"1",@"UserID":@"101",@"RankName":@"王老五",@"StepNumber":@"142600"},@{@"RankNo":@"2",@"UserID":@"102",@"RankName":@"小小小小明",@"StepNumber":@"14260"},@{@"RankNo":@"3",@"UserID":@"103",@"RankName":@"飞人刘翔",@"StepNumber":@"9908"},@{@"RankNo":@"4",@"UserID":@"104",@"RankName":@"lisa",@"StepNumber":@"8426"},@{@"RankNo":@"5",@"UserID":@"105",@"RankName":@"毛大虎",@"StepNumber":@"1426"}];
-    
-    [dataArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        
-        RankingEntity *rankEntity = [[RankingEntity alloc] initRankingEntityWithDic:obj];
-        
-        if ([rankEntity.RankNo integerValue] == 5) {
-            self.mRankEntity = rankEntity;
-        }
-        
-        [self.dataArray addObject:rankEntity];
-        
-    }];
-    
-}
 
 - (void)rightBarButtonClick:(id)sender
 {
@@ -169,14 +236,9 @@
     [self.navigationController pushViewController:VC animated:YES];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
 
 @end

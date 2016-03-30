@@ -78,7 +78,7 @@
                   reserveInfo:(id)reserveInfo
                 callBackBlock:(BaseNetworkCallBack)callBackBlock
 {
-    [self cancelRequest];
+//    [self cancelRequest];
     
     AFHTTPRequestSerializer <AFURLRequestSerialization> * requestSerializer = [AFHTTPRequestSerializer serializer];
     requestSerializer.timeoutInterval = timeOut > 0 ? timeOut : kSVRDefaultTimeout;
@@ -113,7 +113,7 @@
                              callBackBlock:(BaseNetworkCallBack)callBackBlock
 {
     
-    [self cancelRequest];
+//    [self cancelRequest];
     
     AFHTTPRequestSerializer <AFURLRequestSerialization> * requestSerializer = [AFHTTPRequestSerializer serializer];
     

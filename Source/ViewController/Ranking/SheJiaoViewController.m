@@ -8,9 +8,15 @@
 
 #import "SheJiaoViewController.h"
 #import "ShareCtrl.h"
+#import "OperateViewModel.h"
 
-@interface SheJiaoViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface SheJiaoViewController ()<UITableViewDataSource,UITableViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic , strong) OperateViewModel *operateVM;
+
+@property (nonatomic , strong) UITextField *txtqueryCode;
+
 
 @end
 
@@ -22,6 +28,7 @@
     
     self.title = @"设计";
     self.view.backgroundColor = kThemeGrayColor;
+    self.operateVM = [[OperateViewModel alloc] init];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -98,18 +105,24 @@
     
         
         UILabel *lblUserName = [[UILabel alloc] initWithFrame:CGRectMake(100, 26, ScreenWidth - 120, 20)];
-        lblUserName.text = @"赵大虎";
+        lblUserName.text = CurrentUser.nickName;
         lblUserName.font = [UIFont boldSystemFontOfSize:20];
         lblUserName.textAlignment = NSTextAlignmentLeft;
         lblUserName.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lblUserName];
         
-        UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 52, ScreenWidth - 120, 20)];
-        lblShareNumber.text = @"分享码: ZB8508";
+        UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 52, 50, 20)];
+        lblShareNumber.text = @"分享码:";
         lblShareNumber.font = [UIFont boldSystemFontOfSize:16];
         lblShareNumber.textAlignment = NSTextAlignmentLeft;
         lblShareNumber.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lblShareNumber];
+        
+        UILabel *inviteCodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(155, 40, ScreenWidth - 180, 35)];
+        inviteCodeLabel.text = CurrentUser.inviteCode;
+        inviteCodeLabel.textColor = KThemeGreenColor;
+        inviteCodeLabel.font = [UIFont systemFontOfSize:25];
+        [cell.contentView addSubview:inviteCodeLabel];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 94, ScreenWidth, 1)];
         lineView.backgroundColor = [UIColor grayColor];
@@ -142,12 +155,14 @@
         
         UITextField *txtqueryCode = [[UITextField alloc] initWithFrame:CGRectMake(88, 32, 145, 30)];
         txtqueryCode.background = [UIImage imageNamed:@"share_inputbox"];
+        _txtqueryCode = txtqueryCode;
         [cell.contentView addSubview:txtqueryCode];
         
         UIButton *btnAddShare = [[UIButton alloc] initWithFrame:CGRectMake(txtqueryCode.frame.origin.x+txtqueryCode.frame.size.width+20, 32, 75, 30)];
         [btnAddShare setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [btnAddShare setTitle:@"添加" forState:UIControlStateNormal];
         [btnAddShare setBackgroundImage:[UIImage imageNamed:@"share_button"] forState:UIControlStateNormal];
+        [btnAddShare addTarget:self action:@selector(relateUserInfo) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:btnAddShare];
         
     }
@@ -160,8 +175,38 @@
 
 - (void)btnShareClick:(id)sender
 {
-    ShareCtrl *VC = [[ShareCtrl alloc] init];
-    [self presentViewController:VC animated:YES completion:nil];
+//    ShareCtrl *VC = [[ShareCtrl alloc] init];
+//    [self presentViewController:VC animated:YES completion:nil];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    [pasteboard setString:CurrentUser.inviteCode];
+}
+
+- (void)relateUserInfo
+{
+    __weak SheJiaoViewController *blockSelf = self;
+    [self.operateVM relateUserInfoInviteCode:_txtqueryCode.text];
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        if (finished) {
+            [MBProgressHUD showHUDByContent:userInfo view:UI_Window afterDelay:2];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"getRankInfo" object:nil];
+            });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [blockSelf.navigationController popViewControllerAnimated:YES];
+            });
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取排名失败，请重试" delegate:blockSelf cancelButtonTitle:@"取消" otherButtonTitles:@"重试", nil];
+            [alert show];
+        }
+            
+    };
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self relateUserInfo];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

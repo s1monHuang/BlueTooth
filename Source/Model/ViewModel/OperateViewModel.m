@@ -16,6 +16,16 @@
 
 @implementation OperateViewModel
 
++ (instancetype)defaultInstance
+{
+    static OperateViewModel *_shareInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shareInstance = [[self alloc] init];
+    });
+    return _shareInstance;
+}
+
 - (UserOperator *)userOperator
 {
     if(!_userOperator){
@@ -35,7 +45,6 @@
             if([responseObject[@"retCode"] isEqualToString:@"000"])
             {
                 if (self.finishHandler) self.finishHandler(YES, responseObject[@"userInfo"]);
-//                [MBProgressHUD showHUDByContent:@"登录" view:UI_Window afterDelay:1];
             }else{
                 if (self.finishHandler) self.finishHandler(NO, responseObject[@"retMsg"]);
             }

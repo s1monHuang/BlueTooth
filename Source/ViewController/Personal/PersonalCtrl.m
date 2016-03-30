@@ -73,7 +73,7 @@
     self.personalTable.dataSource = self;
     self.personalTable.delegate = self;
     self.personalTable.backgroundColor = [UIColor clearColor];
-    [self.personalTable setTableFooterView:[UIView new]];
+    [self.personalTable setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 80)]];
     [self.view addSubview:self.personalTable];
     
     _imageActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相册",@"相机",nil];
