@@ -39,7 +39,7 @@
     CGFloat stepLabelX = CGRectGetMaxX(label.frame) + 10;
     UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 40, 40)];
     _stepLabel = stepLabel;
-    stepLabel.text = @"50";
+    stepLabel.text = @"70";
     stepLabel.font = [UIFont systemFontOfSize:22];
     stepLabel.textColor = KThemeGreenColor;
     [self.view addSubview:stepLabel];
@@ -107,7 +107,8 @@
 - (void)setUpRulerView
 {
     CGFloat rulerX = kScreenWidth / 2 + 20;
-    CGFloat rulerY = CGRectGetMaxY(_stepLabel.frame) + 10;
+    CGFloat tempY = kScreenHeight > 480 ? 20 : 10;
+    CGFloat rulerY = CGRectGetMaxY(_stepLabel.frame) + tempY;
     CGFloat rulerWidth = kScreenWidth / 2 - 60;
     CGFloat rulerHeight = kScreenHeight > 480 ? 350 : 250;
     
@@ -116,7 +117,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = 50;
+    rulerView.defaultVaule = 70;
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
