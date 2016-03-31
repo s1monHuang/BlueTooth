@@ -56,9 +56,9 @@
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
     [self.view addSubview:headerView];
     
-    UITapGestureRecognizer *recognizer;
-    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)];
-    [headerView addGestureRecognizer:recognizer];
+//    UITapGestureRecognizer *recognizer;
+//    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)];
+//    [headerView addGestureRecognizer:recognizer];
     
     UIImageView *headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 80)/2, 10, 80, 80)];
     NSString *imageStr = [CurrentUser.sex isEqualToString:@"男"] ? @"man":@"woman";
@@ -81,7 +81,7 @@
     [self.personalTable setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 80)]];
     [self.view addSubview:self.personalTable];
     
-    _imageActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相册",@"相机",nil];
+//    _imageActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相册",@"相机",nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNickName:) name:@"changeNickName" object:nil];
 }
 
@@ -194,7 +194,7 @@
 - (void)handleTapFrom:(UITapGestureRecognizer*)recognizer {
     // 触发手勢事件后，在这里作些事情
     
-    [_imageActionSheet showInView:self.view];
+//    [_imageActionSheet showInView:self.view];
     
 }
 
