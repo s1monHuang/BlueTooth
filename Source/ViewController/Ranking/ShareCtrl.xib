@@ -7,6 +7,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShareCtrl">
             <connections>
+                <outlet property="bottomView" destination="hOK-jL-nyW" id="wGk-aE-sTv"/>
+                <outlet property="dateView" destination="wO2-Ia-hZL" id="8xx-ca-KYZ"/>
+                <outlet property="expendDetailLabel" destination="WO4-z6-BKy" id="ctT-KW-ubC"/>
+                <outlet property="expendLabel" destination="wVB-dM-9N1" id="jLA-7e-sJB"/>
+                <outlet property="headImageView" destination="oyW-G8-hef" id="Ppu-9B-JlH"/>
+                <outlet property="nickNameView" destination="ReE-Sb-pj8" id="4W0-nI-XRg"/>
+                <outlet property="shareWechatButton" destination="kPD-jz-2Dh" id="1PB-Fq-s1e"/>
+                <outlet property="shareWechatFriendButton" destination="Nom-M5-iSZ" id="t57-Vk-IJZ"/>
+                <outlet property="shareWeiboButton" destination="oEe-NV-eik" id="LGC-xr-q0Z"/>
+                <outlet property="stepDetailLabel" destination="5l5-zh-7qR" id="PPx-BU-b9C"/>
+                <outlet property="stepLabel" destination="16v-NV-b8Y" id="Khh-ut-x5W"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Z6f-mi-Das"/>
             </connections>
         </placeholder>
@@ -42,7 +53,7 @@
                         <constraint firstAttribute="height" constant="37" id="oMx-kG-G9o"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="毛大虎" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ReE-Sb-pj8">
+                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="毛大虎" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ReE-Sb-pj8">
                     <rect key="frame" x="243" y="148" width="114" height="30"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -53,7 +64,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="05月26日" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wO2-Ia-hZL">
+                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="05月26日" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wO2-Ia-hZL">
                     <rect key="frame" x="200" y="186" width="200" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="Btu-2Z-H6W"/>
@@ -108,7 +119,7 @@
                         <constraint firstAttribute="height" constant="20" id="dDz-iY-abi"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVB-dM-9N1">
@@ -128,46 +139,67 @@
                         <constraint firstAttribute="width" constant="170" id="rJ7-qa-j3P"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hOK-jL-nyW">
                     <rect key="frame" x="0.0" y="506" width="600" height="94"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_wechat" translatesAutoresizingMaskIntoConstraints="NO" id="QSD-U2-mCq">
-                            <rect key="frame" x="30" y="17" width="60" height="60"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="快把你的光辉成绩晒一下吧!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PhK-FJ-2SN">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPD-jz-2Dh">
+                            <rect key="frame" x="30" y="37" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="QBN-B2-l1L"/>
-                                <constraint firstAttribute="width" constant="60" id="biY-To-Bsy"/>
+                                <constraint firstAttribute="height" constant="40" id="2gt-Sp-xjr"/>
+                                <constraint firstAttribute="width" constant="40" id="6B6-Ks-2sL"/>
                             </constraints>
-                        </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_weibo" translatesAutoresizingMaskIntoConstraints="NO" id="FJz-nI-Huj">
-                            <rect key="frame" x="210" y="17" width="60" height="60"/>
+                            <state key="normal" backgroundImage="share_wechat"/>
+                            <connections>
+                                <action selector="shareToWechat:" destination="-1" eventType="touchUpInside" id="OFZ-tS-5rl"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nom-M5-iSZ">
+                            <rect key="frame" x="120" y="37" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="60" id="bIP-nE-AQ5"/>
-                                <constraint firstAttribute="height" constant="60" id="cMC-Ga-QPg"/>
+                                <constraint firstAttribute="height" constant="40" id="JLt-Oo-aWG"/>
+                                <constraint firstAttribute="width" constant="40" id="hHM-CO-FUF"/>
                             </constraints>
-                        </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_wechat_friend" translatesAutoresizingMaskIntoConstraints="NO" id="dhY-pJ-6Pp">
-                            <rect key="frame" x="120" y="17" width="60" height="60"/>
+                            <state key="normal" backgroundImage="share_wechat_friend"/>
+                            <connections>
+                                <action selector="shareToWechatFrends:" destination="-1" eventType="touchUpInside" id="pZF-A7-Kde"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEe-NV-eik">
+                            <rect key="frame" x="210" y="37" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="20F-eH-nzL"/>
-                                <constraint firstAttribute="width" constant="60" id="3h2-1c-iUW"/>
+                                <constraint firstAttribute="height" constant="40" id="AJf-4H-Uvu"/>
+                                <constraint firstAttribute="width" constant="40" id="OKZ-nY-vHp"/>
                             </constraints>
-                        </imageView>
+                            <state key="normal" backgroundImage="share_weibo"/>
+                            <connections>
+                                <action selector="shareToWeibo:" destination="-1" eventType="touchUpInside" id="4Yd-71-rY1"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="dhY-pJ-6Pp" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="120" id="79c-kw-C2x"/>
-                        <constraint firstAttribute="bottom" secondItem="dhY-pJ-6Pp" secondAttribute="bottom" constant="17" id="AtW-Sv-PMq"/>
-                        <constraint firstItem="FJz-nI-Huj" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="210" id="G1W-3P-Q2O"/>
-                        <constraint firstItem="dhY-pJ-6Pp" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="17" id="IH7-rt-XtU"/>
+                        <constraint firstAttribute="bottom" secondItem="oEe-NV-eik" secondAttribute="bottom" constant="17" id="2bs-w0-nXB"/>
+                        <constraint firstItem="Nom-M5-iSZ" firstAttribute="leading" secondItem="kPD-jz-2Dh" secondAttribute="leading" constant="90" id="5lB-ar-pRd"/>
+                        <constraint firstAttribute="bottom" secondItem="kPD-jz-2Dh" secondAttribute="bottom" constant="17" id="6Gj-93-fMe"/>
+                        <constraint firstAttribute="trailing" secondItem="PhK-FJ-2SN" secondAttribute="trailing" id="8JB-dF-YKp"/>
+                        <constraint firstAttribute="bottom" secondItem="Nom-M5-iSZ" secondAttribute="bottom" constant="17" id="IIz-UG-2g9"/>
+                        <constraint firstItem="oEe-NV-eik" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="37" id="Jy2-eX-KKB"/>
+                        <constraint firstItem="kPD-jz-2Dh" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="37" id="MEg-BV-8WC"/>
                         <constraint firstAttribute="height" constant="94" id="NBU-az-ZWP"/>
-                        <constraint firstItem="QSD-U2-mCq" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="30" id="e0k-hE-QSS"/>
-                        <constraint firstItem="FJz-nI-Huj" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="17" id="oGh-Ea-W1L"/>
-                        <constraint firstAttribute="bottom" secondItem="FJz-nI-Huj" secondAttribute="bottom" constant="17" id="tJ1-cY-QyX"/>
-                        <constraint firstAttribute="bottom" secondItem="QSD-U2-mCq" secondAttribute="bottom" constant="17" id="uaa-CI-hw6"/>
-                        <constraint firstItem="QSD-U2-mCq" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="17" id="xD7-9A-0gg"/>
+                        <constraint firstItem="kPD-jz-2Dh" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" constant="30" id="XUz-cl-9Wc"/>
+                        <constraint firstItem="Nom-M5-iSZ" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" constant="37" id="gHm-la-F2c"/>
+                        <constraint firstItem="PhK-FJ-2SN" firstAttribute="top" secondItem="hOK-jL-nyW" secondAttribute="top" id="hyY-y5-IO2"/>
+                        <constraint firstItem="oEe-NV-eik" firstAttribute="leading" secondItem="Nom-M5-iSZ" secondAttribute="leading" constant="90" id="neR-lY-QPh"/>
+                        <constraint firstItem="PhK-FJ-2SN" firstAttribute="leading" secondItem="hOK-jL-nyW" secondAttribute="leading" id="wSG-eL-NXn"/>
                     </constraints>
                 </view>
             </subviews>
