@@ -16,11 +16,13 @@
 #import "PersonalCtrl.h"
 #import "LoginCtrl.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <UIAlertViewDelegate>
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
 @property (nonatomic , assign) NSInteger firstDownload;
+
+@property (nonatomic , strong) LoginCtrl *loginVC;
 
 @end
 
@@ -67,6 +69,7 @@
 
 - (void)exchangeRootViewControllerToMain
 {
+    __weak AppDelegate *blockSelf = self;
     //自动登陆
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
@@ -89,6 +92,10 @@
                 if (!Info) {
                     DLog(@"存入用户信息失败");
                 }
+            }else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"登录失败" message:nil delegate:blockSelf cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+                [alert show];
+                return;
             }
         };
 
@@ -165,6 +172,25 @@
 + (AppDelegate *)defaultDelegate
 {
     return (AppDelegate *)[[UIApplication sharedApplication]delegate];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"appDelegateToLogin"];
+    LoginCtrl *loginVC = [[LoginCtrl alloc] init];
+    
+    UINavigationController *nav
+    = [[UINavigationController alloc] initWithRootViewController:loginVC];
+    nav.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    [UtilityUI setNavigationStyle:nav.navigationBar];
+    nav.navigationBar.barTintColor = [UtilityUI stringTOColor:@"#06bd90"];
+    
+    
+    nav.navigationBar.translucent = NO;
+    self.window.rootViewController = nav;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -181,6 +181,10 @@
     calendar.delegate = self;
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     calendar.backgroundColor = [UIColor whiteColor];
+    calendar.appearance.weekdayTextColor = KThemeGreenColor;
+    calendar.appearance.headerTitleColor = KThemeGreenColor;
+    calendar.appearance.selectionColor = KThemeGreenColor;
+    calendar.appearance.titleDefaultColor = KThemeGreenColor;
     [self.coverView addSubview:calendar];
     _fsCalender = calendar;
     CGFloat toolBarY = CGRectGetMaxY(_fsCalender.frame);
@@ -188,6 +192,7 @@
     _toolBar = toolBar;
     toolBar.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    cancelItem.tintColor = KThemeGreenColor;
     UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     toolBar.items = @[placeItem, cancelItem];
     [_coverView addSubview:_toolBar];
@@ -195,9 +200,16 @@
 
 - (void)removeCoverView
 {
-    [self getDayData:_selectedDate];
-    [self getWeekData:_selectedDate];
-    [self getMonthData:_selectedDate];
+    if (_selectedDate) {
+        [self getDayData:_selectedDate];
+        [self getWeekData:_selectedDate];
+        [self getMonthData:_selectedDate];
+        
+    }else{
+        [self getDayData:[NSDate date]];
+        [self getWeekData:[NSDate date]];
+        [self getMonthData:[NSDate date]];
+    }
     [_coverView removeFromSuperview];
 }
 

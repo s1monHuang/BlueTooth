@@ -386,8 +386,8 @@
 - (void)removeCoverView
 {
     if (_isTimeSelected) {
-        if (!_timeStr) {
-            _timeStr = @"18:00";
+        if (!_timeStr) { 
+            _timeStr = @"00:00";
         }
         _timeLabel.text = _timeStr;
     }else{
