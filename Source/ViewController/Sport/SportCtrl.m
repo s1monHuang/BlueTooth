@@ -118,7 +118,7 @@
     _complateStep.textColor = [UIColor blackColor];
     [tempView addSubview:_complateStep];
     
-    NSString *target = [NSString stringWithFormat:@"目标 %@",@(_infomationModel?_infomationModel.target:0).stringValue];
+    NSString *target = [NSString stringWithFormat:@"目标 %@",CurrentUser.stepCount];
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
     _totalStep.text = target;
     _totalStep.textAlignment = NSTextAlignmentCenter;

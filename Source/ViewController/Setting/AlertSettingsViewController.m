@@ -237,9 +237,14 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 - (void)openClockDay
 {
     NSString *clockStr = [self toBinarySystemWithDecimalSystem:_alertDay];
-    for (NSInteger i = 0; i < clockStr.length; i++) {
-        NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
-        [self.alertArray addObject:subStr];
+    if (_alertDay > 0) {
+        for (NSInteger i = clockStr.length -1; i >= 0; i--) {
+            NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
+            [self.alertArray addObject:subStr];
+        }
+        
+    }else{
+        
     }
     NSInteger tempInteger = 8 - self.alertArray.count;
     for (NSInteger i = 0; i < tempInteger; i++) {

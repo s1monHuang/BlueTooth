@@ -111,9 +111,13 @@
     if (_changeModel.clockHour || _changeModel.clockMinute) {
         if (_changeModel.clockHour < 10) {
             hourStr = [NSString stringWithFormat:@"0%ld",_changeModel.clockHour];
+        }else{
+            hourStr = [NSString stringWithFormat:@"%ld",_changeModel.clockHour];
         }
         if (_changeModel.clockMinute < 10) {
             minStr = [NSString stringWithFormat:@"0%ld",_changeModel.clockMinute];
+        }else{
+            minStr = [NSString stringWithFormat:@"%ld",_changeModel.clockMinute];
         }
       _timeLabel.text = [NSString stringWithFormat:@"%@:%@",hourStr,minStr];
     }else{
@@ -134,6 +138,7 @@
     UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     _clockSwitch = clockSwitch;
     BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen];
+    _tableView.allowsSelection = switchOpen;
     if (switchOpen) {
         [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen] boolValue]];
         if (_clockSwitch.isOn) {
@@ -196,9 +201,14 @@
 - (void)openClockDay
 {
     NSString *clockStr = [self toBinarySystemWithDecimalSystem:_clockDay];
-    for (NSInteger i = 0; i < clockStr.length; i++) {
-        NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
-        [self.clockArray addObject:subStr];
+    if (_clockDay > 0) {
+        for (NSInteger i = clockStr.length -1; i >= 0; i--) {
+            NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
+            [self.clockArray addObject:subStr];
+    }
+    
+    }else{
+        
     }
     NSInteger tempInteger = 8 - self.clockArray.count;
     for (NSInteger i = 0; i < tempInteger; i++) {

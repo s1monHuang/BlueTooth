@@ -159,6 +159,13 @@
     [self.navigationController pushViewController:ctl animated:YES];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    
+    [self.txtUserAccount resignFirstResponder];
+    [self.txtUserPassword resignFirstResponder];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
