@@ -119,7 +119,7 @@
                         <constraint firstAttribute="height" constant="20" id="dDz-iY-abi"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVB-dM-9N1">
@@ -139,7 +139,7 @@
                         <constraint firstAttribute="width" constant="170" id="rJ7-qa-j3P"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hOK-jL-nyW">
@@ -170,7 +170,7 @@
                             </constraints>
                             <state key="normal" backgroundImage="share_wechat_friend"/>
                             <connections>
-                                <action selector="sendToWechatFrends:" destination="-1" eventType="touchUpInside" id="HSP-Ri-ZhV"/>
+                                <action selector="shareToWechatFrends:" destination="-1" eventType="touchUpInside" id="pZF-A7-Kde"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEe-NV-eik">
@@ -180,6 +180,9 @@
                                 <constraint firstAttribute="width" constant="40" id="OKZ-nY-vHp"/>
                             </constraints>
                             <state key="normal" backgroundImage="share_weibo"/>
+                            <connections>
+                                <action selector="shareToWeibo:" destination="-1" eventType="touchUpInside" id="4Yd-71-rY1"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

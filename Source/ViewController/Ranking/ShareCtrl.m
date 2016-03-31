@@ -10,6 +10,7 @@
 #import "SportDataModel.h"
 #import "WXApi.h"
 #import "WXApiObject.h"
+#import "WeiboSDK.h"
 
 @interface ShareCtrl ()
 
@@ -75,23 +76,22 @@
     [self sendImageContentWithScene:WXSceneSession];
 }
 
-- (IBAction)sendToWechatFrends:(id)sender {
+- (IBAction)shareToWechatFrends:(id)sender {
     [self sendImageContentWithScene:WXSceneTimeline];
 }
 
+- (IBAction)shareToWeibo:(id)sender {
+    [self sendWeiboImageContent];
+}
+
 //scene : WXSceneSession 消息 WXSceneTimeline 朋友圈
-- (void) sendImageContentWithScene:(int)scene
+- (void)sendImageContentWithScene:(int)scene
 {
     WXMediaMessage *message = [WXMediaMessage message];
     UIImage *image = [self screenView:self.view];
     [message setThumbImage:image];
     
     WXImageObject *ext = [WXImageObject object];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"res5thumb" ofType:@"png"];
-    NSLog(@"filepath :%@",filePath);
-    ext.imageData = [NSData dataWithContentsOfFile:filePath];
-    
-//    UIImage* image = [UIImage imageWithData:ext.imageData];
     ext.imageData = UIImagePNGRepresentation(image);
     
     message.mediaObject = ext;
@@ -103,6 +103,25 @@
     
     [WXApi sendReq:req];
 }
+
+- (void)sendWeiboImageContent {
+    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare]];
+    [WeiboSDK sendRequest:request];
+}
+
+- (WBMessageObject *)messageToShare
+{
+    WBMessageObject *message = [WBMessageObject message];
+    
+    WBImageObject *imageObject = [WBImageObject object];
+    UIImage *image = [self screenView:self.view];
+    imageObject.imageData = UIImagePNGRepresentation(image);
+    message.imageObject = imageObject;
+
+    return message;
+}
+
+
 
 - (UIImage*)screenView:(UIView *)view{
     _bottomView.hidden = YES;
