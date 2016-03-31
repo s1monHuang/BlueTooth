@@ -63,17 +63,6 @@ static NSString* identifier =@"PersonalCell";
     
     //训练目标改变通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTargetValue:) name:targetNotification object:nil];
-//    //年龄改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAgeValue:) name:ageNotification object:nil];
-//    //性别改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetSexValue:) name:sexNotification object:nil];
-//    //身高改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetHeightValue:) name:heightNotification object:nil];
-//    //体重改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseWeightValue:) name:weightNotification object:nil];
-//    //步长改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reseStepLongValue:) name:stepLongNotification object:nil];
-//    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -131,6 +120,7 @@ static NSString* identifier =@"PersonalCell";
 {
     __weak myDataController *blockSelf = self;
     [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
+    DLog(@"%@",CurrentUser);
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         if (finished) {
             //修改数据库信息
