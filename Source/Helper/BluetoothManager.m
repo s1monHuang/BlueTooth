@@ -134,9 +134,6 @@ static BluetoothManager *manager = nil;
                 case BluetoothConnectingConfirmBinding: {
                     weakSelf.successType = BluetoothConnectingConfirmBindingSuccess;
                     weakSelf.isConnectSuccess = YES;
-//                    if (weakSelf.isReadedPripheralAllData) {
-//                        weakSelf.connectionType = BluetoothConnectingSuccess;
-//                    }
                 }
                     break;
                     //成功设置基本信息
@@ -216,6 +213,7 @@ static BluetoothManager *manager = nil;
             weakSelf.successType = BluetoothConnectingNormalSuccess;
             weakSelf.characteristics = nil;
             weakSelf.isConnectSuccess = NO;
+            [weakSelf removeAllQueue];
             [weakSelf connectingBlueTooth:peripheral];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECT_PERIPHERAL
@@ -291,6 +289,7 @@ static BluetoothManager *manager = nil;
                 } else {
                     weakSelf.successType = BluetoothConnectingAllSuccess;
                     weakSelf.isReadedPripheralAllData = YES;
+                    weakSelf.connectionType = BluetoothConnectingSuccess;
                     [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:BlueToothIsReadedPripheralAllData];
                 }
             }
@@ -421,6 +420,10 @@ static BluetoothManager *manager = nil;
     }
 }
 
+- (void)removeAllQueue {
+    [_bluetoothQueue removeAllObjects];
+}
+
 - (SportDataModel *)sportDataModelWithData:(NSData *)data {
     SportDataModel *model = [[SportDataModel alloc] init];
     Byte *byte = (Byte *)data.bytes;
@@ -521,7 +524,7 @@ static BluetoothManager *manager = nil;
  *  @param value
  */
 - (void)readSportData {
-    if (_connectionType != BluetoothConnectingSuccess) {
+    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothQueueReadSportData)};
         [_bluetoothQueue addObject:dictionary];
         return;
@@ -530,7 +533,6 @@ static BluetoothManager *manager = nil;
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0xB1;
-//    Byte b[20] = {0xAA,0xB1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [self.bindingPeripheral.peripheral writeValue:data
@@ -540,7 +542,7 @@ static BluetoothManager *manager = nil;
 
 
 - (void)readHistroySportDataWithTime:(Byte)time {
-    if (_connectionType != BluetoothConnectingSuccess) {
+    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothQueueHistroyReadSportData)};
         [_bluetoothQueue addObject:dictionary];
         return;
@@ -580,7 +582,7 @@ static BluetoothManager *manager = nil;
  *  @param value
  */
 - (void)readHeartRate {
-    if (_connectionType != BluetoothConnectingSuccess) {
+    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothQueueHeartRate)};
         [_bluetoothQueue addObject:dictionary];
         return;
@@ -626,7 +628,7 @@ static BluetoothManager *manager = nil;
 }
 
 - (void)setBasicInfomation:(BasicInfomationModel *)model {
-    if (_connectionType != BluetoothConnectingSuccess) {
+    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothQueueSetBasicInfomation),
                                     @"model":model};
         [_bluetoothQueue addObject:dictionary];

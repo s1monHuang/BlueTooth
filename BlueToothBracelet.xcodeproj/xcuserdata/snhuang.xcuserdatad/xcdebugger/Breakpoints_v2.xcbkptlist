@@ -20,13 +20,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/ViewController/Sport/SportCtrl.m"
-            timestampString = "480994872.032607"
+            timestampString = "481189132.005305"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
-            landmarkName = "@implementation SportCtrl"
-            landmarkType = "3">
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -35,13 +35,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "480941174.117185"
+            filePath = "Source/ViewController/Sport/SportCtrl.m"
+            timestampString = "481189142.540894"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
-            landmarkName = "-readHeartRate"
+            startingLineNumber = "263"
+            endingLineNumber = "263"
+            landmarkName = "-changeStepCount:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

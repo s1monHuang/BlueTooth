@@ -38,6 +38,8 @@
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
+@property (nonatomic,assign) NSInteger stepCount;
+
 @property (nonatomic,assign) BOOL isLoading;        //是否正在同步数据
 
 @end
@@ -105,6 +107,8 @@
     [self.circleChart strokeChart];
     [_chartView addSubview:self.circleChart];
     
+    _stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
+    
     UIView *tempView = [[UIView alloc] initWithFrame:CGRectMake(30, 30, self.circleChart.frame.size.width - 60, self.circleChart.frame.size.width - 60)];
     tempView.contentMode = UIViewContentModeScaleAspectFill;
     tempView.clipsToBounds = YES;
@@ -113,7 +117,7 @@
     tempView.backgroundColor = [UIColor whiteColor];
     [_circleChart addSubview:tempView];
     
-    CGFloat completionRateFloat = _infomationModel.target == 0?0:_sportModel.step / (double)_infomationModel.target * 100;
+    CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     
@@ -132,9 +136,8 @@
     
     
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
-    NSInteger stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
-    if (stepCount) {
-        NSString *target = [NSString stringWithFormat:@"目标 %ld",stepCount];
+    if (_stepCount) {
+        NSString *target = [NSString stringWithFormat:@"目标 %ld",_stepCount];
         _totalStep.text = target;
     }else{
         _totalStep.text = @"目标 0";
@@ -254,6 +257,13 @@
 - (void)changeStepCount:(NSNotification *)sender
 {
     _totalStep.text = [NSString stringWithFormat:@"目标 %@",sender.object];
+    _stepCount = [sender.object integerValue];
+    
+    CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
+    NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
+    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    _complateValue.text = completionRate;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -287,14 +297,14 @@
     [_refreshBututton.layer removeAllAnimations];
     _sportModel = [notification object];
     
-    CGFloat completionRateFloat = _infomationModel.target == 0?0:_sportModel.step / (double)_infomationModel.target * 100;
+    CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     
     _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
     
-    _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_infomationModel?_infomationModel.target:0).stringValue];
+    _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
     
     [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.target):@(0)];
     
