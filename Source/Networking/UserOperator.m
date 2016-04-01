@@ -69,7 +69,7 @@
                   callBack:(BaseNetworkCallBack)callBack
 {
     NSString *path = @"rest/ring/get-rank-list-info";
-    NSDictionary *params = @{@"id" : CurrentUser.userId,
+    NSDictionary *params = @{@"id" : CurrentUser.userId?CurrentUser.userId:@"",
                              @"startDate" : startDate,
                              @"endDate" : endDate
                              };

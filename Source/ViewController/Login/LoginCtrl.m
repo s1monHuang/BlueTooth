@@ -93,8 +93,6 @@
 }
 
 - (IBAction)btnLoginClick:(id)sender {
-    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-    return;
     @weakify(self);
     if (self.txtUserAccount.text.length > 0 && [self.txtUserAccount.text rangeOfString:@"@"].location != NSNotFound ) {
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];

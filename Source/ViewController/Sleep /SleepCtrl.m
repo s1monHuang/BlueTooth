@@ -35,27 +35,21 @@
 
 @property (nonatomic,assign) NSInteger deepSleepPercent;
 
+@property (nonatomic,assign) BOOL isLoading;        //是否正在同步数据
+
 @end
 
 @implementation SleepCtrl
 
 - (void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshSleepDataSuccess)
-                                                 name:READ_HISTORY_SPORTDATA_SUCCESS
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(disConnectPeripheral)
-                                                 name:DISCONNECT_PERIPHERAL
-                                               object:nil];
+    if (_isLoading) {
+        [self startAnimation];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
-    [[BluetoothManager share] cancel];
 }
 
 - (void)viewDidLoad {
@@ -65,7 +59,17 @@
     self.title = @"睡眠";
     self.view.backgroundColor = kThemeGrayColor;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshSleepDataSuccess)
+                                                 name:READ_HISTORY_SPORTDATA_SUCCESS
+                                               object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
+                                               object:nil];
+    
+    _isLoading = NO;
     
     [self resetSleepValue];
     
@@ -164,13 +168,7 @@
     _deepSleepPercent = (_deepSleepValue * 1.0 / _sleepValue) * 100;
 }
 
-- (void)refreshSleepData {
-    if (![[BluetoothManager share] isExistCharacteristic]) {
-        return;
-    }
-    _refreshBututton.userInteractionEnabled = NO;
-    [[BluetoothManager share] readHistroySportDataWithTime:0];
-    
+- (void)startAnimation {
     CABasicAnimation* rotationAnimation;
     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
@@ -180,7 +178,18 @@
     [_refreshBututton.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
+- (void)refreshSleepData {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
+        return;
+    }
+    _isLoading = YES;
+    _refreshBututton.userInteractionEnabled = NO;
+    [[BluetoothManager share] readHistroySportDataWithTime:0];
+    [self startAnimation];
+}
+
 - (void)refreshSleepDataSuccess {
+    _isLoading = NO;
     [_refreshBututton.layer removeAllAnimations];
     [self resetSleepValue];
     [_circleChart updateChartByCurrent:@(_deepSleepPercent) byTotal:@(100)];
@@ -224,6 +233,7 @@
 - (void)disConnectPeripheral {
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
+    _isLoading = NO;
 }
 
 @end

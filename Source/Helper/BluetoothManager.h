@@ -48,6 +48,14 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
     BluetoothConnectingAllSuccess
 };
 
+typedef NS_ENUM(NSInteger,BluetoothQueueType) {
+    BluetoothQueueSetBasicInfomation = 0,
+    BluetoothQueueReadSportData,
+    BluetoothQueueHistroyReadSportData,
+    BluetoothQueueHeartRate,
+    BluetoothQueueAll
+};
+
 
 
 @protocol BluetoothManagerDelegate <NSObject>
@@ -61,6 +69,7 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
 
 @interface BluetoothManager : NSObject {
     BabyBluetooth *_baby;
+    NSMutableArray *_bluetoothQueue;
 }
 
 @property (strong, nonatomic) BabyBluetooth *baby;
