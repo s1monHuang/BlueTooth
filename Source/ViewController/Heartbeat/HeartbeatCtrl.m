@@ -99,7 +99,7 @@
 }
 
 - (void)clickButton:(UIButton *)button {
-    if (![BluetoothManager share].characteristics) {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
         return;
     }
     if (button.selected) {

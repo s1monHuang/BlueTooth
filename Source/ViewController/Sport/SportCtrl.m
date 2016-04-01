@@ -38,28 +38,21 @@
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
+@property (nonatomic,assign) BOOL isLoading;        //是否正在同步数据
+
 @end
 
 @implementation SportCtrl
 
 - (void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshSportDataSuccess:)
-                                                 name:READ_SPORTDATA_SUCCESS
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(disConnectPeripheral)
-                                                 name:DISCONNECT_PERIPHERAL
-                                               object:nil];
+    if (_isLoading) {
+        [self startAnimation];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:READ_SPORTDATA_SUCCESS object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DISCONNECT_PERIPHERAL object:nil];
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
-    [[BluetoothManager share] cancel];
 }
 
 
@@ -70,8 +63,19 @@
     self.title = @"运动";
     self.view.backgroundColor = kThemeGrayColor;
     
+    _isLoading = NO;
     _sportModel = [DBManager selectSportData];
     _infomationModel = [DBManager selectBasicInfomation];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshSportDataSuccess:)
+                                                 name:READ_SPORTDATA_SUCCESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(changeStepCount:)
@@ -214,6 +218,7 @@
     
 }
 
+
 //- (void)autoDownload
 //{
 //    
@@ -251,22 +256,12 @@
     _totalStep.text = [NSString stringWithFormat:@"目标 %@",sender.object];
 }
 
-- (void)updateData
-{
-    [self.circleChart updateChartByCurrent:@86];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)refreshSportData {
-    if (![[BluetoothManager share] isExistCharacteristic]) {
-        return;
-    }
-    _refreshBututton.userInteractionEnabled = NO;
-    [[BluetoothManager share] readSportData];
+- (void)startAnimation {
     CABasicAnimation* rotationAnimation;
     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
@@ -277,7 +272,18 @@
     [_refreshBututton.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
+- (void)refreshSportData {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
+        return;
+    }
+    _isLoading = YES;
+    _refreshBututton.userInteractionEnabled = NO;
+    [[BluetoothManager share] readSportData];
+    [self startAnimation];
+}
+
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
+    _isLoading = NO;
     [_refreshBututton.layer removeAllAnimations];
     _sportModel = [notification object];
     
@@ -314,6 +320,7 @@
 - (void)disConnectPeripheral {
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
+    _isLoading = NO;
 }
 
 - (void)rightBarButtonClick:(id)sender {

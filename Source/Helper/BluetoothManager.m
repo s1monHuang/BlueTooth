@@ -48,6 +48,8 @@ static BluetoothManager *manager = nil;
         _connectionType = BluetoothConnectingNormal;
         _successType = BluetoothConnectingNormalSuccess;
         _isConnectSuccess = NO;
+        
+        _bluetoothQueue = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -132,6 +134,9 @@ static BluetoothManager *manager = nil;
                 case BluetoothConnectingConfirmBinding: {
                     weakSelf.successType = BluetoothConnectingConfirmBindingSuccess;
                     weakSelf.isConnectSuccess = YES;
+//                    if (weakSelf.isReadedPripheralAllData) {
+//                        weakSelf.connectionType = BluetoothConnectingSuccess;
+//                    }
                 }
                     break;
                     //成功设置基本信息
@@ -331,6 +336,12 @@ static BluetoothManager *manager = nil;
                 DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
+                //确认绑定成功
+            case BluetoothConnectingConfirmBindingSuccess: {
+                weakSelf.connectionType = BluetoothConnectingSuccess;
+                [weakSelf handleBluetoothQueue];
+            }
+                break;
                 //读取运动数据成功
             case BluetoothConnectingReadSportDataSuccess: {
                 SportDataModel *model = [weakSelf sportDataModelWithData:characteristic.value];
@@ -338,12 +349,16 @@ static BluetoothManager *manager = nil;
                 DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
                 [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
                                                                     object:model];
+                weakSelf.connectionType = BluetoothConnectingSuccess;
+                [weakSelf handleBluetoothQueue];
             }
                 break;
                 //设置基本信息成功
             case BluetoothConnectingSetBasicInfomationSuccess: {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
                                                                     object:nil];
+                weakSelf.connectionType = BluetoothConnectingSuccess;
+                [weakSelf handleBluetoothQueue];
             }
                 break;
                 //成功读取蓝牙设备中的72小时内的运动数据后(每次获取一小时的,获取72次),
@@ -360,6 +375,8 @@ static BluetoothManager *manager = nil;
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
                                                                         object:nil];
+                    weakSelf.connectionType = BluetoothConnectingSuccess;
+                    [weakSelf handleBluetoothQueue];
                 }
             }
                 break;
@@ -369,6 +386,35 @@ static BluetoothManager *manager = nil;
             }
                 break;
                 
+            default:
+                break;
+        }
+    }
+}
+
+- (void)handleBluetoothQueue {
+    if (_bluetoothQueue.count > 0) {
+        NSDictionary *dictionary = [_bluetoothQueue objectAtIndex:0];
+        [_bluetoothQueue removeObject:dictionary];
+        BluetoothQueueType type = [[dictionary objectForKey:@"type"] integerValue];
+        switch (type) {
+            case BluetoothQueueSetBasicInfomation: {
+                BasicInfomationModel *model = [dictionary objectForKey:@"model"];
+                [self setBasicInfomation:model];
+            }
+                break;
+            case BluetoothQueueReadSportData: {
+                [self readSportData];
+            }
+                break;
+            case BluetoothQueueHistroyReadSportData: {
+                [self readHistroySportDataWithTime:0];
+            }
+                break;
+            case BluetoothQueueHeartRate: {
+                [self readHeartRate];
+            }
+                break;
             default:
                 break;
         }
@@ -475,6 +521,11 @@ static BluetoothManager *manager = nil;
  *  @param value
  */
 - (void)readSportData {
+    if (_connectionType != BluetoothConnectingSuccess) {
+        NSDictionary *dictionary = @{@"type":@(BluetoothQueueReadSportData)};
+        [_bluetoothQueue addObject:dictionary];
+        return;
+    }
     _connectionType = BluetoothConnectingReadSportData;
     Byte b[20];
     b[0] = 0xAA;
@@ -489,6 +540,11 @@ static BluetoothManager *manager = nil;
 
 
 - (void)readHistroySportDataWithTime:(Byte)time {
+    if (_connectionType != BluetoothConnectingSuccess) {
+        NSDictionary *dictionary = @{@"type":@(BluetoothQueueHistroyReadSportData)};
+        [_bluetoothQueue addObject:dictionary];
+        return;
+    }
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte b[20];
     b[0] = 0xAA;
@@ -524,6 +580,11 @@ static BluetoothManager *manager = nil;
  *  @param value
  */
 - (void)readHeartRate {
+    if (_connectionType != BluetoothConnectingSuccess) {
+        NSDictionary *dictionary = @{@"type":@(BluetoothQueueHeartRate)};
+        [_bluetoothQueue addObject:dictionary];
+        return;
+    }
     _connectionType = BluetoothConnectingHeartRate;
     Byte b[20];
     b[0] = 0xAA;
@@ -560,9 +621,17 @@ static BluetoothManager *manager = nil;
                                              type:CBCharacteristicWriteWithResponse];
     [_baby cancelNotify:self.bindingPeripheral.peripheral
          characteristic:self.characteristics];
+    self.connectionType = BluetoothConnectingSuccess;
+    [self handleBluetoothQueue];
 }
 
 - (void)setBasicInfomation:(BasicInfomationModel *)model {
+    if (_connectionType != BluetoothConnectingSuccess) {
+        NSDictionary *dictionary = @{@"type":@(BluetoothQueueSetBasicInfomation),
+                                    @"model":model};
+        [_bluetoothQueue addObject:dictionary];
+        return;
+    }
     _connectionType = BluetoothConnectingSetBasicInfomation;
     NSDate *date = [NSDate date];
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

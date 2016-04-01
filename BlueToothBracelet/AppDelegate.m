@@ -92,7 +92,10 @@
             if (finished) {
                 [[UserManager defaultInstance] saveUser:userInfo];
                 
-                BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
+                BasicInfomationModel *infoModel = [DBManager selectBasicInfomation];
+                if (!infoModel) {
+                    infoModel = [[BasicInfomationModel alloc] init];
+                }
                 infoModel.nickName = CurrentUser.nickName;
                 infoModel.gender = CurrentUser.sex;
                 infoModel.age = CurrentUser.age;

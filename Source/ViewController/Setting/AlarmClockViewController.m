@@ -73,6 +73,10 @@
                                              selector:@selector(setBasicInfomationSuccess:)
                                                  name:SET_BASICINFOMATION_SUCCESS
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -502,6 +506,10 @@
     if (!change) {
         DLog(@"存储闹钟失败");
     }
+}
+
+- (void)disConnectPeripheral {
+    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
 }
 
 
