@@ -26,9 +26,6 @@
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
-@property (strong, nonatomic)  UITextField *txtUserAccount;
-@property (strong, nonatomic)  UITextField *txtUserPassword;
-
 @property (nonatomic , assign) NSInteger firstDownload;
 
 - (IBAction)btnLoginClick:(id)sender;
@@ -53,12 +50,16 @@
     self.usernamebgbox.userInteractionEnabled = YES;
     self.passwordbgbox.userInteractionEnabled = YES;
     
+    
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+    
     // 用户
     UIImageView *usericon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 13, 20, 20)];
     usericon.image = [UIImage imageNamed:@"user"];
     [self.usernamebgbox addSubview:usericon];
     self.txtUserAccount = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
-//    self.txtUserAccount.text = @"377977004@qq.com";
+    
     self.txtUserAccount.placeholder = @"请输入用户名";
     [self.usernamebgbox addSubview:self.txtUserAccount];
     
@@ -68,9 +69,21 @@
     passwordicon.image = [UIImage imageNamed:@"password"];
     [self.passwordbgbox addSubview:passwordicon];
     self.txtUserPassword = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
-//    self.txtUserPassword.text = @"111111";
     self.txtUserPassword.placeholder = @"请输入密码";
     [self.passwordbgbox addSubview:self.txtUserPassword];
+    if (userName && password) {
+        NSInteger isAppIn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appDelegateToLogin"] integerValue];
+        if (isAppIn == 1) {
+            self.txtUserAccount.text = userName;
+            self.txtUserPassword.text = password;
+            [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"appDelegateToLogin"];
+        }
+    }else{
+        self.txtUserAccount.text = @"";
+        self.txtUserPassword.text = @"";
+    }
+
+    
     
     BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
     if (!first) {
@@ -80,6 +93,7 @@
     }else{
         _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -145,9 +159,22 @@
     [self.navigationController pushViewController:ctl animated:YES];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    
+    [self.txtUserAccount resignFirstResponder];
+    [self.txtUserPassword resignFirstResponder];
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

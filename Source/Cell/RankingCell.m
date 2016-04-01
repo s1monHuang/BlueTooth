@@ -36,10 +36,13 @@
         self.ismeimg.hidden = YES;
     }
     self.lblRankName.text = rankEntity.userName;
+    
     self.lblStepNumber = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 120, 15, 100, 25)];
     self.lblStepNumber.textAlignment = NSTextAlignmentRight;
     self.lblStepNumber.text = [NSString stringWithFormat:@"%@步",rankEntity.sumSteps];
     [self.contentView addSubview:self.lblStepNumber];
+//    CGFloat lblRankNameW = kScreenWidth - _lblStepNumber.x;
+//    _lblRankName.width = lblRankNameW;
 
     switch (row) {
         case 1:

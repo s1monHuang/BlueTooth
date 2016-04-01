@@ -11,4 +11,7 @@
 
 @interface LoginCtrl : BaseViewController
 
+@property (strong, nonatomic)  UITextField *txtUserAccount;
+@property (strong, nonatomic)  UITextField *txtUserPassword;
+
 @end

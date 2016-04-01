@@ -142,22 +142,26 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     CGRect labelFrame = CGRectMake(kScreenWidth - 80, 0, 60, 44);
     
     _startLabel = [[UILabel alloc] initWithFrame:labelFrame];
-    NSString *startStr ;
+    NSString *startStr;
     if (_changeModel.startTime) {
-//        if (_changeModel.startTime < 10) {
-//            startStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.clockHour];
-//        }
+        if (_changeModel.startTime < 10) {
+            startStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.startTime];
+        }else{
+            startStr = [NSString stringWithFormat:@"%ld:00",_changeModel.startTime];
+        }
         _startLabel.text = [NSString stringWithFormat:@"%@",startStr];
     }else{
         _startLabel.text = @"00:00";
     }
     
     _endLabel = [[UILabel alloc] initWithFrame:labelFrame];
-    NSString *endStr ;
+    NSString *endStr;
     if (_changeModel.endTime) {
-//        if (_changeModel.endTime < 10) {
-//            endStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.endTime];
-//        }
+        if (_changeModel.endTime < 10) {
+            endStr = [NSString stringWithFormat:@"0%ld:00",_changeModel.endTime];
+        }else{
+            endStr = [NSString stringWithFormat:@"%ld:00",_changeModel.endTime];
+        }
         _endLabel.text = [NSString stringWithFormat:@"%@",endStr];
     }else{
         _endLabel.text = @"00:00";
@@ -166,7 +170,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     
     _frequencyLabel = [[UILabel alloc] initWithFrame:labelFrame];
     if (_changeModel.sportInterval) {
-        _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
+        _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.sportInterval];
     }else{
         _frequencyStr =  @"15分钟";
         _frequencyLabel.text = _frequencyStr;
@@ -185,7 +189,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     }else{
         [clockSwitch setOn:NO];
     }
-    
+    _tableView.allowsSelection = _alertSwitch.isOn;
     [clockSwitch addTarget:self action:@selector(openAlarmSetting:) forControlEvents:UIControlEventValueChanged];
     [self openClockDay];
     
@@ -241,9 +245,14 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 - (void)openClockDay
 {
     NSString *clockStr = [self toBinarySystemWithDecimalSystem:_alertDay];
-    for (NSInteger i = 0; i < clockStr.length; i++) {
-        NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
-        [self.alertArray addObject:subStr];
+    if (_alertDay > 0) {
+        for (NSInteger i = clockStr.length -1; i >= 0; i--) {
+            NSString *subStr = [clockStr substringWithRange:NSMakeRange(i, 1)];
+            [self.alertArray addObject:subStr];
+        }
+        
+    }else{
+        
     }
     NSInteger tempInteger = 8 - self.alertArray.count;
     for (NSInteger i = 0; i < tempInteger; i++) {
@@ -371,17 +380,26 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 //开始/结束时间选择
 - (void)setUpTimePickerView
 {
-    if (!_coverView) {
+//    if (!_coverView) {
         [self setUpCoverView];
-    }
+//    }
     self.timePickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0 , kScreenHeight/2 - 100, kScreenWidth, 200)];
     self.timePickerView.dataSource = self;
     self.timePickerView.delegate = self;
     self.timePickerView.backgroundColor = [UIColor whiteColor];
     
     [_coverView addSubview:_timePickerView];
+    [_toolBar removeFromSuperview];
+    CGFloat toolBarY = CGRectGetMaxY(self.timePickerView.frame);
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
+    _toolBar = toolBar;
+    toolBar.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    toolBar.items = @[placeItem, cancelItem];
+    [_coverView addSubview:_toolBar];
     
-    [self.view addSubview:_coverView];
+    
 }
 
 - (void)removeCoverView
@@ -391,14 +409,14 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
             
         case TimePickerSelectedStart:{
             if (!_timeStr) {
-                _timeStr = @"07:00";
+                _timeStr = @"00:00";
             }
             _startLabel.text = _timeStr;
         }
             break;
         case TimePickerSelectedEnd:{
             if (!_timeStr) {
-                _timeStr = @"18:00";
+                _timeStr = @"00:00";
             }
             _endLabel.text = _timeStr;
         }
@@ -414,6 +432,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
             break;
     }
     [_coverView removeFromSuperview];
+    _coverView = nil;
 }
 
 - (void)touchRemoveCoverView
@@ -438,12 +457,20 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     self.miniPickerView.dataSource = self;
     self.miniPickerView.delegate = self;
     self.miniPickerView.backgroundColor = [UIColor whiteColor];
-    if (!_coverView) {
+//    if (!_coverView) {
         [self setUpCoverView];
-    }
+//    }
     [_coverView addSubview:self.miniPickerView];
-//    _TimePicker.alpha = 0;
-    [self.view addSubview:_coverView];
+    [_toolBar removeFromSuperview];
+    CGFloat toolBarY = CGRectGetMaxY(self.miniPickerView.frame);
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
+    _toolBar = toolBar;
+    toolBar.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    toolBar.items = @[placeItem, cancelItem];
+    [_coverView addSubview:_toolBar];
+    self.timePickerView.alpha = 0;
 }
 
 - (void)setUpCoverView
@@ -455,13 +482,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchRemoveCoverView)];
     [coverView addGestureRecognizer:tap];
     
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, kScreenHeight/2 +100, kScreenWidth, 50)];
-    _toolBar = toolBar;
-    toolBar.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
-    UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    toolBar.items = @[placeItem, cancelItem];
-    [_coverView addSubview:_toolBar];
+    [self.view addSubview:_coverView];
 }
 
 #pragma mark - UIPickerViewDelegate, UIPickerViewDataSource
@@ -523,7 +544,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 }
 
 - (void)clickButton:(UIButton *)button {
-    if (![BluetoothManager share].characteristics) {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
         return;
     }
     [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];

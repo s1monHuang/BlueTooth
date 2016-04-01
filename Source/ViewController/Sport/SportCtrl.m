@@ -70,9 +70,15 @@
                                              selector:@selector(refreshSportDataSuccess:)
                                                  name:READ_SPORTDATA_SUCCESS
                                                object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeStepCount:)
+                                                 name:@"changeStepCount"
                                                object:nil];
     
     //自动登录
@@ -123,9 +129,14 @@
     _complateStep.textColor = [UIColor blackColor];
     [tempView addSubview:_complateStep];
     
-    NSString *target = [NSString stringWithFormat:@"目标 %@",@(_infomationModel?_infomationModel.target:0).stringValue];
+    NSString *target = [NSString stringWithFormat:@"目标 %@",CurrentUser.stepCount];
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
-    _totalStep.text = target;
+    if (CurrentUser.stepCount.length == 0) {
+        _totalStep.text = target;
+    }else{
+        _totalStep.text = @"目标 0";
+    }
+    
     _totalStep.textAlignment = NSTextAlignmentCenter;
     _totalStep.textColor = [UIColor blackColor];
     [tempView addSubview:_totalStep];
@@ -201,11 +212,45 @@
                                                                     action:@selector(rightBarButtonClick:)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
+    
 }
 
-- (void)updateData
+
+//- (void)autoDownload
+//{
+//    
+//    self.operateVM = [OperateViewModel viewModel];
+//    @weakify(self);
+//    
+////        [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
+//    
+//    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+//        @strongify(self);
+//        if (finished) {
+//            [[UserManager defaultInstance] saveUser:userInfo];
+//            
+//            BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
+//            infoModel.nickName = CurrentUser.nickName;
+//            infoModel.gender = CurrentUser.sex;
+//            infoModel.age = CurrentUser.age;
+//            infoModel.height = [CurrentUser.high integerValue];
+//            infoModel.weight = [CurrentUser.weight integerValue];
+//            infoModel.distance = [CurrentUser.stepLong integerValue];
+//            BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
+//            if (!Info) {
+//                DLog(@"存入用户信息失败");
+//            }
+//            [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+//            
+//        } else {
+//            [self showHUDText:userInfo];
+//        }
+//    };
+//}
+
+- (void)changeStepCount:(NSNotification *)sender
 {
-    [self.circleChart updateChartByCurrent:@86];
+    _totalStep.text = [NSString stringWithFormat:@"目标 %@",sender.object];
 }
 
 - (void)didReceiveMemoryWarning {

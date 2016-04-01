@@ -31,6 +31,8 @@
 
 @property (nonatomic , strong) UILabel *lblUserName;
 
+@property (nonatomic , assign) BOOL setpasswordEmpty;
+
 
 @end
 

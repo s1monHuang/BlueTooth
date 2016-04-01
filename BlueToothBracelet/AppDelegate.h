@@ -13,6 +13,10 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, retain) UITabBarController *mainTabBarController;
 
+@property (nonatomic , copy) NSString *userName;
+
+@property (nonatomic , copy) NSString *password;
+
 // 当前类的一个单例方法
 + (AppDelegate *)defaultDelegate;
 

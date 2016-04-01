@@ -26,10 +26,18 @@
 
 @property (nonatomic , strong) UIButton *rightBtn;
 
+@property (nonatomic , strong) BasicInfomationModel *changeModel;
+
+@property (nonatomic , assign) NSInteger stepCount;
+
 
 @end
 
 @implementation TrainTargetController
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,6 +51,11 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     self.navigationItem.rightBarButtonItem = item;
     
+    _changeModel = [DBManager selectBasicInfomation];
+    if (!_changeModel) {
+        _changeModel = [[BasicInfomationModel alloc] init];
+    }
+    
     _everydayTrainLabel.alpha = 0.8;
     _leftImageView.image = [UIImage imageNamed:@"pic-distance"];
     _rightImageView.image = [UIImage imageNamed:@"pic-fire"];
@@ -52,7 +65,9 @@
     
     _targetSlider.minimumValue = 0.5;
     _targetSlider.maximumValue = 3;
-    _targetSlider.value = 1;
+    CGFloat targetSlider = (CGFloat)[CurrentUser.stepCount integerValue] / 10000;
+    DLog(@"%@",CurrentUser.stepCount);
+    _targetSlider.value = targetSlider;
     UIImage *thumbImage = [self OriginImage:[UIImage imageNamed:@"tuodong"] scaleToSize:CGSizeMake(20, 35)];
     [_targetSlider setThumbImage:thumbImage forState:UIControlStateNormal];
     _targetSlider.minimumTrackTintColor = [UIColor clearColor];
@@ -94,6 +109,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setBasicInfomationSuccess:)
+                                                 name:SET_BASICINFOMATION_SUCCESS
+                                               object:nil];
     NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     if (first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -136,32 +155,29 @@
 {
     NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
+    _changeModel.target = targetInteger;
     if (first == 1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
         myDataController *VC = [[myDataController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
-    }else
-    {
-        //修改数据库信息
-        BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-        if (!changeModel) {
-            changeModel = [[BasicInfomationModel alloc] init];
-        }
-        changeModel.target = targetInteger;
-        BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-        if (!change) {
-            DLog(@"修改训练目标失败");
-        }
     }
+    if (![[BluetoothManager share] isExistCharacteristic]) {
+        return;
+    }
+    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+    
+    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
+    [[BluetoothManager share] setBasicInfomation:_changeModel];
 }
 
 //改变步数
 - (void)valueChange
 {
-    NSInteger count = ((NSInteger)(_targetSlider.value * 10000 ) % 100) > 49 ? (100 - (NSInteger)(_targetSlider.value * 10000 ) % 100 + (NSInteger)(_targetSlider.value * 10000)) : ((NSInteger)(_targetSlider.value * 10000) - (NSInteger)(_targetSlider.value * 10000 ) % 100 );
-    _stepCountLabel.text = [NSString stringWithFormat:@"%ld步",count];
+    _stepCount = ((NSInteger)(_targetSlider.value * 10000 ) % 100) > 49 ? (100 - (NSInteger)(_targetSlider.value * 10000 ) % 100 + (NSInteger)(_targetSlider.value * 10000)) : ((NSInteger)(_targetSlider.value * 10000) - (NSInteger)(_targetSlider.value * 10000 ) % 100 );
+    _stepCountLabel.text = [NSString stringWithFormat:@"%ld步",_stepCount];
     _stepCountLabel.textColor = KThemeGreenColor;
     
+    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
@@ -216,6 +232,15 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setBasicInfomationSuccess:(NSNotification *)notification {
+    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+    if (!change) {
+        DLog(@"修改训练目标失败");
+    }
 }
 
 
