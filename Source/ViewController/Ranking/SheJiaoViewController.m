@@ -10,7 +10,7 @@
 #import "ShareCtrl.h"
 #import "OperateViewModel.h"
 
-@interface SheJiaoViewController ()<UITableViewDataSource,UITableViewDelegate, UIAlertViewDelegate>
+@interface SheJiaoViewController ()<UITableViewDataSource,UITableViewDelegate, UIAlertViewDelegate ,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic , strong) OperateViewModel *operateVM;
@@ -26,14 +26,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"设计";
+    self.title = @"社交";
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [[OperateViewModel alloc] init];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView setTableFooterView:[UIView new]];
-    [self.tableView reloadData];
+    _tableView.bounces = NO;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removetxtqueryCode)];
+    [_tableView addGestureRecognizer:tap];
     
 }
 
@@ -67,7 +70,7 @@
         return 28;
     }
     else{
-        return 48;
+        return 25;
     }
 }
 
@@ -100,7 +103,8 @@
     if (indexPath.section == 0) {
         
         UIImageView *headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
-        headerImageBg.image = [UIImage imageNamed:@"portrait2"];
+        NSString *imageStr = [CurrentUser.sex isEqualToString:@"男"] ? @"man":@"woman";
+        headerImageBg.image = [UIImage imageNamed:imageStr];
         [cell.contentView addSubview:headerImageBg];
     
         
@@ -156,6 +160,7 @@
         UITextField *txtqueryCode = [[UITextField alloc] initWithFrame:CGRectMake(78, 32, 145, 30)];
         txtqueryCode.background = [UIImage imageNamed:@"share_inputbox"];
         _txtqueryCode = txtqueryCode;
+        txtqueryCode.delegate = self;
         [cell.contentView addSubview:txtqueryCode];
         
         UIButton *btnAddShare = [[UIButton alloc] initWithFrame:CGRectMake(txtqueryCode.x+txtqueryCode.width+10, 32, 75, 30)];
@@ -207,6 +212,21 @@
     if (buttonIndex == 1) {
         [self relateUserInfo];
     }
+}
+
+- (void)removetxtqueryCode
+{
+    [_txtqueryCode resignFirstResponder];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 400)]];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.tableView setTableFooterView:[UIView new]];
 }
 
 - (void)didReceiveMemoryWarning {

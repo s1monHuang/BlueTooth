@@ -65,21 +65,20 @@
     
     _targetSlider.minimumValue = 0.5;
     _targetSlider.maximumValue = 3;
-    CGFloat targetSlider = (CGFloat)[CurrentUser.stepCount integerValue] / 10000;
-    DLog(@"%@",CurrentUser.stepCount);
-    _targetSlider.value = targetSlider;
     UIImage *thumbImage = [self OriginImage:[UIImage imageNamed:@"tuodong"] scaleToSize:CGSizeMake(20, 35)];
     [_targetSlider setThumbImage:thumbImage forState:UIControlStateNormal];
     _targetSlider.minimumTrackTintColor = [UIColor clearColor];
     _targetSlider.maximumTrackTintColor = [UIColor clearColor];
+    NSInteger stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
+    CGFloat targetSlider = (CGFloat)stepCount *0.0001;
+    _targetSlider.value = targetSlider;
     
     [_targetSlider addTarget:self action:@selector(valueChange) forControlEvents:UIControlEventValueChanged];
     [self.view bringSubviewToFront:_targetSlider];
-    
-    _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf步",_targetSlider.value * 10000];
     _stepCountLabel.textColor = KThemeGreenColor;
     _stepCountLabel.textAlignment = NSTextAlignmentCenter;
     _stepCountLabel.font = [UIFont systemFontOfSize:25];
+    _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf步",_targetSlider.value * 10000];
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
@@ -167,6 +166,8 @@
     [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     
     CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
+    [[NSUserDefaults standardUserDefaults] setObject:@(_stepCount) forKey:targetStepCount];
+    DLog(@"%@",CurrentUser.stepCount);
     [[BluetoothManager share] setBasicInfomation:_changeModel];
 }
 
@@ -178,6 +179,7 @@
     _stepCountLabel.textColor = KThemeGreenColor;
     
     CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
+    
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
@@ -224,6 +226,8 @@
 {
     myDataController *VC = [[myDataController alloc] init];
     //    VC.isJump = self.isJump;
+    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
+    [[NSUserDefaults standardUserDefaults] setObject:@(_stepCount) forKey:targetStepCount];
     NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
     [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
     [self.navigationController pushViewController:VC animated:YES];

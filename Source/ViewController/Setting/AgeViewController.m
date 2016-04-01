@@ -44,7 +44,7 @@
     [self.view addSubview:lblAge];
     
     self.lblAgeValue = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120+28, 110, 20)];
-    self.lblAgeValue.text = CurrentUser.age;
+    self.lblAgeValue.text = CurrentUser.age ? CurrentUser.age : @"1";
     self.lblAgeValue.font = [UIFont systemFontOfSize:18];
     self.lblAgeValue.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.lblAgeValue];
@@ -104,7 +104,12 @@
 
 - (void)btnNextClick:(id)sender
 {
-    CurrentUser.age = self.lblAgeValue.text;
+    if (self.lblAgeValue.text) {
+       CurrentUser.age = self.lblAgeValue.text;
+    }else{
+        CurrentUser.age = @"1";
+    }
+    
 //    NSString *ageStr = self.lblAgeValue.text;
 //    //修改数据库信息
 //    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];

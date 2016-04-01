@@ -11,6 +11,7 @@
 #import "OperateViewModel.h"
 #import "SportDataModel.h"
 #import "ShareCtrl.h"
+#import "TrainTargetController.h"
 
 @interface SportCtrl ()
 
@@ -125,9 +126,11 @@
     _complateStep.textColor = [UIColor blackColor];
     [tempView addSubview:_complateStep];
     
-    NSString *target = [NSString stringWithFormat:@"目标 %@",CurrentUser.stepCount];
+    
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
-    if (CurrentUser.stepCount.length == 0) {
+    NSInteger stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
+    if (stepCount) {
+        NSString *target = [NSString stringWithFormat:@"目标 %ld",stepCount];
         _totalStep.text = target;
     }else{
         _totalStep.text = @"目标 0";
@@ -179,7 +182,7 @@
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20+22+10, boxWidth/3, 22)];
     lblBoxthreeText.textAlignment = NSTextAlignmentCenter;
     lblBoxthreeText.font = [UIFont systemFontOfSize:12];
-    lblBoxthreeText.text = @"消耗能量(kCall)";
+    lblBoxthreeText.text = @"消耗能量(kCal)";
     [threeBox addSubview:lblBoxthreeText];
     
     CGFloat refreshY = kScreenHeight > 480 ? 0 : 20;

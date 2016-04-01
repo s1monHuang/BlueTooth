@@ -77,7 +77,7 @@ static NSString* identifier =@"PersonalCell";
         self.navigationItem.leftBarButtonItem = item;
     }
     _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
-    [_tableView reloadData];
+//    [_tableView reloadData];
 }
 
 - (void)setUpTableView

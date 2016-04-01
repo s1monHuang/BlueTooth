@@ -146,6 +146,8 @@
 {
     TrainTargetController *VC = [[TrainTargetController alloc] init];
     //    VC.isJump = self.isJump;
+    NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",_stepLabel.text];
+    CurrentUser.stepLong = stepLongStr;
     [self.navigationController pushViewController:VC animated:YES];
 }
 
