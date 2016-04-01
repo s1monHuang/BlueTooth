@@ -138,7 +138,7 @@
     UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     _clockSwitch = clockSwitch;
     BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen];
-    _tableView.allowsSelection = switchOpen;
+    
     if (switchOpen) {
         [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen] boolValue]];
         if (_clockSwitch.isOn) {
@@ -149,6 +149,7 @@
     }else{
         [clockSwitch setOn:NO];
     }
+    _tableView.allowsSelection = _clockSwitch.isOn;
     
     [clockSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
     [self openClockDay];
@@ -335,9 +336,9 @@
 
 - (void)setUpTimePickerView
 {
-    if (!_coverView) {
+//    if (!_coverView) {
         [self setUpCoverView];
-    }
+//    }
     
     UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, kScreenHeight/2 - 100, kScreenWidth, 200)];
     _TimePicker = picker;
@@ -345,8 +346,17 @@
     [picker addTarget:self action:@selector(timeChange) forControlEvents:UIControlEventValueChanged];
     picker.datePickerMode = UIDatePickerModeCountDownTimer;
     [_coverView addSubview:picker];
+    CGFloat toolBarY = CGRectGetMaxY(_TimePicker.frame);
+    [_toolBar removeFromSuperview];
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
+    _toolBar = toolBar;
+    toolBar.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    toolBar.items = @[placeItem, cancelItem];
+    [_coverView addSubview:_toolBar];
     
-    [self.view addSubview:_coverView];
+    
 }
 
 //提醒时长选择
@@ -356,12 +366,21 @@
     self.miniPickerView.dataSource = self;
     self.miniPickerView.delegate = self;
     self.miniPickerView.backgroundColor = [UIColor whiteColor];
-    if (!_coverView) {
+//    if (!_coverView) {
         [self setUpCoverView];
-    }
+//    }
     [_coverView addSubview:self.miniPickerView];
     _TimePicker.alpha = 0;
-    [self.view addSubview:_coverView];
+//    [self.view addSubview:_coverView];
+    CGFloat toolBarY = CGRectGetMaxY(self.miniPickerView.frame);
+    [_toolBar removeFromSuperview];
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
+    _toolBar = toolBar;
+    toolBar.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    toolBar.items = @[placeItem, cancelItem];
+    [_coverView addSubview:_toolBar];
 }
 
 - (void)setUpCoverView
@@ -372,14 +391,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchRemoveCoverView)];
     [coverView addGestureRecognizer:tap];
+    [self.view addSubview:_coverView];
     
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, kScreenHeight/2 +100, kScreenWidth, 50)];
-    _toolBar = toolBar;
-    toolBar.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
-    UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    toolBar.items = @[placeItem, cancelItem];
-    [_coverView addSubview:_toolBar];
 }
 
 -(void)switchAction:(id)sender
@@ -463,7 +476,7 @@
 */
 
 - (void)clickButton:(UIButton *)button {
-    if (![BluetoothManager share].characteristics) {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
         return;
     }
     [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];

@@ -53,7 +53,9 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:READ_SPORTDATA_SUCCESS object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DISCONNECT_PERIPHERAL object:nil];
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
     [[BluetoothManager share] cancel];
@@ -69,6 +71,11 @@
     
     _sportModel = [DBManager selectSportData];
     _infomationModel = [DBManager selectBasicInfomation];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeStepCount:)
+                                                 name:@"changeStepCount"
+                                               object:nil];
     
     //自动登录
 //    [self autoDownload];
@@ -120,7 +127,12 @@
     
     NSString *target = [NSString stringWithFormat:@"目标 %@",CurrentUser.stepCount];
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
-    _totalStep.text = target;
+    if (CurrentUser.stepCount.length == 0) {
+        _totalStep.text = target;
+    }else{
+        _totalStep.text = @"目标 0";
+    }
+    
     _totalStep.textAlignment = NSTextAlignmentCenter;
     _totalStep.textColor = [UIColor blackColor];
     [tempView addSubview:_totalStep];
@@ -196,6 +208,7 @@
                                                                     action:@selector(rightBarButtonClick:)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
+    
 }
 
 //- (void)autoDownload
@@ -230,7 +243,10 @@
 //    };
 //}
 
-
+- (void)changeStepCount:(NSNotification *)sender
+{
+    _totalStep.text = [NSString stringWithFormat:@"目标 %@",sender.object];
+}
 
 - (void)updateData
 {

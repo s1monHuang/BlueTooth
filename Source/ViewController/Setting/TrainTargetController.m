@@ -161,7 +161,7 @@
         myDataController *VC = [[myDataController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     }
-    if (![BluetoothManager share].characteristics) {
+    if (![[BluetoothManager share] isExistCharacteristic]) {
         return;
     }
     [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
@@ -236,6 +236,7 @@
 
 - (void)setBasicInfomationSuccess:(NSNotification *)notification {
     [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {
         DLog(@"修改训练目标失败");
