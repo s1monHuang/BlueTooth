@@ -14,6 +14,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *titleArray;
 @property (strong, nonatomic) NSArray *imageArray;
+
+@property (nonatomic , strong) UILabel *deviceIDLabel;
+
 @end
 
 @implementation DeviceManagerViewController
@@ -57,15 +60,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 180.0f;
+    return 220.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 60)];
+    UIView *headerview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 220)];
     UIImageView *bracelet = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 77)/2, 15, 77, 150)];
     bracelet.image = [UIImage imageNamed:@"bracelet"];
     [headerview addSubview:bracelet];
+    
+    if ([BluetoothManager share].isBindingPeripheral){
+    _deviceIDLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 77)/2 - 10, 180, ScreenWidth - 50, 40)];
+    _deviceIDLabel.text = [NSString stringWithFormat:@"设备编号:%@",[BluetoothManager share].deviceID];
+//    _deviceIDLabel.alpha = 0;
+    [headerview addSubview:_deviceIDLabel];
+    }
     return headerview;
 }
 

@@ -85,7 +85,7 @@
         [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
         return;
     }
-    CurrentUser.age = _nickNameTextField.text;
+    CurrentUser.nickName = _nickNameTextField.text;
     [self PushToVC];
 }
 
@@ -103,7 +103,7 @@
             [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
             return;
         }
-        CurrentUser.age = nickName;
+        CurrentUser.nickName = nickName;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
         [self.navigationController popViewControllerAnimated:YES];

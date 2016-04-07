@@ -74,7 +74,7 @@
     _targetSlider.minimumTrackTintColor = [UIColor clearColor];
     _targetSlider.maximumTrackTintColor = [UIColor clearColor];
     NSInteger stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
-    CGFloat targetSlider = (CGFloat)stepCount *0.0001;
+    CGFloat targetSlider = stepCount > 0 ? (CGFloat)stepCount *0.0001 : 1;
     _targetSlider.value = targetSlider;
     
     [_targetSlider addTarget:self action:@selector(valueChange) forControlEvents:UIControlEventValueChanged];
@@ -83,29 +83,12 @@
     _stepCountLabel.textAlignment = NSTextAlignmentCenter;
     _stepCountLabel.font = [UIFont systemFontOfSize:25];
     _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf步",_targetSlider.value * 10000];
+    _stepCount = 10000;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     _rightLabel.text = [NSString stringWithFormat:@"%.0lf千卡",fireEnergy];
-    
-//    UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-//    _btnPre = btnPre;
-//    _btnPre.alpha = 0;
-//    [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
-//    [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
-//    [self.view addSubview:btnPre];
-//    
-//    UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-//    _btnNext = btnNext;
-//    _btnNext.alpha = 0;
-//    [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
-//    [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
-//    [self.view addSubview:btnNext];
     
 }
 
@@ -183,27 +166,28 @@
                 if (!change) {
                     DLog(@"修改用户信息失败");
                 }
+                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
+                [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+                });
+                
+                return;
             }else{
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:userInfo message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert show];
                 return;
             }
         };
-        [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
-        [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-        });
         
-        return;
-        
-    }
+    }else{
     
     if (![[BluetoothManager share] isExistCharacteristic]) {
         return;
     }
     [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     [[BluetoothManager share] setBasicInfomation:_changeModel];
+    }
 }
 
 //改变步数

@@ -54,10 +54,10 @@
     }
     _nickNameView.text = CurrentUser.nickName;
     _dateView.text = dateString;
-    _stepLabel.text = @(model.step).stringValue;
+    _stepLabel.text = [NSString stringWithFormat:@"%@步",@(model.step).stringValue];
     NSString *stepDetail = [NSString stringWithFormat:@"步行了%@公里",@(model.distance).stringValue];
     _stepDetailLabel.text = stepDetail;
-    _expendLabel.text = @(model.calorie).stringValue;
+    _expendLabel.text = [NSString stringWithFormat:@"%@千卡",@(model.calorie).stringValue];
     NSString *expendDetail = [NSString stringWithFormat:@"≈%@个雪糕",@(model.calorie / 147).stringValue];
     _expendDetailLabel.text = expendDetail;
 }

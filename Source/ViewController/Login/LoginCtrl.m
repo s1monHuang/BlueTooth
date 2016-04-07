@@ -82,9 +82,6 @@
         self.txtUserAccount.text = @"";
         self.txtUserPassword.text = @"";
     }
-
-    
-    
     BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
     if (!first) {
         DLog(@"第一次登陆");
@@ -123,6 +120,11 @@
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         @strongify(self);
         if (finished) {
+            if (userInfo[@"nickName"] && userInfo[@"age"]) {
+                
+                self.firstDownload = 2;
+                [[NSUserDefaults standardUserDefaults] setObject:@(self.firstDownload) forKey:@"firstDownload"];
+            }
             if (_firstDownload == 1) {
                 [[UserManager defaultInstance] saveUser:userInfo];
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];

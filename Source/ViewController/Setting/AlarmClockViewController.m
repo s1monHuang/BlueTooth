@@ -24,7 +24,7 @@
 
 @property (nonatomic , strong) NSDateFormatter *formatter;
 
-@property (nonatomic , strong) UIDatePicker *TimePicker;
+@property (nonatomic , strong) UIPickerView *timePicker;
 
 @property (nonatomic , strong) UIToolbar *toolBar;
 
@@ -34,7 +34,7 @@
 
 @property (nonatomic , strong) UIPickerView *miniPickerView;
 
-@property (nonatomic , strong) NSArray *miniArray;
+@property (nonatomic , strong) NSMutableArray *miniArray;
 
 @property (nonatomic , assign) BOOL isTimeSelected;
 
@@ -45,6 +45,8 @@
 @property (nonatomic , strong) NSMutableArray *clockArray;
 
 @property (nonatomic , strong) BasicInfomationModel *changeModel;
+
+@property (nonatomic , strong) NSMutableArray *hourArray;
 
 
 
@@ -60,10 +62,30 @@
     return _clockArray;
 }
 
-- (NSArray *)miniArray
+- (NSMutableArray *)hourArray
+{
+    if (!_hourArray) {
+        _hourArray = [NSMutableArray array];
+        NSString *hourStr;
+        for (NSInteger i = 0; i < 24; i++) {
+            if (i < 10) {
+                hourStr = [NSString stringWithFormat:@"0%ld",i];
+            }else{
+                hourStr = [NSString stringWithFormat:@"%ld",i];
+            }
+            [_hourArray addObject:hourStr];
+        }
+    }
+    return _hourArray;
+}
+
+- (NSMutableArray *)miniArray
 {
     if (!_miniArray) {
-        _miniArray = @[@(0),@(15),@(30),@(45),@(60)];
+        _miniArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < 60; i++) {
+            [_miniArray addObject:@(i)];
+        }
     }
     return _miniArray;
 }
@@ -125,7 +147,7 @@
         }
       _timeLabel.text = [NSString stringWithFormat:@"%@:%@",hourStr,minStr];
     }else{
-        _timeStr =  @"80:00";
+        _timeStr =  @"08:00";
       _timeLabel.text = _timeStr;
     }
     
@@ -328,29 +350,27 @@
     [_coverView removeFromSuperview];
 }
 
-- (void)timeChange
-{
-    NSDate *date = _TimePicker.date;
-    if (!_formatter) {
-        _formatter = [[NSDateFormatter alloc] init];
-        [_formatter setDateFormat:@"HH:mm"];
-    }
-    _timeStr = [_formatter stringFromDate:date];
-}
+//- (void)timeChange
+//{
+////    NSDate *date = _TimePicker.date;
+//    if (!_formatter) {
+//        _formatter = [[NSDateFormatter alloc] init];
+//        [_formatter setDateFormat:@"HH:mm"];
+//    }
+////    _timeStr = [_formatter stringFromDate:date];
+//}
 
 - (void)setUpTimePickerView
 {
-//    if (!_coverView) {
-        [self setUpCoverView];
-//    }
+    [self setUpCoverView];
     
-    UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, kScreenHeight/2 - 100, kScreenWidth, 200)];
-    _TimePicker = picker;
+    UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, kScreenHeight/2 - 100, kScreenWidth, 200)];
+    _timePicker = picker;
+    self.timePicker.dataSource = self;
+    self.timePicker.delegate = self;
     picker.backgroundColor = [UIColor whiteColor];
-    [picker addTarget:self action:@selector(timeChange) forControlEvents:UIControlEventValueChanged];
-    picker.datePickerMode = UIDatePickerModeCountDownTimer;
     [_coverView addSubview:picker];
-    CGFloat toolBarY = CGRectGetMaxY(_TimePicker.frame);
+    CGFloat toolBarY = CGRectGetMaxY(_timePicker.frame);
     [_toolBar removeFromSuperview];
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
     _toolBar = toolBar;
@@ -370,11 +390,9 @@
     self.miniPickerView.dataSource = self;
     self.miniPickerView.delegate = self;
     self.miniPickerView.backgroundColor = [UIColor whiteColor];
-//    if (!_coverView) {
         [self setUpCoverView];
-//    }
     [_coverView addSubview:self.miniPickerView];
-    _TimePicker.alpha = 0;
+    _timePicker.alpha = 0;
 //    [self.view addSubview:_coverView];
     CGFloat toolBarY = CGRectGetMaxY(self.miniPickerView.frame);
     [_toolBar removeFromSuperview];
@@ -430,13 +448,26 @@
 //返回有几列
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 1;
+    if (pickerView == self.miniPickerView) {
+        return 1;
+    }else{
+        return 2;
+    }
+    
 }
 
 //返回指定列的行数
 - (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return 5;
+    if (pickerView == self.miniPickerView) {
+        return self.miniArray.count;
+    }else{
+        if (component == 0) {
+            return self.hourArray.count;
+        }else{
+            return self.miniArray.count;
+        }
+    }
 }
 
 //返回指定列，行的高度，就是自定义行的高度
@@ -445,24 +476,72 @@
     return  30;
 }
 
-//替换text居中
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
-    
-    label.text = [self.miniArray[row] stringValue];//[m_mutArrSensorList objectAtIndex:row-1];
-    label.textAlignment = NSTextAlignmentCenter;
-    return label;
+    if (pickerView == self.miniPickerView) {
+        return [self.miniArray[row] stringValue];
+    }else{
+        if (component == 0) {
+            return self.hourArray[row];
+        }else{
+            return [self.miniArray[row] stringValue];
+        }
+    }
 }
+
+////替换text居中
+//- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+//{
+//    if (pickerView == self.miniPickerView) {
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
+//        
+//        label.text = [self.miniArray[row] stringValue];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        return label;
+//    }else{
+//        if (component == 0) {
+//            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0.0f, [pickerView rowSizeForComponent:component].width * 0.5 - 5, [pickerView rowSizeForComponent:component].height)];
+//            
+//            label.text = self.hourArray[row];
+//            label.textAlignment = NSTextAlignmentCenter;
+//            return label;
+//        }else{
+//            
+//            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake([pickerView rowSizeForComponent:component].width * 0.5 - 5, 0.0f, [pickerView rowSizeForComponent:component].width * 0.5, [pickerView rowSizeForComponent:component].height)];
+//            
+//            label.text = [self.miniArray[row] stringValue];
+//            label.textAlignment = NSTextAlignmentCenter;
+//            return label;
+//        }
+//    }
+//}
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     //获取对应列，对应行的数据
-    NSString *time = [NSString stringWithFormat:@"%@分钟",_miniArray[row]];
-    _frequencyStr = time;
+    if (pickerView == self.miniPickerView) {
+        NSString *time = [NSString stringWithFormat:@"%@分钟",_miniArray[row]];
+        _frequencyStr = time;
+    }else{
+        NSString *hour;
+        NSInteger min = 0;
+        
+        hour = self.hourArray[[self.timePicker selectedRowInComponent:0]];
+        min = [self.miniArray[[self.timePicker selectedRowInComponent:1]] integerValue];
+        NSString *clockTime ;
+        if (min >= 10) {
+            clockTime = [NSString stringWithFormat:@"%@:%ld",hour,min];
+        }else{
+            clockTime = [NSString stringWithFormat:@"%@:0%ld",hour,min];
+        }
+        
+        _timeStr = clockTime;
+    }
+    
     
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -487,7 +566,8 @@
     if (_timeLabel.text && _frequencyStr) {
         _changeModel.clockHour = [[_timeLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
         _changeModel.clockMinute = [[_timeLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
-        _changeModel.clockInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
+        NSInteger length = _frequencyStr.length == 3 ? 1 : 2;
+        _changeModel.clockInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, length)] integerValue];;
     }
     if (_clockSwitch.isOn) {
         _changeModel.clockSwitch = _clockDay;
