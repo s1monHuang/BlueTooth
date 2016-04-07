@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 - (NSArray *)miniArray
 {
     if (!_miniArray) {
-        _miniArray = @[@(15),@(30),@(45),@(60)];
+        _miniArray = @[@(0),@(15),@(30),@(45),@(60)];
     }
     return _miniArray;
 }
@@ -498,7 +498,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (pickerView == _timePickerView) {
         return self.timeArray.count;
     }else{
-    return 4;
+    return 5;
     }
 }
 

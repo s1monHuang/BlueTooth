@@ -63,7 +63,7 @@
 - (NSArray *)miniArray
 {
     if (!_miniArray) {
-        _miniArray = @[@(15),@(30),@(45),@(60)];
+        _miniArray = @[@(0),@(15),@(30),@(45),@(60)];
     }
     return _miniArray;
 }
@@ -125,7 +125,7 @@
         }
       _timeLabel.text = [NSString stringWithFormat:@"%@:%@",hourStr,minStr];
     }else{
-        _timeStr =  @"00:00";
+        _timeStr =  @"80:00";
       _timeLabel.text = _timeStr;
     }
     
@@ -133,8 +133,8 @@
     if (_changeModel.clockInterval) {
       _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
     }else{
-        _frequencyStr =  @"15分钟";
-       _frequencyLabel.text = @"15分钟";
+        _frequencyStr =  @"30分钟";
+       _frequencyLabel.text = @"30分钟";
     }
     
     
@@ -414,12 +414,12 @@
 {
     if (_isTimeSelected) {
         if (!_timeStr) { 
-            _timeStr = @"00:00";
+            _timeStr = @"08:00";
         }
         _timeLabel.text = _timeStr;
     }else{
         if (!_frequencyStr) {
-            _frequencyStr = @"15分钟";
+            _frequencyStr = @"30分钟";
         }
         _frequencyLabel.text = _frequencyStr;
     }
@@ -436,7 +436,7 @@
 //返回指定列的行数
 - (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return 4;
+    return 5;
 }
 
 //返回指定列，行的高度，就是自定义行的高度

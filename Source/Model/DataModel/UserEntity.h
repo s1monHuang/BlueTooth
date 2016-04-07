@@ -22,7 +22,6 @@
 @property (nonatomic, strong) NSString *deviceId;
 @property (nonatomic, strong) NSString *age;
 @property (nonatomic, strong) NSString *token;
-@property (nonatomic , strong) NSString *stepCount;
 
 
 @property (nonatomic , copy) NSString *inviteCode;    //邀请码

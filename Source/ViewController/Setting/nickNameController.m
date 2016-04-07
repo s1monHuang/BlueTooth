@@ -13,6 +13,8 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *nickNameTextField;
 
+@property (nonatomic , assign) NSInteger first;
+
 @end
 
 @implementation nickNameController
@@ -43,8 +45,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
@@ -94,9 +96,18 @@
 
 - (void)PushToVC
 {
-    SexViewController *VC = [[SexViewController alloc] init];
-//    VC.isJump = self.isJump;
-    [self.navigationController pushViewController:VC animated:YES];
+    if (_first == 1) {
+        SexViewController *VC = [[SexViewController alloc] init];
+        NSString *nickName = _nickNameTextField.text;
+        if (!nickName || nickName.length < 4 || nickName.length > 16 ) {
+            [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
+            return;
+        }
+        CurrentUser.age = nickName;
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 

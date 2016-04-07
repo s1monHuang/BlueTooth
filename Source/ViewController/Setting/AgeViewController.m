@@ -14,6 +14,8 @@
 @property (strong, nonatomic) NSMutableArray *ageArray;
 @property (strong, nonatomic) UILabel *lblAgeValue;
 
+@property (nonatomic , assign) NSInteger first;
+
 @end
 
 @implementation AgeViewController
@@ -44,7 +46,8 @@
     [self.view addSubview:lblAge];
     
     self.lblAgeValue = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120+28, 110, 20)];
-    self.lblAgeValue.text = CurrentUser.age ? CurrentUser.age : @"1";
+    DLog(@"%ld",CurrentUser.age.length);
+    self.lblAgeValue.text = [CurrentUser.age isEqualToString:@"(null)"] ? @"1" : CurrentUser.age;
     self.lblAgeValue.font = [UIFont systemFontOfSize:18];
     self.lblAgeValue.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.lblAgeValue];
@@ -85,8 +88,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
@@ -104,21 +107,7 @@
 
 - (void)btnNextClick:(id)sender
 {
-    if (self.lblAgeValue.text) {
-       CurrentUser.age = self.lblAgeValue.text;
-    }else{
-        CurrentUser.age = @"1";
-    }
-    
-//    NSString *ageStr = self.lblAgeValue.text;
-//    //修改数据库信息
-//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-//    changeModel.age = ageStr;
-//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-//    if (!change) {
-//        DLog(@"修改年龄失败");
-//    }
-    
+    CurrentUser.age = self.lblAgeValue.text;
     [self PushToVC];
 }
 
@@ -129,9 +118,14 @@
 
 - (void)PushToVC
 {
-    HeightViewController *VC = [[HeightViewController alloc] init];
-    VC.isJump = self.isJump;
-    [self.navigationController pushViewController:VC animated:YES];
+    
+    CurrentUser.age = self.lblAgeValue.text;
+    if (_first == 1) {
+        HeightViewController *VC = [[HeightViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 //返回有几列
@@ -164,7 +158,6 @@
      //获取对应列，对应行的数据
      NSString *age= self.ageArray[row];
      self.lblAgeValue.text = age;
-     CurrentUser.age = age;
 //     //修改数据库信息
 //     BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
 //     changeModel.age = age;

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define registerSuccessToLogin   @"registerSuccessToLogin"    //注册成功后登录
+
 @interface RegisterCtrl : UIViewController
 
 @end

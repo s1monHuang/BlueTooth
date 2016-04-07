@@ -27,7 +27,7 @@
 
 @property (nonatomic , strong) UIView *bottomView;
 
-@property (nonatomic , assign) NSInteger targetValue;
+//@property (nonatomic , assign) NSInteger targetValue;
 
 @property (nonatomic , strong) myDataCell *selectedCell;
 
@@ -61,8 +61,8 @@ static NSString* identifier =@"PersonalCell";
     //bottomView
     [self setUpBottomView];
     
-    //训练目标改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTargetValue:) name:targetNotification object:nil];
+//    //训练目标改变通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTargetValue:) name:targetNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,16 +109,16 @@ static NSString* identifier =@"PersonalCell";
 
 #pragma mark - 通知方法
 
-- (void)resetTargetValue:(NSNotification *)sender
-{
-    self.targetValue = [sender.object integerValue];
-}
-
+//- (void)resetTargetValue:(NSNotification *)sender
+//{
+//    self.targetValue = [sender.object integerValue];
+//}
+//
 #pragma mark - buttonClick
 
 - (void)resetClick
 {
-    __weak myDataController *blockSelf = self;
+//    __weak myDataController *blockSelf = self;
     [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
     DLog(@"%@",CurrentUser);
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
@@ -134,27 +134,26 @@ static NSString* identifier =@"PersonalCell";
             changeModel.weight = [CurrentUser.weight integerValue];
             changeModel.age = CurrentUser.age;
             changeModel.distance = [CurrentUser.stepLong integerValue];
-            changeModel.target = blockSelf.targetValue;
             BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
             if (!change) {
                 DLog(@"修改用户信息失败");
             }
             
-            NSInteger isFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-            if (isFirst == 1) {
-                
-                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
-                [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-                });
-                
-                return;
-            }else{
+//            NSInteger isFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+//            if (isFirst == 1) {
+//                
+//                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
+//                [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+//                });
+//                
+//                return;
+//            }else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:CurrentUser.nickName];
-                   [MBProgressHUD showHUDByContent:@"修改用户信息成功" view:UI_Window afterDelay:2];
+                   [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
                 
-            }
+//            }
             
             
         }else

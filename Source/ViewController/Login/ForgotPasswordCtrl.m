@@ -117,6 +117,7 @@
 //            blockSelf.resendBtn.alpha = 1;
 //        }
 //    };
+    _resendBtn.alpha = 0;
     self.emailTextField.alpha = 1;
     self.sendEmailBtn.alpha = 1;
     self.inputIcon.alpha = 1;

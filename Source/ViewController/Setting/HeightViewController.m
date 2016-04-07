@@ -16,6 +16,8 @@
 
 @property (nonatomic , strong) ZHRulerView *rulerView;
 
+@property (nonatomic , assign) NSInteger first;
+
 
 @end
 
@@ -40,15 +42,15 @@
     label.text = @"身高";
     [self.view addSubview:label];
     
-    CGFloat heightLabelX = CGRectGetMaxX(label.frame) + 10;
-    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX, labelY, 40, 40)];
+    CGFloat heightLabelX = CGRectGetMaxX(label.frame);
+    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX, labelY, 60, 40)];
     _heightLabel = heightLabel;
-    heightLabel.text = @"170";
-    heightLabel.font = [UIFont systemFontOfSize:22];
+    heightLabel.text = [CurrentUser.high isEqualToString:@"(null)"] ? @"170" : [CurrentUser.high substringWithRange:NSMakeRange(0, 3)];
+    heightLabel.font = [UIFont systemFontOfSize:25];
     heightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:heightLabel];
     
-    CGFloat otherLabelX = CGRectGetMaxX(heightLabel.frame) + 10;
+    CGFloat otherLabelX = CGRectGetMaxX(heightLabel.frame);
     UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
     otherLabel.text = @"cm";
     otherLabel.textColor = KThemeGreenColor;
@@ -83,8 +85,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
@@ -107,7 +109,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:120 maxNuber:220 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = 170;
+    rulerView.defaultVaule = [[CurrentUser.high isEqualToString:@"(null)"] ? @"170" : [CurrentUser.high substringWithRange:NSMakeRange(0, 3)] integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -131,17 +133,21 @@
 
 - (void)PushToVC
 {
-    WeightViewController *VC = [[WeightViewController alloc] init];
-    VC.isJump = self.isJump;
-    [self.navigationController pushViewController:VC animated:YES];
+    NSString *heightStr = [NSString stringWithFormat:@"%@cm",_heightLabel.text];
+    CurrentUser.high = heightStr;
+    if (_first == 1) {
+        WeightViewController *VC = [[WeightViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 
 #pragma mark - rulerviewDelagete
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _heightLabel.text = valueStr;
-    NSString *heightStr = [NSString stringWithFormat:@"%@cm",valueStr];
-    CurrentUser.high = heightStr;
     
 //    //修改数据库信息
 //    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
