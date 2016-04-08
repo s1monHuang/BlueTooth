@@ -70,13 +70,14 @@
     lblNumber03.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
     [self.view addSubview:lblNumber03];
     
-    UITextView *remindTextView = [[UITextView alloc] initWithFrame:CGRectMake(10,
+    UILabel *remindTextView = [[UILabel alloc] initWithFrame:CGRectMake(10,
                                                                               lblNumber03.height + lblNumber03.y + 100 ,
                                                                               SCREEN_WIDTH - 20,
                                                                               50)];
     remindTextView.backgroundColor = [UIColor clearColor];
     remindTextView.font = [UIFont systemFontOfSize:16];
     remindTextView.text = @"运动后心跳加快属正常现象,请不要担心.心跳信息仅提供参考.";
+    remindTextView.numberOfLines = 0;
     [self.view addSubview:remindTextView];
 
     _button = [[UIButton alloc] initWithFrame:CGRectMake(0,

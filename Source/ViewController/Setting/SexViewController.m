@@ -11,6 +11,8 @@
 
 @interface SexViewController ()
 
+@property (nonatomic , assign) NSInteger first;
+
 @end
 
 @implementation SexViewController
@@ -55,8 +57,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
@@ -105,9 +107,12 @@
 }
 
 - (void)PushToVC{
-    AgeViewController *VC = [[AgeViewController alloc] init];
-    VC.isJump = self.isJump;
-    [self.navigationController pushViewController:VC animated:YES];
+    if (_first == 1) {
+        AgeViewController *VC = [[AgeViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

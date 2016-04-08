@@ -82,9 +82,6 @@
         self.txtUserAccount.text = @"";
         self.txtUserPassword.text = @"";
     }
-
-    
-    
     BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
     if (!first) {
         DLog(@"第一次登陆");
@@ -93,6 +90,9 @@
     }else{
         _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     }
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerAndLogin:) name:registerSuccessToLogin object:nil];
     
 }
 
@@ -120,6 +120,11 @@
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         @strongify(self);
         if (finished) {
+            if (userInfo[@"nickName"] && userInfo[@"age"]) {
+                
+                self.firstDownload = 2;
+                [[NSUserDefaults standardUserDefaults] setObject:@(self.firstDownload) forKey:@"firstDownload"];
+            }
             if (_firstDownload == 1) {
                 [[UserManager defaultInstance] saveUser:userInfo];
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];
@@ -157,6 +162,43 @@
 - (IBAction)btnFindPwdClick:(id)sender {
     ForgotPasswordCtrl *ctl = [[ForgotPasswordCtrl alloc] init];
     [self.navigationController pushViewController:ctl animated:YES];
+}
+
+- (void)registerAndLogin: (NSNotification *)sender
+{
+    __block LoginCtrl *blockSelf = self;
+    NSString *userName = sender.userInfo[@"userName"];
+    NSString *password = sender.userInfo[@"password"];
+    [self.operateVM loginWithUserName:userName password:password];
+    [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"userName"];
+    [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
+    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+        if (finished) {
+            if (_firstDownload == 1) {
+                [[UserManager defaultInstance] saveUser:userInfo];
+                nickNameController *nickNameCtl = [[nickNameController alloc] init];
+                [blockSelf.navigationController pushViewController:nickNameCtl animated:YES];
+            }
+//            else{
+//                [[UserManager defaultInstance] saveUser:userInfo];
+//                
+//                BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
+//                infoModel.nickName = CurrentUser.nickName;
+//                infoModel.gender = CurrentUser.sex;
+//                infoModel.age = CurrentUser.age;
+//                infoModel.height = [CurrentUser.high integerValue];
+//                infoModel.weight = [CurrentUser.weight integerValue];
+//                infoModel.distance = [CurrentUser.stepLong integerValue];
+//                BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
+//                if (!Info) {
+//                    DLog(@"存入用户信息失败");
+//                }
+//                [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+//            }
+        } else {
+            [blockSelf showHUDText:userInfo];
+        }
+    };
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event

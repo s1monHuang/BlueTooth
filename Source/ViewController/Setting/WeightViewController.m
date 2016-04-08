@@ -17,7 +17,7 @@
 
 @property (nonatomic , strong) UILabel *weightLabel;
 
-
+@property (nonatomic , assign) NSInteger first;
 
 @end
 
@@ -42,15 +42,15 @@
     label.text = @"体重";
     [self.view addSubview:label];
     
-    CGFloat weightLabelX = CGRectGetMaxX(label.frame) + 10;
-    UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 40, 40)];
+    CGFloat weightLabelX = CGRectGetMaxX(label.frame);
+    UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 60, 40)];
     _weightLabel = weightLabel;
-    weightLabel.text = @"50";
-    weightLabel.font = [UIFont systemFontOfSize:22];
+    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : [CurrentUser.weight substringWithRange:NSMakeRange(0, CurrentUser.weight.length == 4 ? 2 : 3)];
+    weightLabel.font = [UIFont systemFontOfSize:25];
     weightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:weightLabel];
     
-    CGFloat otherLabelX = CGRectGetMaxX(weightLabel.frame) + 10;
+    CGFloat otherLabelX = CGRectGetMaxX(weightLabel.frame);
     UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
     otherLabel.text = @"kg";
     otherLabel.textColor = KThemeGreenColor;
@@ -83,8 +83,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
@@ -107,7 +107,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:220 showType:rulerViewshowHorizontalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = 50;
+    rulerView.defaultVaule = [[CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : [CurrentUser.weight substringWithRange:NSMakeRange(0, CurrentUser.high.length == 4 ? 2 : 3)] integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -129,12 +129,16 @@
     [self PushToVC];
 }
 
-- (void)PushToVC{
-    
-//    RecommendViewController *VC = [[RecommendViewController alloc] init];
-//    VC.isJump = self.isJump;
-    StepLongController *VC = [[StepLongController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+- (void)PushToVC
+{
+    NSString *weightStr = [NSString stringWithFormat:@"%@kg",_weightLabel.text];
+    CurrentUser.weight = weightStr;
+    if (_first == 1) {
+        StepLongController *VC = [[StepLongController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
 }
 
@@ -142,8 +146,6 @@
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _weightLabel.text = valueStr;
-    NSString *weightStr = [NSString stringWithFormat:@"%@kg",valueStr];
-    CurrentUser.weight = weightStr;
 //    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
 //    changeModel.weight = [valueStr integerValue];
 //    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];

@@ -18,16 +18,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NeM-HT-Ucs">
-                    <rect key="frame" x="0.0" y="24" width="600" height="50"/>
+                    <rect key="frame" x="10" y="24" width="580" height="50"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账户" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6b-c7-gle">
                             <rect key="frame" x="31" y="14" width="34" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入邮箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Icv-kz-vWM">
-                            <rect key="frame" x="83" y="10" width="467" height="30"/>
+                            <rect key="frame" x="83" y="10" width="447" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -44,16 +44,16 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPL-8l-fRN">
-                    <rect key="frame" x="0.0" y="94" width="600" height="49.5"/>
+                    <rect key="frame" x="10" y="94" width="580" height="49.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="密码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgF-af-n3W">
                             <rect key="frame" x="31" y="14" width="34" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qcj-4p-RAs">
-                            <rect key="frame" x="83" y="10" width="467" height="30"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qcj-4p-RAs">
+                            <rect key="frame" x="83" y="10" width="447" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -87,13 +87,13 @@
             <constraints>
                 <constraint firstItem="yPL-8l-fRN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="94" id="8rl-xI-vmd"/>
                 <constraint firstItem="yPL-8l-fRN" firstAttribute="top" secondItem="NeM-HT-Ucs" secondAttribute="bottom" constant="20" id="ILY-jo-MLk"/>
-                <constraint firstItem="yPL-8l-fRN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Jwl-zU-8Tc"/>
-                <constraint firstItem="NeM-HT-Ucs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PiN-Ih-uiM"/>
+                <constraint firstItem="yPL-8l-fRN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Jwl-zU-8Tc"/>
+                <constraint firstItem="NeM-HT-Ucs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="PiN-Ih-uiM"/>
                 <constraint firstItem="NeM-HT-Ucs" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="24" id="XNI-v5-x7K"/>
                 <constraint firstItem="Y4P-ye-HsV" firstAttribute="top" secondItem="yPL-8l-fRN" secondAttribute="bottom" constant="30" id="aUh-k8-beu"/>
                 <constraint firstItem="Y4P-ye-HsV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="b31-Gn-R9a"/>
-                <constraint firstAttribute="trailing" secondItem="NeM-HT-Ucs" secondAttribute="trailing" id="hRe-IY-viA"/>
-                <constraint firstAttribute="trailing" secondItem="yPL-8l-fRN" secondAttribute="trailing" id="iTo-DG-l2C"/>
+                <constraint firstAttribute="trailing" secondItem="NeM-HT-Ucs" secondAttribute="trailing" constant="10" id="hRe-IY-viA"/>
+                <constraint firstAttribute="trailing" secondItem="yPL-8l-fRN" secondAttribute="trailing" constant="10" id="iTo-DG-l2C"/>
                 <constraint firstItem="yPL-8l-fRN" firstAttribute="top" secondItem="NeM-HT-Ucs" secondAttribute="bottom" constant="20" id="naB-gi-la8"/>
                 <constraint firstAttribute="trailing" secondItem="Y4P-ye-HsV" secondAttribute="trailing" constant="20" id="rUL-bS-zv8"/>
             </constraints>

@@ -32,6 +32,11 @@
 @property (nonatomic) UIButton *refreshBututton;
 @property (nonatomic) UIProgressView *progressView;
 
+@property (nonatomic , strong) UIImageView *battery;     //电池
+
+@property (nonatomic , strong) UIImageView *electricity; //电量
+
+
 
 @property (nonatomic,strong) SportDataModel *sportModel;
 @property (nonatomic,strong) BasicInfomationModel *infomationModel;
@@ -95,10 +100,12 @@
     _circleBgView.backgroundColor = [UIColor clearColor];
     [_chartView addSubview:_circleBgView];
     
+    _stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
+    
     CGFloat circleChartY = kScreenHeight > 480 ? 50 : 20;
     self.circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(50,circleChartY, _circleBgView.frame.size.width, _circleBgView.frame.size.height)
                                                       total:@100
-                                                    current:_sportModel?@(_sportModel.target):@(0)
+                                                    current:_sportModel?@(_sportModel.step / (double)_stepCount * 100):@(0)
                                                   clockwise:YES shadow:YES shadowColor:[UIColor whiteColor]];
     
     self.circleChart.backgroundColor = [UIColor clearColor];
@@ -106,8 +113,6 @@
     [self.circleChart setStrokeColor:[UtilityUI stringTOColor:@"#6dabff"]];
     [self.circleChart strokeChart];
     [_chartView addSubview:self.circleChart];
-    
-    _stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
     
     UIView *tempView = [[UIView alloc] initWithFrame:CGRectMake(30, 30, self.circleChart.frame.size.width - 60, self.circleChart.frame.size.width - 60)];
     tempView.contentMode = UIViewContentModeScaleAspectFill;
@@ -170,13 +175,13 @@
     _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
     _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.distance).stringValue:@(0).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0)* 1000).stringValue ];
     [threeBox addSubview:_lblBoxtwoValue];
     
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
     lblBoxtwoText.textAlignment = NSTextAlignmentCenter;
     lblBoxtwoText.font = [UIFont systemFontOfSize:12];
-    lblBoxtwoText.text = @"活动距离(km)";
+    lblBoxtwoText.text = @"活动距离(m)";
     [threeBox addSubview:lblBoxtwoText];
     
     // 消耗能量
@@ -203,13 +208,21 @@
               forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_refreshBututton];
     
-    _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
+    //电池
+    _battery = [[UIImageView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
                                                                      _circleChart.height + _circleChart.y + (35 / 2 - refreshY),
                                                                      50,
                                                                      20)];
-    _progressView.tintColor = KThemeGreenColor;
-    _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
-    [self.view addSubview:_progressView];
+    _battery.image = [UIImage imageNamed:@"dianchi"];
+    CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
+    _electricity = [[UIImageView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
+                                                             _circleChart.height + _circleChart.y + (35 / 2 - refreshY),
+                                                             50,
+                                                             20)];
+    _electricity.image = [UIImage imageNamed:@"dianliang"];
+//    _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
+    [self.view addSubview:_battery];
+    [self.view addSubview:_electricity];
     
     // 设置
     UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share2"]
@@ -220,39 +233,6 @@
     
     
 }
-
-
-//- (void)autoDownload
-//{
-//    
-//    self.operateVM = [OperateViewModel viewModel];
-//    @weakify(self);
-//    
-////        [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
-//    
-//    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
-//        @strongify(self);
-//        if (finished) {
-//            [[UserManager defaultInstance] saveUser:userInfo];
-//            
-//            BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
-//            infoModel.nickName = CurrentUser.nickName;
-//            infoModel.gender = CurrentUser.sex;
-//            infoModel.age = CurrentUser.age;
-//            infoModel.height = [CurrentUser.high integerValue];
-//            infoModel.weight = [CurrentUser.weight integerValue];
-//            infoModel.distance = [CurrentUser.stepLong integerValue];
-//            BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
-//            if (!Info) {
-//                DLog(@"存入用户信息失败");
-//            }
-//            [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-//            
-//        } else {
-//            [self showHUDText:userInfo];
-//        }
-//    };
-//}
 
 - (void)changeStepCount:(NSNotification *)sender
 {

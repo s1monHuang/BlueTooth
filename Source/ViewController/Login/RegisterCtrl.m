@@ -16,6 +16,12 @@
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
+@property (nonatomic , assign) NSInteger firstDownload;
+
+@property (nonatomic , copy) NSString *userName;
+
+@property (nonatomic , copy) NSString *password;
+
 @end
 
 @implementation RegisterCtrl
@@ -27,7 +33,7 @@
     self.title = @"注册";
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,12 +54,16 @@
     {
         __weak RegisterCtrl *blockSelf = self;
         [self.operateVM registerWithUserName:_userNameTextField.text passsword:_passwordTextField.text];
-        
+        _userName = _userNameTextField.text;
+        _password = _passwordTextField.text;
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
             if (finished) {
                 [MBProgressHUD showHUDByContent:@"注册成功" view:blockSelf.view afterDelay:2];
                 CurrentUser.userId = userInfo;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    //注册成功后登陆
+                    NSDictionary *userDict = [NSDictionary dictionaryWithObjectsAndKeys:blockSelf.userName,@"userName" ,blockSelf.password, @"password" , nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:registerSuccessToLogin object:nil userInfo:userDict];
                     [blockSelf.navigationController popViewControllerAnimated:YES];
                 });
                 

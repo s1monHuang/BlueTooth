@@ -19,6 +19,8 @@
 
 @property (nonatomic , strong) UIView *footView;
 
+@property (nonatomic , assign) NSInteger first;
+
 @end
 
 @implementation StepLongController
@@ -36,15 +38,15 @@
     label.text = @"步长";
     [self.view addSubview:label];
     
-    CGFloat stepLabelX = CGRectGetMaxX(label.frame) + 10;
-    UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 40, 40)];
+    CGFloat stepLabelX = CGRectGetMaxX(label.frame);
+    UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 60, 40)];
     _stepLabel = stepLabel;
-    stepLabel.text = @"70";
-    stepLabel.font = [UIFont systemFontOfSize:22];
+    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : [CurrentUser.stepLong substringWithRange:NSMakeRange(0, 2)];
+    stepLabel.font = [UIFont systemFontOfSize:25];
     stepLabel.textColor = KThemeGreenColor;
     [self.view addSubview:stepLabel];
     
-    CGFloat otherLabelX = CGRectGetMaxX(stepLabel.frame) + 10;
+    CGFloat otherLabelX = CGRectGetMaxX(stepLabel.frame);
     UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
     otherLabel.text = @"cm";
     otherLabel.textColor = KThemeGreenColor;
@@ -75,8 +77,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
@@ -117,7 +119,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = 70;
+    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : [CurrentUser.stepLong substringWithRange:NSMakeRange(0, 2)] integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -144,11 +146,14 @@
 
 - (void)PushToVC
 {
-    TrainTargetController *VC = [[TrainTargetController alloc] init];
-    //    VC.isJump = self.isJump;
-    NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",_stepLabel.text];
-    CurrentUser.stepLong = stepLongStr;
-    [self.navigationController pushViewController:VC animated:YES];
+    if (_first == 1) {
+        TrainTargetController *VC = [[TrainTargetController alloc] init];
+        NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",_stepLabel.text];
+        CurrentUser.stepLong = stepLongStr;
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 

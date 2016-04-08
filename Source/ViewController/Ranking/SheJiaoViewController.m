@@ -180,10 +180,9 @@
 
 - (void)btnShareClick:(id)sender
 {
-//    ShareCtrl *VC = [[ShareCtrl alloc] init];
-//    [self presentViewController:VC animated:YES completion:nil];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     [pasteboard setString:CurrentUser.inviteCode];
+    [MBProgressHUD showHUDByContent:@"分享码已复制" view:UI_Window afterDelay:2];
 }
 
 - (void)relateUserInfo

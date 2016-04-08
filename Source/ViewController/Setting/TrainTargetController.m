@@ -8,6 +8,7 @@
 
 #import "TrainTargetController.h"
 #import "myDataController.h"
+#import "OperateViewModel.h"
 
 @interface TrainTargetController ()
 @property (weak, nonatomic) IBOutlet UILabel *everydayTrainLabel;
@@ -30,6 +31,8 @@
 
 @property (nonatomic , assign) NSInteger stepCount;
 
+@property (nonatomic,strong) OperateViewModel *operateVM;
+
 
 @end
 
@@ -43,6 +46,7 @@
     [super viewDidLoad];
     self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
+    self.operateVM = [OperateViewModel viewModel];
     self.navigationItem.leftBarButtonItem.title = @"";
     UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     _rightBtn = rightBtn;
@@ -70,7 +74,7 @@
     _targetSlider.minimumTrackTintColor = [UIColor clearColor];
     _targetSlider.maximumTrackTintColor = [UIColor clearColor];
     NSInteger stepCount = [[[NSUserDefaults standardUserDefaults] objectForKey:targetStepCount] integerValue];
-    CGFloat targetSlider = (CGFloat)stepCount *0.0001;
+    CGFloat targetSlider = stepCount > 0 ? (CGFloat)stepCount *0.0001 : 1;
     _targetSlider.value = targetSlider;
     
     [_targetSlider addTarget:self action:@selector(valueChange) forControlEvents:UIControlEventValueChanged];
@@ -79,47 +83,30 @@
     _stepCountLabel.textAlignment = NSTextAlignmentCenter;
     _stepCountLabel.font = [UIFont systemFontOfSize:25];
     _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf步",_targetSlider.value * 10000];
+    _stepCount = 10000;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     _rightLabel.text = [NSString stringWithFormat:@"%.0lf千卡",fireEnergy];
     
-    UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-    _btnPre = btnPre;
-    _btnPre.alpha = 0;
-    [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
-    [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
-    [self.view addSubview:btnPre];
-    
-    UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-    _btnNext = btnNext;
-    _btnNext.alpha = 0;
-    [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
-    [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
-    [self.view addSubview:btnNext];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setBasicInfomationSuccess:)
-                                                 name:SET_BASICINFOMATION_SUCCESS
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(setBasicInfomationSuccess:)
+//                                                 name:SET_BASICINFOMATION_SUCCESS
+//                                               object:nil];
     NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     if (first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
         _rightBtn.alpha = 0;
-        _btnPre.alpha = 1;
-        _btnNext.alpha = 1;
+//        _btnPre.alpha = 1;
+//        _btnNext.alpha = 1;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
     }
@@ -155,23 +142,47 @@
     NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
     _changeModel.target = targetInteger;
-    if (first == 1) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
-        myDataController *VC = [[myDataController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
-    }
-    
-    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
+    //训练目标步数保存到本地
     [[NSUserDefaults standardUserDefaults] setObject:@(_stepCount) forKey:targetStepCount];
-    DLog(@"%@",CurrentUser.stepCount);
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
-    if (!change) {
-        DLog(@"修改训练目标失败");
-    } else {
-        [[BluetoothManager share] setBasicInfomation:_changeModel];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:@(_stepCount)];
+   
+    __weak TrainTargetController *blockSelf = self;
+    if (first == 1) {
+        [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
+        DLog(@"%@",CurrentUser);
+        self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
+            if (finished) {
+                //修改数据库信息
+                blockSelf.changeModel.nickName = CurrentUser.nickName;
+                blockSelf.changeModel.gender = CurrentUser.sex;
+                blockSelf.changeModel.height = [CurrentUser.high integerValue];
+                blockSelf.changeModel.weight = [CurrentUser.weight integerValue];
+                blockSelf.changeModel.age = CurrentUser.age;
+                blockSelf.changeModel.distance = [CurrentUser.stepLong integerValue];
+                BOOL change = [DBManager insertOrReplaceBasicInfomation:blockSelf.changeModel];
+                if (!change) {
+                    DLog(@"修改用户信息失败");
+                }
+                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
+                [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
+                });
+                return;
+            }else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:userInfo message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alert show];
+                return;
+            }
+        };
+        
+    }else{
+        BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+        if (change) {
+            [[BluetoothManager share] setBasicInfomation:_changeModel];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 //改变步数
@@ -180,8 +191,6 @@
     _stepCount = ((NSInteger)(_targetSlider.value * 10000 ) % 100) > 49 ? (100 - (NSInteger)(_targetSlider.value * 10000 ) % 100 + (NSInteger)(_targetSlider.value * 10000)) : ((NSInteger)(_targetSlider.value * 10000) - (NSInteger)(_targetSlider.value * 10000 ) % 100 );
     _stepCountLabel.text = [NSString stringWithFormat:@"%ld步",_stepCount];
     _stepCountLabel.textColor = KThemeGreenColor;
-    
-    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
@@ -229,7 +238,7 @@
 {
     myDataController *VC = [[myDataController alloc] init];
     //    VC.isJump = self.isJump;
-    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
+//    CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
     [[NSUserDefaults standardUserDefaults] setObject:@(_stepCount) forKey:targetStepCount];
     NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
     [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
@@ -241,15 +250,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setBasicInfomationSuccess:(NSNotification *)notification {
-    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
-    [MBProgressHUD showHUDByContent:@"修改成功" view:UI_Window afterDelay:1];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
-    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
-    if (!change) {
-        DLog(@"修改训练目标失败");
-    }
-}
+//- (void)setBasicInfomationSuccess:(NSNotification *)notification {
+//    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+//<<<<<<< HEAD
+//    [MBProgressHUD showHUDByContent:@"修改成功" view:UI_Window afterDelay:1];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
+//=======
+//>>>>>>> 86d2b91434da1275f54201ce267b3ab768054200
+//    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+//    if (!change) {
+//        DLog(@"修改训练目标失败");
+//    }
+//}
 
 
 @end

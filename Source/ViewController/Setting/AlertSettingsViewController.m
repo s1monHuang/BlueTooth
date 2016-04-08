@@ -33,15 +33,11 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 
 @property (nonatomic , strong) UILabel *frequencyLabel;
 
-@property (nonatomic , strong) NSArray *miniArray;
+@property (nonatomic , strong) NSMutableArray *miniArray;
 
-@property (nonatomic , strong) NSMutableArray *timeArray;
+@property (nonatomic , strong) NSMutableArray *hourArray;
 
 @property (nonatomic , strong) UIView *coverView;
-//
-//@property (nonatomic , strong) NSDateFormatter *formatter;
-//
-//@property (nonatomic , strong) UIDatePicker *TimePicker;
 
 @property (nonatomic , strong) UIToolbar *toolBar;
 
@@ -73,27 +69,30 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     return _alertArray;
 }
 
-- (NSMutableArray *)timeArray
+- (NSMutableArray *)hourArray
 {
-    if (!_timeArray) {
-        _timeArray = [NSMutableArray array];
+    if (!_hourArray) {
+        _hourArray = [NSMutableArray array];
         for (NSInteger i = 0; i < 24; i++) {
             NSString *time;
             if (i < 10) {
-                time = [NSString stringWithFormat:@"0%ld:00",i];
+                time = [NSString stringWithFormat:@"0%ld",i];
             }else{
-                time = [NSString stringWithFormat:@"%ld:00",i];
+                time = [NSString stringWithFormat:@"%ld",i];
             }
-            [_timeArray addObject:time];
+            [_hourArray addObject:time];
         }
     }
-    return _timeArray;
+    return _hourArray;
 }
 
-- (NSArray *)miniArray
+- (NSMutableArray *)miniArray
 {
     if (!_miniArray) {
-        _miniArray = @[@(15),@(30),@(45),@(60)];
+        _miniArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < 60; i++) {
+            [_miniArray addObject:@(i)];
+        }
     }
     return _miniArray;
 }
@@ -151,7 +150,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         }
         _startLabel.text = [NSString stringWithFormat:@"%@",startStr];
     }else{
-        _startLabel.text = @"00:00";
+        _startLabel.text = @"07:00";
     }
     
     _endLabel = [[UILabel alloc] initWithFrame:labelFrame];
@@ -164,7 +163,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         }
         _endLabel.text = [NSString stringWithFormat:@"%@",endStr];
     }else{
-        _endLabel.text = @"00:00";
+        _endLabel.text = @"09:00";
     }
 
     
@@ -380,9 +379,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 //开始/结束时间选择
 - (void)setUpTimePickerView
 {
-//    if (!_coverView) {
-        [self setUpCoverView];
-//    }
+    [self setUpCoverView];
     self.timePickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0 , kScreenHeight/2 - 100, kScreenWidth, 200)];
     self.timePickerView.dataSource = self;
     self.timePickerView.delegate = self;
@@ -409,14 +406,14 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
             
         case TimePickerSelectedStart:{
             if (!_timeStr) {
-                _timeStr = @"00:00";
+                _timeStr = @"07:00";
             }
             _startLabel.text = _timeStr;
         }
             break;
         case TimePickerSelectedEnd:{
             if (!_timeStr) {
-                _timeStr = @"00:00";
+                _timeStr = @"09:00";
             }
             _endLabel.text = _timeStr;
         }
@@ -489,16 +486,24 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 //返回有几列
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 1;
+    if (pickerView == self.miniPickerView) {
+        return 1;
+    }else{
+        return 2;
+    }
 }
 
 //返回指定列的行数
 - (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if (pickerView == _timePickerView) {
-        return self.timeArray.count;
+        if (component == 0) {
+            return self.hourArray.count;
+        }else{
+            return self.miniArray.count;
+        }
     }else{
-    return 4;
+    return self.miniArray.count;
     }
 }
 
@@ -508,30 +513,54 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     return  30;
 }
 
-//替换text居中
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    if (pickerView == _timePickerView) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
-        
-        label.text = self.timeArray[row];//[m_mutArrSensorList objectAtIndex:row-1];
-        label.textAlignment = NSTextAlignmentCenter;
-        return label;
+    if (pickerView == self.miniPickerView) {
+        return [self.miniArray[row] stringValue];
     }else{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
-    
-    label.text = [self.miniArray[row] stringValue];//[m_mutArrSensorList objectAtIndex:row-1];
-    label.textAlignment = NSTextAlignmentCenter;
-    return label;
+        if (component == 0) {
+            return self.hourArray[row];
+        }else{
+            return [self.miniArray[row] stringValue];
+        }
     }
 }
+
+////替换text居中
+//- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+//{
+//    if (pickerView == _timePickerView) {
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
+//        
+//        label.text = self.timeArray[row];//[m_mutArrSensorList objectAtIndex:row-1];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        return label;
+//    }else{
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
+//    
+//    label.text = [self.miniArray[row] stringValue];//[m_mutArrSensorList objectAtIndex:row-1];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    return label;
+//    }
+//}
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     //获取对应列，对应行的数据
     if (pickerView == _timePickerView) {
-        NSString *time = _timeArray[row];
-        _timeStr = time;
+        NSString *hour;
+        NSInteger min = 0;
+        
+        hour = self.hourArray[[self.timePickerView selectedRowInComponent:0]];
+        min = [self.miniArray[[self.timePickerView selectedRowInComponent:1]] integerValue];
+        NSString *clockTime ;
+        if (min >= 10) {
+            clockTime = [NSString stringWithFormat:@"%@:%ld",hour,min];
+        }else{
+            clockTime = [NSString stringWithFormat:@"%@:0%ld",hour,min];
+        }
+        
+        _timeStr = clockTime;
     }else{
         NSString *time = [NSString stringWithFormat:@"%@分钟",_miniArray[row]];
         _frequencyStr = time;
@@ -551,13 +580,14 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (_startLabel.text && _endLabel.text) {
         _changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
         _changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
-        _changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, 2)] integerValue];;
+        NSInteger length = _frequencyStr.length == 3 ? 1 : 2;
+        _changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, length)] integerValue];;
     }
     if (_alertSwitch.isOn) {
         _changeModel.sportSwitch = _alertDay;
     }else{
         _changeModel.sportSwitch = 0;
-        [[NSUserDefaults standardUserDefaults] setObject:@(_alertDay) forKey:alertSwitchIsOpen];
+        [[NSUserDefaults standardUserDefaults] setObject:@(_alertDay) forKey:whichDayIsOpen];
     }
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {

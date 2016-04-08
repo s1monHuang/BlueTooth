@@ -37,6 +37,7 @@
 		3E956E461CAC015C005DDF35 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E451CAC015C005DDF35 /* libsqlite3.tbd */; };
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
+		47815F7C1CB632370085275E /* CallAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47815F7B1CB632370085275E /* CallAlertViewController.m */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
 		47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E15D0F1C9902DB00D094A8 /* nickNameController.xib */; };
 		47E1CA711CA527BD0070FEE1 /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E1CA5E1CA527BD0070FEE1 /* MJExtensionConst.m */; };
@@ -363,6 +364,8 @@
 		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
 		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
+		47815F7A1CB632370085275E /* CallAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallAlertViewController.h; sourceTree = "<group>"; };
+		47815F7B1CB632370085275E /* CallAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallAlertViewController.m; sourceTree = "<group>"; };
 		47E15D0D1C9902DB00D094A8 /* nickNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nickNameController.h; sourceTree = "<group>"; };
 		47E15D0E1C9902DB00D094A8 /* nickNameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = nickNameController.m; sourceTree = "<group>"; };
 		47E15D0F1C9902DB00D094A8 /* nickNameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = nickNameController.xib; sourceTree = "<group>"; };
@@ -1312,6 +1315,8 @@
 				47E504DD1CA0D1B2005F18F0 /* TrainTargetController.h */,
 				47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */,
 				47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */,
+				47815F7A1CB632370085275E /* CallAlertViewController.h */,
+				47815F7B1CB632370085275E /* CallAlertViewController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -2132,6 +2137,7 @@
 				9F88F5A41B458EBD000BA054 /* AppUtility+AutoLayout.m in Sources */,
 				9F20F56A1B75A9680009AB38 /* NSObject+RACLifting.m in Sources */,
 				9F20F5711B75A9680009AB38 /* NSString+RACSupport.m in Sources */,
+				47815F7C1CB632370085275E /* CallAlertViewController.m in Sources */,
 				9F20F5AF1B75A9680009AB38 /* UIRefreshControl+RACCommandSupport.m in Sources */,
 				9F6A9BA81B70590200487088 /* SheJiaoViewController.m in Sources */,
 				47E349F41CA950240026707C /* FSCalendar.m in Sources */,

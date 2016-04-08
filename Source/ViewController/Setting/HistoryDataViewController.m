@@ -145,7 +145,7 @@
     [formatter setDateFormat:@"YYYY-MM-dd"];
     NSString *dateStr = [formatter stringFromDate:date];
     selectedDateLabel.text = dateStr;
-    selectedDateLabel.font = [UIFont systemFontOfSize:8];
+    selectedDateLabel.font = [UIFont systemFontOfSize:10];
     selectedDateLabel.textAlignment = NSTextAlignmentRight;
     [selectedDateLabel setTextColor:[UIColor whiteColor]];
     [rightView addSubview:selectedDateLabel];
@@ -162,7 +162,10 @@
 //右上角日历
 - (void)rightItemSelectedDate
 {
-    [self setUpCoverView];
+    if (!_coverView) {
+        [self setUpCoverView];
+    }
+    
 }
 
 - (void)setUpCoverView
@@ -211,6 +214,7 @@
         [self getMonthData:[NSDate date]];
     }
     [_coverView removeFromSuperview];
+    _coverView = nil;
 }
 
 - (void)touchRemoveCoverView

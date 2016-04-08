@@ -58,7 +58,6 @@
         self.age = [NSString stringWithFormat:@"%@",dict[@"age"]];
         self.token = [NSString stringWithFormat:@"%@",dict[@"token"]];
         self.inviteCode = [NSString stringWithFormat:@"%@",dict[@"inviteCode"]];
-        self.stepCount = [NSString stringWithFormat:@"%@",dict[@"stepCount"]];
     }
     return self;
 }
