@@ -2441,8 +2441,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: ge ping (49AB9267DB)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ge ping (49AB9267DB)";
 				GCC_PREFIX_HEADER = BlueToothBracelet/BlueToothBracelet_Prefix.pch;
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -2453,8 +2453,9 @@
 					"$(PROJECT_DIR)/Lib/libWeiboSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.renrenmoney.BlueToothBracelet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b7edfa8a-2659-4e24-81a6-f7220b5756f3";
 			};
 			name = Debug;
 		};
@@ -2462,8 +2463,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: ge ping (49AB9267DB)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ge ping (49AB9267DB)";
 				GCC_PREFIX_HEADER = BlueToothBracelet/BlueToothBracelet_Prefix.pch;
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -2474,8 +2475,9 @@
 					"$(PROJECT_DIR)/Lib/libWeiboSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.renrenmoney.BlueToothBracelet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b7edfa8a-2659-4e24-81a6-f7220b5756f3";
 			};
 			name = Release;
 		};

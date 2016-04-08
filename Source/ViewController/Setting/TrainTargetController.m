@@ -160,15 +160,18 @@
         myDataController *VC = [[myDataController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     }
-    if (![[BluetoothManager share] isExistCharacteristic]) {
-        return;
-    }
-    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     
     CurrentUser.stepCount = [NSString stringWithFormat:@"%ld",_stepCount];
     [[NSUserDefaults standardUserDefaults] setObject:@(_stepCount) forKey:targetStepCount];
     DLog(@"%@",CurrentUser.stepCount);
-    [[BluetoothManager share] setBasicInfomation:_changeModel];
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+    if (!change) {
+        DLog(@"修改训练目标失败");
+    } else {
+        [[BluetoothManager share] setBasicInfomation:_changeModel];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 //改变步数
@@ -240,6 +243,7 @@
 
 - (void)setBasicInfomationSuccess:(NSNotification *)notification {
     [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+    [MBProgressHUD showHUDByContent:@"修改成功" view:UI_Window afterDelay:1];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeStepCount" object:CurrentUser.stepCount];
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {

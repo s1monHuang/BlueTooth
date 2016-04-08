@@ -109,7 +109,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PeripheralModel *model = _peripheralModels[indexPath.row];
     _selecedPeripheral = model;
-    
+    [BluetoothManager share].bindingPeripheral = model;
     [_operateViewModel createExdeviceId];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }

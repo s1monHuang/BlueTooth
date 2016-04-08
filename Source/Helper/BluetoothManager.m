@@ -123,6 +123,7 @@ static BluetoothManager *manager = nil;
         if ([characteristic.UUID.UUIDString isEqualToString:specifiedUUID]) {
             if (weakSelf.isReadedPripheralAllData) {
                 [weakSelf.timer invalidate];
+                DLog(@"写入数据成功    connectionType = %@    characteristic = %@",@(weakSelf.connectionType),characteristic.value);
             }
             switch (weakSelf.connectionType) {
                     //绑定请求发送成功
@@ -184,13 +185,6 @@ static BluetoothManager *manager = nil;
     //设置设备连接成功的委托
     [_baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         NSLog(@"设备：%@--连接成功",peripheral.name);
-        if (!weakSelf.isBindingPeripheral) {
-            [BluetoothManager saveBindingPeripheralUUID:peripheral];
-        }
-        weakSelf.isBindingPeripheral = YES;
-        if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
-            [weakSelf.deleagete didBindingPeripheral:YES];
-        }
     }];
     
     //设置设备连接失败的委托
@@ -291,6 +285,13 @@ static BluetoothManager *manager = nil;
                     weakSelf.isReadedPripheralAllData = YES;
                     weakSelf.connectionType = BluetoothConnectingSuccess;
                     [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:BlueToothIsReadedPripheralAllData];
+                    weakSelf.isBindingPeripheral = YES;
+                    if (!weakSelf.isBindingPeripheral) {
+                        [BluetoothManager saveBindingPeripheralUUID:weakSelf.bindingPeripheral.peripheral];
+                    }
+                    if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
+                        [weakSelf.deleagete didBindingPeripheral:YES];
+                    }
                 }
             }
                 break;
@@ -480,9 +481,7 @@ static BluetoothManager *manager = nil;
     b[6] = [self.deviceID integerValue];
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
 }
 
 /*!
@@ -501,9 +500,7 @@ static BluetoothManager *manager = nil;
     b[12] = 0x00;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
 }
 
 /*!
@@ -513,9 +510,7 @@ static BluetoothManager *manager = nil;
     Byte b[20] = {0xAA,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x02,0x00};
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                    forCharacteristic:self.characteristics
-                                                 type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
 }
 
 /*!
@@ -535,9 +530,7 @@ static BluetoothManager *manager = nil;
     b[1] = 0xB1;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
 }
 
 
@@ -554,9 +547,7 @@ static BluetoothManager *manager = nil;
     b[2] = time;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
 }
 
 /*!
@@ -571,9 +562,7 @@ static BluetoothManager *manager = nil;
     b[2] = time;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
 }
 
 /*!
@@ -595,9 +584,7 @@ static BluetoothManager *manager = nil;
     b[3] = 0x01;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
+    [[BluetoothManager share] writeValue:data];
     
     __weak typeof(self) weakSelf = self;
     [_baby notify:self.bindingPeripheral.peripheral
@@ -669,10 +656,7 @@ static BluetoothManager *manager = nil;
     b[19] = [BluetoothManager calculateTotal:b];
     
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
-    [self.bindingPeripheral.peripheral writeValue:data
-                                forCharacteristic:self.characteristics
-                                             type:CBCharacteristicWriteWithResponse];
-    
+    [[BluetoothManager share] writeValue:data];
 }
 
 
@@ -683,6 +667,14 @@ static BluetoothManager *manager = nil;
     }
     Byte byte = result % 256;
     return byte;
+}
+
+- (void)writeValue:(NSData *)data {
+    if (self.bindingPeripheral.peripheral && self.characteristics) {
+        [self.bindingPeripheral.peripheral writeValue:data
+                                    forCharacteristic:self.characteristics
+                                                 type:CBCharacteristicWriteWithResponse];
+    }
 }
 
 #pragma mark -

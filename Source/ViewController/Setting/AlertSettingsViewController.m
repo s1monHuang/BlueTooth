@@ -99,10 +99,10 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setBasicInfomationSuccess:)
-                                                 name:SET_BASICINFOMATION_SUCCESS
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(setBasicInfomationSuccess:)
+//                                                 name:SET_BASICINFOMATION_SUCCESS
+//                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
@@ -544,10 +544,10 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 }
 
 - (void)clickButton:(UIButton *)button {
-    if (![[BluetoothManager share] isExistCharacteristic]) {
-        return;
-    }
-    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+//    if (![[BluetoothManager share] isExistCharacteristic]) {
+//        return;
+//    }
+//    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     if (_startLabel.text && _endLabel.text) {
         _changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
         _changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
@@ -559,13 +559,19 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         _changeModel.sportSwitch = 0;
         [[NSUserDefaults standardUserDefaults] setObject:@(_alertDay) forKey:alertSwitchIsOpen];
     }
-    
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+    if (!change) {
+        DLog(@"存储闹钟失败");
+    } else {
+        [[BluetoothManager share] setBasicInfomation:_changeModel];
+    }
     [[NSUserDefaults standardUserDefaults] setObject:@(_alertSwitch.isOn) forKey:alertSwitchIsOpen];
-    [[BluetoothManager share] setBasicInfomation:_changeModel];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setBasicInfomationSuccess:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+    [MBProgressHUD showHUDByContent:@"保存成功" view:UI_Window afterDelay:1];
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {
         DLog(@"存储闹钟失败");

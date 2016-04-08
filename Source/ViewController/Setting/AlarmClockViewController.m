@@ -69,10 +69,10 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setBasicInfomationSuccess:)
-                                                 name:SET_BASICINFOMATION_SUCCESS
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(setBasicInfomationSuccess:)
+//                                                 name:SET_BASICINFOMATION_SUCCESS
+//                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
@@ -480,10 +480,10 @@
 */
 
 - (void)clickButton:(UIButton *)button {
-    if (![[BluetoothManager share] isExistCharacteristic]) {
-        return;
-    }
-    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+//    if (![[BluetoothManager share] isExistCharacteristic]) {
+//        return;
+//    }
+//    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     if (_timeLabel.text && _frequencyStr) {
         _changeModel.clockHour = [[_timeLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
         _changeModel.clockMinute = [[_timeLabel.text substringWithRange:NSMakeRange(3, 2)] integerValue];
@@ -495,13 +495,19 @@
         _changeModel.clockSwitch = 0;
         [[NSUserDefaults standardUserDefaults] setObject:@(_clockDay) forKey:whichDayIsOpen];
     }
-
-    [[BluetoothManager share] setBasicInfomation:_changeModel];
+    BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
+    if (!change) {
+        DLog(@"存储闹钟失败");
+    } else {
+        [[BluetoothManager share] setBasicInfomation:_changeModel];
+    }
     [[NSUserDefaults standardUserDefaults] setObject:@(_clockSwitch.isOn) forKey:switchIsOpen];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setBasicInfomationSuccess:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+    [MBProgressHUD showHUDByContent:@"保存成功" view:UI_Window afterDelay:1];
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {
         DLog(@"存储闹钟失败");
