@@ -29,10 +29,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disConnectPeripheral)
+                                                 name:DISCONNECT_PERIPHERAL
+                                               object:nil];
     
     [BluetoothManager share].deleagete = self;
+    [[[BluetoothManager share] baby] cancelAllPeripheralsConnection];
     [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
+    [BluetoothManager share].isReadedPripheralAllData = NO;
+    [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:BlueToothIsReadedPripheralAllData];
     
     _operateViewModel = [[OperateViewModel alloc] init];
     
@@ -68,7 +75,7 @@
     if (success) {
         [BluetoothManager share].bindingPeripheral = _selecedPeripheral;
         [self.navigationController popToRootViewControllerAnimated:YES];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [MBProgressHUD hideHUDForView:UI_Window animated:YES];
     } else {
         
     }
@@ -111,7 +118,11 @@
     _selecedPeripheral = model;
     [BluetoothManager share].bindingPeripheral = model;
     [_operateViewModel createExdeviceId];
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+}
+
+- (void)disConnectPeripheral {
+    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,6 +132,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [BluetoothManager share].deleagete = nil;
 }
 

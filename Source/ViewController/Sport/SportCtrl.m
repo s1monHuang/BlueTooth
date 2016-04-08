@@ -175,7 +175,7 @@
     _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
     _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0)* 1000).stringValue ];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0)* 10).stringValue];
     [threeBox addSubview:_lblBoxtwoValue];
     
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
@@ -194,7 +194,7 @@
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20+22+10, boxWidth/3, 22)];
     lblBoxthreeText.textAlignment = NSTextAlignmentCenter;
     lblBoxthreeText.font = [UIFont systemFontOfSize:12];
-    lblBoxthreeText.text = @"消耗能量(kCal)";
+    lblBoxthreeText.text = @"消耗能量(cal)";
     [threeBox addSubview:lblBoxthreeText];
     
     CGFloat refreshY = kScreenHeight > 480 ? 0 : 20;
@@ -217,7 +217,7 @@
     CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
     _electricity = [[UIImageView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
                                                              _circleChart.height + _circleChart.y + (35 / 2 - refreshY),
-                                                             50,
+                                                             electricityWidth,
                                                              20)];
     _electricity.image = [UIImage imageNamed:@"dianliang"];
 //    _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
@@ -289,11 +289,14 @@
     [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.target):@(0)];
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.distance).stringValue:@(0).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0)* 10).stringValue];
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     _refreshBututton.userInteractionEnabled = YES;
+    
+    CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
+    _electricity.width = electricityWidth;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM-dd"];

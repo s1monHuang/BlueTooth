@@ -198,16 +198,18 @@ static BluetoothManager *manager = nil;
     //设置设备断开连接的委托
     [_baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         NSLog(@"设备：%@--断开连接",peripheral.name);
+        
+        weakSelf.connectionType = BluetoothConnectingNormal;
+        weakSelf.successType = BluetoothConnectingNormalSuccess;
+        weakSelf.characteristics = nil;
+        weakSelf.isConnectSuccess = NO;
+        [weakSelf removeAllQueue];
+        
         if (weakSelf.isBindingPeripheral) {
             if (weakSelf.bindingPeripheral.peripheral && weakSelf.characteristics) {
                 [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
                              characteristic:weakSelf.characteristics];
             }
-            weakSelf.connectionType = BluetoothConnectingNormal;
-            weakSelf.successType = BluetoothConnectingNormalSuccess;
-            weakSelf.characteristics = nil;
-            weakSelf.isConnectSuccess = NO;
-            [weakSelf removeAllQueue];
             [weakSelf connectingBlueTooth:peripheral];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECT_PERIPHERAL
@@ -285,10 +287,11 @@ static BluetoothManager *manager = nil;
                     weakSelf.isReadedPripheralAllData = YES;
                     weakSelf.connectionType = BluetoothConnectingSuccess;
                     [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:BlueToothIsReadedPripheralAllData];
-                    weakSelf.isBindingPeripheral = YES;
+                    //绑定成功保存设备uuid
                     if (!weakSelf.isBindingPeripheral) {
                         [BluetoothManager saveBindingPeripheralUUID:weakSelf.bindingPeripheral.peripheral];
                     }
+                    weakSelf.isBindingPeripheral = YES;
                     if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
                         [weakSelf.deleagete didBindingPeripheral:YES];
                     }
@@ -297,7 +300,7 @@ static BluetoothManager *manager = nil;
                 break;
             default: {
                 Byte *byte = (Byte *)characteristics.value.bytes;
-                if (byte[1] == 0x0F) {
+                if (weakSelf.isBindingPeripheral && byte[1] == 0x0F) {
                     [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
                     DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                 } else {
