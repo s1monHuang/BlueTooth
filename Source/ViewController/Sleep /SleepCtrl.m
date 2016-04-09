@@ -49,7 +49,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [_refreshBututton.layer removeAllAnimations];
-    _refreshBututton.userInteractionEnabled = YES;
+//    _refreshBututton.userInteractionEnabled = YES;
 }
 
 - (void)viewDidLoad {

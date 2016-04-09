@@ -115,7 +115,7 @@
                 [BluetoothManager share].isBindingPeripheral = NO;
                 [BluetoothManager clearBindingPeripheral];
                 [BluetoothManager share].isReadedPripheralAllData = NO;
-                [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:BlueToothIsReadedPripheralAllData];
+                
                 [self reloadData];
                 [tableView reloadData];
             } else {

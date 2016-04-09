@@ -13,6 +13,7 @@
 #define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"                        //获取运动数据
 #define READ_HISTORY_SPORTDATA_SUCCESS @"READ_HISTORY_SPORTDATA_SUCCESS"        //获取历史运动数据
 #define READ_HEARTRATE_SUCCESS @"READ_HEARTRATE_SUCCESS"                        //获取心率数据
+#define READ_HEARTRATE_FINISHED @"READ_HEARTRATE_FINISHED"                      //获取心率结束
 
 #define SET_BASICINFOMATION_SUCCESS @"SET_BASICINFOMATION_SUCCESS"              //设置基本信息成功
 
@@ -74,6 +75,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 @property (strong, nonatomic) BabyBluetooth *baby;
 @property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) NSTimer *heartRateTimer;          //心跳计时器
 @property (assign, nonatomic) id<BluetoothManagerDelegate> deleagete;
 
 @property (assign, nonatomic) BOOL isBindingPeripheral;         //是否绑定过蓝牙设备

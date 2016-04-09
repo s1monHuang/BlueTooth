@@ -38,6 +38,11 @@
                                                  name:DISCONNECT_PERIPHERAL
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(readHeartRateFinished)
+                                                 name:READ_HEARTRATE_FINISHED
+                                               object:nil];
+    
     _lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 40, 30)];
     _lblHeartBeatNumber.text = @"0次/分钟";
     _lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:30];
@@ -120,6 +125,12 @@
 
 - (void)readHeartRateSuccess {
     _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@次/分钟",@([BluetoothManager share].heartRate).stringValue];
+}
+
+- (void)readHeartRateFinished {
+    [_button setTitle:@"开始" forState:UIControlStateNormal];
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
 }
 
 - (void)disConnectPeripheral {

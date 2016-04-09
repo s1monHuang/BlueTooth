@@ -39,7 +39,6 @@
     [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
     [BluetoothManager share].isReadedPripheralAllData = NO;
-    [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:BlueToothIsReadedPripheralAllData];
     
     _operateViewModel = [[OperateViewModel alloc] init];
     

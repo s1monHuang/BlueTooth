@@ -33,7 +33,7 @@ static BluetoothManager *manager = nil;
     if (self) {
         
         _isBindingPeripheral = [[NSUserDefaults standardUserDefaults] boolForKey:@"isbindingPeripheral"];
-        _isReadedPripheralAllData = [[NSUserDefaults standardUserDefaults] boolForKey:BlueToothIsReadedPripheralAllData];
+        _isReadedPripheralAllData = NO;
         //初始化BabyBluetooth 蓝牙库
         _baby = [BabyBluetooth shareBabyBluetooth];
         //设置蓝牙委托
@@ -50,6 +50,7 @@ static BluetoothManager *manager = nil;
         _isConnectSuccess = NO;
         
         _bluetoothQueue = [[NSMutableArray alloc] init];
+        
     }
     return self;
 }
@@ -122,7 +123,6 @@ static BluetoothManager *manager = nil;
     [_baby setBlockOnDidWriteValueForCharacteristic:^(CBCharacteristic *characteristic, NSError *error) {
         if ([characteristic.UUID.UUIDString isEqualToString:specifiedUUID]) {
             if (weakSelf.isReadedPripheralAllData) {
-                [weakSelf.timer invalidate];
                 DLog(@"写入数据成功    connectionType = %@    characteristic = %@",@(weakSelf.connectionType),characteristic.value);
             }
             switch (weakSelf.connectionType) {
@@ -160,6 +160,7 @@ static BluetoothManager *manager = nil;
                 default:
                     break;
             }
+            [weakSelf.timer invalidate];
             [weakSelf.bindingPeripheral.peripheral readValueForCharacteristic:characteristic];
         }
     }];
@@ -316,8 +317,6 @@ static BluetoothManager *manager = nil;
 
 - (void)handleCharacteristic:(CBCharacteristic *)characteristic weakSelf:(BluetoothManager *)weakSelf{
     if ([characteristic.UUID.UUIDString isEqualToString:specifiedUUID] ) {
-        weakSelf.timer = [NSTimer timerWithTimeInterval:3 target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
-        [weakSelf.timer fire];
         if (!weakSelf.characteristics) {
             weakSelf.characteristics = characteristic;
         }
@@ -475,10 +474,21 @@ static BluetoothManager *manager = nil;
 
 #pragma mark - 写数据到蓝牙设备中
 
+- (void)startTiming {
+    [_timer invalidate];
+    _timer = nil;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:30
+                                              target:self
+                                            selector:@selector(timeOut)
+                                            userInfo:nil
+                                             repeats:NO];
+}
+
 /*!
  *  开始绑定蓝牙设备
  */
 - (void)startBindingPeripheral {
+    [self startTiming];
     _connectionType = BluetoothConnectingBinding;
     Byte b[20] = {0xAA,0xF1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
     b[6] = [self.deviceID integerValue];
@@ -491,6 +501,7 @@ static BluetoothManager *manager = nil;
  *  确认绑定蓝牙设备
  */
 - (void)confirmBindingPeripheralWithValue:(NSData *)value {
+    [self startTiming];
     _connectionType = BluetoothConnectingConfirmBinding;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xF2;
@@ -527,6 +538,7 @@ static BluetoothManager *manager = nil;
         [_bluetoothQueue addObject:dictionary];
         return;
     }
+    [self startTiming];
     _connectionType = BluetoothConnectingReadSportData;
     Byte b[20];
     b[0] = 0xAA;
@@ -543,6 +555,7 @@ static BluetoothManager *manager = nil;
         [_bluetoothQueue addObject:dictionary];
         return;
     }
+    [self startTiming];
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte b[20];
     b[0] = 0xAA;
@@ -559,6 +572,7 @@ static BluetoothManager *manager = nil;
  *  @param value
  */
 - (void)readHistroySportDataWithValue:(NSData *)value time:(Byte)time {
+    [self startTiming];
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xA1;
@@ -579,6 +593,7 @@ static BluetoothManager *manager = nil;
         [_bluetoothQueue addObject:dictionary];
         return;
     }
+    [self startTiming];
     _connectionType = BluetoothConnectingHeartRate;
     Byte b[20];
     b[0] = 0xAA;
@@ -588,6 +603,14 @@ static BluetoothManager *manager = nil;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
+    
+    [_heartRateTimer invalidate];
+    _heartRateTimer = nil;
+    _heartRateTimer = [NSTimer scheduledTimerWithTimeInterval:30
+                                                       target:self
+                                                     selector:@selector(closeReadHeartRate)
+                                                     userInfo:nil
+                                                      repeats:NO];
     
     __weak typeof(self) weakSelf = self;
     [_baby notify:self.bindingPeripheral.peripheral
@@ -605,16 +628,20 @@ static BluetoothManager *manager = nil;
  *  关闭读取心率
  */
 - (void)closeReadHeartRate {
+    [self startTiming];
     Byte b[20] = {0xAA,0xE0,0x02,0x02,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x02,0x00};
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
     [self.bindingPeripheral.peripheral writeValue:data
                                 forCharacteristic:self.characteristics
                                              type:CBCharacteristicWriteWithResponse];
+    [_heartRateTimer invalidate];
     [_baby cancelNotify:self.bindingPeripheral.peripheral
          characteristic:self.characteristics];
     self.connectionType = BluetoothConnectingSuccess;
     [self handleBluetoothQueue];
+    [[NSNotificationCenter defaultCenter] postNotificationName:READ_HEARTRATE_FINISHED
+                                                        object:nil];
 }
 
 - (void)setBasicInfomation:(BasicInfomationModel *)model {
@@ -714,6 +741,10 @@ static BluetoothManager *manager = nil;
 }
 
 - (void)timeOut {
+    //如果在第一次绑定设备或者重新打开应用同步数据超时,标识已同步
+    if (!_isReadedPripheralAllData) {
+        _isReadedPripheralAllData = YES;
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"" object:nil];
 }
 
