@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
     BluetoothConnectingReadSportData,
     BluetoothConnectingHistroyReadSportData,
     BluetoothConnectingHeartRate,
+    BluetoothConnectingCallAlert,
     BluetoothConnectingSuccess
 };
 
@@ -46,6 +47,7 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
     BluetoothConnectingReadSportDataSuccess,
     BluetoothConnectingHistroyReadSportDataSuccess,
     BluetoothConnectingHeartRateSuccess,
+    BluetoothConnectingCallAlertSuccess,
     BluetoothConnectingAllSuccess
 };
 
@@ -54,6 +56,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
     BluetoothQueueReadSportData,
     BluetoothQueueHistroyReadSportData,
     BluetoothQueueHeartRate,
+    BluetoothQueueCallAlert,
     BluetoothQueueAll
 };
 
@@ -81,6 +84,8 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 @property (assign, nonatomic) BOOL isBindingPeripheral;         //是否绑定过蓝牙设备
 @property (assign, nonatomic) BOOL isReadedPripheralAllData;    //是否读取过蓝牙设备中所有数据(绑定后需要获取所有数据)
 @property (assign, nonatomic) BOOL isConnectSuccess;            //是否连接设备成功
+@property (assign, nonatomic) BOOL isOpenCallAlert;             //是否开启来电提醒
+
 
 @property (nonatomic,strong) PeripheralModel *bindingPeripheral;
 
@@ -122,7 +127,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 - (void)readHistroySportDataWithTime:(Byte)time;
 
-
+- (void)openCallAlert;   //来电提醒开关
 
 
 - (void)readHeartRate;

@@ -157,6 +157,11 @@ static BluetoothManager *manager = nil;
                     weakSelf.successType = BluetoothConnectingHeartRateSuccess;
                 }
                     break;
+                    //成功打开(关闭)来电提醒
+                case BluetoothConnectingCallAlert: {
+                    weakSelf.successType = BluetoothConnectingCallAlertSuccess;
+                }
+                    break;
                 default:
                     break;
             }
@@ -388,6 +393,11 @@ static BluetoothManager *manager = nil;
             }
                 break;
                 
+            case BluetoothConnectingCallAlertSuccess: {
+                DLog(@"打开(关闭)来电提醒成功");
+            }
+                break;
+                
             default:
                 break;
         }
@@ -415,6 +425,10 @@ static BluetoothManager *manager = nil;
                 break;
             case BluetoothQueueHeartRate: {
                 [self readHeartRate];
+            }
+                break;
+            case BluetoothQueueCallAlert: {
+                [self openCallAlert];
             }
                 break;
             default:
@@ -642,6 +656,34 @@ static BluetoothManager *manager = nil;
     [self handleBluetoothQueue];
     [[NSNotificationCenter defaultCenter] postNotificationName:READ_HEARTRATE_FINISHED
                                                         object:nil];
+}
+
+/*!
+ *  来电提醒开关
+ *
+ *  @param value
+ */
+- (void)openCallAlert
+{
+    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
+        NSDictionary *dictionary = @{@"type":@(BluetoothQueueCallAlert)};
+        [_bluetoothQueue addObject:dictionary];
+        return;
+    }
+    [self startTiming];
+    _connectionType = BluetoothConnectingCallAlert;
+    Byte b[20];
+    b[0] = 0xAA;
+    b[1] = 0xE1;
+    if (_isOpenCallAlert) {
+      b[2] = 0x0F;
+    }else{
+        b[2] = 0x00;
+    }
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
+    [[BluetoothManager share] writeValue:data];
+    
 }
 
 - (void)setBasicInfomation:(BasicInfomationModel *)model {
