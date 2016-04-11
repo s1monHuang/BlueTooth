@@ -7,6 +7,7 @@
 //
 
 #import "CallAlertViewController.h"
+#define callAlertOpen  @"openCallAlert"      //来电提醒开关
 
 @interface CallAlertViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -14,7 +15,7 @@
 
 @property (nonatomic , strong) UISwitch *callSwitch;
 
-
+@property (nonatomic , assign) BOOL callAlertIsOpen;
 
 @end
 
@@ -32,6 +33,9 @@ static NSString *identifier = @"cell";
     _tableView.dataSource = self;
     
     [self.view addSubview:_tableView];
+    
+    _callAlertIsOpen = [[[NSUserDefaults standardUserDefaults] objectForKey:callAlertOpen] boolValue];
+    
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -56,7 +60,7 @@ static NSString *identifier = @"cell";
         cell.textLabel.text = @"来电提醒";
         _callSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         _callSwitch.onTintColor = KThemeGreenColor;
-        [_callSwitch setOn:NO];
+        [_callSwitch setOn:_callAlertIsOpen];
         [_callSwitch addTarget:self action:@selector(openCallAlert:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = _callSwitch;
         
@@ -66,6 +70,20 @@ static NSString *identifier = @"cell";
 
 - (void)openCallAlert:(id)sender
 {
+    _callSwitch = (UISwitch *)sender;
+    BOOL callAlertWillOpen = [_callSwitch isOn];
+    if (callAlertWillOpen) {
+        DLog(@"来电提醒开");
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:callAlertOpen];
+        [BluetoothManager share].isOpenCallAlert = YES;
+        [[BluetoothManager share] openCallAlert];
+    }else{
+        
+        DLog(@"来电提醒关");
+        [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:callAlertOpen];
+        [BluetoothManager share].isOpenCallAlert = NO;
+        [[BluetoothManager share] openCallAlert];
+    }
     
 }
 
