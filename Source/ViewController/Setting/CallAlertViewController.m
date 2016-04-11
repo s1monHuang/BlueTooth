@@ -27,11 +27,11 @@ static NSString *identifier = @"cell";
     self.title = @"来电提醒";
     self.view.backgroundColor = kThemeGrayColor;
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
-    _tableView = tableView;
-    tableView.delegate = self;
-    tableView.dataSource = self;
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     
+    [self.view addSubview:_tableView];
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -51,12 +51,14 @@ static NSString *identifier = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor whiteColor];
-        UISwitch *callSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        _callSwitch = callSwitch;
-        [callSwitch setOn:NO];
-        [callSwitch addTarget:self action:@selector(openCallAlert:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = callSwitch;
+        cell.textLabel.text = @"来电提醒";
+        _callSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        _callSwitch.onTintColor = KThemeGreenColor;
+        [_callSwitch setOn:NO];
+        [_callSwitch addTarget:self action:@selector(openCallAlert:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = _callSwitch;
         
     }
     return cell;
