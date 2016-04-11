@@ -45,9 +45,15 @@
     __weak AddDeviceViewController *weakSelf = self;
     
     [_operateViewModel setFinishHandler:^(BOOL finished, id userInfo) {
-        [[BluetoothManager share] stop];
-        [BluetoothManager share].deviceID = userInfo;
-        [[BluetoothManager share] connectingBlueTooth:weakSelf.selecedPeripheral.peripheral];
+        if (finished) {
+            [[BluetoothManager share] stop];
+            [BluetoothManager share].deviceID = userInfo;
+            [[NSUserDefaults standardUserDefaults] setObject:[BluetoothManager share].deviceID forKey:@"userDeviceID"];
+            [[BluetoothManager share] connectingBlueTooth:weakSelf.selecedPeripheral.peripheral];
+            
+        }else{
+            
+        }
     }];
     
     _peripherals = [[NSMutableArray alloc] init];

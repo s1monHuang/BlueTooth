@@ -72,7 +72,8 @@
     
     if ([BluetoothManager share].isBindingPeripheral){
     _deviceIDLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 77)/2 - 10, 180, ScreenWidth - 50, 40)];
-    _deviceIDLabel.text = [NSString stringWithFormat:@"设备编号:%@",[BluetoothManager share].deviceID];
+        NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userDeviceID"];
+    _deviceIDLabel.text = [NSString stringWithFormat:@"设备编号:%@",deviceId];
 //    _deviceIDLabel.alpha = 0;
     [headerview addSubview:_deviceIDLabel];
     }

@@ -44,7 +44,7 @@ static BluetoothManager *manager = nil;
             //设置委托后直接可以使用，无需等待CBCentralManagerStatePoweredOn状态。
             _baby.scanForPeripherals().begin();
         }
-        
+        _deviceID = [[NSUserDefaults standardUserDefaults] objectForKey:@"userDeviceID"];
         _connectionType = BluetoothConnectingNormal;
         _successType = BluetoothConnectingNormalSuccess;
         _isConnectSuccess = NO;

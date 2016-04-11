@@ -60,9 +60,6 @@ static NSString* identifier =@"PersonalCell";
     
     //bottomView
     [self setUpBottomView];
-    
-//    //训练目标改变通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTargetValue:) name:targetNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,24 +135,8 @@ static NSString* identifier =@"PersonalCell";
             if (!change) {
                 DLog(@"修改用户信息失败");
             }
-            
-//            NSInteger isFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-//            if (isFirst == 1) {
-//                
-//                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
-//                [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
-//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                    [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-//                });
-//                
-//                return;
-//            }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:CurrentUser.nickName];
-                   [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
-                
-//            }
-            
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:CurrentUser.nickName];
+            [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
         }else
         {
             [MBProgressHUD showHUDByContent:userInfo view:UI_Window afterDelay:2];
