@@ -21,6 +21,9 @@
 
 @property (nonatomic , assign) NSInteger first;
 
+@property (nonatomic , strong) NSString *stepLongStr;
+
+
 @end
 
 @implementation StepLongController
@@ -152,6 +155,7 @@
         CurrentUser.stepLong = stepLongStr;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:steoLongIsChangeNotification object:_stepLongStr];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -161,10 +165,9 @@
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _stepLabel.text = valueStr;
-    NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
-    CurrentUser.stepLong = stepLongStr;
+    _stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
   
-//    [[NSNotificationCenter defaultCenter] postNotificationName:stepLongNotification object:stepLongStr];
+    
 }
 
 - (void)didReceiveMemoryWarning {

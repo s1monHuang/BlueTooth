@@ -19,6 +19,9 @@
 
 @property (nonatomic , assign) NSInteger first;
 
+@property (nonatomic , strong) NSString *weightStr;
+
+
 @end
 
 @implementation WeightViewController
@@ -131,12 +134,13 @@
 
 - (void)PushToVC
 {
-    NSString *weightStr = [NSString stringWithFormat:@"%@kg",_weightLabel.text];
-    CurrentUser.weight = weightStr;
+    _weightStr = [NSString stringWithFormat:@"%@kg",_weightLabel.text];
     if (_first == 1) {
         StepLongController *VC = [[StepLongController alloc] init];
+        CurrentUser.weight = _weightStr;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:weightIsChangeNotification object:_weightStr];
         [self.navigationController popViewControllerAnimated:YES];
     }
     
@@ -160,14 +164,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

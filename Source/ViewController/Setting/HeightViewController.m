@@ -18,6 +18,9 @@
 
 @property (nonatomic , assign) NSInteger first;
 
+@property (nonatomic , strong) NSString *heightStr;
+
+
 
 @end
 
@@ -133,12 +136,13 @@
 
 - (void)PushToVC
 {
-    NSString *heightStr = [NSString stringWithFormat:@"%@cm",_heightLabel.text];
-    CurrentUser.high = heightStr;
+    _heightStr = [NSString stringWithFormat:@"%@cm",_heightLabel.text];
     if (_first == 1) {
         WeightViewController *VC = [[WeightViewController alloc] init];
+        CurrentUser.high = _heightStr;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:heightIsChangeNotification object:_heightStr];
         [self.navigationController popViewControllerAnimated:YES];
     }
     

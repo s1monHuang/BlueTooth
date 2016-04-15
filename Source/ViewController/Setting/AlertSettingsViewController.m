@@ -489,7 +489,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (pickerView == self.miniPickerView) {
         return 1;
     }else{
-        return 2;
+        return 1;
     }
 }
 
@@ -497,11 +497,11 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 - (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if (pickerView == _timePickerView) {
-        if (component == 0) {
+//        if (component == 0) {
             return self.hourArray.count;
-        }else{
-            return self.miniArray.count;
-        }
+//        }else{
+//            return self.miniArray.count;
+//        }
     }else{
     return self.miniArray.count;
     }
@@ -518,11 +518,11 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (pickerView == self.miniPickerView) {
         return [self.miniArray[row] stringValue];
     }else{
-        if (component == 0) {
+//        if (component == 0) {
             return self.hourArray[row];
-        }else{
-            return [self.miniArray[row] stringValue];
-        }
+//        }else{
+//            return [self.miniArray[row] stringValue];
+//        }
     }
 }
 
@@ -549,16 +549,16 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     //获取对应列，对应行的数据
     if (pickerView == _timePickerView) {
         NSString *hour;
-        NSInteger min = 0;
+//        NSInteger min = 0;
         
         hour = self.hourArray[[self.timePickerView selectedRowInComponent:0]];
-        min = [self.miniArray[[self.timePickerView selectedRowInComponent:1]] integerValue];
+//        min = [self.miniArray[[self.timePickerView selectedRowInComponent:1]] integerValue];
         NSString *clockTime ;
-        if (min >= 10) {
-            clockTime = [NSString stringWithFormat:@"%@:%ld",hour,min];
-        }else{
-            clockTime = [NSString stringWithFormat:@"%@:0%ld",hour,min];
-        }
+//        if (min >= 10) {
+            clockTime = [NSString stringWithFormat:@"%@:00",hour];
+//        }else{
+//            clockTime = [NSString stringWithFormat:@"%@:0%ld",hour,min];
+//        }
         
         _timeStr = clockTime;
     }else{

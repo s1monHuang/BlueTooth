@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define heightIsChangeNotification   @"heightWasChanged"     //身高改变通知
+
 @interface HeightViewController : UIViewController
 
 @property (nonatomic) BOOL isJump;

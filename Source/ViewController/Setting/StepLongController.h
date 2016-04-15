@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define steoLongIsChangeNotification   @"steoLongWasChanged"     //步长改变通知
+
 @interface StepLongController : UIViewController
 
 @end

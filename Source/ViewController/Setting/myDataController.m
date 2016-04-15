@@ -60,6 +60,25 @@ static NSString* identifier =@"PersonalCell";
     
     //bottomView
     [self setUpBottomView];
+    
+    //属性改变通知
+    //年龄
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:ageIsChangeNotification object:nil];
+    
+    //性别
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:sexIsChangeNotification object:nil];
+    
+    //身高
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:heightIsChangeNotification object:nil];
+    
+    //体重
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:weightIsChangeNotification object:nil];
+    
+    //步长
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:steoLongIsChangeNotification object:nil];
+    
+    //昵称
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:nickNameIsChangeNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,7 +93,7 @@ static NSString* identifier =@"PersonalCell";
         self.navigationItem.leftBarButtonItem = item;
     }
     _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
-    [_tableView reloadData];
+//    [_tableView reloadData];
 }
 
 - (void)setUpTableView
@@ -106,10 +125,10 @@ static NSString* identifier =@"PersonalCell";
 
 #pragma mark - 通知方法
 
-//- (void)resetTargetValue:(NSNotification *)sender
-//{
-//    self.targetValue = [sender.object integerValue];
-//}
+- (void)authorPropertyIsChange:(NSNotification *)sender
+{
+    _selectedCell.valueLabel.text = sender.object;
+}
 //
 #pragma mark - buttonClick
 

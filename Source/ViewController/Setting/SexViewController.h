@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define sexIsChangeNotification   @"sexWasChanged"     //性别改变通知
+
 @interface SexViewController : UIViewController
 
 @property (nonatomic) BOOL isJump;
