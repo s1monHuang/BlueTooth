@@ -180,14 +180,12 @@
 
 
 // 保存步数
-- (void)saveStepDataRecordDate:(NSString *)recordDate
-             stepNum: (NSString *)stepNum
+- (void)saveStepData: (NSString *)stepInfos
             callBack:(BaseNetworkCallBack)callBack
 {
-    NSString *path = @"rest/ring/save-step-data";
+    NSString *path = @"rest/ring/save-many-step-data";
     NSDictionary *params = @{@"id" : CurrentUser.userId,
-                             @"recordDate" :  recordDate,
-                             @"stepNum" :  stepNum
+                             @"stepInfos" : stepInfos
                              };
     
     [self requestNetworkWithPath:path parameters:params callBackBlock:^(BOOL success, id responseObject, NSError *error) {
@@ -224,16 +222,12 @@
 
 
 // 保存睡眠数据
-- (void)saveSleepDataSleepDate:(NSString *)sleepDate
-              qsmTime: (NSString *)qsmTime
-              ssmTime: (NSString *)ssmTime
+- (void)saveSleepData: (NSString *)sleepInfos
              callBack:(BaseNetworkCallBack)callBack
 {
-    NSString *path = @"rest/ring/save-sleep-data";
+    NSString *path = @"rest/ring/save-many-sleep-data";
     NSDictionary *params = @{@"id" : CurrentUser.userId,
-                             @"sleepDate" :  sleepDate,
-                             @"qsmTime" :  qsmTime,
-                             @"ssmTime" :  ssmTime
+                             @"sleepInfos" :  sleepInfos
                              };
     
     [self requestNetworkWithPath:path parameters:params callBackBlock:^(BOOL success, id responseObject, NSError *error) {

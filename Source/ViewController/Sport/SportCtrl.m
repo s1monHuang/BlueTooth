@@ -304,8 +304,8 @@
     NSString *string = [formatter stringFromDate:date];
     
     OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
-    [operateViewModel saveStepDataRecordDate:string
-                                     stepNum:@(_sportModel.step).stringValue];
+//    [operateViewModel saveStepDataRecordDate:string
+//                                     stepNum:@(_sportModel.step).stringValue];
     
     
 }
