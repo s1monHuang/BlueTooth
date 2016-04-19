@@ -73,10 +73,18 @@ static NSString *identifier = @"cell";
     _callSwitch = (UISwitch *)sender;
     BOOL callAlertWillOpen = [_callSwitch isOn];
     if (callAlertWillOpen) {
-        DLog(@"来电提醒开");
-        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:callAlertOpen];
-        [BluetoothManager share].isOpenCallAlert = YES;
-        [[BluetoothManager share] openCallAlert];
+        if ([BluetoothManager share].isConnectSuccess) {
+            DLog(@"来电提醒开");
+            [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:callAlertOpen];
+            [BluetoothManager share].isOpenCallAlert = YES;
+            [[BluetoothManager share] openCallAlert];
+            [MBProgressHUD showHUDByContent:@"开启成功" view:UI_Window afterDelay:2];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"蓝牙设备未连接，请稍后" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+        }
+        
     }else{
         
         DLog(@"来电提醒关");

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define ageIsChangeNotification   @"ageWasChanged"     //年龄改变通知
+
 @interface AgeViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate>{}
 
 @property (strong, nonatomic) UIPickerView *pickerView;

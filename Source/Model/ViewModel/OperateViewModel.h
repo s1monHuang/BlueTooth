@@ -56,17 +56,14 @@
 - (void)bindExdevice:(NSString *)exDeviceId;
 
 // 保存步数  例:2016-03-14
-- (void)saveStepDataRecordDate:(NSString *)recordDate
-                       stepNum: (NSString *)stepNum;
+- (void)saveStepData: (NSString *)stepInfos;
 
 // 获取计步数据
 - (void)getStepDataStartDate:(NSString *)startDate
                      endDate: (NSString *)endDate;
 
 // 保存睡眠数据
-- (void)saveSleepDataSleepDate:(NSString *)sleepDate
-                       qsmTime: (NSString *)qsmTime
-                       ssmTime: (NSString *)ssmTime;
+- (void)saveSleepData:(NSString *)sleepInfos;
 
 // 获取睡眠数据
 - (void)getSleepDataStartDate: (NSString *)startDate

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define weightIsChangeNotification   @"weightWasChanged"     //体重改变通知
+
 @interface WeightViewController : UIViewController
 
 @property (nonatomic) BOOL isJump;

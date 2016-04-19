@@ -53,8 +53,7 @@
             callBack:(BaseNetworkCallBack)callBack;
 
 // 保存步数
-- (void)saveStepDataRecordDate:(NSString *)recordDate
-             stepNum: (NSString *)stepNum
+- (void)saveStepData: (NSString *)stepInfos
             callBack:(BaseNetworkCallBack)callBack;
 
 // 获取计步数据
@@ -63,9 +62,7 @@
            callBack:(BaseNetworkCallBack)callBack;
 
 // 保存睡眠数据
-- (void)saveSleepDataSleepDate:(NSString *)sleepDate
-              qsmTime: (NSString *)qsmTime
-              ssmTime: (NSString *)ssmTime
+- (void)saveSleepData: (NSString *)sleepInfos
              callBack:(BaseNetworkCallBack)callBack;
 
 // 获取睡眠数据

@@ -202,9 +202,9 @@
     NSString *string = [formatter stringFromDate:date];
     
     OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
-    [operateViewModel saveSleepDataSleepDate:string
-                                     qsmTime:@(_shallowSleepValue).stringValue
-                                     ssmTime:@(_deepSleepValue).stringValue];
+//    [operateViewModel saveSleepDataSleepDate:string
+//                                     qsmTime:@(_shallowSleepValue).stringValue
+//                                     ssmTime:@(_deepSleepValue).stringValue];
 }
 
 - (void)setSleepTimeValues {

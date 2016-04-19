@@ -15,6 +15,9 @@
 
 @property (nonatomic , assign) NSInteger first;
 
+@property (nonatomic , strong) NSString *nickName;
+
+
 @end
 
 @implementation nickNameController
@@ -57,20 +60,9 @@
 }
 
 
-- (IBAction)btnClick:(id)sender {
-    
-    NSString *nickName = _nickNameTextField.text;
-    if (!nickName || nickName.length < 4 || nickName.length > 16 ) {
-        [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
-        return;
-    }
-    CurrentUser.nickName = nickName;
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
-    if (first == 1) {
-        [self PushToVC];
-    }else{
-    [self.navigationController popViewControllerAnimated:YES];
-    }
+- (IBAction)btnClick:(id)sender
+{
+    [self PushToVC];
 }
 
 - (void)btnPreClick:(id)sender
@@ -80,12 +72,6 @@
 
 - (void)btnNextClick:(id)sender
 {
-    NSString *nickName = _nickNameTextField.text;
-    if (!nickName || nickName.length < 4 || nickName.length > 16 ) {
-        [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
-        return;
-    }
-    CurrentUser.nickName = _nickNameTextField.text;
     [self PushToVC];
 }
 
@@ -96,16 +82,17 @@
 
 - (void)PushToVC
 {
+    _nickName = _nickNameTextField.text;
+    if (!_nickName || _nickName.length < 4 || _nickName.length > 16 ) {
+        [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
+        return;
+    }
     if (_first == 1) {
         SexViewController *VC = [[SexViewController alloc] init];
-        NSString *nickName = _nickNameTextField.text;
-        if (!nickName || nickName.length < 4 || nickName.length > 16 ) {
-            [MBProgressHUD showHUDByContent:@"昵称长度必须为4-16个字符！" view:UI_Window afterDelay:2];
-            return;
-        }
-        CurrentUser.nickName = nickName;
+        CurrentUser.nickName = _nickName;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:nickNameIsChangeNotification object:_nickName];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

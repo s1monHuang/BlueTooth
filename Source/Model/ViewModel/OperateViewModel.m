@@ -214,10 +214,9 @@
 }
 
 // 保存步数
-- (void)saveStepDataRecordDate:(NSString *)recordDate
-                       stepNum: (NSString *)stepNum
+- (void)saveStepData: (NSString *)stepInfos
 {
-    [self.userOperator saveStepDataRecordDate:recordDate stepNum:stepNum callBack:^(BOOL success, id responseObject, NSError *error) {
+    [self.userOperator saveStepData:stepInfos callBack:^(BOOL success, id responseObject, NSError *error) {
         self.startLoading = NO;
         if (success) {
             
@@ -256,11 +255,9 @@
 }
 
 // 保存睡眠数据
-- (void)saveSleepDataSleepDate:(NSString *)sleepDate
-                       qsmTime: (NSString *)qsmTime
-                       ssmTime: (NSString *)ssmTime
+- (void)saveSleepData:(NSString *)sleepInfos
 {
-    [self.userOperator saveSleepDataSleepDate:sleepDate qsmTime:qsmTime ssmTime:ssmTime callBack:^(BOOL success, id responseObject, NSError *error) {
+    [self.userOperator saveSleepData:sleepInfos callBack:^(BOOL success, id responseObject, NSError *error) {
         self.startLoading = NO;
         if (success) {
             

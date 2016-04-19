@@ -16,6 +16,8 @@
 
 @property (nonatomic , assign) NSInteger first;
 
+@property (nonatomic , copy) NSString *ageStr;
+
 @end
 
 @implementation AgeViewController
@@ -107,7 +109,6 @@
 
 - (void)btnNextClick:(id)sender
 {
-    CurrentUser.age = self.lblAgeValue.text;
     [self PushToVC];
 }
 
@@ -118,12 +119,13 @@
 
 - (void)PushToVC
 {
-    
-    CurrentUser.age = self.lblAgeValue.text;
+    _ageStr = self.lblAgeValue.text;
     if (_first == 1) {
         HeightViewController *VC = [[HeightViewController alloc] init];
+        CurrentUser.age = _ageStr;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:ageIsChangeNotification object:_ageStr];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -158,13 +160,6 @@
      //获取对应列，对应行的数据
      NSString *age= self.ageArray[row];
      self.lblAgeValue.text = age;
-//     //修改数据库信息
-//     BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-//     changeModel.age = age;
-//     BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-//     if (!change) {
-//         DLog(@"修改年龄失败");
-//     }
 
 //     [[NSNotificationCenter defaultCenter] postNotificationName:ageNotification object:age];
 }

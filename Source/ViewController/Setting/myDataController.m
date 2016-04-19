@@ -60,6 +60,25 @@ static NSString* identifier =@"PersonalCell";
     
     //bottomView
     [self setUpBottomView];
+    
+    //属性改变通知
+    //年龄
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:ageIsChangeNotification object:nil];
+    
+    //性别
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:sexIsChangeNotification object:nil];
+    
+    //身高
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:heightIsChangeNotification object:nil];
+    
+    //体重
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:weightIsChangeNotification object:nil];
+    
+    //步长
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:steoLongIsChangeNotification object:nil];
+    
+    //昵称
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authorPropertyIsChange:) name:nickNameIsChangeNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,7 +93,7 @@ static NSString* identifier =@"PersonalCell";
         self.navigationItem.leftBarButtonItem = item;
     }
     _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
-    [_tableView reloadData];
+//    [_tableView reloadData];
 }
 
 - (void)setUpTableView
@@ -106,16 +125,22 @@ static NSString* identifier =@"PersonalCell";
 
 #pragma mark - 通知方法
 
-//- (void)resetTargetValue:(NSNotification *)sender
-//{
-//    self.targetValue = [sender.object integerValue];
-//}
+- (void)authorPropertyIsChange:(NSNotification *)sender
+{
+    _selectedCell.valueLabel.text = sender.object;
+}
 //
 #pragma mark - buttonClick
 
 - (void)resetClick
 {
-//    __weak myDataController *blockSelf = self;
+    CurrentUser.nickName = [self currentUserValue:0];
+    CurrentUser.sex = [self currentUserValue:1];
+    CurrentUser.age = [self currentUserValue:2];
+    CurrentUser.high = [self currentUserValue:3];
+    CurrentUser.weight = [self currentUserValue:4];
+    CurrentUser.stepLong = [self currentUserValue:5];
+    
     [self.operateVM editWithUserNickName:CurrentUser.nickName sex:CurrentUser.sex high:CurrentUser.high weight:CurrentUser.weight age:CurrentUser.age stepLong:CurrentUser.stepLong];
     DLog(@"%@",CurrentUser);
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
@@ -135,13 +160,25 @@ static NSString* identifier =@"PersonalCell";
             if (!change) {
                 DLog(@"修改用户信息失败");
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:CurrentUser.nickName];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSDictionary *tempDict = @{@"nickName":CurrentUser.nickName,@"sex":CurrentUser.sex};
+               [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:nil userInfo:tempDict];
+            });
+            
             [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
         }else
         {
             [MBProgressHUD showHUDByContent:userInfo view:UI_Window afterDelay:2];
         }
     };
+}
+
+- (NSString *)currentUserValue: (NSInteger)row
+{
+    myDataCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+    NSString *valueStr = cell.valueLabel.text;
+    return valueStr;
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource

@@ -72,31 +72,22 @@
 - (void)btnfaleClick:(id)sender
 {
     NSString *sexValue = @"男";
-    CurrentUser.sex = sexValue;
-    
-//    //修改数据库信息
-//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-//    changeModel.gender = sexValue;
-//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-//    if (!change) {
-//        DLog(@"修改性别失败");
-//    }
-    
+    if (_first == 1) {
+        CurrentUser.sex = sexValue;
+    }else{
+       [[NSNotificationCenter defaultCenter] postNotificationName:sexIsChangeNotification object:sexValue];
+    }
     [self PushToVC];
 }
 
 - (void)btnMefaleClick:(id)sender
 {
     NSString *sexValue = @"女";
-    CurrentUser.sex = sexValue;
-    
-//    //修改数据库信息
-//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-//    changeModel.gender = sexValue;
-//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-//    if (!change) {
-//        DLog(@"修改性别失败");
-//    }
+    if (_first == 1) {
+        CurrentUser.sex = sexValue;
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:sexIsChangeNotification object:sexValue];
+    }
     
     [self PushToVC];
 }

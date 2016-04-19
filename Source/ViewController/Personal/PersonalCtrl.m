@@ -34,6 +34,9 @@
 
 @property (nonatomic , assign) BOOL setpasswordEmpty;
 
+@property (nonatomic , strong) UIImageView *headerImageBg;
+
+
 
 @end
 
@@ -63,10 +66,10 @@
 //    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)];
 //    [headerView addGestureRecognizer:recognizer];
     
-    UIImageView *headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 80)/2, 10, 80, 80)];
+    _headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth - 80)/2, 10, 80, 80)];
     NSString *imageStr = [CurrentUser.sex isEqualToString:@"男"] ? @"man":@"woman";
-    headerImageBg.image = [UIImage imageNamed:imageStr];
-    [self.view addSubview:headerImageBg];
+    _headerImageBg.image = [UIImage imageNamed:imageStr];
+    [self.view addSubview:_headerImageBg];
     
     UILabel *lblUserName = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 30, 26)];
     _lblUserName = lblUserName;
@@ -92,7 +95,10 @@
 
 - (void)changeNickName:(NSNotification *)sender
 {
-    _lblUserName.text = sender.object;
+    _lblUserName.text = sender.userInfo[@"nickName"];
+    
+    NSString *imageStr = [CurrentUser.sex isEqualToString:@"男"] ? @"man":@"woman";
+    _headerImageBg.image = [UIImage imageNamed:imageStr];
 }
 
 - (void)exitDownload
