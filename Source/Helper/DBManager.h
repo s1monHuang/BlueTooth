@@ -97,4 +97,18 @@
 
 + (NSArray *)selectOneDayHistorySportData;
 
+/*!
+ *  获取历史睡眠数据
+ *
+ *  @return
+ */
++ (NSString *)selectHistorySleepData;
+
+/*!
+ *  获取历史运动数据
+ *
+ *  @return
+ */
++ (NSString *)selectHistorySportData;
+
 @end

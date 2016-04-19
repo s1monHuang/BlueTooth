@@ -256,6 +256,7 @@ static NSString *dbPath = nil;
                      'user_id',\
                      'time',\
                      'calorie',\
+                     'step',\
                      'sleep',\
                      'battery',\
                      'date')\
@@ -265,10 +266,12 @@ static NSString *dbPath = nil;
                      '%@',\
                      '%@',\
                      '%@',\
+                     '%@',\
                      '%@')",
                      CurrentUser.userId,
                      @(model.time),
                      @(model.calorie),
+                     @(model.step),
                      @(model.sleep),
                      @(model.battery),
                      model.date];
@@ -287,6 +290,7 @@ static NSString *dbPath = nil;
             model.sleep = [result intForColumn:@"sleep"];
             model.battery = [result intForColumn:@"battery"];
             model.date = [result dateForColumn:@"date"];
+            model.step = [result intForColumn:@"step"];
             [result close];
         }
     }];
@@ -305,6 +309,7 @@ static NSString *dbPath = nil;
             model.sleep = [result intForColumn:@"sleep"];
             model.battery = [result intForColumn:@"battery"];
             model.date = [result dateForColumn:@"date"];
+            model.step = [result intForColumn:@"step"];
             [array addObject:model];
         }
         [result close];
@@ -312,6 +317,79 @@ static NSString *dbPath = nil;
     return array;
 }
 
++ (NSString *)selectHistorySleepData {
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        for (NSInteger i = 0; i < 3; i++) {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now','start of day','%ld day')",CurrentUser.userId,i - 3];
+            FMResultSet *result = [db executeQuery:sql];
+            
+            NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+            NSInteger ssmTime = 0;
+            NSInteger qsmTime = 0;
+            
+            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 3) sinceDate:[NSDate date]];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            NSString *dateString = [formatter stringFromDate:date];
+            
+            while (result.next) {
+                NSInteger sleep = [result intForColumn:@"sleep"];
+                if (sleep < 10) {
+                    ssmTime += 1;
+                } else if (sleep >= 10 && sleep < 255) {
+                    qsmTime += 1;
+                }
+            }
+            
+            [dictionary setObject:@"ssmTime" forKey:@(ssmTime).stringValue];
+            [dictionary setObject:@"qsmTime" forKey:@(qsmTime).stringValue];
+            [dictionary setObject:@"sleepDate" forKey:dateString];
+            
+            [array addObject:dictionary];
+            
+            [result close];
+        }
+    }];
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
++ (NSString *)selectHistorySportData {
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        for (NSInteger i = 0; i < 3; i++) {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now','start of day','%ld day')",CurrentUser.userId,i - 3];
+            FMResultSet *result = [db executeQuery:sql];
+            
+            NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+            
+            NSInteger stepNum = 0;
+            
+            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 3) sinceDate:[NSDate date]];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            NSString *dateString = [formatter stringFromDate:date];
+            
+            while (result.next) {
+                stepNum += [result intForColumn:@"step"];
+            }
+            
+            [dictionary setObject:@"stepNum" forKey:@(stepNum).stringValue];
+            [dictionary setObject:@"recordDate" forKey:dateString];
+            
+            [array addObject:dictionary];
+            
+            [result close];
+        }
+    }];
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
 
 
 @end

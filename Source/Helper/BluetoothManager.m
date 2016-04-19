@@ -10,6 +10,7 @@
 #import "SportDataModel.h"
 #import "HistorySportDataModel.h"
 #import "BasicInfomationModel.h"
+#import "OperateViewModel.h"
 
 #define specifiedUUID @"FFF1"
 
@@ -301,6 +302,9 @@ static BluetoothManager *manager = nil;
                     if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
                         [weakSelf.deleagete didBindingPeripheral:YES];
                     }
+                    //同步完成后上传数据
+                    OperateViewModel *operateVM = [OperateViewModel viewModel];
+//                    operateVM save
                 }
             }
                 break;
