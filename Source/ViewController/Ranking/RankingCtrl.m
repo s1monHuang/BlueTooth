@@ -62,71 +62,62 @@
 
 - (void)getRankData
 {
-    __weak RankingCtrl *blockSelf = self;
-    NSArray *tempArr = @[@{@"ssmTime":@"250", @"qsmTime":@"50",@"sleepDate":@"2016-04-18"},@{@"ssmTime": @"290", @"qsmTime":@"90",@"sleepDate": @"2016-04-19"}];
-//    [self.operateVM saveSleepData:tempArr];
+    __weak RankingCtrl *blockSelf = self;;
+    NSDate *startDate = [NSDate date];
+    NSDate *endDate = [startDate dateByAddingTimeInterval:(-24 * 60 * 60)];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSString *startDateStr = [formatter stringFromDate:startDate];
+     NSString *endDateStr = [formatter stringFromDate:endDate];
+    [self.operateVM requestRankingListStartDate:startDateStr endDate:endDateStr];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
         if (finished) {
-            DLog(@"%@",userInfo);
-        }else{
-            DLog(@"%@",userInfo);
+            
+        blockSelf.dataArray = [RankingEntity mj_objectArrayWithKeyValuesArray:userInfo];
+        if (blockSelf.dataArray.count > 1) {
+            NSArray *tempArray = [NSArray arrayWithArray:blockSelf.dataArray];
+            for (NSInteger i = 0; i < blockSelf.dataArray.count; i++) {
+                for (NSInteger j = 0; j < i; j++) {
+                    RankingEntity *model = tempArray[i];
+                    RankingEntity *otherModel = tempArray[j];
+                    if ([model.sumSteps integerValue] < [otherModel.sumSteps integerValue]) {
+                        [blockSelf.dataArray exchangeObjectAtIndex:i withObjectAtIndex:j];
+                    }
+                }
+            }
+            for (NSInteger i = 0; i < tempArray.count; i++) {
+                RankingEntity *entity = blockSelf.dataArray[i];
+                if ([entity.userId isEqualToString:CurrentUser.userId]) {
+                    blockSelf.mRankEntity = entity;
+                    blockSelf.myRankNo = i;
+                }
+            }
+        }else
+        {
+            if (blockSelf.dataArray.count) {
+               blockSelf.mRankEntity = blockSelf.dataArray[0];
+            }else{
+                blockSelf.mRankEntity = [[RankingEntity alloc] init];
+                blockSelf.mRankEntity.sumSteps = @"0";
+                blockSelf.mRankEntity.userName = CurrentUser.nickName;
+                blockSelf.mRankEntity.userId = CurrentUser.userId;
+                blockSelf.myRankNo = 0;
+            }
+            
+        }
+            blockSelf.rankingtable.delegate = blockSelf;
+            blockSelf.rankingtable.dataSource = blockSelf;
+            blockSelf.rankingtable.alpha = 1;
+            [blockSelf.rankingtable setTableFooterView:[UIView new]];
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+        }else
+        {
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"排名信息获取失败" message:nil delegate:blockSelf cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
         }
     };
-//    NSDate *startDate = [NSDate date];
-//    NSDate *endDate = [startDate dateByAddingTimeInterval:(-24 * 60 * 60)];
-//    
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY-MM-dd"];
-//    NSString *startDateStr = [formatter stringFromDate:startDate];
-//     NSString *endDateStr = [formatter stringFromDate:endDate];
-//    [self.operateVM requestRankingListStartDate:startDateStr endDate:endDateStr];
-//    self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
-//        if (finished) {
-//            
-//        blockSelf.dataArray = [RankingEntity mj_objectArrayWithKeyValuesArray:userInfo];
-//        if (blockSelf.dataArray.count > 1) {
-//            NSArray *tempArray = [NSArray arrayWithArray:blockSelf.dataArray];
-//            for (NSInteger i = 0; i < blockSelf.dataArray.count; i++) {
-//                for (NSInteger j = 0; j < i; j++) {
-//                    RankingEntity *model = tempArray[i];
-//                    RankingEntity *otherModel = tempArray[j];
-//                    if ([model.sumSteps integerValue] < [otherModel.sumSteps integerValue]) {
-//                        [blockSelf.dataArray exchangeObjectAtIndex:i withObjectAtIndex:j];
-//                    }
-//                }
-//            }
-//            for (NSInteger i = 0; i < tempArray.count; i++) {
-//                RankingEntity *entity = blockSelf.dataArray[i];
-//                if ([entity.userId isEqualToString:CurrentUser.userId]) {
-//                    blockSelf.mRankEntity = entity;
-//                    blockSelf.myRankNo = i;
-//                }
-//            }
-//        }else
-//        {
-//            if (blockSelf.dataArray.count) {
-//               blockSelf.mRankEntity = blockSelf.dataArray[0];
-//            }else{
-//                blockSelf.mRankEntity = [[RankingEntity alloc] init];
-//                blockSelf.mRankEntity.sumSteps = @"0";
-//                blockSelf.mRankEntity.userName = CurrentUser.nickName;
-//                blockSelf.mRankEntity.userId = CurrentUser.userId;
-//                blockSelf.myRankNo = 0;
-//            }
-//            
-//        }
-//            blockSelf.rankingtable.delegate = blockSelf;
-//            blockSelf.rankingtable.dataSource = blockSelf;
-//            blockSelf.rankingtable.alpha = 1;
-//            [blockSelf.rankingtable setTableFooterView:[UIView new]];
-//            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
-//        }else
-//        {
-//            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"排名信息获取失败" message:nil delegate:blockSelf cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//            [alert show];
-//        }
-//    };
 
 }
 
