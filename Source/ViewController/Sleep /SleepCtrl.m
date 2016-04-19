@@ -196,12 +196,12 @@
     [self setSleepTimeValues];
     _refreshBututton.userInteractionEnabled = YES;
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY-MM-dd"];
-    NSDate *date = [NSDate date];
-    NSString *string = [formatter stringFromDate:date];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"YYYY-MM-dd"];
+//    NSDate *date = [NSDate date];
+//    NSString *string = [formatter stringFromDate:date];
     
-    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
+//    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
 //    [operateViewModel saveSleepDataSleepDate:string
 //                                     qsmTime:@(_shallowSleepValue).stringValue
 //                                     ssmTime:@(_deepSleepValue).stringValue];

@@ -97,6 +97,7 @@ static NSString *dbPath = nil;
 + (BOOL)createHistroySportDataTable:(FMDatabase *)db {
     NSString *createAppsSql = @"CREATE TABLE IF NOT EXISTS 'histroy_sport_table' (\
     'user_id' TEXT NOT NULL ,\
+    'step' INTEGER,\
     'time' INTEGER,\
     'calorie' INTEGER,\
     'sleep' INTEGER,\
@@ -254,6 +255,7 @@ static NSString *dbPath = nil;
 + (BOOL)insertOrReplaceHistroySportData:(HistorySportDataModel *)model database:(FMDatabase *)db {
     NSString *sql = [NSString stringWithFormat:@"INSERT OR REPLACE INTO 'histroy_sport_table' (\
                      'user_id',\
+                     'step',\
                      'time',\
                      'calorie',\
                      'step',\
@@ -267,8 +269,10 @@ static NSString *dbPath = nil;
                      '%@',\
                      '%@',\
                      '%@',\
+                     '%@',\
                      '%@')",
                      CurrentUser.userId,
+                     @(model.step),
                      @(model.time),
                      @(model.calorie),
                      @(model.step),
@@ -343,9 +347,9 @@ static NSString *dbPath = nil;
                 }
             }
             
-            [dictionary setObject:@"ssmTime" forKey:@(ssmTime).stringValue];
-            [dictionary setObject:@"qsmTime" forKey:@(qsmTime).stringValue];
-            [dictionary setObject:@"sleepDate" forKey:dateString];
+            [dictionary setObject:@(ssmTime).stringValue forKey:@"ssmTime"];
+            [dictionary setObject:@(qsmTime).stringValue forKey:@"qsmTime"];
+            [dictionary setObject:dateString forKey:@"sleepDate"];
             
             [array addObject:dictionary];
             
@@ -378,8 +382,8 @@ static NSString *dbPath = nil;
                 stepNum += [result intForColumn:@"step"];
             }
             
-            [dictionary setObject:@"stepNum" forKey:@(stepNum).stringValue];
-            [dictionary setObject:@"recordDate" forKey:dateString];
+            [dictionary setObject:@(stepNum).stringValue forKey:@"stepNum"];
+            [dictionary setObject:dateString forKey:@"recordDate"];
             
             [array addObject:dictionary];
             

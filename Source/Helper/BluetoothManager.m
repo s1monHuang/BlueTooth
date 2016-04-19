@@ -304,7 +304,8 @@ static BluetoothManager *manager = nil;
                     }
                     //同步完成后上传数据
                     OperateViewModel *operateVM = [OperateViewModel viewModel];
-//                    operateVM save
+                    [operateVM saveStepData:[DBManager selectHistorySportData]];
+                    [operateVM saveSleepData:[DBManager selectHistorySleepData]];
                 }
             }
                 break;

@@ -298,12 +298,12 @@
     CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
     _electricity.width = electricityWidth;
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY-MM-dd"];
-    NSDate *date = [NSDate date];
-    NSString *string = [formatter stringFromDate:date];
-    
-    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"YYYY-MM-dd"];
+//    NSDate *date = [NSDate date];
+//    NSString *string = [formatter stringFromDate:date];
+//    
+//    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
 //    [operateViewModel saveStepDataRecordDate:string
 //                                     stepNum:@(_sportModel.step).stringValue];
     
