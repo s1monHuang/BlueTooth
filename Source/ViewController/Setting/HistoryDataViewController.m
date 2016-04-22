@@ -589,11 +589,17 @@
 //日数据
 - (void)getDayData:(NSDate *)date
 {
+    NSDate *today = [NSDate date];
     __weak HistoryDataViewController *blockSelf = self;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM-dd"];
     NSString *dateStr = [formatter stringFromDate:date];
+    NSString *todayStr = [formatter stringFromDate:today];
     if (self.dataType == 0) {
+        if ([dateStr isEqualToString:todayStr]) {
+#warning 今日的记步数据 
+//            self.dayStepCount = ?
+        }else{
         [blockSelf.operateVM getStepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
@@ -606,7 +612,13 @@
                 
             }
         };
+        }
     }else{
+        if ([dateStr isEqualToString:todayStr]) {
+#warning 今日的睡眠数据
+//            self.daySsmCount = ?
+//            self.dayQsmCount = ?
+        }else{
         [blockSelf.operateVM getSleepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
@@ -621,6 +633,7 @@
                 
             }
         };
+        }
     }
     
 }
