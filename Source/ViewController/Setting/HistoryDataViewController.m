@@ -15,7 +15,15 @@
 #import "PNCircleChart.h"
 #import "DBManager.h"
 
+typedef NS_ENUM(NSInteger, HistoryDataType) {
+    HistoryDataTypeDay = 0,              //日数据
+    HistoryDataTypeWeek,                //周数据
+    HistoryDataTypeMonth                //月数据
+    
+};
+
 @interface HistoryDataViewController () <UIGestureRecognizerDelegate,FSCalendarDataSource,FSCalendarDelegate>
+
 @property (nonatomic,strong) NSMutableArray *sportDataArray;
 @property (nonatomic,strong) NSMutableArray *sleepDataArray;
 
@@ -79,7 +87,7 @@
 
 @property (nonatomic , strong) UIView *backgroundView;
 
-
+@property (nonatomic , assign) HistoryDataType HistoryData;
 
 @end
 
@@ -109,6 +117,7 @@
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel defaultInstance];
     self.dataType = 0;
+    self.HistoryData = HistoryDataTypeDay;
     
     _dayStepCount = 0;
     _weekStepCount = 0;
@@ -301,7 +310,7 @@
     bottomStepLabel.text = [NSString stringWithFormat:@"%ld",self.dayStepCount];
     
     
-    CGFloat distance = (self.dayStepCount * [CurrentUser.stepLong floatValue] ) / 10;
+    CGFloat distance = (self.dayStepCount * [CurrentUser.stepLong floatValue] ) / 10000;
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
     UILabel *bottomDistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + bottomViewW, 5, bottomViewW, 30)];
     bottomDistanceLabel.textAlignment = NSTextAlignmentCenter;
@@ -328,6 +337,10 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25 + i *bottomViewW, 35, bottomViewW - 25, 20)];
         label.font = [UIFont systemFontOfSize:11];
         label.text = tempTitleArray[i];
+        label.textAlignment = NSTextAlignmentCenter;
+        if (i == 0) {
+            label.center = CGPointMake(bottomView.width / 3 / 2 + 7.5 , 45);
+        }
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(bottomViewW + i *bottomViewW, 0, 0.5, bottomViewH)];
         lineView.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5];
         [bottomView addSubview:imageView];
@@ -409,6 +422,7 @@
 
 - (void)dayBtnClick
 {
+    self.HistoryData = HistoryDataTypeDay;
     [UIView animateWithDuration:0.2 animations:^{
         _backgroundView.frame = CGRectMake(_dayBtn.x+ 15, _dayBtn.y, 50, 50);
         _backgroundView.center = _dayBtn.center;
@@ -425,6 +439,7 @@
 
 - (void)weekBtnClick
 {
+    self.HistoryData = HistoryDataTypeWeek;
     [UIView animateWithDuration:0.2 animations:^{
         _backgroundView.frame = CGRectMake(_weekBtn.x+ 15, _weekBtn.y, 50, 50);
         _backgroundView.center = _weekBtn.center;
@@ -440,6 +455,7 @@
 
 - (void)monthBtnClick
 {
+    self.HistoryData = HistoryDataTypeMonth;
     [UIView animateWithDuration:0.2 animations:^{
         _backgroundView.frame = CGRectMake(_monthBtn.x + 15, _monthBtn.y, 50, 50);
         _backgroundView.center = _monthBtn.center;
@@ -544,9 +560,21 @@
 - (void)getHistoryData:(NSDate *)date
 {
     //获取运动睡眠历史数据
-    [self getDayData:date];
-    [self getWeekData:date];
-    [self getMonthData:date];
+    switch (self.HistoryData) {
+        case HistoryDataTypeDay:
+            [self getDayData:date];
+            break;
+        case HistoryDataTypeWeek:
+            [self getWeekData:date];
+            break;
+        case HistoryDataTypeMonth:
+             [self getMonthData:date];
+            break;
+            
+        default:
+            break;
+    }
+    
 }
 
 - (NSArray *)getDateFromWeek:(NSDate*)date
@@ -599,6 +627,8 @@
         if ([dateStr isEqualToString:todayStr]) {
             //今日的记步数据
             self.dayStepCount = [DBManager selectTodayStepNumber];
+            [self setLabelText:self.dayStepCount];
+            
         }else{
         [blockSelf.operateVM getStepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
@@ -606,6 +636,7 @@
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (StepDataModel *model in blockSelf.sportDataArray) {
                     blockSelf.dayStepCount += [model.stepNum integerValue];
+                    [self setLabelText:blockSelf.dayStepCount];
                 }
                 
             }else{
@@ -618,6 +649,8 @@
             //今日的睡眠数据
             self.daySsmCount = [DBManager selectTodayssmNumber];
             self.dayQsmCount = [DBManager selectTodayqsmNumber];
+            [self setSleepLabelTextWithQsmCount:_dayQsmCount ssmCount:_daySsmCount];
+            
         }else{
         [blockSelf.operateVM getSleepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
@@ -629,6 +662,7 @@
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
                     blockSelf.dayQsmCount += [model.qsmTime integerValue];
                 }
+                [self setSleepLabelTextWithQsmCount:blockSelf.dayQsmCount ssmCount:blockSelf.daySsmCount];
             }else{
                 
             }
@@ -655,11 +689,13 @@
                 for (StepDataModel *model in blockSelf.sportDataArray) {
                     blockSelf.weekStepCount += [model.stepNum integerValue];
                 }
+                [self setLabelText:blockSelf.weekStepCount];
                 
             }else{
                 
             }
         };
+        
     }else{
         [blockSelf.operateVM getSleepDataStartDate:startDateStr endDate:endDateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
@@ -671,6 +707,7 @@
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
                     blockSelf.weekQsmCount += [model.qsmTime integerValue];
                 }
+                [self setSleepLabelTextWithQsmCount:blockSelf.weekQsmCount ssmCount:blockSelf.weekSsmCount];
             }else{
                 
             }
@@ -699,6 +736,7 @@
                 for (StepDataModel *model in blockSelf.sportDataArray) {
                     blockSelf.monthStepCount += [model.stepNum integerValue];
                 }
+                [self setLabelText:blockSelf.monthStepCount];
                 
             }else{
                 
@@ -715,6 +753,7 @@
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
                     blockSelf.monthQsmCount += [model.qsmTime integerValue];
                 }
+                [self setSleepLabelTextWithQsmCount:blockSelf.monthQsmCount ssmCount:blockSelf.monthSsmCount];
             }else{
                 
             }
