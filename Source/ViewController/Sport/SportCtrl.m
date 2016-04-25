@@ -126,6 +126,8 @@
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     
+    [_circleChart updateChartByCurrent:@(completionRateFloat)];
+    
     _complateValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2,tempView.frame.size.width, 20)];
     _complateValue.text = completionRate;
     _complateValue.textAlignment = NSTextAlignmentCenter;
@@ -243,7 +245,7 @@
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
-    
+    [_circleChart updateChartByCurrent:@(completionRateFloat)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -275,7 +277,13 @@
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
     _isLoading = NO;
     [_refreshBututton.layer removeAllAnimations];
-    _sportModel = [notification object];
+    
+    id object = [notification object];
+    if (!object) {
+        _sportModel = [DBManager selectSportData];
+    } else {
+        _sportModel = [notification object];
+    }
     
     CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
@@ -286,7 +294,7 @@
     
     _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
     
-    [_circleChart updateChartByCurrent:_sportModel?@(_sportModel.target):@(0)];
+    [_circleChart updateChartByCurrent:@(completionRateFloat)];
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0)* 10).stringValue];

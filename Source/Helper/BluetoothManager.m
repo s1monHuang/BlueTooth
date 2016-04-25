@@ -253,8 +253,15 @@ static BluetoothManager *manager = nil;
         switch (weakSelf.successType) {
                 //绑定请求发送后,要再次确认绑定蓝牙设备
             case BluetoothConnectingBindingSuccess: {
-                [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
-                NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                //如果存在设备ID,不需要发送确认绑定
+                if ([weakSelf isExistDeviceID:characteristics]) {
+                    BasicInfomationModel *model = [DBManager selectBasicInfomation];
+                    [weakSelf setBasicInfomation:model];
+                    NSLog(@"蓝牙设备中有设备ID,开始设置基本信息 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                } else {
+                    [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
+                    NSLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                }
             }
                 break;
                 //成功绑定蓝牙设备后,设置基本信息
@@ -302,6 +309,10 @@ static BluetoothManager *manager = nil;
                     if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
                         [weakSelf.deleagete didBindingPeripheral:YES];
                     }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
+                                                                        object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+                                                                        object:nil];
                     //同步完成后上传数据
                     OperateViewModel *operateVM = [OperateViewModel viewModel];
                     [operateVM saveStepData:[DBManager selectHistorySportData]];
@@ -310,14 +321,8 @@ static BluetoothManager *manager = nil;
             }
                 break;
             default: {
-                Byte *byte = (Byte *)characteristics.value.bytes;
-                if (weakSelf.isBindingPeripheral && byte[1] == 0x0F) {
-                    [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
-                    DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
-                } else {
-                    [weakSelf startBindingPeripheral];
-                    DLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
-                }
+                [weakSelf startBindingPeripheral];
+                DLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
                 break;
         }
@@ -332,19 +337,22 @@ static BluetoothManager *manager = nil;
         }
         switch (weakSelf.successType) {
             case BluetoothConnectingNormalSuccess: {
-                Byte *byte = (Byte *)characteristic.value.bytes;
-                if (byte[1] == 0x0F) {
-                    [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
-                    DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
-                } else {
-                    [weakSelf startBindingPeripheral];
-                    DLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
-                }
+//                Byte *byte = (Byte *)characteristic.value.bytes;
+//                if (byte[1] == 0x0F) {
+//                    [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+//                    DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+//                } else {
+                [weakSelf startBindingPeripheral];
+                DLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+//                }
             }
                 break;
                 //绑定请求发送后,要再次确认绑定蓝牙设备
             case BluetoothConnectingBindingSuccess: {
-                [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+                if (![weakSelf isExistDeviceID:characteristic]) {
+                    [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+                }
+                    
                 DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
@@ -478,6 +486,18 @@ static BluetoothManager *manager = nil;
     
 }
 
+- (BOOL)isExistDeviceID:(CBCharacteristic *)characteristic {
+    Byte *b = (Byte *)characteristic.value.bytes;
+    BOOL isExist = NO;
+    for (NSInteger i = 6; i <=12 ; i++) {
+        if (b[i] != 0) {
+            isExist = YES;
+            break;
+        }
+    }
+    return isExist;
+}
+
 #pragma mark - 读取蓝牙中的数据,写入数据成功
 
 - (void)saveNewSportData:(NSData *)data {
@@ -510,7 +530,6 @@ static BluetoothManager *manager = nil;
     [self startTiming];
     _connectionType = BluetoothConnectingBinding;
     Byte b[20] = {0xAA,0xF1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-    b[6] = [self.deviceID integerValue];
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
@@ -524,13 +543,15 @@ static BluetoothManager *manager = nil;
     _connectionType = BluetoothConnectingConfirmBinding;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xF2;
-    b[6] = 0x00;
-    b[7] = 0x00;
-    b[8] = 0x00;
-    b[9] = 0x00;
-    b[10] = 0x00;
-    b[11] = 0x00;
-    b[12] = 0x00;
+    
+    NSInteger deviceIDNumber = _deviceID.integerValue;
+    for (NSInteger i = 0; i < _deviceID.length ;i++ ) {
+        
+        NSInteger idNumber = deviceIDNumber % 10;
+        b[12 - i] = idNumber;
+        deviceIDNumber /= 10;
+    }
+    
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
     [[BluetoothManager share] writeValue:data];

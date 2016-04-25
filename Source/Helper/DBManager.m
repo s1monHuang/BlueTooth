@@ -321,6 +321,53 @@ static NSString *dbPath = nil;
     return array;
 }
 
++ (NSInteger)selectTodayStepNumber {
+    __block NSInteger stepNumber = 0;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now')",CurrentUser.userId];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            stepNumber += [result intForColumn:@"step"];
+        }
+        [result close];
+    }];
+    return stepNumber;
+}
+
++ (NSInteger)selectTodayssmNumber {
+    __block NSInteger ssmNumber = 0;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now')",CurrentUser.userId];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            NSInteger sleep = [result intForColumn:@"sleep"];
+            if (sleep < 10) {
+                ssmNumber += sleep;
+            }
+        }
+        [result close];
+    }];
+    return ssmNumber;
+}
+
++ (NSInteger)selectTodayqsmNumber {
+    __block NSInteger qsmNumber = 0;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now')",CurrentUser.userId];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            NSInteger sleep = [result intForColumn:@"sleep"];
+            if (sleep > 10 && sleep < 255) {
+                qsmNumber += sleep;
+            }
+        }
+        [result close];
+    }];
+    return qsmNumber;
+}
+
+
+
 + (NSString *)selectHistorySleepData {
     __block NSMutableArray *array = [[NSMutableArray alloc] init];
     [dbQueue inDatabase:^(FMDatabase *db) {

@@ -111,4 +111,11 @@
  */
 + (NSString *)selectHistorySportData;
 
+
++ (NSInteger)selectTodayStepNumber;
+
++ (NSInteger)selectTodayssmNumber;
+
++ (NSInteger)selectTodayqsmNumber;
+
 @end
