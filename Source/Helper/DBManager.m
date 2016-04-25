@@ -324,7 +324,7 @@ static NSString *dbPath = nil;
 + (NSInteger)selectTodayStepNumber {
     __block NSInteger stepNumber = 0;
     [dbQueue inDatabase:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now')",CurrentUser.userId];
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now') AND date < date('now','start of day','1 day')",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             stepNumber += [result intForColumn:@"step"];
@@ -337,7 +337,7 @@ static NSString *dbPath = nil;
 + (NSInteger)selectTodayssmNumber {
     __block NSInteger ssmNumber = 0;
     [dbQueue inDatabase:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now')",CurrentUser.userId];
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now') AND date < date('now','start of day','1 day')",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
@@ -353,7 +353,7 @@ static NSString *dbPath = nil;
 + (NSInteger)selectTodayqsmNumber {
     __block NSInteger qsmNumber = 0;
     [dbQueue inDatabase:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now')",CurrentUser.userId];
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now') AND date < date('now','start of day','1 day')",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];

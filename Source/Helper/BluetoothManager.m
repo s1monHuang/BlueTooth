@@ -475,7 +475,7 @@ static BluetoothManager *manager = nil;
     model.calorie = (byte[5] << 8) + byte[4];           //卡路里
     model.sleep = byte[6];                              //睡眠动作次数
     model.battery = byte[7];                            //电量
-    NSInteger timeInterval = byte[8] + (byte[9] << 8) + (byte[10] << 16) + (byte[11] << 24);
+    NSTimeInterval timeInterval = byte[8] + (byte[9] << 8) + (byte[10] << 16) + (byte[11] << 24);
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyy-MM-DD HH:mm:ss"];
@@ -734,7 +734,7 @@ static BluetoothManager *manager = nil;
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0x00;
-    b[2] = [comps year];
+    b[2] = [comps year] % 100;
     b[3] = [comps month];
     b[4] = [comps day];
     b[5] = [comps hour];
