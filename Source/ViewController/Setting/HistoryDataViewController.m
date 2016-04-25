@@ -311,7 +311,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     
     
     CGFloat distance = (self.dayStepCount * [CurrentUser.stepLong floatValue] ) / 10000;
-    CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
+    CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
     UILabel *bottomDistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + bottomViewW, 5, bottomViewW, 30)];
     bottomDistanceLabel.textAlignment = NSTextAlignmentCenter;
     bottomDistanceLabel.text = [NSString stringWithFormat:@"%.1lf",distance];
