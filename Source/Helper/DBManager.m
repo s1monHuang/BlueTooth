@@ -324,7 +324,7 @@ static NSString *dbPath = nil;
 + (NSInteger)selectTodayStepNumber {
     __block NSInteger stepNumber = 0;
     [dbQueue inDatabase:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now') AND date < date('now','start of day','1 day')",CurrentUser.userId];
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'sport_table' WHERE user_id = '%@'",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             stepNumber += [result intForColumn:@"step"];

@@ -351,9 +351,8 @@ static BluetoothManager *manager = nil;
             case BluetoothConnectingBindingSuccess: {
                 if (![weakSelf isExistDeviceID:characteristic]) {
                     [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
+                    DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
                 }
-                    
-                DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
                 //确认绑定成功

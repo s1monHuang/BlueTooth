@@ -190,13 +190,13 @@
     _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20, boxWidth/3, 22)];
     _lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxthreeValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?_sportModel.calorie *0.001:0];
     [threeBox addSubview:_lblBoxthreeValue];
     
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20+22+10, boxWidth/3, 22)];
     lblBoxthreeText.textAlignment = NSTextAlignmentCenter;
     lblBoxthreeText.font = [UIFont systemFontOfSize:12];
-    lblBoxthreeText.text = @"消耗能量(cal)";
+    lblBoxthreeText.text = @"消耗能量(kCal)";
     [threeBox addSubview:lblBoxthreeText];
     
     CGFloat refreshY = kScreenHeight > 480 ? 0 : 20;
@@ -298,7 +298,7 @@
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0)* 10).stringValue];
-    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.calorie).stringValue:@(0).stringValue];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?_sportModel.calorie *0.001:0];;
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     _refreshBututton.userInteractionEnabled = YES;
