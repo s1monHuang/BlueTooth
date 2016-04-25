@@ -634,6 +634,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             if (finished) {
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (StepDataModel *model in blockSelf.sportDataArray) {
+                    blockSelf.dayStepCount = 0;
                     blockSelf.dayStepCount += [model.stepNum integerValue];
                     [self setLabelText:blockSelf.dayStepCount];
                 }
@@ -656,9 +657,11 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             if (finished) {
                 blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.daySsmCount = 0;
                     blockSelf.daySsmCount += [model.ssmTime integerValue];
                 }
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.dayQsmCount = 0;
                     blockSelf.dayQsmCount += [model.qsmTime integerValue];
                 }
                 [self setSleepLabelTextWithQsmCount:blockSelf.dayQsmCount ssmCount:blockSelf.daySsmCount];
@@ -686,6 +689,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             if (finished) {
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (StepDataModel *model in blockSelf.sportDataArray) {
+                    blockSelf.weekStepCount = 0;
                     blockSelf.weekStepCount += [model.stepNum integerValue];
                 }
                 [self setLabelText:blockSelf.weekStepCount];
@@ -701,9 +705,11 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             if (finished) {
                 blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.weekSsmCount = 0;
                     blockSelf.weekSsmCount += [model.ssmTime integerValue];
                 }
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.weekQsmCount = 0;
                     blockSelf.weekQsmCount += [model.qsmTime integerValue];
                 }
                 [self setSleepLabelTextWithQsmCount:blockSelf.weekQsmCount ssmCount:blockSelf.weekSsmCount];
@@ -733,6 +739,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             if (finished) {
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (StepDataModel *model in blockSelf.sportDataArray) {
+                    blockSelf.monthStepCount = 0;
                     blockSelf.monthStepCount += [model.stepNum integerValue];
                 }
                 [self setLabelText:blockSelf.monthStepCount];
@@ -747,9 +754,11 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             if (finished) {
                 blockSelf.sleepDataArray = [SleepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                    blockSelf.monthSsmCount = 0;
                     blockSelf.monthSsmCount += [model.ssmTime integerValue];
                 }
                 for (SleepDataModel *model in blockSelf.sleepDataArray) {
+                     blockSelf.monthQsmCount = 0;
                     blockSelf.monthQsmCount += [model.qsmTime integerValue];
                 }
                 [self setSleepLabelTextWithQsmCount:blockSelf.monthQsmCount ssmCount:blockSelf.monthSsmCount];
