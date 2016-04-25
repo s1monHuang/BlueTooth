@@ -473,12 +473,11 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
 - (void)setLabelText:(NSInteger)stepNum
 {
     CGFloat distance = (stepNum * [CurrentUser.stepLong floatValue] ) / 100000;
-    CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036;
-    
+    CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
     _stepLabel.text = [NSString stringWithFormat:@"%ld步",stepNum];
     _bottomStepLabel.text = [NSString stringWithFormat:@"%ld",stepNum];
     _bottomDistanceLabel.text = [NSString stringWithFormat:@"%.1lf",distance];
-    _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.0lf",fireEnergy];
+    _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",fireEnergy];
     
     [self.view setNeedsDisplay];
 }
