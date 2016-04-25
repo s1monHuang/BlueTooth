@@ -205,14 +205,11 @@
 - (void)removeCoverView
 {
     if (_selectedDate) {
-        [self getDayData:_selectedDate];
-        [self getWeekData:_selectedDate];
-        [self getMonthData:_selectedDate];
+        [self getHistoryData:_selectedDate];
         
     }else{
-        [self getDayData:[NSDate date]];
-        [self getWeekData:[NSDate date]];
-        [self getMonthData:[NSDate date]];
+        [self getHistoryData];
+        
     }
     [_coverView removeFromSuperview];
     _coverView = nil;
@@ -510,9 +507,7 @@
         {
             self.dataType = 0;
             if (_selectedDate) {
-                [self getDayData:_selectedDate];
-                [self getWeekData:_selectedDate];
-                [self getMonthData:_selectedDate];
+                [self getHistoryData:_selectedDate];
             }else{
                 [self getHistoryData];
             }
@@ -525,9 +520,7 @@
         {
             self.dataType = 1;
             if (_selectedDate) {
-                [self getDayData:_selectedDate];
-                [self getWeekData:_selectedDate];
-                [self getMonthData:_selectedDate];
+                [self getHistoryData:_selectedDate];
             }else{
             [self getHistoryData];
             }
@@ -545,9 +538,15 @@
 {
     NSDate *startDate = [NSDate date];
     //获取运动睡眠历史数据
-    [self getDayData:startDate];
-    [self getWeekData:startDate];
-    [self getMonthData:startDate];
+    [self getHistoryData:startDate];
+}
+
+- (void)getHistoryData:(NSDate *)date
+{
+    //获取运动睡眠历史数据
+    [self getDayData:date];
+    [self getWeekData:date];
+    [self getMonthData:date];
 }
 
 - (NSArray *)getDateFromWeek:(NSDate*)date
