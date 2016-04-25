@@ -13,6 +13,7 @@
 #import "SleepDataModel.h"
 #import "FSCalendar.h"
 #import "PNCircleChart.h"
+#import "DBManager.h"
 
 @interface HistoryDataViewController () <UIGestureRecognizerDelegate,FSCalendarDataSource,FSCalendarDelegate>
 @property (nonatomic,strong) NSMutableArray *sportDataArray;
@@ -597,8 +598,8 @@
     NSString *todayStr = [formatter stringFromDate:today];
     if (self.dataType == 0) {
         if ([dateStr isEqualToString:todayStr]) {
-#warning 今日的记步数据 
-//            self.dayStepCount = ?
+            //今日的记步数据
+            self.dayStepCount = [DBManager selectTodayStepNumber];
         }else{
         [blockSelf.operateVM getStepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
@@ -615,9 +616,9 @@
         }
     }else{
         if ([dateStr isEqualToString:todayStr]) {
-#warning 今日的睡眠数据
-//            self.daySsmCount = ?
-//            self.dayQsmCount = ?
+            //今日的睡眠数据
+            self.daySsmCount = [DBManager selectTodayssmNumber];
+            self.dayQsmCount = [DBManager selectTodayqsmNumber];
         }else{
         [blockSelf.operateVM getSleepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
