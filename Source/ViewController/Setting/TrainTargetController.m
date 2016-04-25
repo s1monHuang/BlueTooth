@@ -88,7 +88,7 @@
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _rightLabel.text = [NSString stringWithFormat:@"%.0lf千卡",fireEnergy];
+    _rightLabel.text = [NSString stringWithFormat:@"%.2lf千卡",fireEnergy];
     
 }
 

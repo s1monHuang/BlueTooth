@@ -318,7 +318,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     
     UILabel *bottomEnergyLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + 2 * bottomViewW, 5 , bottomViewW, 30)];
     bottomEnergyLabel.textAlignment = NSTextAlignmentCenter;
-    bottomEnergyLabel.text = [NSString stringWithFormat:@"%.0lf",fireEnergy];
+    bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",fireEnergy];
     
     [bottomView addSubview:bottomStepLabel];
     _bottomStepLabel = bottomStepLabel;
