@@ -325,6 +325,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     _bottomStepLabel = bottomStepLabel;
     [bottomView addSubview:bottomEnergyLabel];
     _bottomEnergyLabel = bottomEnergyLabel;
+    
     [bottomView addSubview:bottomDistanceLabel];
     _bottomDistanceLabel = bottomDistanceLabel;
     
@@ -406,7 +407,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     _qsleepTimeValue.textColor = [UIColor grayColor];
     [tempView addSubview:_qsleepTimeValue];
     _chartView.hidden = YES;
-    [self setSleepLabelTextWithQsmCount:_dayQsmCount ssmCount:_daySsmCount];
+    [self setSleepLabelText];
 }
 
 #pragma mark - 日 周 月按钮点击
@@ -431,9 +432,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
         [self.view setNeedsDisplay];
     }];
     if (_segmentedControl.selectedSegmentIndex == 0) {
-        [self setLabelText:self.dayStepCount];
+        [self setLabelText];
     }else{
-        [self setSleepLabelTextWithQsmCount:_dayQsmCount ssmCount:_daySsmCount];
+        [self setSleepLabelText];
     }
     
 }
@@ -448,9 +449,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
         [self.view setNeedsDisplay];
     }];
     if (_segmentedControl.selectedSegmentIndex == 0) {
-        [self setLabelText:self.weekStepCount];
+        [self setLabelText];
     }else{
-        [self setSleepLabelTextWithQsmCount:_weekQsmCount ssmCount:_weekSsmCount];
+        [self setSleepLabelText];
     }
 }
 
@@ -464,37 +465,74 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
         [self.view setNeedsDisplay];
     }];
     if (_segmentedControl.selectedSegmentIndex == 0) {
-        [self setLabelText:self.monthStepCount];
+        [self setLabelText];
         
     }else{
-        [self setSleepLabelTextWithQsmCount:_monthQsmCount ssmCount:_monthSsmCount];
+        [self setSleepLabelText];
     }
 }
 
-- (void)setLabelText:(NSInteger)stepNum
+- (void)setLabelText
 {
-    CGFloat distance = (stepNum * [CurrentUser.stepLong floatValue] ) / 100000;
+    NSInteger showStepData = 0;
+    switch (self.HistoryData) {
+        case HistoryDataTypeDay:
+            showStepData = self.dayStepCount;
+            break;
+        case HistoryDataTypeWeek:
+            showStepData = self.weekStepCount;
+            break;
+        case HistoryDataTypeMonth:
+            showStepData = self.monthStepCount;
+            break;
+            
+        default:
+            break;
+    }
+    CGFloat distance = (showStepData * [CurrentUser.stepLong floatValue] ) / 100000;
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _stepLabel.text = [NSString stringWithFormat:@"%ld步",stepNum];
-    _bottomStepLabel.text = [NSString stringWithFormat:@"%ld",stepNum];
+    _stepLabel.text = [NSString stringWithFormat:@"%ld步",showStepData];
+    _bottomStepLabel.text = [NSString stringWithFormat:@"%ld",showStepData];
     _bottomDistanceLabel.text = [NSString stringWithFormat:@"%.1lf",distance];
     _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",fireEnergy];
     
     [self.view setNeedsDisplay];
 }
 
-- (void)setSleepLabelTextWithQsmCount:(NSInteger)qsmCount ssmCount:(NSInteger)ssmCount
+- (void)setSleepLabelText
 {
+    NSInteger showSsmData = 0;
+    NSInteger showQsmData = 0;
+    switch (self.HistoryData) {
+        case HistoryDataTypeDay:{
+            showSsmData = self.daySsmCount;
+            showQsmData = self.dayQsmCount;
+        }
+            break;
+        case HistoryDataTypeWeek:{
+            showSsmData = self.weekSsmCount;
+            showQsmData = self.weekQsmCount;
+        }
+            break;
+        case HistoryDataTypeMonth:{
+            showSsmData = self.monthSsmCount;
+            showQsmData = self.monthQsmCount;
+        }
+            break;
+            
+        default:
+            break;
+    }
     NSInteger count = 1;
     
-    if (qsmCount + ssmCount > 10) {
+    if (showSsmData + showQsmData > 10) {
         count = 2;
-    }else if (qsmCount + ssmCount > 100){
+    }else if (showSsmData + showQsmData > 100){
         count = 3;
     }
     NSRange sleepHourRange = NSMakeRange(0, count);
     NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + 2, 2);
-    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时00分钟",@((qsmCount + ssmCount)).stringValue]];
+    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时00分钟",@((showSsmData + showQsmData)).stringValue]];
     [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
                               range:sleepHourRange];
     [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
@@ -502,13 +540,13 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     _sleepTimeValue.attributedText = sleepValueString;
     
     NSRange deepSleepRange = NSMakeRange(0, 3);
-    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★深睡%@小时00分钟",@(ssmCount).stringValue]];
+    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★深睡%@小时00分钟",@(showSsmData).stringValue]];
     [deepSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#1b6cff"]}
                                   range:deepSleepRange];
     _ssleepTimeValue.attributedText = deepSleepValueString;
     
     NSRange shallowSleepRange = NSMakeRange(0, 3);
-    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆浅睡%@小时00分钟",@(qsmCount).stringValue]];
+    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆浅睡%@小时00分钟",@(showQsmData).stringValue]];
     [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
                                      range:shallowSleepRange];
     _qsleepTimeValue.attributedText = shallowSleepValueString;
@@ -560,21 +598,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
 - (void)getHistoryData:(NSDate *)date
 {
     //获取运动睡眠历史数据
-    switch (self.HistoryData) {
-        case HistoryDataTypeDay:
-            [self getDayData:date];
-            break;
-        case HistoryDataTypeWeek:
-            [self getWeekData:date];
-            break;
-        case HistoryDataTypeMonth:
-             [self getMonthData:date];
-            break;
-            
-        default:
-            break;
-    }
-    
+    [self getDayData:date];
+    [self getWeekData:date];
+    [self getMonthData:date];
 }
 
 - (NSArray *)getDateFromWeek:(NSDate*)date
@@ -627,7 +653,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
         if ([dateStr isEqualToString:todayStr]) {
             //今日的记步数据
             self.dayStepCount = [DBManager selectTodayStepNumber];
-            [self setLabelText:self.dayStepCount];
+            [self setLabelText];
             
         }else{
         [blockSelf.operateVM getStepDataStartDate:dateStr endDate:dateStr];
@@ -636,11 +662,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                 blockSelf.dayStepCount = 0;
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
                 for (StepDataModel *model in blockSelf.sportDataArray) {
-                    
                     blockSelf.dayStepCount += [model.stepNum integerValue];
-                    
                 }
-                [self setLabelText:blockSelf.dayStepCount];
+                [blockSelf setLabelText];
             }else{
                 
             }
@@ -651,7 +675,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             //今日的睡眠数据
             self.daySsmCount = [DBManager selectTodayssmNumber];
             self.dayQsmCount = [DBManager selectTodayqsmNumber];
-            [self setSleepLabelTextWithQsmCount:_dayQsmCount ssmCount:_daySsmCount];
+            [self setSleepLabelText];
             
         }else{
         [blockSelf.operateVM getSleepDataStartDate:dateStr endDate:dateStr];
@@ -668,7 +692,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                     
                     blockSelf.dayQsmCount += [model.qsmTime integerValue];
                 }
-                [self setSleepLabelTextWithQsmCount:blockSelf.dayQsmCount ssmCount:blockSelf.daySsmCount];
+                [blockSelf setSleepLabelText];
             }else{
                 
             }
@@ -697,7 +721,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                     
                     blockSelf.weekStepCount += [model.stepNum integerValue];
                 }
-                [self setLabelText:blockSelf.weekStepCount];
+                [blockSelf setLabelText];
                 
             }else{
                 
@@ -719,7 +743,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                     
                     blockSelf.weekQsmCount += [model.qsmTime integerValue];
                 }
-                [self setSleepLabelTextWithQsmCount:blockSelf.weekQsmCount ssmCount:blockSelf.weekSsmCount];
+                [blockSelf setSleepLabelText];
             }else{
                 
             }
@@ -750,7 +774,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                     
                     blockSelf.monthStepCount += [model.stepNum integerValue];
                 }
-                [self setLabelText:blockSelf.monthStepCount];
+                [blockSelf setLabelText];
                 
             }else{
                 
@@ -771,7 +795,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                     
                     blockSelf.monthQsmCount += [model.qsmTime integerValue];
                 }
-                [self setSleepLabelTextWithQsmCount:blockSelf.monthQsmCount ssmCount:blockSelf.monthSsmCount];
+                [blockSelf setSleepLabelText];
             }else{
                 
             }

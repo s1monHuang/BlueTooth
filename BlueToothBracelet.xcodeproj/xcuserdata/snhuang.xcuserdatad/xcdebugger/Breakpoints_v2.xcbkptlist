@@ -137,7 +137,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "694"
             endingLineNumber = "694"
-            landmarkName = "-getWeekData:"
+            landmarkName = "-getDayData:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -153,7 +153,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "747"
             endingLineNumber = "747"
-            landmarkName = "-getMonthData:"
+            landmarkName = "-getWeekData:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
