@@ -55,7 +55,7 @@
     _nickNameView.text = CurrentUser.nickName;
     _dateView.text = dateString;
     _stepLabel.text = [NSString stringWithFormat:@"%@步",@(model.step).stringValue];
-    NSString *stepDetail = [NSString stringWithFormat:@"步行了%@公里",@(model.distance).stringValue];
+    NSString *stepDetail = [NSString stringWithFormat:@"步行了%.1lf公里",model.distance *0.01];
     _stepDetailLabel.text = stepDetail;
     _expendLabel.text = [NSString stringWithFormat:@"%.2f千卡",model.calorie *0.001];
     NSString *expendDetail = [NSString stringWithFormat:@"≈%@个雪糕",@(model.calorie / (147 * 1000)).stringValue];

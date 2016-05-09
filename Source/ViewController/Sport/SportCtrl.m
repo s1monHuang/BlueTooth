@@ -177,7 +177,7 @@
     _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
     _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0) / 100).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.1lf",(_sportModel?_sportModel.distance:0)*0.01];
     [threeBox addSubview:_lblBoxtwoValue];
     
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
@@ -300,7 +300,7 @@
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0) / 100).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.1lf",(_sportModel?_sportModel.distance:0)*0.01];
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?_sportModel.calorie *0.001:0];;
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
