@@ -217,6 +217,9 @@
                                                                      20)];
     _battery.image = [UIImage imageNamed:@"dianchi"];
     CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
+    if (electricityWidth > 50.0) {
+        electricityWidth = 50.0;
+    }
     _electricity = [[UIImageView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
                                                              _circleChart.height + _circleChart.y + (35 / 2 - refreshY),
                                                              electricityWidth,
@@ -304,6 +307,9 @@
     _refreshBututton.userInteractionEnabled = YES;
     
     CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
+    if (electricityWidth > 50.0) {
+        electricityWidth = 50.0;
+    }
     _electricity.width = electricityWidth;
     
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
