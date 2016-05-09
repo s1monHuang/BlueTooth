@@ -160,6 +160,8 @@ static BluetoothManager *manager = nil;
                     break;
                     //成功打开(关闭)来电提醒
                 case BluetoothConnectingCallAlert: {
+                    [[NSUserDefaults standardUserDefaults] setObject:@([BluetoothManager share].isOpenCallAlert)
+                                                              forKey:callAlertOpen];
                     weakSelf.successType = BluetoothConnectingCallAlertSuccess;
                 }
                     break;
@@ -352,6 +354,8 @@ static BluetoothManager *manager = nil;
                 if (![weakSelf isExistDeviceID:characteristic]) {
                     [weakSelf confirmBindingPeripheralWithValue:characteristic.value];
                     DLog(@"确认绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                } else {
+                    weakSelf.connectionType = BluetoothConnectingSuccess;
                 }
             }
                 break;

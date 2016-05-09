@@ -20,6 +20,9 @@
 #define DISCONNECT_PERIPHERAL @"DISCONNECT_PERIPHERAL"                            //与蓝牙设备断开
 
 
+#define callAlertOpen  @"openCallAlert"      //来电提醒开关
+
+
 
 #define BlueToothIsReadedPripheralAllData @"isReadedPripheralAllData"
 
