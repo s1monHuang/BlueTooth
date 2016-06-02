@@ -2462,6 +2462,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.szse.djtstg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d4343e03-381d-4c34-a443-e1d9378dcd61";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2484,6 +2485,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.szse.djtstg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d4343e03-381d-4c34-a443-e1d9378dcd61";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

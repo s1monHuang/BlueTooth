@@ -82,11 +82,13 @@
         self.txtUserAccount.text = @"";
         self.txtUserPassword.text = @"";
     }
-    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"];
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"]?YES:NO;
     if (!first) {
         DLog(@"第一次登陆");
-        _firstDownload = 1;
-        [[NSUserDefaults standardUserDefaults] setObject:@(_firstDownload) forKey:@"firstDownload"];
+//        _firstDownload = 1;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@(1) forKey:@"firstDownload"];
+        [userDefaults synchronize];
     }else{
         _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
     }
