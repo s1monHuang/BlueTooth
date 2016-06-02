@@ -177,7 +177,7 @@
     _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
     _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0) / 100).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.1lf",(_sportModel?_sportModel.distance:0)*0.01];
     [threeBox addSubview:_lblBoxtwoValue];
     
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
@@ -217,6 +217,9 @@
                                                                      20)];
     _battery.image = [UIImage imageNamed:@"dianchi"];
     CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
+    if (electricityWidth > 50.0) {
+        electricityWidth = 50.0;
+    }
     _electricity = [[UIImageView alloc] initWithFrame:CGRectMake(_circleChart.x - 25,
                                                              _circleChart.height + _circleChart.y + (35 / 2 - refreshY),
                                                              electricityWidth,
@@ -297,13 +300,16 @@
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%@",@((_sportModel?_sportModel.distance:0) / 100).stringValue];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.1lf",(_sportModel?_sportModel.distance:0)*0.01];
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?_sportModel.calorie *0.001:0];;
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     _refreshBututton.userInteractionEnabled = YES;
     
     CGFloat electricityWidth = 50.0 * (_sportModel?_sportModel.battery / 100.0 :0);
+    if (electricityWidth > 50.0) {
+        electricityWidth = 50.0;
+    }
     _electricity.width = electricityWidth;
     
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
