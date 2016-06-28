@@ -10,7 +10,7 @@
 #ifdef DEBUG
 #define DLog(s, ...) NSLog(@"%@ ===>> %@", NSStringFromSelector(_cmd), [NSString stringWithFormat:(s), ##__VA_ARGS__])
 #else
-#define DLog(...);
+#define DLog(...) do { } while (1);
 #endif
 
 

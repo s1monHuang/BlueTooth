@@ -89,6 +89,7 @@
                                                  name:@"changeStepCount"
                                                object:nil];
     
+    
     //自动登录
 //    [self autoDownload];
     
@@ -237,6 +238,11 @@
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
     
+}
+
+- (void)removeMBProgress
+{
+    [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
 }
 
 - (void)changeStepCount:(NSNotification *)sender

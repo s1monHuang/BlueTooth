@@ -99,7 +99,7 @@
 //                                             selector:@selector(setBasicInfomationSuccess:)
 //                                                 name:SET_BASICINFOMATION_SUCCESS
 //                                               object:nil];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     if (first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
@@ -116,7 +116,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     if (first == 1) {
         NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
         [[NSNotificationCenter defaultCenter] postNotificationName:targetNotification object:@(targetInteger)];
@@ -139,7 +139,7 @@
 //完成按钮点击
 - (void)changeTrainTarget
 {
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     NSInteger targetInteger = [_leftLabel.text floatValue] * 10;
     _changeModel.target = targetInteger;
     //训练目标步数保存到本地
@@ -163,7 +163,7 @@
                 if (!change) {
                     DLog(@"修改用户信息失败");
                 }
-                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:@"firstDownload"];
+                [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:FIRSTDOWNLAOD];
                 [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];

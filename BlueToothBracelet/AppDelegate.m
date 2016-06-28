@@ -25,6 +25,8 @@
 #define WB_KEY @"1468435197"
 
 
+
+
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
 @property (nonatomic , assign) NSInteger firstDownload;
@@ -43,14 +45,15 @@
     
     [DBManager initApplicationsDB];
     self.operateVM = [[OperateViewModel alloc] init];
-    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"]?YES:NO;
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD]?YES:NO;
     if (!first) {
         DLog(@"第一次登陆");
 //        _firstDownload = 1;
-        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:@"firstDownload"];
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
         [[NSUserDefaults standardUserDefaults] synchronize];
+
     }else{
-        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     }
     if([[UserManager defaultInstance] hasUser] && _firstDownload == 2)
     {
@@ -62,6 +65,8 @@
     }
     return YES;
 }
+
+
 
 // 切换到登录界面
 - (void)exchangeRootViewControllerToLogin
@@ -80,6 +85,8 @@
 
 - (void)exchangeRootViewControllerToMain
 {
+    
+    
     __weak AppDelegate *blockSelf = self;
     //自动登陆
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
@@ -180,6 +187,7 @@
     //self.mainTabBarController.tabBar.barTintColor = [[Tools shareToolsObj] stringTOColor:@"#595959"];
     self.mainTabBarController.tabBar.translucent = NO;
     self.window.rootViewController = self.mainTabBarController;
+//    [MBProgressHUD showHUDAddedTo:self.mainTabBarController.view animated:YES];
     
 }
 

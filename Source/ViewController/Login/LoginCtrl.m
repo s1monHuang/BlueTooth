@@ -82,15 +82,17 @@
         self.txtUserAccount.text = @"";
         self.txtUserPassword.text = @"";
     }
-    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"]?YES:NO;
+
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD]?YES:NO;
     if (!first) {
         DLog(@"第一次登陆");
 //        _firstDownload = 1;
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:@(1) forKey:@"firstDownload"];
+        [userDefaults setObject:@(1) forKey:FIRSTDOWNLAOD];
         [userDefaults synchronize];
+
     }else{
-        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     }
     
     
@@ -109,7 +111,7 @@
 }
 
 - (IBAction)btnLoginClick:(id)sender {
-    @weakify(self);
+    
     if (self.txtUserAccount.text.length > 0 && [self.txtUserAccount.text rangeOfString:@"@"].location != NSNotFound ) {
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserAccount.text forKey:@"userName"];
@@ -119,18 +121,20 @@
     {
         [MBProgressHUD showHUDByContent:@"账号格式不正确" view:UI_Window afterDelay:2];
     }
+    
+    __block LoginCtrl *blockSelf = self;
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
-        @strongify(self);
+        
         if (finished) {
             if (userInfo[@"nickName"] && userInfo[@"age"]) {
                 
-                self.firstDownload = 2;
-                [[NSUserDefaults standardUserDefaults] setObject:@(self.firstDownload) forKey:@"firstDownload"];
+                blockSelf.firstDownload = 2;
+                [[NSUserDefaults standardUserDefaults] setObject:@(blockSelf.firstDownload) forKey:FIRSTDOWNLAOD];
             }
             if (_firstDownload == 1) {
                 [[UserManager defaultInstance] saveUser:userInfo];
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];
-                [self.navigationController pushViewController:nickNameCtl animated:YES];
+                [blockSelf.navigationController pushViewController:nickNameCtl animated:YES];
             }else{
                 [[UserManager defaultInstance] saveUser:userInfo];
                 
@@ -148,7 +152,7 @@
             [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
             }
         } else {
-            [self showHUDText:userInfo];
+            [blockSelf showHUDText:userInfo];
         }
     };
     
