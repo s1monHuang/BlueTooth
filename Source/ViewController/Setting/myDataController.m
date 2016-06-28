@@ -84,7 +84,7 @@ static NSString* identifier =@"PersonalCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    NSInteger first = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     if (first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);

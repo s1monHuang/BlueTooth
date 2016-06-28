@@ -395,7 +395,7 @@
     //尝试重新等待CBCentralManager打开
     CENTRAL_MANAGER_INIT_WAIT_TIMES ++;
     if (CENTRAL_MANAGER_INIT_WAIT_TIMES >=5 ) {
-        NSLog(@">>> 第%d次等待CBCentralManager 打开任然失败，请检查你蓝牙使用权限或检查设备问题。",CENTRAL_MANAGER_INIT_WAIT_TIMES);
+        NSLog(@">>> 第%d次等待CBCentralManager 打开仍然失败，请检查你蓝牙使用权限或检查设备问题。",CENTRAL_MANAGER_INIT_WAIT_TIMES);
         return;
         //[NSException raise:@"CBCentralManager打开异常" format:@"尝试等待打开CBCentralManager5次，但任未能打开"];
     }

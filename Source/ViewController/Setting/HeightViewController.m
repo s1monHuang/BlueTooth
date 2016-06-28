@@ -88,7 +88,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:@"firstDownload"] integerValue];
+    _first = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     if (_first == 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);

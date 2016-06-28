@@ -37,6 +37,7 @@
 #import "DBManager.h"
 #import "OperateViewModel.h"
 #import "BluetoothManager.h"
+#define FIRSTDOWNLAOD  @"THEFIRST"
 #endif
 
 
