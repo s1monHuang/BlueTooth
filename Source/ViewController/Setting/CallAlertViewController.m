@@ -70,13 +70,14 @@ static NSString *identifier = @"cell";
 - (void)openCallAlert:(id)sender
 {
     UISwitch *uiSwitch = (UISwitch *)sender;
-    if (uiSwitch.on) {
-        DLog(@"来电提醒开");
-        [BluetoothManager share].isOpenCallAlert = YES;
-    } else {
-        [BluetoothManager share].isOpenCallAlert = NO;
-    }
-    [[BluetoothManager share] openCallAlert];
+//    if (uiSwitch.on) {
+//        DLog(@"来电提醒开");
+//        [BluetoothManager share].isOpenCallAlert = YES;
+//    } else {
+//        [BluetoothManager share].isOpenCallAlert = NO;
+//    }
+//    [[BluetoothManager share] openCallAlert];
+    [[BluetoothManager share] lostDevice:uiSwitch.on];
 }
 
 - (void)didReceiveMemoryWarning {
