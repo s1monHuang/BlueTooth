@@ -11,7 +11,7 @@
 @implementation BaseViewModel
 
 + (instancetype)viewModel {
-    return [[self alloc] init];
+    return [[BaseViewModel alloc] init];
 }
 
 @end

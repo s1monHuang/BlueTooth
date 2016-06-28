@@ -40,16 +40,18 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
     [WXApi registerApp:WX_KEY];
     [WeiboSDK registerApp:WB_KEY];
     
     [DBManager initApplicationsDB];
-    self.operateVM = [OperateViewModel viewModel];
-    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD];
+    self.operateVM = [[OperateViewModel alloc] init];
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD]?YES:NO;
     if (!first) {
-        _firstDownload = 1;
-        [[NSUserDefaults standardUserDefaults] setObject:@(_firstDownload) forKey:FIRSTDOWNLAOD];
+        DLog(@"第一次登陆");
+//        _firstDownload = 1;
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
     }else{
         _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
     }
