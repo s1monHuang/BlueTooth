@@ -184,7 +184,7 @@
     }
     _isLoading = YES;
     _refreshBututton.userInteractionEnabled = NO;
-    [[BluetoothManager share] readHistroySportDataWithTime:0];
+    [[BluetoothManager share] readHistroySportData];
     [self startAnimation];
 }
 

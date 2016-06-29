@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 - (void)setBasicInfomation:(BasicInfomationModel *)model;
 
-- (void)readHistroySportDataWithTime:(Byte)time;
+- (void)readHistroySportData;
 
 - (void)openCallAlert;   //来电提醒开关
 
