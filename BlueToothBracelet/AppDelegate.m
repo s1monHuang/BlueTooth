@@ -19,6 +19,7 @@
 #import "WeiboSDK.h"
 
 
+
 @interface AppDelegate () <UIAlertViewDelegate,WXApiDelegate,WeiboSDKDelegate>
 
 #define WX_KEY @"wx5ac8c621e7ca98a9"
@@ -224,14 +225,18 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    //[[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:APPISCALLING];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [BluetoothManager share].isCalling = NO;
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

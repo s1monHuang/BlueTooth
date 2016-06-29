@@ -442,18 +442,36 @@ static NSString *dbPath = nil;
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-+ (NSInteger)selectNewestHistoryData
++ (NSDate *)selectNewestHistoryData
 {
-    __block NSInteger newestTime = 0;
+    __block NSDate *date;
     [dbQueue inDatabase:^(FMDatabase *db) {
-            NSString *sql = [NSString stringWithFormat:@"SELECT * MAX('TIME') FROM 'histroy_sport_table'"];
-            FMResultSet *result = [db executeQuery:sql];
-        while (result.next) {
-            newestTime = [result intForColumn:@"TIME"];
+        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC LIMIT 1"];
+        FMResultSet *result = [db executeQuery:sql];
+        if (result.next) {
+            date = [result dateForColumn:@"date"];
         }
-            [result close];
+        [result close];
+        
     }];
-    return newestTime;
+    return date;
+    
+}
+
++ (NSArray *)selectNewestHistoryDatatest
+{
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC"];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            NSDate *date = [result dateForColumn:@"date"];
+            [array addObject:date];
+        }
+        [result close];
+        
+    }];
+    return array;
     
 }
 

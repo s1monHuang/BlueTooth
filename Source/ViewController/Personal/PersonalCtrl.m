@@ -18,6 +18,8 @@
 #import "LoginCtrl.h"
 #import "TrainTargetController.h"
 #import "CallAlertViewController.h"
+#import "prenventLostController.h"
+#import "SOSController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -55,8 +57,8 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     
-    imageArray = @[@"data",@"target",@"bell",@"clock",@"setup",@"i",@"datacenter",@"bell"];
-    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"提醒设置",@"智能闹钟",@"设备管理",@"关于我们",@"数据中心",@"来电提醒", nil];
+    imageArray = @[@"data",@"target",@"bell",@"clock",@"setup",@"i",@"datacenter",@"bell",@"add",@"add"];
+    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"提醒设置",@"智能闹钟",@"设备管理",@"关于我们",@"数据中心",@"来电提醒", @"防丢提醒",@"一键求救",nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
@@ -116,7 +118,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 8;
+    return 10;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -197,6 +199,18 @@
             break;
         case 7: {
             CallAlertViewController *ctl = [[CallAlertViewController alloc] init];
+            ctl.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:ctl animated:YES];
+        }
+            break;
+        case 8: {
+             prenventLostController *ctl = [[prenventLostController alloc] init];
+            ctl.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:ctl animated:YES];
+        }
+            break;
+        case 9: {
+            SOSController *ctl = [[SOSController alloc] init];
             ctl.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:ctl animated:YES];
         }

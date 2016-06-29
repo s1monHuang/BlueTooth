@@ -116,7 +116,7 @@
  *
  *  @return
  */
-+ (NSInteger)selectNewestHistoryData;
++ (NSDate *)selectNewestHistoryData;
 
 
 + (NSInteger)selectTodayStepNumber;
@@ -124,5 +124,8 @@
 + (NSInteger)selectTodayssmNumber;
 
 + (NSInteger)selectTodayqsmNumber;
+
+
++ (NSArray *)selectNewestHistoryDatatest;
 
 @end

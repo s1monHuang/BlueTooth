@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define APPISCALLING  @"APPISCALLING"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
