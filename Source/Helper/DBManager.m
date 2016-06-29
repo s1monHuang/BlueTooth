@@ -285,6 +285,11 @@ static NSString *dbPath = nil;
 + (HistorySportDataModel *)selectHistorySportDataByTime:(NSInteger)time {
     __block HistorySportDataModel *model;
     [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@'",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         if (result.next) {
@@ -304,6 +309,11 @@ static NSString *dbPath = nil;
 + (NSArray *)selectOneDayHistorySportData {
     __block NSMutableArray *array = [[NSMutableArray alloc] init];
     [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' ORDER BY time ASC LIMIT 24",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
@@ -446,6 +456,11 @@ static NSString *dbPath = nil;
 {
     __block NSDate *date;
     [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC LIMIT 1"];
         FMResultSet *result = [db executeQuery:sql];
         if (result.next) {
