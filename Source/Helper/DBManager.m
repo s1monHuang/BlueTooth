@@ -1,4 +1,4 @@
-//
+ //
 //  DBManager.m
 //  BlueToothBracelet
 //
@@ -462,9 +462,15 @@ static NSString *dbPath = nil;
 {
     __block NSMutableArray *array = [[NSMutableArray alloc] init];
     [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC"];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
+            
             NSDate *date = [result dateForColumn:@"date"];
             [array addObject:date];
         }
