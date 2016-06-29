@@ -16,6 +16,7 @@
 // 登录
 - (void)loginWithUserName:(NSString *)userName
                  password:(NSString *)password;
+
 // 自动登录
 - (void)autoLoginWithTokenAnddevice:(NSString *)token
                            password:(NSString *)deviceId;

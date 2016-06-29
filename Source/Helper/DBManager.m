@@ -103,7 +103,7 @@ static NSString *dbPath = nil;
     'sleep' INTEGER,\
     'battery' INTEGER,\
     'date' DATE,\
-    PRIMARY KEY ('user_id' , 'time'))";
+    PRIMARY KEY ('user_id' , 'date'))";
     return [db executeUpdate:createAppsSql];
 }
 

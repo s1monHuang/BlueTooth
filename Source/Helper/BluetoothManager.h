@@ -35,10 +35,12 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
     BluetoothConnectingBinding,
     BluetoothConnectingConfirmBinding,
     BluetoothConnectingSetBasicInfomation,
+    BluetoothConnectingSetTimestamp,
     BluetoothConnectingReadSportData,
     BluetoothConnectingHistroyReadSportData,
     BluetoothConnectingHeartRate,
     BluetoothConnectingCallAlert,
+    BluetoothConnectingLostDevice,
     BluetoothConnectingSuccess
 };
 
@@ -47,10 +49,12 @@ typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
     BluetoothConnectingBindingSuccess,
     BluetoothConnectingConfirmBindingSuccess,
     BluetoothConnectingSetBasicInfomationSuccess,
+    BluetoothConnectingSetTimestampSuccess,
     BluetoothConnectingReadSportDataSuccess,
     BluetoothConnectingHistroyReadSportDataSuccess,
     BluetoothConnectingHeartRateSuccess,
     BluetoothConnectingCallAlertSuccess,
+    BluetoothConnectingLostDeviceSuccess,
     BluetoothConnectingAllSuccess
 };
 
@@ -60,6 +64,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
     BluetoothQueueHistroyReadSportData,
     BluetoothQueueHeartRate,
     BluetoothQueueCallAlert,
+    BluetoothQueueConnectingLostDevice,
     BluetoothQueueAll
 };
 
@@ -82,6 +87,8 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 @property (strong, nonatomic) BabyBluetooth *baby;
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) NSTimer *heartRateTimer;          //心跳计时器
+@property (strong, nonatomic) NSTimer *rssiTimer;               //信号强度计时器
+
 @property (assign, nonatomic) id<BluetoothManagerDelegate> deleagete;
 
 @property (assign, nonatomic) BOOL isBindingPeripheral;         //是否绑定过蓝牙设备
@@ -93,6 +100,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 @property (nonatomic,strong) PeripheralModel *bindingPeripheral;
 
 @property (nonatomic,strong) CBCharacteristic *characteristics;
+@property (nonatomic,strong) CBCharacteristic *sosCharacteristic;
 
 @property (assign, nonatomic) BluetoothConnectingType connectionType;
 @property (assign, nonatomic) BluetoothConnectingSuccessType successType;
@@ -131,6 +139,8 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 - (void)readHistroySportData;
 
 - (void)openCallAlert;   //来电提醒开关
+
+- (void)lostDevice:(BOOL)open;
 
 
 - (void)readHeartRate;

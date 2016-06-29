@@ -19,13 +19,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Sport/SportCtrl.m"
-            timestampString = "483262720.859392"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488817979.25874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "-firstReadPripheralData:characteristic:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +35,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BlueToothBracelet/AppDelegate.m"
-            timestampString = "481710175.927977"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488817979.25874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-application:didFinishLaunchingWithOptions:"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
+            landmarkName = "-handleCharacteristic:weakSelf:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,29 +51,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Helper/DBManager.m"
-            timestampString = "482761031.818651"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488816259.382547"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "+insertOrReplaceHistroySportData:database:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Sport/SportCtrl.m"
-            timestampString = "483263209.578159"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
-            landmarkName = "-changeStepCount:"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "-babyDelegate"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -83,13 +67,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Sport/SportCtrl.m"
-            timestampString = "483264625.893773"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488817979.25874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "774"
+            endingLineNumber = "774"
+            landmarkName = "-lostDevice:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -99,13 +83,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Setting/HistoryDataViewController.m"
-            timestampString = "483272922.688057"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488817979.25874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
-            landmarkName = "-setUpStepView"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
+            landmarkName = "-babyDelegate"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -115,14 +99,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Setting/HistoryDataViewController.m"
-            timestampString = "483273576.623736"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488824338.482885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "712"
-            endingLineNumber = "712"
-            landmarkName = "-getWeekData:"
+            startingLineNumber = "359"
+            endingLineNumber = "359"
+            landmarkName = "-firstReadPripheralData:characteristic:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BluetoothManager firstReadPripheralData:characteristic:]"
+                  moduleName = "BlueToothBracelet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Hsn/Desktop/BlueTooth/Source/Helper/BluetoothManager.m"
+                  timestampString = "488824818.254521"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "359"
+                  endingLineNumber = "359"
+                  offsetFromSymbolStart = "3840">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__58-[BluetoothManager firstReadPripheralData:characteristic:]_block_invoke"
+                  moduleName = "BlueToothBracelet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Hsn/Desktop/BlueTooth/Source/Helper/BluetoothManager.m"
+                  timestampString = "488824818.254691"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "361"
+                  endingLineNumber = "361"
+                  offsetFromSymbolStart = "120">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -131,29 +147,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Setting/HistoryDataViewController.m"
-            timestampString = "483273580.079827"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488824388.550553"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "694"
-            endingLineNumber = "694"
-            landmarkName = "-getDayData:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Setting/HistoryDataViewController.m"
-            timestampString = "483273592.015927"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "747"
-            endingLineNumber = "747"
-            landmarkName = "-getWeekData:"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
+            landmarkName = "-firstReadPripheralData:characteristic:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

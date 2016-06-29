@@ -42,7 +42,7 @@
     
     self.title = @"登录";
     self.view.backgroundColor = kThemeGrayColor;
-    self.operateVM = [OperateViewModel viewModel];
+    self.operateVM = [[OperateViewModel alloc] init];
     self.iconImage.image = [UIImage imageNamed:@"logo"];
     self.usernamebgbox.image = [UIImage imageNamed:@"loginbox"];
     self.passwordbgbox.image = [UIImage imageNamed:@"loginbox"];
