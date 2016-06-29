@@ -152,4 +152,11 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 - (void)cancel;
 
+/*!
+ *  需要查询历史数据的次数
+ *
+ *  @return
+ */
+- (NSInteger)getHistoryDataCount;
+
 @end

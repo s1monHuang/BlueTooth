@@ -188,7 +188,7 @@
     //self.mainTabBarController.tabBar.barTintColor = [[Tools shareToolsObj] stringTOColor:@"#595959"];
     self.mainTabBarController.tabBar.translucent = NO;
     self.window.rootViewController = self.mainTabBarController;
-//    [MBProgressHUD showHUDAddedTo:self.mainTabBarController.view animated:YES];
+
     
 }
 

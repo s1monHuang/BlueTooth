@@ -695,12 +695,20 @@ static BluetoothManager *manager = nil;
  */
 - (void)readHistroySportDataWithValue:(NSData *)value isFirst:(BOOL)first {
     [self startTiming];
+    
+    //需要获取几次历史数据
+    NSInteger count = [self getHistoryDataCount];
+    
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xA1;
 #warning 测试
 //    b[2] = time;
+    if (count < 72 && count != 0) {
+        b[2] = count;
+    }else{
     b[2] = 0xFF;
+    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
     [[BluetoothManager share] writeValue:data];
@@ -1019,6 +1027,18 @@ static BluetoothManager *manager = nil;
         self.connectionType = BluetoothConnectingSuccess;
         self.successType = BluetoothConnectingAllSuccess;
     }
+}
+
+- (NSInteger)getHistoryDataCount
+{
+    NSInteger historyTime = [DBManager selectNewestHistoryData];
+    NSInteger getHistoryDataCount = 0;
+    if (historyTime) {
+        NSInteger nowTime = [NSDate date].timeIntervalSince1970;
+        getHistoryDataCount = (nowTime - historyTime) / 3600;
+    }
+    
+    return getHistoryDataCount;
 }
 
 
