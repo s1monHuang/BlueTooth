@@ -442,5 +442,20 @@ static NSString *dbPath = nil;
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
++ (NSInteger)selectNewestHistoryData
+{
+    __block NSInteger newestTime = 0;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * MAX('TIME') FROM 'histroy_sport_table'"];
+            FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            newestTime = [result intForColumn:@"TIME"];
+        }
+            [result close];
+    }];
+    return newestTime;
+    
+}
+
 
 @end

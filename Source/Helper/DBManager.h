@@ -111,6 +111,13 @@
  */
 + (NSString *)selectHistorySportData;
 
+/*!
+ *  获取最近一次历史数据的时间
+ *
+ *  @return
+ */
++ (NSInteger)selectNewestHistoryData;
+
 
 + (NSInteger)selectTodayStepNumber;
 
