@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488908048.007854"
+            timestampString = "488915192.385343"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "440"
-            endingLineNumber = "440"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
             landmarkName = "-handleCharacteristic:weakSelf:"
             landmarkType = "5">
          </BreakpointContent>
@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488908048.007854"
+            timestampString = "488915729.083009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "787"
-            endingLineNumber = "787"
+            startingLineNumber = "818"
+            endingLineNumber = "818"
             landmarkName = "-readHeartRate"
             landmarkType = "5">
          </BreakpointContent>
@@ -96,64 +96,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488903677.271235"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
-            landmarkName = "-firstReadPripheralData:characteristic:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488903677.271235"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "365"
-            endingLineNumber = "365"
-            landmarkName = "-firstReadPripheralData:characteristic:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488908048.007854"
+            timestampString = "488915729.083009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1052"
-            endingLineNumber = "1052"
+            startingLineNumber = "1083"
+            endingLineNumber = "1083"
             landmarkName = "-getHistoryDataCount"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488908048.007854"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "581"
-            endingLineNumber = "581"
-            landmarkName = "-histroySportDataModelWithData:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -292,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488908048.007854"
+            timestampString = "488915729.083009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "893"
-            endingLineNumber = "893"
+            startingLineNumber = "924"
+            endingLineNumber = "924"
             landmarkName = "-lostDevice:"
             landmarkType = "5">
          </BreakpointContent>
@@ -308,12 +260,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Helper/BluetoothManager.m"
-            timestampString = "488908048.007854"
+            timestampString = "488915729.083009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "885"
-            endingLineNumber = "885"
+            startingLineNumber = "916"
+            endingLineNumber = "916"
             landmarkName = "-lostDevice:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/Helper/BluetoothManager.m"
+            timestampString = "488915729.083009"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "761"
+            endingLineNumber = "761"
+            landmarkName = "-readHistroySportDataWithValue:isFirst:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

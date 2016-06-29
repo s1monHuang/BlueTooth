@@ -391,13 +391,15 @@ static BluetoothManager *manager = nil;
             weakSelf.sosCharacteristic = characteristics;
             [weakSelf.baby notify:weakSelf.bindingPeripheral.peripheral characteristic:characteristics block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
                 NSData *data = characteristics.value;
-                Byte *byte = (Byte *)data.bytes;
-                if (byte[1] == 0x99) {
-                    NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
-                    if (phoneNO) {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:// %@",phoneNO]]];
+                if (data.length) {
+                    Byte *byte = (Byte *)data.bytes;
+                    if (byte[1] == 0x99) {
+                        NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
+                        if (phoneNO) {
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:// %@",phoneNO]]];
+                        }
+                        
                     }
-                    
                 }
             }];
         }
@@ -693,13 +695,47 @@ static BluetoothManager *manager = nil;
     }
     [self startTiming];
     _connectionType = BluetoothConnectingHistroyReadSportData;
-    Byte b[20];
-    b[0] = 0xAA;
-    b[1] = 0xA1;
-    b[2] = 0XFF;
+    //需要获取几次历史数据
+    NSInteger count = [self getHistoryDataCount];
+    
+    if (count <= 0) {
+        NSLog(@"不需要获取历史运动数据");
+        return;
+    }
+    
+    Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    if (count < 72 && count != 0) {
+        b[2] = count;
+    }else{
+        b[2] = 0xFF;
+    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
+    
+    __weak BluetoothManager *weakSelf = self;
+    [self.baby notify:weakSelf.bindingPeripheral.peripheral
+       characteristic:weakSelf.characteristics
+                block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+                    NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                    Byte *byte = (Byte *)characteristics.value.bytes;
+                    NSInteger time = byte[1];
+                    Byte flag = byte[2];
+                    //保存历史运动数据到数据库
+                    [weakSelf saveNewHistroyData:characteristics.value time:time];
+                    
+                    //读取历史运动数据结束
+                    if (flag == 0xEE) {
+                        
+                        [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                                     characteristic:weakSelf.characteristics];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+                                                                            object:nil];
+                        weakSelf.connectionType = BluetoothConnectingSuccess;
+                        [weakSelf handleBluetoothQueue];
+                    }
+                }];
+
 }
 
 /*!
@@ -713,6 +749,11 @@ static BluetoothManager *manager = nil;
     
     //需要获取几次历史数据
     NSInteger count = [self getHistoryDataCount];
+    
+    if (count <= 0) {
+        NSLog(@"不需要获取历史运动数据");
+        return;
+    }
     
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
@@ -730,7 +771,7 @@ static BluetoothManager *manager = nil;
     [self.baby notify:weakSelf.bindingPeripheral.peripheral
        characteristic:weakSelf.characteristics
                 block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                    
+                    NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     NSInteger time = byte[1];
                     Byte flag = byte[2];
