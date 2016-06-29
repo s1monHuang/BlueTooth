@@ -144,6 +144,10 @@ static BluetoothManager *manager = nil;
                     weakSelf.successType = BluetoothConnectingSetBasicInfomationSuccess;
                 }
                     break;
+                case BluetoothConnectingSetTimestamp: {
+                    weakSelf.successType = BluetoothConnectingSetTimestampSuccess;
+                }
+                    break;
                     //成功读取蓝牙设备中的运动数据,
                 case BluetoothConnectingReadSportData: {
                     weakSelf.successType = BluetoothConnectingReadSportDataSuccess;
@@ -285,8 +289,14 @@ static BluetoothManager *manager = nil;
                 NSLog(@"绑定蓝牙设备成功,开始设置基本信息 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
                 break;
-                //成功设置基本信息后,读取运动数据
+                //成功设置基本信息后,设置时间戳
             case BluetoothConnectingSetBasicInfomationSuccess: {
+                [weakSelf setTimestamp];
+                NSLog(@"成功设置基本信息后,设置时间戳 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+            }
+                break;
+                //设置时间戳后,读取运动数据
+            case BluetoothConnectingSetTimestampSuccess: {
                 [weakSelf readSportData];
                 NSLog(@"绑定蓝牙设备成功,开始获取运动数据 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
@@ -759,7 +769,7 @@ static BluetoothManager *manager = nil;
     
 }
 
-
+//设备防丢失开关
 - (void)lostDevice:(BOOL)open {
     if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothConnectingLostDevice)};
@@ -797,6 +807,27 @@ static BluetoothManager *manager = nil;
     b[1] = 0x04;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
+    [[BluetoothManager share] writeValue:data];
+}
+
+//设置时间戳
+- (void)setTimestamp {
+    _connectionType = BluetoothConnectingSetTimestamp;
+    NSInteger interval = [NSDate date].timeIntervalSince1970;
+    Byte b[20];
+    b[0] = 0xAA;
+    b[1] = 0xDA;
+    char *p_time = (char *)&interval;
+    for(int i = 2 ;i < 19 ;i++) {
+        if (i > 5) {
+            b[i] = 0;
+        } else {
+            b[i] = *p_time;
+            p_time ++;
+        }
+    }
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [[NSData alloc] initWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
 }
 
