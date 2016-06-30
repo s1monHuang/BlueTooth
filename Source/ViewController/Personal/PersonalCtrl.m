@@ -58,7 +58,7 @@
     
     
     imageArray = @[@"data",@"target",@"bell",@"clock",@"setup",@"i",@"datacenter",@"bell",@"add",@"add"];
-    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"提醒设置",@"智能闹钟",@"设备管理",@"关于我们",@"数据中心",@"来电提醒", @"防丢提醒",@"一键求救",nil];
+    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"久坐提醒",@"智能闹钟",@"设备管理",@"关于我们",@"数据中心",@"来电提醒", @"防丢提醒",@"一键求救",nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];

@@ -44,7 +44,7 @@
     CGFloat stepLabelX = CGRectGetMaxX(label.frame);
     UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 60, 40)];
     _stepLabel = stepLabel;
-    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : [CurrentUser.stepLong substringWithRange:NSMakeRange(0, 2)];
+    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong;
     stepLabel.font = [UIFont systemFontOfSize:25];
     stepLabel.textColor = KThemeGreenColor;
     [self.view addSubview:stepLabel];
@@ -122,7 +122,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : [CurrentUser.stepLong substringWithRange:NSMakeRange(0, 2)] integerValue];
+    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -151,11 +151,10 @@
 {
     if (_first == 1) {
         TrainTargetController *VC = [[TrainTargetController alloc] init];
-        NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",_stepLabel.text];
-        CurrentUser.stepLong = stepLongStr;
+        CurrentUser.stepLong = _stepLabel.text;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
-        [[NSNotificationCenter defaultCenter] postNotificationName:steoLongIsChangeNotification object:_stepLongStr];
+        [[NSNotificationCenter defaultCenter] postNotificationName:steoLongIsChangeNotification object:_stepLabel.text];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -165,7 +164,6 @@
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _stepLabel.text = valueStr;
-    _stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
   
     
 }

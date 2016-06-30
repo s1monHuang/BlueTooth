@@ -48,7 +48,7 @@
     CGFloat weightLabelX = CGRectGetMaxX(label.frame);
     UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 60, 40)];
     _weightLabel = weightLabel;
-    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : [CurrentUser.weight substringWithRange:NSMakeRange(0, CurrentUser.weight.length == 4 ? 2 : 3)];
+    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50 kg" : [NSString stringWithFormat:@"%@ kg",CurrentUser.weight];
     weightLabel.font = [UIFont systemFontOfSize:25];
     weightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:weightLabel];
@@ -110,7 +110,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:220 showType:rulerViewshowHorizontalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : [CurrentUser.weight substringWithRange:NSMakeRange(0, CurrentUser.high.length == 4 ? 2 : 3)] integerValue];
+    rulerView.defaultVaule = [[CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -134,13 +134,12 @@
 
 - (void)PushToVC
 {
-    _weightStr = [NSString stringWithFormat:@"%@kg",_weightLabel.text];
     if (_first == 1) {
         StepLongController *VC = [[StepLongController alloc] init];
-        CurrentUser.weight = _weightStr;
+        CurrentUser.weight = _weightLabel.text;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
-        [[NSNotificationCenter defaultCenter] postNotificationName:weightIsChangeNotification object:_weightStr];
+        [[NSNotificationCenter defaultCenter] postNotificationName:weightIsChangeNotification object:_weightLabel.text];
         [self.navigationController popViewControllerAnimated:YES];
     }
     

@@ -36,6 +36,7 @@
 
 @property (nonatomic , strong) UIImageView *electricity; //电量
 
+@property (nonatomic , strong) UILabel *electricityPercent;    //电量百分比
 
 
 @property (nonatomic,strong) SportDataModel *sportModel;
@@ -153,7 +154,7 @@
         NSString *target = [NSString stringWithFormat:@"目标 %ld",_stepCount];
         _totalStep.text = target;
     }else{
-        _totalStep.text = @"目标 0";
+        _totalStep.text = @"目标 10000";
     }
     
     _totalStep.textAlignment = NSTextAlignmentCenter;
@@ -183,7 +184,7 @@
     _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
     _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.1lf",(_sportModel?_sportModel.distance:0)*0.01];
+    _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.1lf",(_sportModel?_sportModel.step * [CurrentUser.stepLong floatValue]:0)*0.00001];
     [threeBox addSubview:_lblBoxtwoValue];
     
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
@@ -196,7 +197,7 @@
     _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20, boxWidth/3, 22)];
     _lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxthreeValue.font = [UIFont systemFontOfSize:22];
-    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?_sportModel.calorie *0.001:0];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0];
     [threeBox addSubview:_lblBoxthreeValue];
     
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20+22+10, boxWidth/3, 22)];
@@ -235,6 +236,17 @@
     [self.view addSubview:_battery];
     [self.view addSubview:_electricity];
     
+    _electricityPercent = [[UILabel alloc] initWithFrame:CGRectMake(_electricity.x, _electricity.y + 28, 50, 12)];
+    CGFloat percent = _sportModel?_sportModel.battery / 100.0 :0;
+    if (percent > 100.0) {
+        percent = 100.0;
+    }
+    NSString *percentStr = [NSString stringWithFormat:@"%.1f %%",percent];
+    _electricityPercent.text = percentStr;
+    _electricityPercent.textColor = kThemeGrayColor;
+    _electricityPercent.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:_electricityPercent];
+    
     // 设置
     UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share2"]
                                                                      style:UIBarButtonItemStylePlain
@@ -251,7 +263,7 @@
 
 - (void)removeMBProgress
 {
-    [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
 - (void)changeStepCount:(NSNotification *)sender
@@ -295,6 +307,7 @@
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
     _isLoading = NO;
     [_refreshBututton.layer removeAllAnimations];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     id object = [notification object];
     if (!object) {
@@ -326,6 +339,15 @@
         electricityWidth = 50.0;
     }
     _electricity.width = electricityWidth;
+    CGFloat percent = _sportModel?_sportModel.battery / 100.0 :0;
+    if (percent > 100.0) {
+        percent = 100.0;
+    }
+    NSString *percentStr = [NSString stringWithFormat:@"%.1f %%",percent];
+    _electricityPercent.text = percentStr;
+    _electricityPercent.textAlignment = NSTextAlignmentCenter;
+    _electricityPercent.textColor = kThemeGrayColor;
+    
     
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    [formatter setDateFormat:@"YYYY-MM-dd"];
