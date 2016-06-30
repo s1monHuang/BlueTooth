@@ -1,4 +1,4 @@
-//
+ //
 //  DBManager.m
 //  BlueToothBracelet
 //
@@ -285,6 +285,11 @@ static NSString *dbPath = nil;
 + (HistorySportDataModel *)selectHistorySportDataByTime:(NSInteger)time {
     __block HistorySportDataModel *model;
     [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@'",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         if (result.next) {
@@ -304,6 +309,11 @@ static NSString *dbPath = nil;
 + (NSArray *)selectOneDayHistorySportData {
     __block NSMutableArray *array = [[NSMutableArray alloc] init];
     [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' ORDER BY time ASC LIMIT 24",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
@@ -440,6 +450,50 @@ static NSString *dbPath = nil;
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
++ (NSDate *)selectNewestHistoryData
+{
+    __block NSDate *date;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
+        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC LIMIT 1"];
+        FMResultSet *result = [db executeQuery:sql];
+        if (result.next) {
+            date = [result dateForColumn:@"date"];
+        }
+        [result close];
+        
+    }];
+    return date;
+    
+}
+
++ (NSArray *)selectNewestHistoryDatatest
+{
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
+        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC"];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            
+            NSDate *date = [result dateForColumn:@"date"];
+            [array addObject:date];
+        }
+        [result close];
+        
+    }];
+    return array;
+    
 }
 
 

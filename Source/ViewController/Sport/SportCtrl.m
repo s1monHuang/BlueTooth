@@ -89,6 +89,11 @@
                                                  name:@"changeStepCount"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideHudForConnect)
+                                                 name:@"connect_success"
+                                               object:nil];
+    
     
     //自动登录
 //    [self autoDownload];
@@ -237,6 +242,10 @@
                                                                     action:@selector(rightBarButtonClick:)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"蓝牙设备连接中....";
+    [hud hide:YES afterDelay:3];
+    
     
 }
 
@@ -339,6 +348,11 @@
 - (void)rightBarButtonClick:(id)sender {
     ShareCtrl *share = [[ShareCtrl alloc] init];
     [self presentViewController:share animated:YES completion:nil];
+}
+
+- (void)hideHudForConnect
+{
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
 - (void)dealloc

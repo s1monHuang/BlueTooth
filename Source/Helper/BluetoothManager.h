@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 @property (strong, nonatomic) NSString *deviceID;               //服务器返回的设备ID
 
-
+@property (nonatomic, assign) BOOL isCalling;
 
 @property (assign, nonatomic) NSInteger heartRate;              //心率
 
@@ -151,5 +151,12 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 - (BOOL)isExistCharacteristic;
 
 - (void)cancel;
+
+/*!
+ *  需要查询历史数据的次数
+ *
+ *  @return
+ */
+- (NSInteger)getHistoryDataCount;
 
 @end

@@ -74,6 +74,8 @@
 		47E413CC1C982B2900871664 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E413CB1C982B2900871664 /* UIView+Extension.m */; };
 		47E504E01CA0D1B2005F18F0 /* TrainTargetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */; };
 		47E504E11CA0D1B2005F18F0 /* TrainTargetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */; };
+		711891761D23F12D00F24413 /* prenventLostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 711891751D23F12D00F24413 /* prenventLostController.m */; };
+		716691C11D240B9800399547 /* SOSController.m in Sources */ = {isa = PBXBuildFile; fileRef = 716691C01D240B9800399547 /* SOSController.m */; };
 		9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B14581B7B8E01008CEF15 /* AgeViewController.m */; };
 		9F1B145C1B7B95A6008CEF15 /* SexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145B1B7B95A6008CEF15 /* SexViewController.m */; };
 		9F1B145F1B7B9834008CEF15 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145E1B7B9834008CEF15 /* HeightViewController.m */; };
@@ -439,6 +441,10 @@
 		47E504DD1CA0D1B2005F18F0 /* TrainTargetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrainTargetController.h; sourceTree = "<group>"; };
 		47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrainTargetController.m; sourceTree = "<group>"; };
 		47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrainTargetController.xib; sourceTree = "<group>"; };
+		711891741D23F12D00F24413 /* prenventLostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prenventLostController.h; sourceTree = "<group>"; };
+		711891751D23F12D00F24413 /* prenventLostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prenventLostController.m; sourceTree = "<group>"; };
+		716691BF1D240B9800399547 /* SOSController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSController.h; sourceTree = "<group>"; };
+		716691C01D240B9800399547 /* SOSController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSController.m; sourceTree = "<group>"; };
 		9F1B14571B7B8E01008CEF15 /* AgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeViewController.h; sourceTree = "<group>"; };
 		9F1B14581B7B8E01008CEF15 /* AgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeViewController.m; sourceTree = "<group>"; };
 		9F1B145A1B7B95A6008CEF15 /* SexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SexViewController.h; sourceTree = "<group>"; };
@@ -1317,6 +1323,10 @@
 				47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */,
 				47815F7A1CB632370085275E /* CallAlertViewController.h */,
 				47815F7B1CB632370085275E /* CallAlertViewController.m */,
+				711891741D23F12D00F24413 /* prenventLostController.h */,
+				711891751D23F12D00F24413 /* prenventLostController.m */,
+				716691BF1D240B9800399547 /* SOSController.h */,
+				716691C01D240B9800399547 /* SOSController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -2184,6 +2194,7 @@
 				9F9D13521B75920F00BEBF98 /* FMResultSet.m in Sources */,
 				9F20F56D1B75A9680009AB38 /* NSOrderedSet+RACSequenceAdditions.m in Sources */,
 				9F88F62C1B4597A5000BA054 /* NSObject+MTLComparisonAdditions.m in Sources */,
+				711891761D23F12D00F24413 /* prenventLostController.m in Sources */,
 				47E1CA741CA527BD0070FEE1 /* MJPropertyKey.m in Sources */,
 				47E349FF1CA950240026707C /* UIView+FSExtension.m in Sources */,
 				47E2C5D71C9FE0F100CD07A9 /* ZHRulerView.m in Sources */,
@@ -2260,6 +2271,7 @@
 				9F20F56E1B75A9680009AB38 /* NSSet+RACSequenceAdditions.m in Sources */,
 				3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */,
 				9F88F6251B4597A5000BA054 /* MTLTransformerErrorHandling.m in Sources */,
+				716691C11D240B9800399547 /* SOSController.m in Sources */,
 				3E5CAB651C9BEA8F00430442 /* SportDataModel.m in Sources */,
 				9F88F5A91B458EBD000BA054 /* UtilityUI+ProgressHUD.m in Sources */,
 				9F88F5681B45873E000BA054 /* main.m in Sources */,

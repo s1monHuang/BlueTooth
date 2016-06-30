@@ -11,6 +11,8 @@
 #import "HistorySportDataModel.h"
 #import "BasicInfomationModel.h"
 #import "OperateViewModel.h"
+#import "prenventLostController.h"
+#import "SOSController.h"
 
 #define specifiedUUID @"FFF1"
 #define sosUUID       @"FFF2"
@@ -239,6 +241,13 @@ static BluetoothManager *manager = nil;
         NSInteger rssiInt = ABS(RSSI.integerValue);
         CGFloat power = (rssiInt - 59) / (10 * 2.0);
         
+        NSInteger defaultRSSI = -([[[NSUserDefaults standardUserDefaults] objectForKey:PREVENTLOST] integerValue]);
+        if (!defaultRSSI) {
+            defaultRSSI = 90;
+        }
+        if (rssiInt < defaultRSSI) {
+            [weakSelf alertUserLostDevice];
+        }
         DLog(@"RSSI : %@   power : %@",RSSI.stringValue,@(power).stringValue);
     }];
     
@@ -381,7 +390,17 @@ static BluetoothManager *manager = nil;
         if (!weakSelf.sosCharacteristic) {
             weakSelf.sosCharacteristic = characteristics;
             [weakSelf.baby notify:weakSelf.bindingPeripheral.peripheral characteristic:characteristics block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                
+                NSData *data = characteristics.value;
+                if (data.length) {
+                    Byte *byte = (Byte *)data.bytes;
+                    if (byte[1] == 0x99) {
+                        NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
+                        if (phoneNO) {
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:// %@",phoneNO]]];
+                        }
+                        
+                    }
+                }
             }];
         }
     }
@@ -487,6 +506,8 @@ static BluetoothManager *manager = nil;
                 Byte *byte = (Byte *)characteristic.value.bytes;
                 if (byte[2] == 0xEE) {
                     DLog(@"打开/关闭防丢失成功.");
+                    
+                    
                     weakSelf.connectionType = BluetoothConnectingSuccess;
                 }
             }
@@ -558,11 +579,7 @@ static BluetoothManager *manager = nil;
     model.battery = byte[7];                            //电量
     NSTimeInterval timeInterval = byte[8] + (byte[9] << 8) + (byte[10] << 16) + (byte[11] << 24);
     
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy-MM-DD HH:mm:ss"];
-    NSString *myDataString = @"2000-01-01 0:0:00";
-    model.date = [NSDate dateWithTimeInterval:timeInterval sinceDate:[df dateFromString:myDataString]];
-    
+    model.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
     return model;
     
 }
@@ -678,13 +695,47 @@ static BluetoothManager *manager = nil;
     }
     [self startTiming];
     _connectionType = BluetoothConnectingHistroyReadSportData;
-    Byte b[20];
-    b[0] = 0xAA;
-    b[1] = 0xA1;
-    b[2] = 0XFF;
+    //需要获取几次历史数据
+    NSInteger count = [self getHistoryDataCount];
+    
+    if (count <= 0) {
+        NSLog(@"不需要获取历史运动数据");
+        return;
+    }
+    
+    Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    if (count < 72 && count != 0) {
+        b[2] = count;
+    }else{
+        b[2] = 0xFF;
+    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
+    
+    __weak BluetoothManager *weakSelf = self;
+    [self.baby notify:weakSelf.bindingPeripheral.peripheral
+       characteristic:weakSelf.characteristics
+                block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+                    NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                    Byte *byte = (Byte *)characteristics.value.bytes;
+                    NSInteger time = byte[1];
+                    Byte flag = byte[2];
+                    //保存历史运动数据到数据库
+                    [weakSelf saveNewHistroyData:characteristics.value time:time];
+                    
+                    //读取历史运动数据结束
+                    if (flag == 0xEE) {
+                        
+                        [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                                     characteristic:weakSelf.characteristics];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+                                                                            object:nil];
+                        weakSelf.connectionType = BluetoothConnectingSuccess;
+                        [weakSelf handleBluetoothQueue];
+                    }
+                }];
+
 }
 
 /*!
@@ -695,12 +746,23 @@ static BluetoothManager *manager = nil;
  */
 - (void)readHistroySportDataWithValue:(NSData *)value isFirst:(BOOL)first {
     [self startTiming];
+    
+    //需要获取几次历史数据
+    NSInteger count = [self getHistoryDataCount];
+    
+    if (count <= 0) {
+        NSLog(@"不需要获取历史运动数据");
+        return;
+    }
+    
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xA1;
-#warning 测试
-//    b[2] = time;
+    if (count < 72 && count != 0) {
+        b[2] = count;
+    }else{
     b[2] = 0xFF;
+    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
     [[BluetoothManager share] writeValue:data];
@@ -709,7 +771,7 @@ static BluetoothManager *manager = nil;
     [self.baby notify:weakSelf.bindingPeripheral.peripheral
        characteristic:weakSelf.characteristics
                 block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                    
+                    NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     NSInteger time = byte[1];
                     Byte flag = byte[2];
@@ -883,7 +945,8 @@ static BluetoothManager *manager = nil;
     _connectionType = BluetoothConnectingLostDevice;
     Byte b[20];
     b[0] = 0xAA;
-    b[1] = 0x04;
+    b[1] = 0x02;
+    b[2] = 0x04;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
@@ -1019,6 +1082,22 @@ static BluetoothManager *manager = nil;
         self.connectionType = BluetoothConnectingSuccess;
         self.successType = BluetoothConnectingAllSuccess;
     }
+}
+
+- (NSInteger)getHistoryDataCount
+{
+    [DBManager selectNewestHistoryDatatest];
+    NSDate *date = [DBManager selectNewestHistoryData];
+    
+    NSInteger historyTime = date.timeIntervalSince1970;
+    NSInteger getHistoryDataCount = 0;
+    if (historyTime) {
+        NSInteger nowTime = [NSDate date].timeIntervalSince1970;
+        getHistoryDataCount = (nowTime - historyTime) / 3600;
+    }
+    
+    return getHistoryDataCount;
+    
 }
 
 
