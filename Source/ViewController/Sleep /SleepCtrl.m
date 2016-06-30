@@ -184,8 +184,8 @@
     }
     _isLoading = YES;
     _refreshBututton.userInteractionEnabled = NO;
-    [[BluetoothManager share] readHistroySportData];
     [self startAnimation];
+    [[BluetoothManager share] readHistroySportData];
 }
 
 - (void)refreshSleepDataSuccess {
@@ -196,7 +196,7 @@
     [self setSleepTimeValues];
     _refreshBututton.userInteractionEnabled = YES;
     
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init]; 
 //    [formatter setDateFormat:@"YYYY-MM-dd"];
 //    NSDate *date = [NSDate date];
 //    NSString *string = [formatter stringFromDate:date];
