@@ -37,6 +37,7 @@
 		3E956E461CAC015C005DDF35 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E956E451CAC015C005DDF35 /* libsqlite3.tbd */; };
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
+		474393261D26658900C2F77C /* AboutUsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 474393251D26658900C2F77C /* AboutUsController.m */; };
 		47815F7C1CB632370085275E /* CallAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47815F7B1CB632370085275E /* CallAlertViewController.m */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
 		47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E15D0F1C9902DB00D094A8 /* nickNameController.xib */; };
@@ -366,6 +367,8 @@
 		3EF3BBE41C96BB24001BF5D2 /* ForgotPasswordCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordCtrl.h; sourceTree = "<group>"; };
 		3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordCtrl.m; sourceTree = "<group>"; };
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
+		474393241D26658900C2F77C /* AboutUsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsController.h; sourceTree = "<group>"; };
+		474393251D26658900C2F77C /* AboutUsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsController.m; sourceTree = "<group>"; };
 		47815F7A1CB632370085275E /* CallAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallAlertViewController.h; sourceTree = "<group>"; };
 		47815F7B1CB632370085275E /* CallAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallAlertViewController.m; sourceTree = "<group>"; };
 		47E15D0D1C9902DB00D094A8 /* nickNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nickNameController.h; sourceTree = "<group>"; };
@@ -1327,6 +1330,8 @@
 				711891751D23F12D00F24413 /* prenventLostController.m */,
 				716691BF1D240B9800399547 /* SOSController.h */,
 				716691C01D240B9800399547 /* SOSController.m */,
+				474393241D26658900C2F77C /* AboutUsController.h */,
+				474393251D26658900C2F77C /* AboutUsController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -2098,6 +2103,7 @@
 				9FC578821B49011200108462 /* AppResponseSerializer.m in Sources */,
 				9F20F55C1B75A9680009AB38 /* LICENSE.md in Sources */,
 				9F20F58B1B75A9680009AB38 /* RACObjCRuntime.m in Sources */,
+				474393261D26658900C2F77C /* AboutUsController.m in Sources */,
 				47E349F51CA950240026707C /* FSCalendarAppearance.m in Sources */,
 				9F20F58F1B75A9680009AB38 /* RACReturnSignal.m in Sources */,
 				9F88F62E1B4597A5000BA054 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */,
