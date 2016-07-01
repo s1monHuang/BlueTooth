@@ -300,6 +300,9 @@
 }
 
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
+    
+    [[BluetoothManager share] readHistroySportData];
+    
     _isLoading = NO;
     [_refreshBututton.layer removeAllAnimations];
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
@@ -342,15 +345,6 @@
     _electricityPercent.text = percentStr;
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
     
-    
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY-MM-dd"];
-//    NSDate *date = [NSDate date];
-//    NSString *string = [formatter stringFromDate:date];
-//    
-//    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
-//    [operateViewModel saveStepDataRecordDate:string
-//                                     stepNum:@(_sportModel.step).stringValue];
     
     
 }

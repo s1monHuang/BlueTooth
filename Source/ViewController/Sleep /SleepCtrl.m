@@ -125,15 +125,15 @@
     _qsleepTimeValue.textColor = [UIColor grayColor];
     [tempView addSubview:_qsleepTimeValue];
     
-    _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
-                                                                  _circleChart.height + _circleChart.y,
-                                                                  35,
-                                                                  35)];
-    [_refreshBututton setBackgroundImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
-    [_refreshBututton addTarget:self
-                         action:@selector(refreshSleepData)
-               forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_refreshBututton];
+//    _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
+//                                                                  _circleChart.height + _circleChart.y,
+//                                                                  35,
+//                                                                  35)];
+//    [_refreshBututton setBackgroundImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
+//    [_refreshBututton addTarget:self
+//                         action:@selector(refreshSleepData)
+//               forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:_refreshBututton];
     
     [self setSleepTimeValues];
     
@@ -190,21 +190,10 @@
 
 - (void)refreshSleepDataSuccess {
     _isLoading = NO;
-    [_refreshBututton.layer removeAllAnimations];
     [self resetSleepValue];
     [_circleChart updateChartByCurrent:@(_deepSleepPercent) byTotal:@(100)];
     [self setSleepTimeValues];
-    _refreshBututton.userInteractionEnabled = YES;
-    
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init]; 
-//    [formatter setDateFormat:@"YYYY-MM-dd"];
-//    NSDate *date = [NSDate date];
-//    NSString *string = [formatter stringFromDate:date];
-    
-//    OperateViewModel *operateViewModel = [[OperateViewModel alloc] init];
-//    [operateViewModel saveSleepDataSleepDate:string
-//                                     qsmTime:@(_shallowSleepValue).stringValue
-//                                     ssmTime:@(_deepSleepValue).stringValue];
+    [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
 }
 
 - (void)setSleepTimeValues {

@@ -688,7 +688,6 @@ static BluetoothManager *manager = nil;
 
                     }
                 }];
-
 }
 
 /*!
