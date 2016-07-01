@@ -27,7 +27,6 @@
 
 
 
-
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
 @property (nonatomic , assign) NSInteger firstDownload;
@@ -88,12 +87,13 @@
 - (void)exchangeRootViewControllerToMain
 {
     
-    
     __weak AppDelegate *blockSelf = self;
     //自动登陆
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
-    
+    BOOL downloadSuccess = [[[NSUserDefaults standardUserDefaults] objectForKey:DOWNLOADSUCCESS] boolValue];
+
+    if (downloadSuccess) {
     if (userName && password) {
         [self.operateVM loginWithUserName:userName password:password];
         
@@ -115,7 +115,10 @@
                 if (!Info) {
                     DLog(@"存入用户信息失败");
                 }
+                [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:DOWNLOADSUCCESS];
+                [blockSelf translateToMainController];
             }else{
+                [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:DOWNLOADSUCCESS];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"登录失败" message:nil delegate:blockSelf cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
                 [alert show];
                 return;
@@ -123,7 +126,25 @@
         };
 
     }
+    }else{
+        [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"appDelegateToLogin"];
+        LoginCtrl *loginVC = [[LoginCtrl alloc] init];
+        
+        UINavigationController *nav
+        = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        nav.navigationBar.barStyle = UIBarStyleBlackOpaque;
+        [UtilityUI setNavigationStyle:nav.navigationBar];
+        nav.navigationBar.barTintColor = [UtilityUI stringTOColor:@"#06bd90"];
+        
+        
+        nav.navigationBar.translucent = NO;
+        self.window.rootViewController = nav;
+    }
     
+}
+
+- (void)translateToMainController
+{
     SportCtrl *sportVC = [[SportCtrl alloc] init];
     UINavigationController *navSport
     = [[UINavigationController alloc] initWithRootViewController:sportVC];
@@ -189,8 +210,6 @@
     //self.mainTabBarController.tabBar.barTintColor = [[Tools shareToolsObj] stringTOColor:@"#595959"];
     self.mainTabBarController.tabBar.translucent = NO;
     self.window.rootViewController = self.mainTabBarController;
-
-    
 }
 
 + (AppDelegate *)defaultDelegate

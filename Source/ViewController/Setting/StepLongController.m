@@ -11,7 +11,7 @@
 #import "StepLongView.h"
 #import "TrainTargetController.h"
 
-@interface StepLongController () <ZHRulerViewDelegate>
+@interface StepLongController () <ZHRulerViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic , strong) UILabel *stepLabel;
 
@@ -44,7 +44,7 @@
     CGFloat stepLabelX = CGRectGetMaxX(label.frame);
     UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 60, 40)];
     _stepLabel = stepLabel;
-    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : [CurrentUser.stepLong substringWithRange:NSMakeRange(0, 2)];
+    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong;
     stepLabel.font = [UIFont systemFontOfSize:25];
     stepLabel.textColor = KThemeGreenColor;
     [self.view addSubview:stepLabel];
@@ -74,6 +74,23 @@
     [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
     [self.view addSubview:btnNext];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(PushToVC)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = @"返回";
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 
 }
 
@@ -88,7 +105,6 @@
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
     }
-    
 }
 
 
@@ -122,7 +138,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : [CurrentUser.stepLong substringWithRange:NSMakeRange(0, 2)] integerValue];
+    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -149,10 +165,10 @@
 
 - (void)PushToVC
 {
+    _stepLongStr = _stepLabel.text;
     if (_first == 1) {
         TrainTargetController *VC = [[TrainTargetController alloc] init];
-        NSString *stepLongStr = [NSString stringWithFormat:@"%@cm",_stepLabel.text];
-        CurrentUser.stepLong = stepLongStr;
+        CurrentUser.stepLong = _stepLongStr;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:steoLongIsChangeNotification object:_stepLongStr];
@@ -165,7 +181,6 @@
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _stepLabel.text = valueStr;
-    _stepLongStr = [NSString stringWithFormat:@"%@cm",valueStr];
   
     
 }

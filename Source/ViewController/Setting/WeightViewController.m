@@ -11,7 +11,7 @@
 #import "ZHRulerView.h"
 #import "StepLongController.h"
 
-@interface WeightViewController () <ZHRulerViewDelegate>
+@interface WeightViewController () <ZHRulerViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic , strong) ZHRulerView *rulerView;
 
@@ -48,7 +48,7 @@
     CGFloat weightLabelX = CGRectGetMaxX(label.frame);
     UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 60, 40)];
     _weightLabel = weightLabel;
-    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : [CurrentUser.weight substringWithRange:NSMakeRange(0, CurrentUser.weight.length == 4 ? 2 : 3)];
+    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight;
     weightLabel.font = [UIFont systemFontOfSize:25];
     weightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:weightLabel];
@@ -80,6 +80,22 @@
     [self.view addSubview:btnNext];
     
     [self setUpRulerView];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(PushToVC)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = @"返回";
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
 }
 
@@ -110,7 +126,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:220 showType:rulerViewshowHorizontalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : [CurrentUser.weight substringWithRange:NSMakeRange(0, CurrentUser.high.length == 4 ? 2 : 3)] integerValue];
+    rulerView.defaultVaule = [[CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -134,7 +150,7 @@
 
 - (void)PushToVC
 {
-    _weightStr = [NSString stringWithFormat:@"%@kg",_weightLabel.text];
+    _weightStr = _weightLabel.text;
     if (_first == 1) {
         StepLongController *VC = [[StepLongController alloc] init];
         CurrentUser.weight = _weightStr;

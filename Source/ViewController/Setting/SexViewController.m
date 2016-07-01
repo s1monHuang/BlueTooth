@@ -9,7 +9,7 @@
 #import "SexViewController.h"
 #import "AgeViewController.h"
 
-@interface SexViewController ()
+@interface SexViewController ()<UIGestureRecognizerDelegate>
 
 @property (nonatomic , assign) NSInteger first;
 
@@ -51,6 +51,22 @@
     lblwomen.font = [UIFont systemFontOfSize:18];
     lblwomen.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:lblwomen];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(PushToVC)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = @"返回";
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
 }
 

@@ -107,7 +107,9 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 @property (strong, nonatomic) NSString *deviceID;               //服务器返回的设备ID
 
-@property (nonatomic, assign) BOOL isCalling;
+@property (nonatomic, assign) BOOL isCalling;                   //是否正在打电话
+
+@property (nonatomic, assign) BOOL isPhone;                   //是否用电话求救
 
 @property (assign, nonatomic) NSInteger heartRate;              //心率
 

@@ -8,6 +8,10 @@
 
 #import "prenventLostController.h"
 
+#define LOSTSWTICHSTATUS  @"LOSTSWTICHSTATUS"            //防丢失开关状态
+
+#define LOSTSELECTEDDISTANCE  @"LOSTSELECTEDDISTANCE"    //选择的防丢失距离
+
 @interface prenventLostController ()<UITableViewDelegate, UITableViewDataSource>
 
 
@@ -18,6 +22,8 @@
 @property (nonatomic , strong) NSArray *distanceArray;
 
 @property (nonatomic , strong) UIView *coverView;
+
+@property (nonatomic , assign) NSInteger selectedRow;
 
 
 @end
@@ -38,26 +44,53 @@ static NSString *identifier = @"cell";
     [self.view addSubview:_tableView];
     [self setUpHeaderView];
     _distanceArray = @[@"近距离",@"中距离",@"远距离"];
+    _selectedRow = [self selectedDistance];
+}
+
+- (NSInteger)selectedDistance
+{
+    NSInteger selectedRow = [[[NSUserDefaults standardUserDefaults] objectForKey:LOSTSELECTEDDISTANCE] integerValue];
+    if (!selectedRow) {
+        selectedRow = 1;
+    }
+    return selectedRow;
+}
+
+
+- (BOOL)lostSwtichStatus
+{
+    BOOL switchStatus = [[[NSUserDefaults standardUserDefaults] objectForKey:LOSTSWTICHSTATUS] boolValue];
+    if (!switchStatus) {
+        switchStatus = NO;
+    }
+    return switchStatus;
 }
 
 - (void)setUpHeaderView
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
     _tableView.tableHeaderView = headerView;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 80, 44)];
-    label.text = @"防丢失";
-    label.font = [UIFont systemFontOfSize:20];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 44)];
+    label.text = @"防丢失提醒";
+    label.font = [UIFont systemFontOfSize:18];
     label.textColor = [UIColor lightGrayColor];
     [headerView addSubview:label];
     _lostSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kScreenWidth - 64, 10, 44, 44)];
     _lostSwitch.onTintColor = KThemeGreenColor;
-    [_lostSwitch setOn:NO];
+    [_lostSwitch setOn:[self lostSwtichStatus]];
     [_lostSwitch addTarget:self action:@selector(openPreventLost:) forControlEvents:UIControlEventValueChanged];
     [headerView addSubview:_lostSwitch];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 43, kScreenWidth, 0.5)];
+    lineView.backgroundColor = [UIColor lightGrayColor];
+    [headerView addSubview:lineView];
+    
     _coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, kScreenWidth, 44 * 3)];
     _coverView.backgroundColor = [UIColor lightGrayColor];
     _coverView.alpha = 0.5;
-    [_tableView addSubview:_coverView];
+    if (!_lostSwitch.isOn) {
+       [_tableView addSubview:_coverView];
+    }
+    
     
 }
 
@@ -66,8 +99,10 @@ static NSString *identifier = @"cell";
     UISwitch *uiSwitch = (UISwitch *)sender;
         if (uiSwitch.on) {
             [_coverView removeFromSuperview];
+            [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:LOSTSWTICHSTATUS];
         } else {
             [_tableView addSubview:_coverView];
+            [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:LOSTSWTICHSTATUS];
         }
     
     [[BluetoothManager share] lostDevice:uiSwitch.on];
@@ -91,7 +126,7 @@ static NSString *identifier = @"cell";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor whiteColor];
         cell.textLabel.text = _distanceArray[indexPath.row];
-        if (indexPath.row == 1) {
+        if (indexPath.row == _selectedRow) {
             [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
             
         }else{
@@ -112,21 +147,24 @@ static NSString *identifier = @"cell";
     UITableViewCell *selectCell = [_tableView cellForRowAtIndexPath:indexPath];
     [selectCell setAccessoryType:UITableViewCellAccessoryCheckmark];
     switch (indexPath.row) {
-        case 1:
+        case 0:
         {
             [[NSUserDefaults standardUserDefaults] setObject:@(80) forKey:PREVENTLOST];
+            [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:LOSTSELECTEDDISTANCE];
+        }
+            
+            break;
+        case 1:
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:@(90) forKey:PREVENTLOST];
+            [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:LOSTSELECTEDDISTANCE];
         }
             
             break;
         case 2:
         {
-           [[NSUserDefaults standardUserDefaults] setObject:@(90) forKey:PREVENTLOST];
-        }
-            
-            break;
-        case 3:
-        {
             [[NSUserDefaults standardUserDefaults] setObject:@(100) forKey:PREVENTLOST];
+            [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:LOSTSELECTEDDISTANCE];
         }
             
             break;

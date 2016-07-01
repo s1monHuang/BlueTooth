@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define APPISCALLING  @"APPISCALLING"
+#define DOWNLOADSUCCESS  @"DOWNLOADSUCCESS"    //持续登录
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

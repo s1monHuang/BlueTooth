@@ -10,7 +10,7 @@
 #import "WeightViewController.h"
 #import "ZHRulerView.h"
 
-@interface HeightViewController () <ZHRulerViewDelegate>
+@interface HeightViewController () <ZHRulerViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic , strong) UILabel *heightLabel;
 
@@ -48,7 +48,7 @@
     CGFloat heightLabelX = CGRectGetMaxX(label.frame);
     UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX, labelY, 60, 40)];
     _heightLabel = heightLabel;
-    heightLabel.text = [CurrentUser.high isEqualToString:@"(null)"] ? @"170" : [CurrentUser.high substringWithRange:NSMakeRange(0, 3)];
+    heightLabel.text = [CurrentUser.high isEqualToString:@"(null)"] ? @"170" : CurrentUser.high;
     heightLabel.font = [UIFont systemFontOfSize:25];
     heightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:heightLabel];
@@ -83,6 +83,23 @@
     //创建尺子
     [self setUpRulerView];
     
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(PushToVC)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = @"返回";
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,7 +129,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:120 maxNuber:220 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.high isEqualToString:@"(null)"] ? @"170" : [CurrentUser.high substringWithRange:NSMakeRange(0, 3)] integerValue];
+    rulerView.defaultVaule = [[CurrentUser.high isEqualToString:@"(null)"] ? @"170" : CurrentUser.high integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     
@@ -136,7 +153,7 @@
 
 - (void)PushToVC
 {
-    _heightStr = [NSString stringWithFormat:@"%@cm",_heightLabel.text];
+    _heightStr = _heightLabel.text;
     if (_first == 1) {
         WeightViewController *VC = [[WeightViewController alloc] init];
         CurrentUser.high = _heightStr;
