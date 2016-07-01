@@ -1,4 +1,4 @@
- //
+//
 //  DBManager.m
 //  BlueToothBracelet
 //
@@ -473,27 +473,19 @@ static NSString *dbPath = nil;
     
 }
 
-+ (NSArray *)selectNewestHistoryDatatest
-{
-    __block NSMutableArray *array = [[NSMutableArray alloc] init];
++ (NSInteger)selectSportHistoryDataCount {
+    __block NSInteger number;
     [dbQueue inDatabase:^(FMDatabase *db) {
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
         [db setDateFormat:formatter];
         
-        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC"];
-        FMResultSet *result = [db executeQuery:sql];
-        while (result.next) {
-            
-            NSDate *date = [result dateForColumn:@"date"];
-            [array addObject:date];
-        }
-        [result close];
+        NSString *sql = [NSString stringWithFormat:@"SELECT count(*) FROM 'histroy_sport_table' WHERE user_id = '%@'",CurrentUser.userId];
+        number = [db intForQuery:sql];
         
     }];
-    return array;
-    
+    return number;
 }
 
 

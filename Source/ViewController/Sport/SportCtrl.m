@@ -242,11 +242,6 @@
                                                                     action:@selector(rightBarButtonClick:)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"蓝牙设备连接中....";
-    [hud hide:YES afterDelay:3];
-    
-    
 }
 
 - (void)removeMBProgress

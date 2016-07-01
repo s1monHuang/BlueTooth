@@ -125,7 +125,12 @@
 
 + (NSInteger)selectTodayqsmNumber;
 
+/*!
+ *  查询当前用户有多少条历史运动数据
+ *
+ *  @return 当前用户有多少条历史运动数据
+ */
++ (NSInteger)selectSportHistoryDataCount;
 
-+ (NSArray *)selectNewestHistoryDatatest;
 
 @end

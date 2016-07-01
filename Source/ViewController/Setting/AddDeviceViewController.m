@@ -14,6 +14,7 @@
 
 @interface AddDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,BluetoothManagerDelegate> {
     OperateViewModel *_operateViewModel;
+    MBProgressHUD *_hud;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *peripherals;
@@ -80,7 +81,9 @@
     if (success) {
         [BluetoothManager share].bindingPeripheral = _selecedPeripheral;
         [self.navigationController popToRootViewControllerAnimated:YES];
-        [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+        [_hud setHidden:YES];
+        _hud = nil;
+        [MBProgressHUD showHUDByContent:@"绑定成功" view:UI_Window afterDelay:1.5];
     } else {
         
     }
@@ -123,11 +126,16 @@
     _selecedPeripheral = model;
     [BluetoothManager share].bindingPeripheral = model;
     [_operateViewModel createExdeviceId];
-    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+
+    _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+    _hud.labelText = @"正在绑定...";
+    
 }
 
 - (void)disConnectPeripheral {
-    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+    [_hud setHidden:YES];
+    _hud = nil;
+    [MBProgressHUD showHUDByContent:@"绑定失败" view:UI_Window afterDelay:1.5];
 }
 
 - (void)didReceiveMemoryWarning {
