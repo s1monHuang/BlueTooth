@@ -320,8 +320,13 @@
     _complateValue.text = completionRate;
     
     _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
-    
-    _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
+    if (_stepCount) {
+        NSString *target = [NSString stringWithFormat:@"目标 %ld",_stepCount];
+        _totalStep.text = target;
+    }else{
+        _totalStep.text = @"目标 10000";
+    }
+//    _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
     
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
     

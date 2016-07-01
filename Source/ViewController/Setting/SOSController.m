@@ -8,6 +8,7 @@
 
 #import "SOSController.h"
 
+
 #define SOSSWITCHSTATUS  @"SOSSWITCHSTATUS"      //求助开关状态
 #define SOSSELECTEDINDEX  @"SOSSELECTEDINDEX"    //选择的求助方式
 
@@ -113,7 +114,7 @@ static NSString *identifier = @"cell";
                             if ([BluetoothManager share].isPhone == YES) {
                                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
                             }else{
-                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"msg://%@",@"[EasyFit提醒]我需要您的帮助，请尽快和TA联系!"]]];
+                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@",phoneNO]]];
                             }
                             
                         }
