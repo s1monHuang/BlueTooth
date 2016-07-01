@@ -237,7 +237,7 @@
     [self.view addSubview:_electricity];
     
     _electricityPercent = [[UILabel alloc] initWithFrame:CGRectMake(_electricity.x, _electricity.y + 28, 50, 12)];
-    CGFloat percent = _sportModel?_sportModel.battery / 100.0 :0;
+    CGFloat percent = (_sportModel?_sportModel.battery / 100.0 :0 )* 100;
     if (percent > 100.0) {
         percent = 100.0;
     }
@@ -337,7 +337,7 @@
         electricityWidth = 50.0;
     }
     _electricity.width = electricityWidth;
-    CGFloat percent = _sportModel?_sportModel.battery / 100.0 :0;
+    CGFloat percent = (_sportModel?_sportModel.battery / 100.0 :0 )* 100;
     if (percent > 100.0) {
         percent = 100.0;
     }

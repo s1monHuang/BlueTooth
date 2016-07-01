@@ -57,8 +57,8 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     
-    imageArray = @[@"data",@"target",@"bell",@"clock",@"setup",@"i",@"datacenter",@"bell",@"add",@"add"];
-    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"久坐提醒",@"智能闹钟",@"设备管理",@"关于我们",@"数据中心",@"来电提醒", @"防丢提醒",@"一键求救",nil];
+    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter"];
+    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"久坐提醒",@"智能闹钟",@"来电提醒",@"防丢提醒",@"一键求救",@"设备管理", @"关于我们",@"数据中心",nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
@@ -182,37 +182,38 @@
             break;
         case 4:
         {
-            DeviceManagerViewController *VC = [[DeviceManagerViewController alloc] init];
-            VC.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:VC animated:YES];
-        }
-            break;
-        case 5:
-        {}
-            break;
-        case 6:
-        {
-            HistoryDataViewController *VC = [[HistoryDataViewController alloc] init];
-            VC.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:VC animated:YES];
-        }
-            break;
-        case 7: {
             CallAlertViewController *ctl = [[CallAlertViewController alloc] init];
             ctl.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:ctl animated:YES];
         }
             break;
-        case 8: {
-             prenventLostController *ctl = [[prenventLostController alloc] init];
+        case 5:
+        {
+            prenventLostController *ctl = [[prenventLostController alloc] init];
             ctl.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:ctl animated:YES];
         }
             break;
-        case 9: {
+        case 6:
+        {
             SOSController *ctl = [[SOSController alloc] init];
             ctl.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:ctl animated:YES];
+        }
+            break;
+        case 7: {
+            DeviceManagerViewController *VC = [[DeviceManagerViewController alloc] init];
+            VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+            break;
+        case 8: {
+        }
+            break;
+        case 9: {
+            HistoryDataViewController *VC = [[HistoryDataViewController alloc] init];
+            VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:VC animated:YES];
         }
             break;
         default:

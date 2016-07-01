@@ -6,12 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "jiaochicun.png",
+      "filename" : "jiaochicun@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "jiaochicun@3x.png"
     }
   ],
   "info" : {

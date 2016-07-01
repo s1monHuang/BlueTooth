@@ -6,12 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "share_wechat.png",
+      "filename" : "share_wechat@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "share_wechat@3x.png"
     }
   ],
   "info" : {
