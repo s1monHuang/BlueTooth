@@ -149,6 +149,7 @@
                 if (!Info) {
                     DLog(@"存入用户信息失败");
                 }
+            [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:DOWNLOADSUCCESS];
             [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
             }
         } else {

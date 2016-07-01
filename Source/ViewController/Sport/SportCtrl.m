@@ -243,7 +243,7 @@
     }
     NSString *percentStr = [NSString stringWithFormat:@"%.1f %%",percent];
     _electricityPercent.text = percentStr;
-    _electricityPercent.textColor = kThemeGrayColor;
+    _electricityPercent.font = [UIFont systemFontOfSize:8];
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_electricityPercent];
     
@@ -346,7 +346,6 @@
     NSString *percentStr = [NSString stringWithFormat:@"%.1f %%",percent];
     _electricityPercent.text = percentStr;
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
-    _electricityPercent.textColor = kThemeGrayColor;
     
     
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

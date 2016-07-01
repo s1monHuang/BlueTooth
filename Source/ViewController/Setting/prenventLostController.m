@@ -70,9 +70,9 @@ static NSString *identifier = @"cell";
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
     _tableView.tableHeaderView = headerView;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 80, 44)];
-    label.text = @"防丢失";
-    label.font = [UIFont systemFontOfSize:20];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 44)];
+    label.text = @"防丢失提醒";
+    label.font = [UIFont systemFontOfSize:18];
     label.textColor = [UIColor lightGrayColor];
     [headerView addSubview:label];
     _lostSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kScreenWidth - 64, 10, 44, 44)];

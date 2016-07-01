@@ -11,7 +11,7 @@
 #import "ZHRulerView.h"
 #import "StepLongController.h"
 
-@interface WeightViewController () <ZHRulerViewDelegate>
+@interface WeightViewController () <ZHRulerViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic , strong) ZHRulerView *rulerView;
 
@@ -48,7 +48,7 @@
     CGFloat weightLabelX = CGRectGetMaxX(label.frame);
     UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 60, 40)];
     _weightLabel = weightLabel;
-    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50 kg" : [NSString stringWithFormat:@"%@ kg",CurrentUser.weight];
+    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight;
     weightLabel.font = [UIFont systemFontOfSize:25];
     weightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:weightLabel];
@@ -80,6 +80,22 @@
     [self.view addSubview:btnNext];
     
     [self setUpRulerView];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(PushToVC)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = @"返回";
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
 }
 
@@ -134,12 +150,13 @@
 
 - (void)PushToVC
 {
+    _weightStr = _weightLabel.text;
     if (_first == 1) {
         StepLongController *VC = [[StepLongController alloc] init];
-        CurrentUser.weight = _weightLabel.text;
+        CurrentUser.weight = _weightStr;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
-        [[NSNotificationCenter defaultCenter] postNotificationName:weightIsChangeNotification object:_weightLabel.text];
+        [[NSNotificationCenter defaultCenter] postNotificationName:weightIsChangeNotification object:_weightStr];
         [self.navigationController popViewControllerAnimated:YES];
     }
     

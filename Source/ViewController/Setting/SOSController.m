@@ -124,9 +124,10 @@ static NSString *identifier = @"cell";
         }
         
     }else{
-        
-        [[BluetoothManager share].baby cancelNotify:[BluetoothManager share].bindingPeripheral.peripheral
-                                     characteristic:[BluetoothManager share].sosCharacteristic];
+        if ([BluetoothManager share].bindingPeripheral) {
+            [[BluetoothManager share].baby cancelNotify:[BluetoothManager share].bindingPeripheral.peripheral
+                                         characteristic:[BluetoothManager share].sosCharacteristic];
+                    }
     }
 }
 
@@ -148,10 +149,12 @@ static NSString *identifier = @"cell";
     UISwitch *uiSwitch = (UISwitch *)sender;
     if (uiSwitch.on) {
         [_coverView removeFromSuperview];
+        [_numberText becomeFirstResponder];
         [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:SOSSWITCHSTATUS];
     } else {
         [_tableView addSubview:_coverView];
-        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:SOSSWITCHSTATUS];
+        [_numberText resignFirstResponder];
+        [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:SOSSWITCHSTATUS];
     }
     
     
@@ -180,7 +183,7 @@ static NSString *identifier = @"cell";
             _numberText = [[UITextField alloc] initWithFrame:CGRectMake(145, 0, kScreenWidth - 145, 44)];
             
             [cell.contentView addSubview:_numberText];
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(140, 40, kScreenWidth - 145, 0.5)];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(140, 38, kScreenWidth - 145, 0.5)];
             lineView.backgroundColor = [UIColor lightGrayColor];
             [cell.contentView addSubview:lineView];
             _numberText.userInteractionEnabled = YES;

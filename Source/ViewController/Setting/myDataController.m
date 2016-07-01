@@ -25,6 +25,8 @@
 
 @property (nonatomic , strong) NSArray *valueArray;
 
+@property (nonatomic , strong) NSArray *unitArray;
+
 @property (nonatomic , strong) UIView *bottomView;
 
 //@property (nonatomic , assign) NSInteger targetValue;
@@ -93,7 +95,8 @@ static NSString* identifier =@"PersonalCell";
         self.navigationItem.leftBarButtonItem = item;
     }
     _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
-//    [_tableView reloadData];
+    
+    _unitArray = @[@"",@"",@"",@"cm",@"kg",@"cm"];
 }
 
 - (void)setUpTableView
@@ -198,6 +201,8 @@ static NSString* identifier =@"PersonalCell";
     }
     cell.textLabel.text = self.keyArray[indexPath.row];
     [cell.valueLabel setText:self.valueArray[indexPath.row]];
+    cell.unitLabel.text = _unitArray[indexPath.row];
+
 
     cell.valueLabel.textAlignment = NSTextAlignmentRight;
     

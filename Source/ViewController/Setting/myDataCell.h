@@ -14,5 +14,6 @@
 
 @property (nonatomic , strong) UILabel *valueLabel;
 
+@property (nonatomic , strong) UILabel *unitLabel;
 
 @end

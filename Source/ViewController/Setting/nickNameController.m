@@ -9,7 +9,7 @@
 #import "nickNameController.h"
 #import "SexViewController.h"
 
-@interface nickNameController ()
+@interface nickNameController ()<UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *nickNameTextField;
 
@@ -42,6 +42,23 @@
     [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
     [self.view addSubview:btnNext];
     
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(clickBack)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = @"返回";
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    
    
 }
 
@@ -59,6 +76,10 @@
     
 }
 
+- (void)clickBack
+{
+   [self.navigationController popViewControllerAnimated:YES]; 
+}
 
 - (IBAction)btnClick:(id)sender
 {
