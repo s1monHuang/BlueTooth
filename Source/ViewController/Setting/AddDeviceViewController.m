@@ -77,7 +77,7 @@
         NSRange range = [model.name rangeOfString:@"BCD"];
         if (range.location == NSNotFound) {
             return;
-        }
+        } 
         [_peripherals addObject:peripheral];
         [_peripheralModels addObject:model];
         [_tableView reloadData];

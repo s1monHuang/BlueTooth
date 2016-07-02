@@ -105,7 +105,13 @@
 }
 
 - (void)clickButton:(UIButton *)button {
+    //没有绑定设备
+    if (![BluetoothManager getBindingPeripheralUUID]) {
+        [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
+        return;
+    }
     if (![[BluetoothManager share] isExistCharacteristic]) {
+        [MBProgressHUD showHUDByContent:@"设备自动连接中，请稍后" view:UI_Window afterDelay:1.5];
         return;
     }
     if (button.selected) {
