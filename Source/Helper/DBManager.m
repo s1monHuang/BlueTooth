@@ -461,7 +461,7 @@ static NSString *dbPath = nil;
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
         [db setDateFormat:formatter];
         
-        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' ORDER BY date DESC LIMIT 1"];
+        NSString *sql = [NSString stringWithFormat:@"SELECT date FROM 'histroy_sport_table' WHERE user_id = '%@' ORDER BY date DESC LIMIT 1",CurrentUser.userId];
         FMResultSet *result = [db executeQuery:sql];
         if (result.next) {
             date = [result dateForColumn:@"date"];

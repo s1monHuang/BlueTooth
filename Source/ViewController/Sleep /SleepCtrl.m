@@ -103,7 +103,7 @@
     [_circleChart addSubview:tempView];
     
     UILabel *sleepTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2,tempView.frame.size.width, 20)];
-    sleepTimeText.text = @"睡眠时长";
+    sleepTimeText.text = @"近24小时时长";
     sleepTimeText.textAlignment = NSTextAlignmentCenter;
     sleepTimeText.textColor = [UIColor grayColor];
     [tempView addSubview:sleepTimeText];
@@ -150,9 +150,21 @@
     _deepSleepValue = 0;
     _shallowSleepValue = 0;
     
-    _deepSleepValue = [DBManager selectTodayssmNumber];
-    _shallowSleepValue = [DBManager selectTodayqsmNumber];
-    _sleepValue = _deepSleepValue + _shallowSleepValue;
+    _historys = [DBManager selectOneDayHistorySportData];
+    for (HistorySportDataModel *model in _historys) {
+        //小于255代表在睡眠时间内
+        if (model.sleep < 255) {
+            _sleepValue += 1;
+            //如果动作次数小于10,深睡眠+1
+            if (model.sleep < 10) {
+                _deepSleepValue += 1;
+            }
+            //如果动作次数大于等于10,浅睡眠+1
+            else {
+                _shallowSleepValue += 1;
+            }
+        }
+    }
     _deepSleepPercent = (_deepSleepValue * 1.0 / _sleepValue) * 100;
 }
 

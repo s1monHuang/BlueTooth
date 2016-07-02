@@ -21,6 +21,9 @@
 @property (strong, nonatomic) NSMutableArray *peripheralModels;
 
 @property (strong, nonatomic)PeripheralModel *selecedPeripheral;
+
+@property (strong, nonatomic) NSTimer *timer;
+
 @end
 
 @implementation AddDeviceViewController
@@ -83,6 +86,8 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         [_hud setHidden:YES];
         _hud = nil;
+        [_timer invalidate];
+        _timer = nil;
         [MBProgressHUD showHUDByContent:@"绑定成功" view:UI_Window afterDelay:1.5];
     } else {
         
@@ -130,6 +135,14 @@
     _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     _hud.labelText = @"正在绑定...";
     
+    _timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
+    
+}
+
+- (void)timeOut {
+    [_timer invalidate];
+    _timer = nil;
+    [self disConnectPeripheral];
 }
 
 - (void)disConnectPeripheral {

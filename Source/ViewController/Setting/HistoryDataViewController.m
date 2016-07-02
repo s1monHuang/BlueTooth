@@ -314,7 +314,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
     UILabel *bottomDistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + bottomViewW, 5, bottomViewW, 30)];
     bottomDistanceLabel.textAlignment = NSTextAlignmentCenter;
-    bottomDistanceLabel.text = [NSString stringWithFormat:@"%.1lf",distance];
+    bottomDistanceLabel.text = [NSString stringWithFormat:@"%.2lf",distance];
     
     UILabel *bottomEnergyLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + 2 * bottomViewW, 5 , bottomViewW, 30)];
     bottomEnergyLabel.textAlignment = NSTextAlignmentCenter;
@@ -493,7 +493,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
     _stepLabel.text = [NSString stringWithFormat:@"%ld步",showStepData];
     _bottomStepLabel.text = [NSString stringWithFormat:@"%ld",showStepData];
-    _bottomDistanceLabel.text = [NSString stringWithFormat:@"%.1lf",distance];
+    _bottomDistanceLabel.text = [NSString stringWithFormat:@"%.2lf",distance];
     _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",fireEnergy];
     
     [self.view setNeedsDisplay];
