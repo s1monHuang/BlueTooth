@@ -63,6 +63,8 @@
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     //注册成功后登陆
                     NSDictionary *userDict = [NSDictionary dictionaryWithObjectsAndKeys:blockSelf.userName,@"userName" ,blockSelf.password, @"password" , nil];
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    [userDefaults setObject:@(1) forKey:FIRSTDOWNLAOD];
                     [[NSNotificationCenter defaultCenter] postNotificationName:registerSuccessToLogin object:nil userInfo:userDict];
                     [blockSelf.navigationController popViewControllerAnimated:YES];
                 });

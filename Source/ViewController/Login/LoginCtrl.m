@@ -83,17 +83,7 @@
         self.txtUserPassword.text = @"";
     }
 
-    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD]?YES:NO;
-    if (!first) {
-        DLog(@"第一次登陆");
-        _firstDownload = 1;
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:@(1) forKey:FIRSTDOWNLAOD];
-        [userDefaults synchronize];
-
-    }else{
-        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
-    }
+    
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerAndLogin:) name:registerSuccessToLogin object:nil];
@@ -108,6 +98,17 @@
     button.alpha = 0;
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = item;
+    BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD]?YES:NO;
+    if (!first) {
+        DLog(@"第一次登陆");
+        _firstDownload = 1;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@(1) forKey:FIRSTDOWNLAOD];
+        [userDefaults synchronize];
+        
+    }else{
+        _firstDownload = [[[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD] integerValue];
+    }
 }
 
 - (IBAction)btnLoginClick:(id)sender {
@@ -186,22 +187,6 @@
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];
                 [blockSelf.navigationController pushViewController:nickNameCtl animated:YES];
             }
-//            else{
-//                [[UserManager defaultInstance] saveUser:userInfo];
-//                
-//                BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
-//                infoModel.nickName = CurrentUser.nickName;
-//                infoModel.gender = CurrentUser.sex;
-//                infoModel.age = CurrentUser.age;
-//                infoModel.height = [CurrentUser.high integerValue];
-//                infoModel.weight = [CurrentUser.weight integerValue];
-//                infoModel.distance = [CurrentUser.stepLong integerValue];
-//                BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
-//                if (!Info) {
-//                    DLog(@"存入用户信息失败");
-//                }
-//                [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
-//            }
         } else {
             [blockSelf showHUDText:userInfo];
         }
