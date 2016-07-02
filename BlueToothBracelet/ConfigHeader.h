@@ -13,7 +13,7 @@
 
 // api服务器地址
 #define kAppApiServer                            @"http://112.74.100.227:8080"
-#define kAppDomain                               @"https://bcdest.com"
+#define kAppDomain                               @"https://www.bcdest.com:8080"
 
 /////////////////////////////////*Storyboard*/////////////////////////////////
 
