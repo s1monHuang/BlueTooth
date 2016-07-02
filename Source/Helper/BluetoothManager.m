@@ -213,7 +213,11 @@ static BluetoothManager *manager = nil;
         NSLog(@"设备：%@--连接成功",peripheral.name);
         BOOL lostRemind = [[[NSUserDefaults standardUserDefaults] objectForKey:LOSTSWTICHSTATUS] boolValue];
         if (lostRemind) {
-            [weakSelf.bindingPeripheral.peripheral readRSSI];
+            _rssiTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                          target:self.bindingPeripheral.peripheral
+                                                        selector:@selector(readRSSI)
+                                                        userInfo:nil
+                                                         repeats:YES];
         }
         if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
             [weakSelf.deleagete didBindingPeripheral:YES];

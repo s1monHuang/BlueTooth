@@ -39,6 +39,8 @@ static NSString *identifier = @"cell";
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
+    _tableView.scrollEnabled = NO;
+    
     [self.view addSubview:_tableView];
     [self setUpBottomView];
     _distanceArray = @[@"是否开启求救",@"请输入电话号码:"];

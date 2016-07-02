@@ -36,6 +36,7 @@ static NSString *identifier = @"cell";
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44 * 4)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.scrollEnabled = NO;
     
     [self.view addSubview:_tableView];
     [self setUpHeaderView];
@@ -47,7 +48,7 @@ static NSString *identifier = @"cell";
 {
     NSInteger selectedRow = [[[NSUserDefaults standardUserDefaults] objectForKey:LOSTSELECTEDDISTANCE] integerValue];
     if (!selectedRow) {
-        selectedRow = 1;
+        selectedRow = 2;
     }
     return selectedRow;
 }
@@ -122,7 +123,7 @@ static NSString *identifier = @"cell";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor whiteColor];
         cell.textLabel.text = _distanceArray[indexPath.row];
-        if (indexPath.row == _selectedRow) {
+        if (indexPath.row == _selectedRow-1) {
             [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
             
         }else{
@@ -146,21 +147,21 @@ static NSString *identifier = @"cell";
         case 0:
         {
             [[NSUserDefaults standardUserDefaults] setObject:@(80) forKey:PREVENTLOST];
-            [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:LOSTSELECTEDDISTANCE];
+            [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:LOSTSELECTEDDISTANCE];
         }
             
             break;
         case 1:
         {
             [[NSUserDefaults standardUserDefaults] setObject:@(90) forKey:PREVENTLOST];
-            [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:LOSTSELECTEDDISTANCE];
+            [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:LOSTSELECTEDDISTANCE];
         }
             
             break;
         case 2:
         {
             [[NSUserDefaults standardUserDefaults] setObject:@(100) forKey:PREVENTLOST];
-            [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:LOSTSELECTEDDISTANCE];
+            [[NSUserDefaults standardUserDefaults] setObject:@(3) forKey:LOSTSELECTEDDISTANCE];
         }
             
             break;
