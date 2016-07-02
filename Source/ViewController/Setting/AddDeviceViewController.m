@@ -74,6 +74,10 @@
     if (![_peripherals containsObject:peripheral]) {
         PeripheralModel *model = [[PeripheralModel alloc] initWithPeripheral:peripheral
                                                            advertisementData:advertisementData];
+        NSRange range = [model.name rangeOfString:@"BCD"];
+        if (range.location == NSNotFound) {
+            return;
+        }
         [_peripherals addObject:peripheral];
         [_peripheralModels addObject:model];
         [_tableView reloadData];

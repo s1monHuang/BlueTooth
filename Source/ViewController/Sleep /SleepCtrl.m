@@ -180,6 +180,7 @@
 
 - (void)refreshSleepData {
     if (![[BluetoothManager share] isExistCharacteristic]) {
+        [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
         return;
     }
     _isLoading = YES;

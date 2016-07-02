@@ -163,4 +163,11 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
  */
 - (NSInteger)getHistoryDataCount;
 
+
+
+
+
+
++ (NSString *)getBindingPeripheralUUID;
+
 @end
