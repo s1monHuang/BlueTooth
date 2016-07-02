@@ -241,7 +241,7 @@
     if (percent > 100.0) {
         percent = 100.0;
     }
-    NSString *percentStr = [NSString stringWithFormat:@"%.1f %%",percent];
+    NSString *percentStr = [NSString stringWithFormat:@"%.0f %%",percent];
     _electricityPercent.text = percentStr;
     _electricityPercent.font = [UIFont systemFontOfSize:8];
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
@@ -352,7 +352,7 @@
     if (percent > 100.0) {
         percent = 100.0;
     }
-    NSString *percentStr = [NSString stringWithFormat:@"%.1f %%",percent];
+    NSString *percentStr = [NSString stringWithFormat:@"%.0f %%",percent];
     _electricityPercent.text = percentStr;
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
     
