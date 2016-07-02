@@ -211,6 +211,9 @@ static BluetoothManager *manager = nil;
     //设置设备连接成功的委托
     [_baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         NSLog(@"设备：%@--连接成功",peripheral.name);
+        if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
+            [weakSelf.deleagete didBindingPeripheral:YES];
+        }
     }];
     
     //设置设备连接失败的委托
@@ -758,8 +761,8 @@ static BluetoothManager *manager = nil;
         [BluetoothManager saveBindingPeripheralUUID:self.bindingPeripheral.peripheral];
     }
     self.isBindingPeripheral = YES;
-    if (self.deleagete && [self.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
-        [self.deleagete didBindingPeripheral:YES];
+    if (self.deleagete && [self.deleagete respondsToSelector:@selector(didBindingPeripheralFinished)]) {
+        [self.deleagete didBindingPeripheralFinished];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
                                                         object:nil];

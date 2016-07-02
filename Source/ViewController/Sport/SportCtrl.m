@@ -129,7 +129,7 @@
     tempView.backgroundColor = [UIColor whiteColor];
     [_circleChart addSubview:tempView];
     
-    CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
+    CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     
@@ -266,7 +266,7 @@
     _totalStep.text = [NSString stringWithFormat:@"目标 %@",sender.object];
     _stepCount = [sender.object integerValue];
     
-    CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
+    CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
@@ -314,7 +314,7 @@
         _sportModel = [notification object];
     }
     
-    CGFloat completionRateFloat = _stepCount == 0?0:_sportModel.step / (double)_stepCount * 100;
+    CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
     completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;

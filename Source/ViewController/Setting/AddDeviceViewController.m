@@ -80,18 +80,27 @@
     }
 }
 
+
+//绑定蓝牙设备成功或失败
 - (void)didBindingPeripheral:(BOOL)success {
-    if (success) {
-        [BluetoothManager share].bindingPeripheral = _selecedPeripheral;
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        [_hud setHidden:YES];
-        _hud = nil;
-        [_timer invalidate];
-        _timer = nil;
-        [MBProgressHUD showHUDByContent:@"绑定成功" view:UI_Window afterDelay:1.5];
-    } else {
-        
+    
+    [_timer invalidate];
+    _timer = nil;
+    
+    if (!success) {
+        [self disConnectPeripheral];
     }
+}
+
+//绑定蓝牙设备成功并且获取历史运动数据成功
+- (void)didBindingPeripheralFinished {
+    [BluetoothManager share].bindingPeripheral = _selecedPeripheral;
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    [_hud setHidden:YES];
+    _hud = nil;
+    [_timer invalidate];
+    _timer = nil;
+    [MBProgressHUD showHUDByContent:@"绑定成功" view:UI_Window afterDelay:1.5];
 }
 
 #pragma mark - Table view data source

@@ -77,6 +77,8 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 - (void)didBindingPeripheral:(BOOL)success;
 
+- (void)didBindingPeripheralFinished;
+
 @end
 
 @interface BluetoothManager : NSObject {
