@@ -8,10 +8,6 @@
 
 #import "prenventLostController.h"
 
-#define LOSTSWTICHSTATUS  @"LOSTSWTICHSTATUS"            //防丢失开关状态
-
-#define LOSTSELECTEDDISTANCE  @"LOSTSELECTEDDISTANCE"    //选择的防丢失距离
-
 @interface prenventLostController ()<UITableViewDelegate, UITableViewDataSource>
 
 

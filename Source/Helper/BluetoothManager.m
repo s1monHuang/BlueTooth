@@ -211,6 +211,10 @@ static BluetoothManager *manager = nil;
     //设置设备连接成功的委托
     [_baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         NSLog(@"设备：%@--连接成功",peripheral.name);
+        BOOL lostRemind = [[[NSUserDefaults standardUserDefaults] objectForKey:LOSTSWTICHSTATUS] boolValue];
+        if (lostRemind) {
+            [weakSelf.bindingPeripheral.peripheral readRSSI];
+        }
         if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didBindingPeripheral:)]) {
             [weakSelf.deleagete didBindingPeripheral:YES];
         }
@@ -357,8 +361,8 @@ static BluetoothManager *manager = nil;
                     Byte *byte = (Byte *)data.bytes;
                     if (byte[1] == 0x99) {
                         NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
-                        BOOL openSOSFunc = [[NSUserDefaults standardUserDefaults] objectForKey:SOSSWITCHSTATUS];
-                        BOOL wayForSOSFunc = [[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX];
+                        BOOL openSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSWITCHSTATUS] boolValue];
+                        BOOL wayForSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX] boolValue];
 
                         if (phoneNO) {
                             if (openSOSFunc) {

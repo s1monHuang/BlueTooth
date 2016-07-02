@@ -43,6 +43,10 @@
 #define SOSSWITCHSTATUS  @"SOSSWITCHSTATUS"      //求助开关状态
 #define SOSSELECTEDINDEX  @"SOSSELECTEDINDEX"    //选择的求助方式
 
+#define LOSTSWTICHSTATUS  @"LOSTSWTICHSTATUS"            //防丢失开关状态
+
+#define LOSTSELECTEDDISTANCE  @"LOSTSELECTEDDISTANCE"    //选择的防丢失距离
+
 #endif
 
 
