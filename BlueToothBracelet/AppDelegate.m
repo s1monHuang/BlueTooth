@@ -18,9 +18,11 @@
 #import "WXApi.h"
 #import "WeiboSDK.h"
 
+#import <MessageUI/MessageUI.h>
 
 
-@interface AppDelegate () <UIAlertViewDelegate,WXApiDelegate,WeiboSDKDelegate>
+
+@interface AppDelegate () <UIAlertViewDelegate,WXApiDelegate,WeiboSDKDelegate,MFMessageComposeViewControllerDelegate>
 
 #define WX_KEY @"wx5ac8c621e7ca98a9"
 #define WB_KEY @"1468435197"
@@ -145,6 +147,7 @@
 
 - (void)translateToMainController
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMessage) name:@"SOSSendMessage" object:nil];
     SportCtrl *sportVC = [[SportCtrl alloc] init];
     UINavigationController *navSport
     = [[UINavigationController alloc] initWithRootViewController:sportVC];
@@ -212,9 +215,60 @@
     self.window.rootViewController = self.mainTabBarController;
 }
 
+- (void)sendMessage
+{
+    //没有绑定设备
+    if (![BluetoothManager getBindingPeripheralUUID]) {
+        [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
+        return;
+    }
+    if (![[BluetoothManager share] isExistCharacteristic]) {
+        [MBProgressHUD showHUDByContent:@"设备自动连接中，请稍后" view:UI_Window afterDelay:1.5];
+        return;
+    }
+    NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
+    MFMessageComposeViewController *messageController=[[MFMessageComposeViewController alloc]init];
+    messageController.recipients= @[phoneNO];
+    messageController.body=@"[EasyFit提醒]我需要您的帮助，请尽快和TA联系！";
+    messageController.messageComposeDelegate = self;
+    [self.mainTabBarController presentViewController:messageController animated:YES completion:nil];
+}
+
+
 + (AppDelegate *)defaultDelegate
 {
     return (AppDelegate *)[[UIApplication sharedApplication]delegate];
+}
+#pragma mark - 短信发送界面代理
+//短信发送状态
+-(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    switch (result) {
+        case MessageComposeResultSent:
+        {
+            [MBProgressHUD showHUDByContent:@"发送成功" view:UI_Window afterDelay:2];
+        }
+            
+            break;
+        case MessageComposeResultFailed:
+        {
+            [MBProgressHUD showHUDByContent:@"发送失败" view:UI_Window afterDelay:2];
+        }
+            
+            break;
+            
+        case MessageComposeResultCancelled:
+        {
+            //            [MBProgressHUD showHUDByContent:@"发送成功" view:UI_Window afterDelay:2];
+        }
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self.mainTabBarController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIAlertViewDelegate

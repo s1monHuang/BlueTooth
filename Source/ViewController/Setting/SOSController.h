@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define SETPHONENO  @"PHONENUMBER"
-
 @interface SOSController : UIViewController
 
 @end

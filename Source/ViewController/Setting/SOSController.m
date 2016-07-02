@@ -10,10 +10,6 @@
 #import <MessageUI/MessageUI.h>
 #import "BluetoothManager.h"
 
-
-#define SOSSWITCHSTATUS  @"SOSSWITCHSTATUS"      //求助开关状态
-#define SOSSELECTEDINDEX  @"SOSSELECTEDINDEX"    //选择的求助方式
-
 @interface SOSController ()<UITableViewDelegate, UITableViewDataSource,MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic , strong) UITableView *tableView;
@@ -105,10 +101,10 @@ static NSString *identifier = @"cell";
         if (_numberText.text.length > 0) {
             [[NSUserDefaults standardUserDefaults] setObject:_numberText.text forKey:SETPHONENO];
             //没有绑定设备
-//            if (![BluetoothManager getBindingPeripheralUUID]) {
-//                [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
-//                return;
-//            }
+            if (![BluetoothManager getBindingPeripheralUUID]) {
+                [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
+                return;
+            }
             if (![[BluetoothManager share] isExistCharacteristic]) {
                 [MBProgressHUD showHUDByContent:@"设备自动连接中，请稍后" view:UI_Window afterDelay:1.5];
                 return;
@@ -126,10 +122,13 @@ static NSString *identifier = @"cell";
                             if ([BluetoothManager share].isPhone == YES) {
                                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
                             }else{
-                                MFMessageComposeViewController *messageController=[[MFMessageComposeViewController alloc]init];
-                                messageController.recipients= @[phoneNO];
-                                messageController.body=@"[EasyFit提醒]我需要您的帮助，请尽快和TA联系！";
-                                [blockSelf presentViewController:messageController animated:YES completion:nil];
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"SOSSendMessage" object:nil];
+                                });
+//                                MFMessageComposeViewController *messageController=[[MFMessageComposeViewController alloc]init];
+//                                messageController.recipients= @[phoneNO];
+//                                messageController.body=@"[EasyFit提醒]我需要您的帮助，请尽快和TA联系！";
+//                                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:messageController animated:YES completion:nil];
 //                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@",phoneNO]]];
                             }
                             

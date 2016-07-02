@@ -357,8 +357,23 @@ static BluetoothManager *manager = nil;
                     Byte *byte = (Byte *)data.bytes;
                     if (byte[1] == 0x99) {
                         NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
+                        BOOL openSOSFunc = [[NSUserDefaults standardUserDefaults] objectForKey:SOSSWITCHSTATUS];
+                        BOOL wayForSOSFunc = [[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX];
+
                         if (phoneNO) {
-                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:// %@",phoneNO]]];
+                            if (openSOSFunc) {
+                            if ([BluetoothManager share].isCalling == NO) {
+                                [BluetoothManager share].isCalling = YES;
+                                if (!wayForSOSFunc) {
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
+                                }else{
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"SOSSendMessage" object:nil];
+                                    });
+                                }
+                                
+                            }
+                            }
                         }
                         
                     }

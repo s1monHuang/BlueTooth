@@ -360,6 +360,11 @@
     
 }
 
+- (void)registerSOSNotification
+{
+    
+}
+
 - (void)disConnectPeripheral {
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;

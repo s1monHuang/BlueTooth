@@ -38,6 +38,11 @@
 #import "OperateViewModel.h"
 #import "BluetoothManager.h"
 #define FIRSTDOWNLAOD  @"THEFIRST"
+#define SETPHONENO  @"PHONENUMBER"
+
+#define SOSSWITCHSTATUS  @"SOSSWITCHSTATUS"      //求助开关状态
+#define SOSSELECTEDINDEX  @"SOSSELECTEDINDEX"    //选择的求助方式
+
 #endif
 
 
