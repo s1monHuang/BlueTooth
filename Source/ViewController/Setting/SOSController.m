@@ -80,6 +80,9 @@ static NSString *identifier = @"cell";
 - (NSInteger)selectedIndex
 {
     NSUInteger index = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX] integerValue];
+    if (index == 0) {
+        [BluetoothManager share].isPhone = YES;
+    }
     return index;
 }
 
@@ -150,11 +153,11 @@ static NSString *identifier = @"cell";
     UISegmentedControl *SOSChooseSegment = (UISegmentedControl *)sender;
     if (SOSChooseSegment.selectedSegmentIndex == 0) {
         [BluetoothManager share].isPhone = YES;
-        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:SOSSELECTEDINDEX];
+        [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:SOSSELECTEDINDEX];
         
     }else{
         [BluetoothManager share].isPhone = NO;
-        [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:SOSSELECTEDINDEX];
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:SOSSELECTEDINDEX];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
