@@ -244,17 +244,15 @@ static BluetoothManager *manager = nil;
     
     //防设备丢失测试信号强度
     [_baby setBlockOnDidReadRSSI:^(NSNumber *RSSI, NSError *error) {
-        NSInteger rssiInt = ABS(RSSI.integerValue);
-        CGFloat power = (rssiInt - 59) / (10 * 2.0);
         
         NSInteger defaultRSSI = -([[[NSUserDefaults standardUserDefaults] objectForKey:PREVENTLOST] integerValue]);
         if (!defaultRSSI) {
-            defaultRSSI = 90;
+            defaultRSSI = -90;
         }
-        if (rssiInt < defaultRSSI) {
+        if (RSSI.integerValue < defaultRSSI) {
             [weakSelf alertUserLostDevice];
         }
-        DLog(@"RSSI : %@   power : %@",RSSI.stringValue,@(power).stringValue);
+        DLog(@"RSSI : %@ ",RSSI.stringValue);
     }];
     
     //扫描选项->CBCentralManagerScanOptionAllowDuplicatesKey:忽略同一个Peripheral端的多个发现事件被聚合成一个发现事件
