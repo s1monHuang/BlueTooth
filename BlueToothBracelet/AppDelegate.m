@@ -243,6 +243,8 @@
 //短信发送状态
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
+    [BluetoothManager share].isCalling = NO;
+    
     switch (result) {
         case MessageComposeResultSent:
         {
