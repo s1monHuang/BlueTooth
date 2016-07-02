@@ -48,7 +48,7 @@
     BOOL first = [[NSUserDefaults standardUserDefaults] objectForKey:FIRSTDOWNLAOD]?YES:NO;
     if (!first) {
         DLog(@"第一次登陆");
-//        _firstDownload = 1;
+        _firstDownload = 1;
         [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
         [[NSUserDefaults standardUserDefaults] synchronize];
 

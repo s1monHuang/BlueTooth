@@ -108,6 +108,7 @@
 {
     LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
     loginCtl.hidesBottomBarWhenPushed = YES;
+    [[UserManager defaultInstance] clearUser];
     [self.navigationController pushViewController:loginCtl animated:YES];
 }
 
