@@ -164,6 +164,7 @@
                     DLog(@"修改用户信息失败");
                 }
                 [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:FIRSTDOWNLAOD];
+                [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:DOWNLOADSUCCESS];
                 [MBProgressHUD showHUDByContent:@"个人信息设置成功" view:UI_Window afterDelay:2];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
