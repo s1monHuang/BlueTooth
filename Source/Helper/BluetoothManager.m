@@ -372,7 +372,7 @@ static BluetoothManager *manager = nil;
                             if (openSOSFunc) {
                             if ([BluetoothManager share].isCalling == NO) {
                                 [BluetoothManager share].isCalling = YES;
-                                if (!wayForSOSFunc) {
+                                if (wayForSOSFunc) {
                                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
                                 }else{
                                     dispatch_async(dispatch_get_main_queue(), ^{

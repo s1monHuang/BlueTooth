@@ -80,9 +80,6 @@ static NSString *identifier = @"cell";
 - (NSInteger)selectedIndex
 {
     NSUInteger index = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX] integerValue];
-    if (!index) {
-        index = 0;
-    }
     return index;
 }
 
@@ -98,7 +95,6 @@ static NSString *identifier = @"cell";
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    __block SOSController *blockSelf = self;
     if (_SOSSwitch.on) {
         if (_numberText.text.length > 0) {
             [[NSUserDefaults standardUserDefaults] setObject:_numberText.text forKey:SETPHONENO];
@@ -154,12 +150,13 @@ static NSString *identifier = @"cell";
     UISegmentedControl *SOSChooseSegment = (UISegmentedControl *)sender;
     if (SOSChooseSegment.selectedSegmentIndex == 0) {
         [BluetoothManager share].isPhone = YES;
-        [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:SOSSELECTEDINDEX];
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:SOSSELECTEDINDEX];
         
     }else{
         [BluetoothManager share].isPhone = NO;
-        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:SOSSELECTEDINDEX];
+        [[NSUserDefaults standardUserDefaults] setObject:@(0) forKey:SOSSELECTEDINDEX];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)openPreventLost:(id)sender
