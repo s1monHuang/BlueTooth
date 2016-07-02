@@ -352,7 +352,7 @@ static NSString *dbPath = nil;
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
             if (sleep < 10) {
-                ssmNumber += sleep;
+                ssmNumber += 1;
             }
         }
         [result close];
@@ -368,7 +368,7 @@ static NSString *dbPath = nil;
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
             if (sleep > 10 && sleep < 255) {
-                qsmNumber += sleep;
+                qsmNumber += 1;
             }
         }
         [result close];

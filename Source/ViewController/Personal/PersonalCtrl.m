@@ -20,6 +20,7 @@
 #import "CallAlertViewController.h"
 #import "prenventLostController.h"
 #import "SOSController.h"
+#import "AboutUsController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -208,6 +209,9 @@
         }
             break;
         case 8: {
+            AboutUsController *VC = [[AboutUsController alloc] init];
+            VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:VC animated:YES];
         }
             break;
         case 9: {

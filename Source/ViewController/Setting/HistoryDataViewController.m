@@ -525,9 +525,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     }
     NSInteger count = 1;
     
-    if (showSsmData + showQsmData > 10) {
+    if ((showSsmData + showQsmData) > 10 &&(showSsmData + showQsmData) < 100) {
         count = 2;
-    }else if (showSsmData + showQsmData > 100){
+    }else if ((showSsmData + showQsmData) > 100){
         count = 3;
     }
     NSRange sleepHourRange = NSMakeRange(0, count);

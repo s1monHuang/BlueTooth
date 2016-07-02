@@ -150,21 +150,9 @@
     _deepSleepValue = 0;
     _shallowSleepValue = 0;
     
-    _historys = [DBManager selectOneDayHistorySportData];
-    for (HistorySportDataModel *model in _historys) {
-        //小于255代表在睡眠时间内
-        if (model.sleep < 255) {
-            _sleepValue += 1;
-            //如果动作次数小于10,深睡眠+1
-            if (model.sleep < 10) {
-                _deepSleepValue += 1;
-            }
-            //如果动作次数大于等于10,浅睡眠+1
-            else {
-                _shallowSleepValue += 1;
-            }
-        }
-    }
+    _deepSleepValue = [DBManager selectTodayssmNumber];
+    _shallowSleepValue = [DBManager selectTodayqsmNumber];
+    _sleepValue = _deepSleepValue + _shallowSleepValue;
     _deepSleepPercent = (_deepSleepValue * 1.0 / _sleepValue) * 100;
 }
 
