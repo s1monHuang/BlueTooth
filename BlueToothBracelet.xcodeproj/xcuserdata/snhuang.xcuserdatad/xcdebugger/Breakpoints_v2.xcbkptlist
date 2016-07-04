@@ -75,6 +75,38 @@
             endingLineNumber = "747"
             landmarkName = "-getWeekData:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__41-[HistoryDataViewController getWeekData:]_block_invoke.419"
+                  moduleName = "BlueToothBracelet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/snhuang/Desktop/BlueToothBracelet/Source/ViewController/Setting/HistoryDataViewController.m"
+                  timestampString = "489309712.573766"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "750"
+                  endingLineNumber = "750"
+                  offsetFromSymbolStart = "1089">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_.424"
+                  moduleName = "BlueToothBracelet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/snhuang/Desktop/BlueToothBracelet/Source/ViewController/Setting/HistoryDataViewController.m"
+                  timestampString = "489309712.573848"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
