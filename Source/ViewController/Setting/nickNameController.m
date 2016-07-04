@@ -28,19 +28,6 @@
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
-    UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-    [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
-    [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
-    [self.view addSubview:btnPre];
-    
-    UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-    [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
-    [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
-    [self.view addSubview:btnNext];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
                                                                   0,
@@ -72,6 +59,20 @@
         button.alpha = 0;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
+        
+        UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+        [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+        [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
+        [self.view addSubview:btnPre];
+        
+        UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+        [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
+        [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
+        [self.view addSubview:btnNext];
     }
     
 }

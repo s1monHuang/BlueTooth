@@ -13,7 +13,8 @@
 
 + (NSString *)serverDomain
 {
-    return kAppApiServer;
+//    return kAppApiServer;
+    return kAppDomain;
 }
 
 + (instancetype)requestOperator
