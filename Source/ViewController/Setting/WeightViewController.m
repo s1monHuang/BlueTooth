@@ -34,11 +34,6 @@
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
-    // 设置
-    UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithTitle:@"跳过" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonClick:)];
-    if(self.isJump)
-        self.navigationItem.rightBarButtonItem = rightBarButton;
-    
     CGFloat labelX = self.view.width / 2 - 60;
     CGFloat labelY = 30;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
@@ -65,19 +60,7 @@
     heightView.image = [UIImage imageNamed:sexNamed];
     [self.view addSubview:heightView];
     
-    UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-    [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
-    [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
-    [self.view addSubview:btnPre];
     
-    UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
-    [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
-    [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
-    [self.view addSubview:btnNext];
     
     [self setUpRulerView];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
@@ -109,6 +92,34 @@
         button.alpha = 0;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
+        
+        UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+        [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+        [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
+        [self.view addSubview:btnPre];
+        
+        UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
+        [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
+        [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
+        [self.view addSubview:btnNext];
+    }else{
+        UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                           0,
+                                                                           30,
+                                                                           44)];
+        [rightButton setTitle:
+         @"完成"forState:UIControlStateNormal];
+        [rightButton addTarget:self
+                        action:@selector(PushToVC)
+              forControlEvents:UIControlEventTouchUpInside];
+        rightButton.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+        rightButton.accessibilityLabel = @"完成";
+        UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
     }
     
 }
