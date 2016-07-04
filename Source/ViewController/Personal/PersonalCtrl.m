@@ -109,6 +109,7 @@
     LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
     loginCtl.hidesBottomBarWhenPushed = YES;
     [[UserManager defaultInstance] clearUser];
+    [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
     [self.navigationController pushViewController:loginCtl animated:YES];
 }
 
