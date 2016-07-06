@@ -110,6 +110,7 @@
             blockSelf.rankingtable.dataSource = blockSelf;
             blockSelf.rankingtable.alpha = 1;
             [blockSelf.rankingtable setTableFooterView:[UIView new]];
+            [blockSelf.rankingtable reloadData];
             [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
         }else
         {
