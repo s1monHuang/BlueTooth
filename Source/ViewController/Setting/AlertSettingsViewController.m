@@ -345,7 +345,6 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
             UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             selectedCell.imageView.hidden = !selectedCell.imageView.hidden;
             BOOL showImage = !selectedCell.imageView.hidden;
-            //            DLog(@"%d",showImage);
             NSInteger addCount = 0;
             addCount = pow(2, indexPath.row);
             if (showImage) {

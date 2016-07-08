@@ -459,8 +459,8 @@ static BluetoothManager *manager = nil;
             case BluetoothConnectingAllSuccess: {
                 Byte *byte = (Byte *)characteristic.value.bytes;
                 if (byte[2] == 0xEE) {
-                    [[NSUserDefaults standardUserDefaults] setObject:@([BluetoothManager share].isOpenCallAlert)
-                                                              forKey:callAlertOpen];
+//                    [[NSUserDefaults standardUserDefaults] setObject:@([BluetoothManager share].isOpenCallAlert)
+//                                                              forKey:callAlertOpen];
                     weakSelf.connectionType = BluetoothConnectingSuccess;
                 }
             }
@@ -871,16 +871,18 @@ static BluetoothManager *manager = nil;
         [_bluetoothQueue addObject:dictionary];
         return;
     }
+    NSInteger remindWay = [[[NSUserDefaults standardUserDefaults] objectForKey:callAlertOpen] integerValue];
     [self startTiming];
     _connectionType = BluetoothConnectingCallAlert;
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0xE1;
-    if (_isOpenCallAlert) {
-      b[2] = 0x0F;
-    }else{
-        b[2] = 0x00;
-    }
+    b[2] = remindWay * 2;
+//    if (_isOpenCallAlert) {
+//      b[2] = 0x0F;
+//    }else{
+//        b[2] = 0x00;
+//    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
