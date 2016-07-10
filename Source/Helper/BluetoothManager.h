@@ -11,6 +11,7 @@
 
 
 #define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"                        //获取运动数据
+#define FIRST_READ_SPORTDATA_SUCCESS  @"FIRST_READ_SPORTDATA_SUCCESS"           //第一次获取运动数据
 #define READ_HISTORY_SPORTDATA_SUCCESS @"READ_HISTORY_SPORTDATA_SUCCESS"        //获取历史运动数据
 #define READ_HEARTRATE_SUCCESS @"READ_HEARTRATE_SUCCESS"                        //获取心率数据
 #define READ_HEARTRATE_FINISHED @"READ_HEARTRATE_FINISHED"                      //获取心率结束

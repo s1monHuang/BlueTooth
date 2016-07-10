@@ -41,6 +41,37 @@
 
 @implementation SleepCtrl
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshSleepDataSuccess)
+                                                     name:READ_HISTORY_SPORTDATA_SUCCESS
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(firstRefreshSportDataSuccess:)
+                                                     name:FIRST_READ_SPORTDATA_SUCCESS
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(disConnectPeripheral)
+                                                     name:DISCONNECT_PERIPHERAL
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(removeDevice)
+                                                     name:REMOVE_DEVICE
+                                                   object:nil];
+        
+        _sleepValue = 0;
+        _deepSleepValue = 0;
+        _shallowSleepValue = 0;
+    }
+    return self;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     if (_isLoading) {
         [self startAnimation];
@@ -59,26 +90,10 @@
     self.title = @"睡眠";
     self.view.backgroundColor = kThemeGrayColor;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshSleepDataSuccess)
-                                                 name:READ_HISTORY_SPORTDATA_SUCCESS
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(disConnectPeripheral)
-                                                 name:DISCONNECT_PERIPHERAL
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(removeDevice)
-                                                 name:REMOVE_DEVICE
-                                               object:nil];
     
     _isLoading = NO;
     
-    _sleepValue = 0;
-    _deepSleepValue = 0;
-    _shallowSleepValue = 0;
+
     
     _chartView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 200)];
     _chartView.backgroundColor = [UIColor clearColor];
@@ -233,6 +248,11 @@
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
     _isLoading = NO;
+}
+
+- (void)firstRefreshSportDataSuccess:(NSNotification *)notification {
+    [self resetSleepValue];
+    [self setSleepTimeValues];
 }
 
 //设备解除绑定,所有数据清零

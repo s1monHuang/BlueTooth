@@ -89,6 +89,11 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(firstRefreshSportDataSuccess:)
+                                                 name:FIRST_READ_SPORTDATA_SUCCESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
                                                object:nil];
@@ -358,7 +363,11 @@
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
     
     [[BluetoothManager share] readHistroySportData];
+    [self firstRefreshSportDataSuccess:notification];
     
+}
+
+- (void)firstRefreshSportDataSuccess:(NSNotification *)notification {
     _isLoading = NO;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -407,9 +416,6 @@
     NSString *percentStr = [NSString stringWithFormat:@"%.0f %%",percent];
     _electricityPercent.text = percentStr;
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
-    
-    
-    
 }
 
 //设备解除绑定,所有数据清零

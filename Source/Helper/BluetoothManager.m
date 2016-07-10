@@ -340,7 +340,7 @@ static BluetoothManager *manager = nil;
                     self.connectionType = BluetoothConnectingSuccess;
                     SportDataModel *model = [weakSelf sportDataModelWithData:characteristics.value];
                     DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FIRST_READ_SPORTDATA_SUCCESS
                                                                         object:model];
                 }
             }
@@ -428,9 +428,9 @@ static BluetoothManager *manager = nil;
                 SportDataModel *model = [weakSelf sportDataModelWithData:characteristic.value];
                 [weakSelf saveNewSportData:characteristic.value];
                 DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
+                weakSelf.connectionType = BluetoothConnectingSuccess;
                 [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
                                                                     object:model];
-                weakSelf.connectionType = BluetoothConnectingSuccess;
                 [weakSelf handleBluetoothQueue];
             }
                 break;
@@ -791,9 +791,9 @@ static BluetoothManager *manager = nil;
     if (self.deleagete && [self.deleagete respondsToSelector:@selector(didBindingPeripheralFinished)]) {
         [self.deleagete didBindingPeripheralFinished];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
-                                                        object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+//    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
+//                                                        object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FIRST_READ_SPORTDATA_SUCCESS
                                                         object:nil];
     //同步完成后上传数据
     OperateViewModel *operateVM = [OperateViewModel viewModel];
