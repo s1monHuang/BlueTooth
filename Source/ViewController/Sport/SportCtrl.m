@@ -423,6 +423,7 @@
     _lblBoxoneValue.text = @"0";
     _lblBoxtwoValue.text = @"0";
     _lblBoxthreeValue.text = @"0";
+    _lblBoxFourValue.text = @"0";
     _electricity.width = 0;
     _electricityPercent.text = @"0%";
     
