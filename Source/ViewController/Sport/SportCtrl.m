@@ -72,7 +72,9 @@
     self.view.backgroundColor = kThemeGrayColor;
     
     _isLoading = NO;
-    _sportModel = [DBManager selectSportData];
+    if ([BluetoothManager getBindingPeripheralUUID]) {
+        _sportModel = [DBManager selectSportData];
+    }
     _infomationModel = [DBManager selectBasicInfomation];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -93,6 +95,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(hideHudForConnect)
                                                  name:@"connect_success"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeDevice)
+                                                 name:REMOVE_DEVICE
                                                object:nil];
     
     
@@ -131,7 +137,7 @@
     
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
-    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
     
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
     
@@ -151,7 +157,7 @@
     
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
     if (_stepCount) {
-        NSString *target = [NSString stringWithFormat:@"目标 %ld",_stepCount];
+        NSString *target = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
         _totalStep.text = target;
     }else{
         _totalStep.text = @"目标 10000";
@@ -268,7 +274,7 @@
     
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
-    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
 }
@@ -322,17 +328,16 @@
     
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
-    completionRate = [NSString stringWithFormat:@"完成率%@%%",_sportModel?completionRate:@(0).stringValue];
+    completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     
     _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
     if (_stepCount) {
-        NSString *target = [NSString stringWithFormat:@"目标 %ld",_stepCount];
+        NSString *target = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
         _totalStep.text = target;
     }else{
         _totalStep.text = @"目标 10000";
     }
-//    _totalStep.text = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
     
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
     
@@ -357,6 +362,20 @@
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
     
     
+    
+}
+
+//设备解除绑定,所有数据清零
+- (void)removeDevice {
+    [_circleChart updateChartByCurrent:@(0)];
+    
+    NSString *completionRate = [NSString stringWithFormat:@"完成0%%"];
+    _complateValue.text = completionRate;
+    _complateStep.text = @"0";
+    
+    _lblBoxoneValue.text = @"0";
+    _lblBoxtwoValue.text = @"0";
+    _lblBoxthreeValue.text = @"0";
     
 }
 

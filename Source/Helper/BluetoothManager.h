@@ -19,6 +19,8 @@
 
 #define DISCONNECT_PERIPHERAL @"DISCONNECT_PERIPHERAL"                            //与蓝牙设备断开
 
+#define REMOVE_DEVICE  @"REMOVE_DEVICE"                                         //与蓝牙设备解除绑定
+
 
 #define callAlertOpen  @"openCallAlert"      //来电提醒开关
 

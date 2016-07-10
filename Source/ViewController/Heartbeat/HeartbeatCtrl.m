@@ -25,7 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"心跳";
+    self.title = @"心率";
     self.view.backgroundColor = kThemeGrayColor;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -81,7 +81,7 @@
                                                                               50)];
     remindTextView.backgroundColor = [UIColor clearColor];
     remindTextView.font = [UIFont systemFontOfSize:16];
-    remindTextView.text = @"运动后心跳加快属正常现象,请不要担心.心跳信息仅提供参考.";
+    remindTextView.text = @"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.";
     remindTextView.numberOfLines = 0;
     [self.view addSubview:remindTextView];
 

@@ -119,6 +119,9 @@
                 
                 [self reloadData];
                 [tableView reloadData];
+                //解除绑定通知
+                [[NSNotificationCenter defaultCenter] postNotificationName:REMOVE_DEVICE object:nil];
+                
             } else {
                 AddDeviceViewController *VC = [[AddDeviceViewController alloc] init];
                 [self.navigationController pushViewController:VC animated:YES];

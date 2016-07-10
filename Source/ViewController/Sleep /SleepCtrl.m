@@ -69,6 +69,11 @@
                                                  name:DISCONNECT_PERIPHERAL
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeDevice)
+                                                 name:REMOVE_DEVICE
+                                               object:nil];
+    
     _isLoading = NO;
     
     [self resetSleepValue];
@@ -150,7 +155,9 @@
     _deepSleepValue = 0;
     _shallowSleepValue = 0;
     
-    _historys = [DBManager selectOneDayHistorySportData];
+    if ([BluetoothManager getBindingPeripheralUUID]) {
+        _historys = [DBManager selectOneDayHistorySportData];
+    }
     for (HistorySportDataModel *model in _historys) {
         //小于255代表在睡眠时间内
         if (model.sleep < 255) {
@@ -224,6 +231,15 @@
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
     _isLoading = NO;
+}
+
+//设备解除绑定,所有数据清零
+- (void)removeDevice {
+    _sleepValue = 0;
+    _deepSleepValue = 0;
+    _shallowSleepValue = 0;
+    [_circleChart updateChartByCurrent:@(0)];
+    [self setSleepTimeValues];
 }
 
 @end

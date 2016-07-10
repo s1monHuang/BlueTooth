@@ -36,7 +36,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    SportDataModel *model = [DBManager selectSportData];
+    SportDataModel *model = nil;
+    if ([BluetoothManager getBindingPeripheralUUID]) {
+        model = [DBManager selectSportData];
+    }
+    
     
     self.view.backgroundColor = kThemeGrayColor;
     UIButton *btnClosed = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - 21 - 15, 20+10, 21, 21)];
@@ -54,10 +58,10 @@
     }
     _nickNameView.text = CurrentUser.nickName;
     _dateView.text = dateString;
-    _stepLabel.text = [NSString stringWithFormat:@"%@步",@(model.step).stringValue];
-    NSString *stepDetail = [NSString stringWithFormat:@"步行了%.1lf公里",model.distance *0.01];
+    _stepLabel.text = [NSString stringWithFormat:@"%@",model?@(model.step).stringValue:@(0).stringValue];
+    NSString *stepDetail = [NSString stringWithFormat:@"步行了%.2lf公里",(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001];
     _stepDetailLabel.text = stepDetail;
-    _expendLabel.text = [NSString stringWithFormat:@"%.2f千卡",model.calorie *0.001];
+    _expendLabel.text = [NSString stringWithFormat:@"%.2f千卡",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0];
     NSString *expendDetail = [NSString stringWithFormat:@"≈%@个雪糕",@(model.calorie / (147 * 1000)).stringValue];
     _expendDetailLabel.text = expendDetail;
 }
