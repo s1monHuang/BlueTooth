@@ -204,7 +204,7 @@ static NSString *identifier = @"cell";
             lineView.backgroundColor = [UIColor lightGrayColor];
             [cell.contentView addSubview:lineView];
             _numberText.userInteractionEnabled = YES;
-            _numberText.keyboardType = UIKeyboardTypeASCIICapable;
+            _numberText.keyboardType = UIKeyboardTypeNumberPad;
 
             NSString *SOSPhoneNo = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
             if (SOSPhoneNo) {
