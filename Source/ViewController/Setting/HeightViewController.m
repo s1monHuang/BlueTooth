@@ -176,6 +176,12 @@
 
 #pragma mark - rulerviewDelagete
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
+    if (rulerValue > 250.0) {
+        rulerValue = 250;
+    }
+    if (rulerValue < 0) {
+        rulerValue = 0;
+    }
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _heightLabel.text = valueStr;
     
