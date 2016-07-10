@@ -73,9 +73,9 @@
     self.view.backgroundColor = kThemeGrayColor;
     
     _isLoading = NO;
-    if ([BluetoothManager getBindingPeripheralUUID]) {
-        _sportModel = [DBManager selectSportData];
-    }
+//    if ([BluetoothManager getBindingPeripheralUUID]) {
+//        _sportModel = [DBManager selectSportData];
+//    }
     _infomationModel = [DBManager selectBasicInfomation];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -339,8 +339,11 @@
     [[BluetoothManager share] readHistroySportData];
     
     _isLoading = NO;
-    [_refreshBututton.layer removeAllAnimations];
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_refreshBututton.layer removeAllAnimations];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    });
     
     id object = [notification object];
     if (!object) {

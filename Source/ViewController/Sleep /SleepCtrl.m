@@ -76,7 +76,9 @@
     
     _isLoading = NO;
     
-    [self resetSleepValue];
+    _sleepValue = 0;
+    _deepSleepValue = 0;
+    _shallowSleepValue = 0;
     
     _chartView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 200)];
     _chartView.backgroundColor = [UIColor clearColor];

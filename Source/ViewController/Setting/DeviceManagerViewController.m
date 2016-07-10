@@ -38,7 +38,7 @@
     _titleArray = nil;
     _imageArray = nil;
     if ([BluetoothManager share].isBindingPeripheral) {
-        _titleArray = @[@"解除"];
+        _titleArray = @[@"解除绑定"];
         _imageArray = @[@"remove"];
     } else {
         _titleArray = @[@"添加设备"];

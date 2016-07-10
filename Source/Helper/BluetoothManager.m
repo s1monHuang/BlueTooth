@@ -338,6 +338,10 @@ static BluetoothManager *manager = nil;
                     self.successType = BluetoothConnectingAllSuccess;
                     self.isReadedPripheralAllData = YES;
                     self.connectionType = BluetoothConnectingSuccess;
+                    SportDataModel *model = [weakSelf sportDataModelWithData:characteristics.value];
+                    DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
+                                                                        object:model];
                 }
             }
                 break;
