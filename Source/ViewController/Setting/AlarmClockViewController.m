@@ -109,7 +109,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"闹钟";
+    self.title = @"智能闹钟";
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     _tableView.allowsSelection = NO;

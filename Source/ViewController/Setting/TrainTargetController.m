@@ -44,7 +44,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"我的资料";
+    self.title = @"每日运动目标";
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
     self.navigationItem.leftBarButtonItem.title = @"";

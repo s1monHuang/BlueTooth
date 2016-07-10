@@ -48,6 +48,10 @@
 @property (nonatomic,assign) NSInteger stepCount;
 
 @property (nonatomic,assign) BOOL isLoading;        //是否正在同步数据
+@property (nonatomic , assign) CGFloat imageX;
+
+@property (nonatomic , strong) UIView *threeBoxView;
+
 
 @end
 
@@ -71,6 +75,7 @@
     
     self.title = @"运动";
     self.view.backgroundColor = kThemeGrayColor;
+    NSArray *tempIconArray = @[@"pic-foot",@"pic-distance",@"pic-fire"];
     
     _isLoading = NO;
 //    if ([BluetoothManager getBindingPeripheralUUID]) {
@@ -174,9 +179,11 @@
     UIView *threeBox = [[UIView alloc] initWithFrame:CGRectMake(10, ScreenHeight - 138 - 88, ScreenWidth - 20, 88)];
     threeBox.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:threeBox];
+    _threeBoxView = threeBox;
     
     CGFloat boxWidth = ScreenWidth - 20;
     CGFloat oneBoxWidth = boxWidth / 4;
+    _imageX = boxWidth / 4;
     for (NSInteger i = 1; i < 4; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(oneBoxWidth * i, 0, 0.5, 88)];
         lineView.backgroundColor = kThemeGrayColor;
@@ -189,11 +196,13 @@
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     [threeBox addSubview:_lblBoxoneValue];
     
-    UILabel *lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(0, 20+22+10, oneBoxWidth, 22)];
-    lblBoxoneText.textAlignment = NSTextAlignmentCenter;
+    UILabel *lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(18, 20+22+10, oneBoxWidth-15, 30)];
+    lblBoxoneText.textAlignment = NSTextAlignmentLeft;
     lblBoxoneText.font = [UIFont systemFontOfSize:10];
     lblBoxoneText.text = @"当天步数(步)";
+    lblBoxoneText.numberOfLines = 0;
     [threeBox addSubview:lblBoxoneText];
+    [self imageViewWithLabelCount:0 imageName:tempIconArray[0]];
     
     // 距离
     _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth, 20, oneBoxWidth, 22)];
@@ -202,12 +211,13 @@
     _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.2lf",(_sportModel?_sportModel.step * [CurrentUser.stepLong floatValue]:0)*0.00001];
     [threeBox addSubview:_lblBoxtwoValue];
     
-    UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth, 20+22+10, oneBoxWidth, 22)];
-    lblBoxtwoText.textAlignment = NSTextAlignmentCenter;
+    UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth+18, 20+22+10, oneBoxWidth-15, 30)];
+    lblBoxtwoText.textAlignment = NSTextAlignmentLeft;
     lblBoxtwoText.font = [UIFont systemFontOfSize:10];
     lblBoxtwoText.text = @"活动距离(km)";
+    lblBoxtwoText.numberOfLines = 0;
     [threeBox addSubview:lblBoxtwoText];
-    
+    [self imageViewWithLabelCount:1 imageName:tempIconArray[1]];
     // 消耗能量
     _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2, 20, oneBoxWidth, 22)];
     _lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
@@ -215,29 +225,33 @@
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0];
     [threeBox addSubview:_lblBoxthreeValue];
     
-    UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2, 20+22+10, oneBoxWidth, 22)];
-    lblBoxthreeText.textAlignment = NSTextAlignmentCenter;
+    UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2+18, 20+22+10, oneBoxWidth-15, 30)];
+    lblBoxthreeText.textAlignment = NSTextAlignmentLeft;
     lblBoxthreeText.font = [UIFont systemFontOfSize:10];
     lblBoxthreeText.text = @"消耗能量(kCal)";
+    lblBoxthreeText.numberOfLines = 0;
     [threeBox addSubview:lblBoxthreeText];
+    [self imageViewWithLabelCount:2 imageName:tempIconArray[2]];
     
     // 脂肪燃烧
-    _lblBoxFourValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3, 20, oneBoxWidth, 22)];
+    _lblBoxFourValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3, 20, oneBoxWidth-15, 22)];
     _lblBoxFourValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxFourValue.font = [UIFont systemFontOfSize:20];
     _lblBoxFourValue.text = [NSString stringWithFormat:@"%.2lf",(_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0)/9.0];
     [threeBox addSubview:_lblBoxFourValue];
     
-    UILabel *lblBoxFourText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3, 20+22+10, oneBoxWidth, 22)];
-    lblBoxFourText.textAlignment = NSTextAlignmentCenter;
+    UILabel *lblBoxFourText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3+18, 20+22+10, oneBoxWidth, 30)];
+    lblBoxFourText.textAlignment = NSTextAlignmentLeft;
     lblBoxFourText.font = [UIFont systemFontOfSize:10];
     lblBoxFourText.text = @"脂肪燃烧(g)";
+    lblBoxFourText.numberOfLines = 0;
     [threeBox addSubview:lblBoxFourText];
+    [self imageViewWithLabelCount:3 imageName:tempIconArray[2]];
     
     
     CGFloat refreshY = kScreenHeight > 480 ? 0 : 20;
     _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
-                                                                  _circleChart.height + _circleChart.y - refreshY,
+                                                                  _circleChart.height + _circleChart.y + (35 / 2 - refreshY -5),
                                                                   35,
                                                                   35)];
     [_refreshBututton setBackgroundImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
@@ -283,6 +297,13 @@
                                                                     action:@selector(rightBarButtonClick:)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
+}
+
+- (void)imageViewWithLabelCount:(NSInteger)count imageName:(NSString *)imageName
+{
+    UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageX*count, 20+22+15, 15, 15)];
+    iconImage.image = [UIImage imageNamed:imageName];
+    [_threeBoxView addSubview:iconImage];
 }
 
 - (void)removeMBProgress
@@ -402,6 +423,7 @@
     _lblBoxoneValue.text = @"0";
     _lblBoxtwoValue.text = @"0";
     _lblBoxthreeValue.text = @"0";
+    _electricity.width = 0;
     
 }
 

@@ -59,7 +59,7 @@
     
     
     imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter"];
-    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"训练目标",@"久坐提醒",@"智能闹钟",@"来电提醒",@"防丢提醒",@"一键求救",@"设备管理", @"关于我们",@"数据中心",nil];
+    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"运动目标",@"久坐提醒",@"智能闹钟",@"来电提醒",@"防丢提醒",@"一键求救",@"设备管理", @"关于我们",@"数据中心",nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
@@ -106,11 +106,20 @@
 
 - (void)exitDownload
 {
-    LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
-    loginCtl.hidesBottomBarWhenPushed = YES;
-    [[UserManager defaultInstance] clearUser];
-    [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
-    [self.navigationController pushViewController:loginCtl animated:YES];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"是否退出登录" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        LoginCtrl *loginCtl = [[LoginCtrl alloc] init];
+        loginCtl.hidesBottomBarWhenPushed = YES;
+        [[UserManager defaultInstance] clearUser];
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
+        [self.navigationController pushViewController:loginCtl animated:YES];
+        
+    }
 }
 
 #pragma mark - UITableViewDataSource && UITableViewDelegate

@@ -196,7 +196,6 @@ static NSString *identifier = @"cell";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor whiteColor];
         cell.textLabel.text = _distanceArray[indexPath.row];
-        cell.textLabel.textColor = [UIColor lightGrayColor];
         if (indexPath.row == 1) {
             _numberText = [[UITextField alloc] initWithFrame:CGRectMake(145, 0, kScreenWidth - 145, 44)];
             
@@ -205,6 +204,8 @@ static NSString *identifier = @"cell";
             lineView.backgroundColor = [UIColor lightGrayColor];
             [cell.contentView addSubview:lineView];
             _numberText.userInteractionEnabled = YES;
+            _numberText.keyboardType = UIKeyboardTypeASCIICapable;
+
             NSString *SOSPhoneNo = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
             if (SOSPhoneNo) {
                 _numberText.text = SOSPhoneNo;

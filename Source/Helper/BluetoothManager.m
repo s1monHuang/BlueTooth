@@ -881,7 +881,7 @@ static BluetoothManager *manager = nil;
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0xE1;
-    b[2] = remindWay * 2;
+    b[2] = remindWay;
 //    if (_isOpenCallAlert) {
 //      b[2] = 0x0F;
 //    }else{

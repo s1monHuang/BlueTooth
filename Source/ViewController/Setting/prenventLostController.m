@@ -70,7 +70,6 @@ static NSString *identifier = @"cell";
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 44)];
     label.text = @"防丢提醒";
     label.font = [UIFont systemFontOfSize:16];
-    label.textColor = [UIColor lightGrayColor];
     [headerView addSubview:label];
     _lostSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kScreenWidth - 64, 8, 44, 44)];
     _lostSwitch.onTintColor = KThemeGreenColor;

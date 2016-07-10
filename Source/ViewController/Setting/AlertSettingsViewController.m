@@ -115,7 +115,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"提醒";
+    self.title = @"久坐提醒";
     self.navigationItem.leftBarButtonItem.title = @"";
     self.view.backgroundColor = kThemeGrayColor;
     self.tableView.dataSource = self;

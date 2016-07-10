@@ -38,10 +38,10 @@ static NSString *identifier = @"cell";
     _openCount = [[[NSUserDefaults standardUserDefaults] objectForKey:callAlertOpen] integerValue];
     _openStr = [self toBinarySystemWithDecimalSystem:_openCount];
     
-    _remindWayArray = @[@"微信提醒",@"QQ提醒",@"来电提醒"];
+    _remindWayArray = @[@"短信提醒",@"微信提醒",@"QQ提醒",@"来电提醒"];
     [self setUpRemindSwitchArray];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44 * 3)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44 * 4)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
@@ -51,7 +51,7 @@ static NSString *identifier = @"cell";
 - (void)setUpRemindSwitchArray
 {
     NSMutableArray *tempArray = [NSMutableArray array];
-    for (NSInteger i = 0; i < 3; i++) {
+    for (NSInteger i = 0; i < 4; i++) {
         UISwitch *remindSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         remindSwitch.tag = 100 + i;
         [remindSwitch setOn:[self switchIsOpen:i]];
@@ -101,15 +101,20 @@ static NSString *identifier = @"cell";
     switch (result.length) {
         case 0:
         {
-            result = @"000";
+            result = @"0000";
         }
             break;
         case 1:
         {
-            result = [NSString stringWithFormat:@"00%@",result];
+            result = [NSString stringWithFormat:@"000%@",result];
         }
             break;
         case 2:
+        {
+            result = [NSString stringWithFormat:@"00%@",result];
+        }
+            break;
+        case 3:
         {
             result = [NSString stringWithFormat:@"0%@",result];
         }
@@ -129,7 +134,7 @@ static NSString *identifier = @"cell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -153,32 +158,42 @@ static NSString *identifier = @"cell";
     switch (switchTag) {
         case 0:{
             if (uiSwitch.on) {
-                DLog(@"微信提醒开");
+                DLog(@"短信提醒开");
                 _openCount += 1;
             } else {
-                DLog(@"微信提醒关");
+                DLog(@"短信提醒关");
                 _openCount -= 1;
             }
         }
             break;
         case 1:{
             if (uiSwitch.on) {
-                DLog(@"QQ提醒开");
+                DLog(@"微信提醒开");
                 _openCount += 2;
             } else {
-                DLog(@"QQ提醒关");
+                DLog(@"微信提醒关");
                 _openCount -= 2;
             }
         }
             break;
-            
         case 2:{
             if (uiSwitch.on) {
-                DLog(@"电话提醒开");
+                DLog(@"QQ提醒开");
                 _openCount += 4;
             } else {
-                DLog(@"电话提醒关");
+                DLog(@"QQ提醒关");
                 _openCount -= 4;
+            }
+        }
+            break;
+            
+        case 3:{
+            if (uiSwitch.on) {
+                DLog(@"电话提醒开");
+                _openCount += 8;
+            } else {
+                DLog(@"电话提醒关");
+                _openCount -= 8;
             }
         }
             break;
