@@ -28,6 +28,7 @@
 @property (nonatomic) UILabel *lblBoxoneValue;      //当天步数
 @property (nonatomic) UILabel *lblBoxtwoValue;      //当天距离
 @property (nonatomic) UILabel *lblBoxthreeValue;    //当天消耗能量
+@property (nonatomic,strong) UILabel *lblBoxFourValue;    //当天脂肪燃烧
 
 @property (nonatomic) UIButton *refreshBututton;
 @property (nonatomic) UIProgressView *progressView;
@@ -167,50 +168,72 @@
     _totalStep.textColor = [UIColor blackColor];
     [tempView addSubview:_totalStep];
     
-    UIImageView *threeBox = [[UIImageView alloc] initWithFrame:CGRectMake(10, ScreenHeight - 138 - 88, ScreenWidth - 20, 88)];
-    threeBox.image = [UIImage imageNamed:@"threebox"];
+//    UIImageView *threeBox = [[UIImageView alloc] initWithFrame:CGRectMake(10, ScreenHeight - 138 - 88, ScreenWidth - 20, 88)];
+//    threeBox.image = [UIImage imageNamed:@"threebox"];
+//    [self.view addSubview:threeBox];
+    UIView *threeBox = [[UIView alloc] initWithFrame:CGRectMake(10, ScreenHeight - 138 - 88, ScreenWidth - 20, 88)];
+    threeBox.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:threeBox];
     
     CGFloat boxWidth = ScreenWidth - 20;
-    
+    CGFloat oneBoxWidth = boxWidth / 4;
+    for (NSInteger i = 1; i < 4; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(oneBoxWidth * i, 0, 0.5, 88)];
+        lineView.backgroundColor = kThemeGrayColor;
+        [threeBox addSubview:lineView];
+    }
     // 步数
-    _lblBoxoneValue = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, boxWidth/3, 22)];
+    _lblBoxoneValue = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, oneBoxWidth, 22)];
     _lblBoxoneValue.textAlignment = NSTextAlignmentCenter;
-    _lblBoxoneValue.font = [UIFont systemFontOfSize:22];
+    _lblBoxoneValue.font = [UIFont systemFontOfSize:20];
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     [threeBox addSubview:_lblBoxoneValue];
     
-    UILabel *lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(0, 20+22+10, boxWidth/3, 22)];
+    UILabel *lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(0, 20+22+10, oneBoxWidth, 22)];
     lblBoxoneText.textAlignment = NSTextAlignmentCenter;
-    lblBoxoneText.font = [UIFont systemFontOfSize:12];
+    lblBoxoneText.font = [UIFont systemFontOfSize:10];
     lblBoxoneText.text = @"当天步数(步)";
     [threeBox addSubview:lblBoxoneText];
     
     // 距离
-    _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20, boxWidth/3, 22)];
+    _lblBoxtwoValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth, 20, oneBoxWidth, 22)];
     _lblBoxtwoValue.textAlignment = NSTextAlignmentCenter;
-    _lblBoxtwoValue.font = [UIFont systemFontOfSize:22];
+    _lblBoxtwoValue.font = [UIFont systemFontOfSize:20];
     _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.2lf",(_sportModel?_sportModel.step * [CurrentUser.stepLong floatValue]:0)*0.00001];
     [threeBox addSubview:_lblBoxtwoValue];
     
-    UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3, 20+22+10, boxWidth/3, 22)];
+    UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth, 20+22+10, oneBoxWidth, 22)];
     lblBoxtwoText.textAlignment = NSTextAlignmentCenter;
-    lblBoxtwoText.font = [UIFont systemFontOfSize:12];
+    lblBoxtwoText.font = [UIFont systemFontOfSize:10];
     lblBoxtwoText.text = @"活动距离(km)";
     [threeBox addSubview:lblBoxtwoText];
     
     // 消耗能量
-    _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20, boxWidth/3, 22)];
+    _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2, 20, oneBoxWidth, 22)];
     _lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
-    _lblBoxthreeValue.font = [UIFont systemFontOfSize:22];
+    _lblBoxthreeValue.font = [UIFont systemFontOfSize:20];
     _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0];
     [threeBox addSubview:_lblBoxthreeValue];
     
-    UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(boxWidth/3*2, 20+22+10, boxWidth/3, 22)];
+    UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2, 20+22+10, oneBoxWidth, 22)];
     lblBoxthreeText.textAlignment = NSTextAlignmentCenter;
-    lblBoxthreeText.font = [UIFont systemFontOfSize:12];
+    lblBoxthreeText.font = [UIFont systemFontOfSize:10];
     lblBoxthreeText.text = @"消耗能量(kCal)";
     [threeBox addSubview:lblBoxthreeText];
+    
+    // 脂肪燃烧
+    _lblBoxFourValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3, 20, oneBoxWidth, 22)];
+    _lblBoxFourValue.textAlignment = NSTextAlignmentCenter;
+    _lblBoxFourValue.font = [UIFont systemFontOfSize:20];
+    _lblBoxFourValue.text = [NSString stringWithFormat:@"%.2lf",(_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0)/9.0];
+    [threeBox addSubview:_lblBoxFourValue];
+    
+    UILabel *lblBoxFourText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3, 20+22+10, oneBoxWidth, 22)];
+    lblBoxFourText.textAlignment = NSTextAlignmentCenter;
+    lblBoxFourText.font = [UIFont systemFontOfSize:10];
+    lblBoxFourText.text = @"脂肪燃烧(g)";
+    [threeBox addSubview:lblBoxFourText];
+    
     
     CGFloat refreshY = kScreenHeight > 480 ? 0 : 20;
     _refreshBututton = [[UIButton alloc] initWithFrame:CGRectMake(_circleChart.width + 30,
