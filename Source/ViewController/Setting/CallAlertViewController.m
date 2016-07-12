@@ -66,7 +66,7 @@ static NSString *identifier = @"cell";
     if (_openCount <= 0) {
         return NO;
     }else{
-        BOOL isOpen = [[_openStr substringWithRange:NSMakeRange(2-row, 1)] boolValue];
+        BOOL isOpen = [[_openStr substringWithRange:NSMakeRange(3-row, 1)] boolValue];
         return isOpen;
     }
 }

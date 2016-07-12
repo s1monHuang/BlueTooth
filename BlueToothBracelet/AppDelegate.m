@@ -90,15 +90,15 @@
 {
     
     __weak AppDelegate *blockSelf = self;
+    
     //自动登陆
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
     BOOL downloadSuccess = [[[NSUserDefaults standardUserDefaults] objectForKey:DOWNLOADSUCCESS] boolValue];
 
     if (downloadSuccess) {
-    if (userName && password) {
+        if (userName && password) {
         [self.operateVM loginWithUserName:userName password:password];
-        
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
             if (finished) {
                 [[UserManager defaultInstance] saveUser:userInfo];
@@ -182,7 +182,7 @@
     = [[UINavigationController alloc] initWithRootViewController:heartVC];
     UIImage * normalImage4 = [[UIImage imageNamed:@"heartbeat2.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * selectImage4 = [[UIImage imageNamed:@"heartbeat1.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UITabBarItem * tabBarItem4 = [[UITabBarItem alloc]initWithTitle:@"心跳" image:normalImage4 selectedImage:selectImage4];
+    UITabBarItem * tabBarItem4 = [[UITabBarItem alloc]initWithTitle:@"心率" image:normalImage4 selectedImage:selectImage4];
     navHeart.tabBarItem = tabBarItem4;
     [UtilityUI setNavigationStyle:navHeart.navigationBar];
     [UtilityUI setTabBarStyle:tabBarItem4];
