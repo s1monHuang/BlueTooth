@@ -114,6 +114,8 @@
 - (IBAction)btnLoginClick:(id)sender {
     
     if (self.txtUserAccount.text.length > 0 && [self.txtUserAccount.text rangeOfString:@"@"].location != NSNotFound ) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+        hud.labelText = @"登录中...";
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserAccount.text forKey:@"userName"];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserPassword.text forKey:@"password"];
@@ -127,6 +129,7 @@
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         
         if (finished) {
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
             if (userInfo[@"nickName"] && userInfo[@"age"]) {
                 
                 blockSelf.firstDownload = 2;
@@ -177,11 +180,15 @@
     __block LoginCtrl *blockSelf = self;
     NSString *userName = sender.userInfo[@"userName"];
     NSString *password = sender.userInfo[@"password"];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+    hud.labelText = @"登录中...";
     [self.operateVM loginWithUserName:userName password:password];
     [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"userName"];
     [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) { // 网络数据回调
         if (finished) {
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
             if (_firstDownload == 1) {
                 [[UserManager defaultInstance] saveUser:userInfo];
                 nickNameController *nickNameCtl = [[nickNameController alloc] init];
