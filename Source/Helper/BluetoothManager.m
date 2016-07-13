@@ -329,19 +329,22 @@ static BluetoothManager *manager = nil;
                 //成功读取蓝牙设备中的运动数据后,读取72小时蓝牙设备中的运动数据
             case BluetoothConnectingReadSportDataSuccess: {
                 NSLog(@"获取蓝牙设备中的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
-                //读取蓝牙设备中的运动数据
-                [weakSelf saveNewSportData:characteristics.value];
                 //如果没有绑定设备,获取历史运动数据
                 if (![BluetoothManager getBindingPeripheralUUID]) {
+                    [weakSelf saveNewSportData:characteristics.value];
                     [weakSelf readHistroySportDataWithValue:characteristics.value];
                 } else {
+                    Byte *byte = (Byte *)characteristics.value.bytes;
+                    if ((byte[0] == 0xAA && byte[18] == 0x04)) {
+                        SportDataModel *model = [weakSelf sportDataModelWithData:characteristics.value];
+                        DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
+                        
+                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FIRST_READ_SPORTDATA_SUCCESS
+                                                                        object:nil];
                     self.successType = BluetoothConnectingAllSuccess;
                     self.isReadedPripheralAllData = YES;
                     self.connectionType = BluetoothConnectingSuccess;
-                    SportDataModel *model = [weakSelf sportDataModelWithData:characteristics.value];
-                    DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FIRST_READ_SPORTDATA_SUCCESS
-                                                                        object:model];
                 }
             }
                 break;
@@ -425,12 +428,21 @@ static BluetoothManager *manager = nil;
                 break;
                 //读取运动数据成功
             case BluetoothConnectingReadSportDataSuccess: {
-                SportDataModel *model = [weakSelf sportDataModelWithData:characteristic.value];
-                [weakSelf saveNewSportData:characteristic.value];
-                DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
-                weakSelf.connectionType = BluetoothConnectingSuccess;
-                [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
-                                                                    object:model];
+                Byte *byte = (Byte *)characteristic.value.bytes;
+                if (!(byte[0] == 0xAA && byte[18] == 0x04)) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_ERROR
+                                                                        object:nil];
+                    weakSelf.connectionType = BluetoothConnectingSuccess;
+                }
+                else {
+                    SportDataModel *model = [weakSelf sportDataModelWithData:characteristic.value];
+                    [weakSelf saveNewSportData:characteristic.value];
+                    DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
+                    //下面两个调用顺序不能更改
+                    weakSelf.connectionType = BluetoothConnectingSuccess;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
+                                                                        object:model];
+                }
                 [weakSelf handleBluetoothQueue];
             }
                 break;

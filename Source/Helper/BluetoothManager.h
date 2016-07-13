@@ -10,7 +10,9 @@
 #import "BabyBluetooth.h"
 
 
-#define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"                        //获取运动数据
+#define READ_SPORTDATA_SUCCESS @"READ_SPORTDATA_SUCCESS"                        //获取运动数据成功
+#define READ_SPORTDATA_ERROR   @"READ_SPORTDATA_ERROR"                          //获取运动数据失败
+
 #define FIRST_READ_SPORTDATA_SUCCESS  @"FIRST_READ_SPORTDATA_SUCCESS"           //第一次获取运动数据
 #define READ_HISTORY_SPORTDATA_SUCCESS @"READ_HISTORY_SPORTDATA_SUCCESS"        //获取历史运动数据
 #define READ_HEARTRATE_SUCCESS @"READ_HEARTRATE_SUCCESS"                        //获取心率数据

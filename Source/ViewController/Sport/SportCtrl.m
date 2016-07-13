@@ -111,6 +111,10 @@
                                              selector:@selector(removeDevice)
                                                  name:REMOVE_DEVICE
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshSportDataError:)
+                                                 name:READ_SPORTDATA_ERROR
+                                               object:nil];
     
     
     //自动登录
@@ -365,6 +369,16 @@
     [[BluetoothManager share] readHistroySportData];
     [self firstRefreshSportDataSuccess:notification];
     
+}
+
+- (void)refreshSportDataError:(NSNotification *)notification {
+    _isLoading = NO;
+    _refreshBututton.userInteractionEnabled = YES;
+    [MBProgressHUD showHUDByContent:@"同步失败" view:UI_Window afterDelay:1.5];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_refreshBututton.layer removeAllAnimations];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    });
 }
 
 - (void)firstRefreshSportDataSuccess:(NSNotification *)notification {
