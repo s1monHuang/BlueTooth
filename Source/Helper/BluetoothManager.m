@@ -14,6 +14,7 @@
 #import "prenventLostController.h"
 #import "SOSController.h"
 
+#define ServiceUUID   @"FFF0"
 #define specifiedUUID @"FFF1"
 #define sosUUID       @"FFF2"
 
@@ -248,18 +249,75 @@ static BluetoothManager *manager = nil;
         weakSelf.connectionType = BluetoothConnectingNormal;
         weakSelf.successType = BluetoothConnectingNormalSuccess;
         weakSelf.characteristics = nil;
+        weakSelf.sosCharacteristic = nil;
         weakSelf.isConnectSuccess = NO;
         [weakSelf removeAllQueue];
         
-        if (weakSelf.isBindingPeripheral) {
+        if (weakSelf.isBindingPeripheral && !weakSelf.deleagete) {
             if (weakSelf.bindingPeripheral.peripheral && weakSelf.characteristics) {
                 [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
                              characteristic:weakSelf.characteristics];
+            }
+            if (weakSelf.bindingPeripheral.peripheral && weakSelf.sosCharacteristic) {
+                [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                             characteristic:weakSelf.sosCharacteristic];
             }
             [weakSelf connectingBlueTooth:peripheral];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECT_PERIPHERAL
                                                             object:nil];
+    }];
+    
+    [_baby setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
+        if ([service.UUID.UUIDString isEqualToString:ServiceUUID]) {
+            for (CBCharacteristic *characteristic in service.characteristics) {
+                if ([characteristic.UUID.UUIDString isEqualToString:specifiedUUID]) {
+                    if (!weakSelf.characteristics) {
+                        weakSelf.characteristics = characteristic;
+                    }
+                }
+                else if ([characteristic.UUID.UUIDString isEqualToString:sosUUID]) {
+                    NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID");
+                    if (!weakSelf.sosCharacteristic) {
+                        NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID1");
+                        weakSelf.sosCharacteristic = characteristic;
+                        [weakSelf.baby notify:weakSelf.bindingPeripheral.peripheral characteristic:characteristic block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+                            NSData *data = characteristics.value;
+                            if (data.length) {
+                                NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID2");
+                                Byte *byte = (Byte *)data.bytes;
+                                if (byte[1] == 0x99 && byte[19] == 0x43) {
+                                    NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID3");
+                                    NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
+                                    BOOL openSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSWITCHSTATUS] boolValue];
+                                    BOOL wayForSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX] boolValue];
+                                    
+                                    if (phoneNO) {
+                                        if (openSOSFunc) {
+                                            NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID4");
+                                            if ([BluetoothManager share].isCalling == NO) {
+                                                NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID5");
+                                                [BluetoothManager share].isCalling = YES;
+                                                if (!wayForSOSFunc) {
+                                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
+                                                }else{
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"SOSSendMessage" object:nil];
+                                                    });
+                                                }
+                                                
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }];
+                    }
+                }
+
+            }
+        }
     }];
     
     //防设备丢失测试信号强度
@@ -377,39 +435,45 @@ static BluetoothManager *manager = nil;
         }
     }
     //拨打紧急电话
-    else if ([characteristics.UUID.UUIDString isEqualToString:sosUUID]) {
-        if (!weakSelf.sosCharacteristic) {
-            weakSelf.sosCharacteristic = characteristics;
-            [weakSelf.baby notify:weakSelf.bindingPeripheral.peripheral characteristic:characteristics block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                NSData *data = characteristics.value;
-                if (data.length) {
-                    Byte *byte = (Byte *)data.bytes;
-                    if (byte[1] == 0x99) {
-                        NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
-                        BOOL openSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSWITCHSTATUS] boolValue];
-                        BOOL wayForSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX] boolValue];
-
-                        if (phoneNO) {
-                            if (openSOSFunc) {
-                            if ([BluetoothManager share].isCalling == NO) {
-                                [BluetoothManager share].isCalling = YES;
-                                if (!wayForSOSFunc) {
-                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
-                                }else{
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"SOSSendMessage" object:nil];
-                                    });
-                                }
-                                
-                            }
-                            }
-                        }
-                        
-                    }
-                }
-            }];
-        }
-    }
+//    else if ([characteristics.UUID.UUIDString isEqualToString:sosUUID]) {
+//        NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID");
+//        if (!weakSelf.sosCharacteristic) {
+//            NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID1");
+//            weakSelf.sosCharacteristic = characteristics;
+//            [weakSelf.baby notify:weakSelf.bindingPeripheral.peripheral characteristic:characteristics block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+//                NSData *data = characteristics.value;
+//                if (data.length) {
+//                    NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID2");
+//                    Byte *byte = (Byte *)data.bytes;
+//                    if (byte[1] == 0x99) {
+//                        NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID3");
+//                        NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
+//                        BOOL openSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSWITCHSTATUS] boolValue];
+//                        BOOL wayForSOSFunc = [[[NSUserDefaults standardUserDefaults] objectForKey:SOSSELECTEDINDEX] boolValue];
+//
+//                        if (phoneNO) {
+//                            if (openSOSFunc) {
+//                                NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID4");
+//                            if ([BluetoothManager share].isCalling == NO) {
+//                                NSLog(@"characteristics.UUID.UUIDString isEqualToString:sosUUID5");
+//                                [BluetoothManager share].isCalling = YES;
+//                                if (!wayForSOSFunc) {
+//                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNO]]];
+//                                }else{
+//                                    dispatch_async(dispatch_get_main_queue(), ^{
+//                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"SOSSendMessage" object:nil];
+//                                    });
+//                                }
+//                                
+//                            }
+//                            }
+//                        }
+//                        
+//                    }
+//                }
+//            }];
+//        }
+//    }
 }
 
 
@@ -1044,6 +1108,7 @@ static BluetoothManager *manager = nil;
     b[15] = model.startTime;
     b[16] = model.endTime;
     b[17] = model.sportInterval;
+//    NSInteger taget = (NSInteger)(model.target * CurrentUser.stepLong.integerValue * 0.01 * 0.01);
     b[18] = model.target;
     b[19] = [BluetoothManager calculateTotal:b];
     

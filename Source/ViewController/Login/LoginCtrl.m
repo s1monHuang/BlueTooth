@@ -79,8 +79,13 @@
             [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"appDelegateToLogin"];
         }
     }else{
+#if DEBUG
+       self.txtUserAccount.text = @"1989215@qq.com";
+        self.txtUserPassword.text = @"123456";
+#else
         self.txtUserAccount.text = @"";
         self.txtUserPassword.text = @"";
+#endif
     }
 
     
@@ -141,7 +146,7 @@
                 [blockSelf.navigationController pushViewController:nickNameCtl animated:YES];
             }else{
                 [[UserManager defaultInstance] saveUser:userInfo];
-                
+                BasicInfomationModel *info = [DBManager selectBasicInfomation];
                 BasicInfomationModel *infoModel = [[BasicInfomationModel alloc] init];
                 infoModel.nickName = CurrentUser.nickName;
                 infoModel.gender = CurrentUser.sex;
@@ -149,6 +154,11 @@
                 infoModel.height = [CurrentUser.high integerValue];
                 infoModel.weight = [CurrentUser.weight integerValue];
                 infoModel.distance = [CurrentUser.stepLong integerValue];
+//                if (info.target != 0) {
+//                    infoModel.target = info.target;
+//                }else{
+//                    infoModel.target = 10000;
+//                }
                 BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
                 if (!Info) {
                     DLog(@"存入用户信息失败");
@@ -157,6 +167,7 @@
             [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
             }
         } else {
+            [MBProgressHUD hideAllHUDsForView:UI_Window animated:NO];
             [blockSelf showHUDText:userInfo];
         }
     };

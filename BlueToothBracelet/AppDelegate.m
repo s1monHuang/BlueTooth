@@ -113,10 +113,14 @@
                 infoModel.height = [CurrentUser.high integerValue];
                 infoModel.weight = [CurrentUser.weight integerValue];
                 infoModel.distance = [CurrentUser.stepLong integerValue];
+//                if (infoModel.target == 0) {
+//                    infoModel.target = 10000;
+//                }
                 BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
                 if (!Info) {
                     DLog(@"存入用户信息失败");
                 }
+                
                 [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:DOWNLOADSUCCESS];
                 [blockSelf translateToMainController];
             }else{

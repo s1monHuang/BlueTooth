@@ -73,6 +73,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    _operateVM = [OperateViewModel viewModel];
+    
     self.title = @"运动";
     self.view.backgroundColor = kThemeGrayColor;
     NSArray *tempIconArray = @[@"pic-foot",@"pic-distance",@"pic-fire"];
@@ -397,7 +399,8 @@
     }
     
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
-    NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
+    NSInteger compeleteRate = (NSInteger)(completionRateFloat) / 1;
+    NSString *completionRate = [NSString stringWithFormat:@"%ld",compeleteRate];
     completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     
@@ -430,6 +433,11 @@
     NSString *percentStr = [NSString stringWithFormat:@"%.0f %%",percent];
     _electricityPercent.text = percentStr;
     _electricityPercent.textAlignment = NSTextAlignmentCenter;
+    
+    //上传运动数据
+    NSString *stepData = [DBManager selectHistorySportData];
+    [_operateVM saveStepData:[DBManager selectHistorySportData]];
+    
 }
 
 //设备解除绑定,所有数据清零

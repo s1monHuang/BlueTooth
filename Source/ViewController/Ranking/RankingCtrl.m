@@ -64,12 +64,12 @@
 {
     __weak RankingCtrl *blockSelf = self;;
     NSDate *startDate = [NSDate date];
-    NSDate *endDate = [startDate dateByAddingTimeInterval:(-24 * 60 * 60)];
+//    NSDate *endDate = [startDate dateByAddingTimeInterval:(-24 * 60 * 60 * 3)];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM-dd"];
     NSString *startDateStr = [formatter stringFromDate:startDate];
-     NSString *endDateStr = [formatter stringFromDate:endDate];
+     NSString *endDateStr = [formatter stringFromDate:startDate];
     [self.operateVM requestRankingListStartDate:startDateStr endDate:endDateStr];
     self.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
         if (finished) {
@@ -77,15 +77,15 @@
         blockSelf.dataArray = [RankingEntity mj_objectArrayWithKeyValuesArray:userInfo];
         if (blockSelf.dataArray.count > 1) {
             NSArray *tempArray = [NSArray arrayWithArray:blockSelf.dataArray];
-            for (NSInteger i = 0; i < blockSelf.dataArray.count; i++) {
-                for (NSInteger j = 0; j < i; j++) {
-                    RankingEntity *model = tempArray[i];
-                    RankingEntity *otherModel = tempArray[j];
-                    if ([model.sumSteps integerValue] < [otherModel.sumSteps integerValue]) {
-                        [blockSelf.dataArray exchangeObjectAtIndex:i withObjectAtIndex:j];
-                    }
-                }
-            }
+//            for (NSInteger i = 0; i < blockSelf.dataArray.count; i++) {
+//                for (NSInteger j = 0; j < i; j++) {
+//                    RankingEntity *model = tempArray[i];
+//                    RankingEntity *otherModel = tempArray[j];
+//                    if ([model.sumSteps integerValue] < [otherModel.sumSteps integerValue]) {
+//                        [blockSelf.dataArray exchangeObjectAtIndex:i withObjectAtIndex:j];
+//                    }
+//                }
+//            }
             for (NSInteger i = 0; i < tempArray.count; i++) {
                 RankingEntity *entity = blockSelf.dataArray[i];
                 if ([entity.userId isEqualToString:CurrentUser.userId]) {

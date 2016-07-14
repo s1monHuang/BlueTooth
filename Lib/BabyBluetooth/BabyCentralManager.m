@@ -223,7 +223,7 @@
 //    NSLog(@">>>外设连接断开连接 %@: %@\n", [peripheral name], [error localizedDescription]);
     if (error)
     {
-        NSLog(@">>> didDisconnectPeripheral for %@ with error: %@", peripheral.name, [error localizedDescription]);
+        NSLog(@">>> didDisconnectPeripheral for %@ with error: %@,code=%d", peripheral.name, [error localizedDescription],[error code]);
     }
     
     [self deletePeripheral:peripheral];

@@ -383,7 +383,7 @@ static NSString *dbPath = nil;
     [dbQueue inDatabase:^(FMDatabase *db) {
         
         for (NSInteger i = 0; i < 3; i++) {
-            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now','start of day','%ld day')",CurrentUser.userId,i - 3];
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now','start of day','%@ day') AND date < date('now','start of day','%@ day')",CurrentUser.userId,@(i - 2).stringValue,@(i - 1).stringValue];
             FMResultSet *result = [db executeQuery:sql];
             
             NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
@@ -423,7 +423,7 @@ static NSString *dbPath = nil;
     [dbQueue inDatabase:^(FMDatabase *db) {
         
         for (NSInteger i = 0; i < 3; i++) {
-            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date = date('now','start of day','%ld day')",CurrentUser.userId,i - 3];
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now','start of day','%@ day') AND date < date('now','start of day','%@ day')",CurrentUser.userId,@(i - 2).stringValue,@(i - 1).stringValue];
             FMResultSet *result = [db executeQuery:sql];
             
             NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];

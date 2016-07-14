@@ -13,7 +13,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        _target = 0;
+        _target = 10000 * CurrentUser.stepLong.integerValue * 0.01 * 0.01;
         _sportInterval = 0;
         _startTime = 0;
         _endTime = 0;
