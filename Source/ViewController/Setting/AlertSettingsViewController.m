@@ -177,7 +177,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     
     UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     _alertSwitch = clockSwitch;
-    BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:alertSwitchIsOpen];
+    BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:alertSwitchIsOpen]? YES:NO;
     if (switchOpen) {
         [clockSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:alertSwitchIsOpen] boolValue]];
         if (_alertSwitch.isOn) {
@@ -579,8 +579,8 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (_startLabel.text && _endLabel.text) {
         _changeModel.startTime = [[_startLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
         _changeModel.endTime = [[_endLabel.text substringWithRange:NSMakeRange(0, 2)] integerValue];
-        NSInteger length = _frequencyStr.length == 3 ? 1 : 2;
-        _changeModel.sportInterval = [[_frequencyStr substringWithRange:NSMakeRange(0, length)] integerValue];;
+        NSInteger length = _frequencyLabel.text.length == 3 ? 1 : 2;
+        _changeModel.sportInterval = [[_frequencyLabel.text substringWithRange:NSMakeRange(0, length)] integerValue];;
     }
     if (_alertSwitch.isOn) {
         _changeModel.sportSwitch = _alertDay;
@@ -590,7 +590,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     }
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {
-        DLog(@"存储闹钟失败");
+        DLog(@"存储久坐提醒失败");
     } else {
         [[BluetoothManager share] setBasicInfomation:_changeModel];
     }
@@ -603,7 +603,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     [MBProgressHUD showHUDByContent:@"保存成功" view:UI_Window afterDelay:1];
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {
-        DLog(@"存储闹钟失败");
+        DLog(@"存储久坐提醒失败");
     }
 }
 
