@@ -462,10 +462,9 @@ static BluetoothManager *manager = nil;
                 break;
                 //设置基本信息成功
             case BluetoothConnectingSetBasicInfomationSuccess: {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
-                                                                    object:nil];
                 weakSelf.connectionType = BluetoothConnectingSuccess;
-                [weakSelf handleBluetoothQueue];
+                [weakSelf setTimestamp];
+                NSLog(@"设置基本信息成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
                 //成功读取蓝牙设备中的72小时内的运动数据后(每次获取一小时的,获取72次),
@@ -483,6 +482,14 @@ static BluetoothManager *manager = nil;
                 
             case BluetoothConnectingCallAlertSuccess: {
                 DLog(@"打开(关闭)来电提醒成功");
+            }
+                break;
+            case BluetoothConnectingSetTimestampSuccess: {
+                 weakSelf.connectionType = BluetoothConnectingSuccess;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
+                                                                    object:nil];
+                NSLog(@"设置时间戳成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                [weakSelf handleBluetoothQueue];
             }
                 break;
                 
