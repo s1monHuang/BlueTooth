@@ -370,8 +370,9 @@ static BluetoothManager *manager = nil;
                         [[NSUserDefaults standardUserDefaults] setObject:deviceID forKey:User_DeviceID];
                         [[NSUserDefaults standardUserDefaults] synchronize];
                     }
-                    BasicInfomationModel *model = [DBManager selectBasicInfomation];
-                    [weakSelf setBasicInfomation:model];
+//                    BasicInfomationModel *model = [DBManager selectBasicInfomation];
+//                    [weakSelf setBasicInfomation:model];
+                    [weakSelf setTimestamp];
                     NSLog(@"蓝牙设备中有设备ID,开始设置基本信息 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                 } else {
                     [weakSelf confirmBindingPeripheralWithValue:characteristics.value];
@@ -381,19 +382,20 @@ static BluetoothManager *manager = nil;
                 break;
                 //成功绑定蓝牙设备后,设置基本信息
             case BluetoothConnectingConfirmBindingSuccess: {
+                [weakSelf setTimestamp];
+                NSLog(@"成功设置基本信息后,设置时间戳 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+            }
+                break;
+                //成功设置基本信息后,设置时间戳
+                case BluetoothConnectingSetTimestampSuccess: {
                 BasicInfomationModel *model = [DBManager selectBasicInfomation];
                 [weakSelf setBasicInfomation:model];
                 NSLog(@"绑定蓝牙设备成功,开始设置基本信息 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
                 break;
-                //成功设置基本信息后,设置时间戳
-            case BluetoothConnectingSetBasicInfomationSuccess: {
-                [weakSelf setTimestamp];
-                NSLog(@"成功设置基本信息后,设置时间戳 name:%@ value is:%@",characteristics.UUID,characteristics.value);
-            }
-                break;
                 //设置时间戳后,读取运动数据
-            case BluetoothConnectingSetTimestampSuccess: {
+                    case BluetoothConnectingSetBasicInfomationSuccess: {
+//            case BluetoothConnectingSetTimestampSuccess: {
                 [weakSelf readSportData];
                 NSLog(@"绑定蓝牙设备成功,开始获取运动数据 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
@@ -527,7 +529,9 @@ static BluetoothManager *manager = nil;
                 //设置基本信息成功
             case BluetoothConnectingSetBasicInfomationSuccess: {
                 weakSelf.connectionType = BluetoothConnectingSuccess;
-                [weakSelf setTimestamp];
+                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
+                                                                    object:nil];
+                [weakSelf handleBluetoothQueue];
                 NSLog(@"设置基本信息成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
@@ -549,11 +553,15 @@ static BluetoothManager *manager = nil;
             }
                 break;
             case BluetoothConnectingSetTimestampSuccess: {
-                 weakSelf.connectionType = BluetoothConnectingSuccess;
-                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
-                                                                    object:nil];
+                weakSelf.connectionType = BluetoothConnectingSuccess;
+                BasicInfomationModel *model = [DBManager selectBasicInfomation];
+                [weakSelf setBasicInfomation:model];
                 NSLog(@"设置时间戳成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
-                [weakSelf handleBluetoothQueue];
+//                 weakSelf.connectionType = BluetoothConnectingSuccess;
+//                [[NSNotificationCenter defaultCenter] postNotificationName:SET_BASICINFOMATION_SUCCESS
+//                                                                    object:nil];
+//                NSLog(@"设置时间戳成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+//                [weakSelf handleBluetoothQueue];
             }
                 break;
                 

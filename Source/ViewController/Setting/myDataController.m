@@ -163,7 +163,7 @@ static NSString* identifier =@"PersonalCell";
             if (!change) {
                 DLog(@"修改用户信息失败");
             }
-            
+            [[BluetoothManager share] setBasicInfomation:changeModel];
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSDictionary *tempDict = @{@"nickName":CurrentUser.nickName,@"sex":CurrentUser.sex};
                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:nil userInfo:tempDict];

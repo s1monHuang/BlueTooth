@@ -233,7 +233,7 @@
     _lblBoxthreeValue = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2, 20, oneBoxWidth, 22)];
     _lblBoxthreeValue.textAlignment = NSTextAlignmentCenter;
     _lblBoxthreeValue.font = [UIFont systemFontOfSize:20];
-    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?(long)(([CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001)*100 )/ 100.0:0];
     [threeBox addSubview:_lblBoxthreeValue];
     
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2+18, 20+22+10, oneBoxWidth-15, 30)];
@@ -416,7 +416,7 @@
     
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     _lblBoxtwoValue.text = [NSString stringWithFormat:@"%.2lf",(_sportModel?_sportModel.step * [CurrentUser.stepLong floatValue]:0)*0.00001];
-    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?[CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001:0];
+    _lblBoxthreeValue.text = [NSString stringWithFormat:@"%.2f",_sportModel?(long)(([CurrentUser.weight floatValue] * _sportModel.distance*0.01 * 1.036 * 0.001) * 100)/ 100.0:0];
     
     _progressView.progress = _sportModel?_sportModel.battery / 100.0 :0;
     _refreshBututton.userInteractionEnabled = YES;

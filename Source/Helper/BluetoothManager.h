@@ -122,6 +122,8 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 @property (assign, nonatomic) NSInteger heartRate;              //心率
 
+@property (assign, nonatomic)BOOL aa;
+
 + (BluetoothManager *)share;
 
 - (void)start;
@@ -157,6 +159,8 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 - (void)readHeartRate;
 
 - (void)closeReadHeartRate;
+
+- (void)setTimestamp;
 
 
 - (BOOL)isExistCharacteristic;

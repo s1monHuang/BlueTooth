@@ -592,7 +592,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     if (!change) {
         DLog(@"存储久坐提醒失败");
     } else {
-        [[BluetoothManager share] setBasicInfomation:_changeModel];
+        [[BluetoothManager share] setTimestamp];
     }
     [[NSUserDefaults standardUserDefaults] setObject:@(_alertSwitch.isOn) forKey:alertSwitchIsOpen];
     [self.navigationController popViewControllerAnimated:YES];

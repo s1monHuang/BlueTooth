@@ -494,7 +494,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     _stepLabel.text = [NSString stringWithFormat:@"%ld步",showStepData];
     _bottomStepLabel.text = [NSString stringWithFormat:@"%ld",showStepData];
     _bottomDistanceLabel.text = [NSString stringWithFormat:@"%.2lf",distance];
-    _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",fireEnergy];
+    _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",(long)(fireEnergy*100)/100.0];
+    
     
     [self.view setNeedsDisplay];
 }
