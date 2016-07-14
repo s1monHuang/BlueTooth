@@ -145,7 +145,8 @@
     PeripheralModel *model = _peripheralModels[indexPath.row];
     _selecedPeripheral = model;
     [BluetoothManager share].bindingPeripheral = model;
-//    [_operateViewModel createExdeviceId];
+    [[BluetoothManager share] stop];
+    [[BluetoothManager share] connectingBlueTooth:_selecedPeripheral.peripheral];
 
     _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     _hud.labelText = @"正在绑定...";
