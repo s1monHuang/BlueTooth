@@ -37,42 +37,16 @@
 
 
 
-typedef NS_ENUM(NSInteger,BluetoothConnectingType) {
-    BluetoothConnectingNormal = 0,
-    BluetoothConnectingBinding,
-    BluetoothConnectingConfirmBinding,
-    BluetoothConnectingSetBasicInfomation,
-    BluetoothConnectingSetTimestamp,
-    BluetoothConnectingReadSportData,
-    BluetoothConnectingHistroyReadSportData,
-    BluetoothConnectingHeartRate,
-    BluetoothConnectingCallAlert,
-    BluetoothConnectingLostDevice,
-    BluetoothConnectingSuccess
-};
-
-typedef NS_ENUM(NSInteger,BluetoothConnectingSuccessType) {
-    BluetoothConnectingNormalSuccess = 0,
-    BluetoothConnectingBindingSuccess,
-    BluetoothConnectingConfirmBindingSuccess,
-    BluetoothConnectingSetBasicInfomationSuccess,
-    BluetoothConnectingSetTimestampSuccess,
-    BluetoothConnectingReadSportDataSuccess,
-    BluetoothConnectingHistroyReadSportDataSuccess,
-    BluetoothConnectingHeartRateSuccess,
-    BluetoothConnectingCallAlertSuccess,
-    BluetoothConnectingLostDeviceSuccess,
-    BluetoothConnectingAllSuccess
-};
-
-typedef NS_ENUM(NSInteger,BluetoothQueueType) {
-    BluetoothQueueSetBasicInfomation = 0,
-    BluetoothQueueReadSportData,
-    BluetoothQueueHistroyReadSportData,
-    BluetoothQueueHeartRate,
-    BluetoothQueueCallAlert,
-    BluetoothQueueConnectingLostDevice,
-    BluetoothQueueAll
+typedef NS_ENUM(NSInteger,BluetoothTag) {
+    BluetoothBinding = 0,                   //绑定
+    BluetoothConfirmBinding,                //确认绑定
+    BluetoothSetBasicInfomation,            //设置基本信息
+    BluetoothSetTimestamp,                  //设置时间戳
+    BluetoothReadSportData,                 //读取运动数据
+    BluetoothHistroyReadSportData,          //读取历史运动数据
+    BluetoothHeartRate,                     //心率
+    BluetoothCallAlert,                     //一键求救
+    BluetoothLostDevice                     //防丢失
 };
 
 
@@ -107,12 +81,6 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 
 @property (nonatomic,strong) PeripheralModel *bindingPeripheral;
-
-@property (nonatomic,strong) CBCharacteristic *characteristics;
-@property (nonatomic,strong) CBCharacteristic *sosCharacteristic;
-
-@property (assign, nonatomic) BluetoothConnectingType connectionType;
-@property (assign, nonatomic) BluetoothConnectingSuccessType successType;
 
 @property (strong, nonatomic) NSString *deviceID;               //服务器返回的设备ID
 
@@ -171,10 +139,23 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 - (NSInteger)getHistoryDataCount;
 
 
-
-
-
-
 + (NSString *)getBindingPeripheralUUID;
+
+
+#pragma mark - new
+
+
+@property (nonatomic,assign) BluetoothTag tag;
+@property (nonatomic,assign) BOOL writing;
+
+@property (nonatomic,assign) BOOL firstSynchron;
+
+@property (nonatomic,strong) NSTimer *timeOut;
+
+@property (nonatomic,strong) CBCharacteristic *FFF1characteristic;
+@property (nonatomic,strong) CBCharacteristic *FFF2Characteristic;
+
+
+
 
 @end

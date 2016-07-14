@@ -111,7 +111,7 @@ static NSString *identifier = @"cell";
                 return;
             }
             
-            [[BluetoothManager share].baby notify:[BluetoothManager share].bindingPeripheral.peripheral characteristic:[BluetoothManager share].sosCharacteristic block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+            [[BluetoothManager share].baby notify:[BluetoothManager share].bindingPeripheral.peripheral characteristic:[BluetoothManager share].FFF2Characteristic block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
                 NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
                 
                 NSData *data = characteristics.value;
@@ -143,7 +143,7 @@ static NSString *identifier = @"cell";
     }else{
         if ([BluetoothManager share].bindingPeripheral) {
             [[BluetoothManager share].baby cancelNotify:[BluetoothManager share].bindingPeripheral.peripheral
-                                         characteristic:[BluetoothManager share].sosCharacteristic];
+                                         characteristic:[BluetoothManager share].FFF2Characteristic];
                     }
     }
 }
