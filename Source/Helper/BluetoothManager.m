@@ -23,6 +23,8 @@ static BluetoothManager *manager = nil;
 
 @property (nonatomic, strong) MBProgressHUD *hud;               //获取历史数据需要显示的loading框
 
+@property (nonatomic, strong) OperateViewModel *operateViewModel;
+
 @end
 
 
@@ -54,12 +56,14 @@ static BluetoothManager *manager = nil;
             //设置委托后直接可以使用，无需等待CBCentralManagerStatePoweredOn状态。
             _baby.scanForPeripherals().begin();
         }
-        _deviceID = [[NSUserDefaults standardUserDefaults] objectForKey:@"userDeviceID"];
+        _deviceID = [[NSUserDefaults standardUserDefaults] objectForKey:User_DeviceID];
         _connectionType = BluetoothConnectingNormal;
         _successType = BluetoothConnectingNormalSuccess;
         _isConnectSuccess = NO;
         
         _bluetoothQueue = [[NSMutableArray alloc] init];
+        
+        _operateViewModel = [[OperateViewModel alloc] init];
         
     }
     return self;
@@ -145,6 +149,11 @@ static BluetoothManager *manager = nil;
                 case BluetoothConnectingConfirmBinding: {
                     weakSelf.successType = BluetoothConnectingConfirmBindingSuccess;
                     weakSelf.isConnectSuccess = YES;
+                    NSString *deviceID = [weakSelf deviceIDWithData:characteristic.value];
+                    if (deviceID) {
+                        [[NSUserDefaults standardUserDefaults] setObject:deviceID forKey:User_DeviceID];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
                 }
                     break;
                     //成功设置基本信息
@@ -298,6 +307,11 @@ static BluetoothManager *manager = nil;
             case BluetoothConnectingBindingSuccess: {
                 //如果存在设备ID,不需要发送确认绑定
                 if ([weakSelf isExistDeviceID:characteristics]) {
+                    NSString *deviceID = [weakSelf deviceIDWithData:characteristics.value];
+                    if (deviceID) {
+                        [[NSUserDefaults standardUserDefaults] setObject:deviceID forKey:User_DeviceID];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
                     BasicInfomationModel *model = [DBManager selectBasicInfomation];
                     [weakSelf setBasicInfomation:model];
                     NSLog(@"蓝牙设备中有设备ID,开始设置基本信息 name:%@ value is:%@",characteristics.UUID,characteristics.value);
@@ -576,6 +590,15 @@ static BluetoothManager *manager = nil;
     return isExist;
 }
 
+- (NSString *)deviceIDWithData:(NSData *)data {
+    NSMutableString *string = [[NSMutableString alloc] init];
+    Byte *b = (Byte *)data.bytes;
+    for (NSInteger i = 6; i <=12 ; i++) {
+        [string appendFormat:@"%@",@(b[i]).stringValue];
+    }
+    return string;
+}
+
 #pragma mark - 读取蓝牙中的数据,写入数据成功
 
 - (void)saveNewSportData:(NSData *)data {
@@ -617,22 +640,30 @@ static BluetoothManager *manager = nil;
  *  确认绑定蓝牙设备
  */
 - (void)confirmBindingPeripheralWithValue:(NSData *)value {
-    [self startTiming];
-    _connectionType = BluetoothConnectingConfirmBinding;
-    Byte *b = (Byte *)value.bytes;
-    b[1] = 0xF2;
     
-    NSInteger deviceIDNumber = _deviceID.integerValue;
-    for (NSInteger i = 0; i < _deviceID.length ;i++ ) {
-        
-        NSInteger idNumber = deviceIDNumber % 10;
-        b[12 - i] = idNumber;
-        deviceIDNumber /= 10;
-    }
-    
-    b[19] = [BluetoothManager calculateTotal:b];
-    NSData *data = [NSData dataWithBytes:b length:value.length];
-    [[BluetoothManager share] writeValue:data];
+    __weak typeof(self) weakSelf = self;
+    [_operateViewModel setFinishHandler:^(BOOL finished, id userInfo) {
+        if (finished) {
+            weakSelf.deviceID = userInfo;
+            [weakSelf startTiming];
+            weakSelf.connectionType = BluetoothConnectingConfirmBinding;
+            Byte *b = (Byte *)value.bytes;
+            b[1] = 0xF2;
+            
+            NSInteger deviceIDNumber = weakSelf.deviceID.integerValue;
+            for (NSInteger i = 0; i < weakSelf.deviceID.length ;i++ ) {
+                
+                NSInteger idNumber = deviceIDNumber % 10;
+                b[12 - i] = idNumber;
+                deviceIDNumber /= 10;
+            }
+            
+            b[19] = [BluetoothManager calculateTotal:b];
+            NSData *data = [NSData dataWithBytes:b length:value.length];
+            [[BluetoothManager share] writeValue:data];
+        }
+    }];
+    [_operateViewModel createExdeviceId];
 }
 
 /*!

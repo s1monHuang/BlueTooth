@@ -31,6 +31,8 @@
 
 #define BlueToothIsReadedPripheralAllData @"isReadedPripheralAllData"
 
+#define User_DeviceID @"userDeviceID"
+
 @class BasicInfomationModel;
 
 

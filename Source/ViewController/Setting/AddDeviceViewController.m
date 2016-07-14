@@ -13,7 +13,7 @@
 #import "OperateViewModel.h"
 
 @interface AddDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,BluetoothManagerDelegate> {
-    OperateViewModel *_operateViewModel;
+//    OperateViewModel *_operateViewModel;
     MBProgressHUD *_hud;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -44,21 +44,21 @@
     [[BluetoothManager share] start];
     [BluetoothManager share].isReadedPripheralAllData = NO;
     
-    _operateViewModel = [[OperateViewModel alloc] init];
-    
-    __weak AddDeviceViewController *weakSelf = self;
-    
-    [_operateViewModel setFinishHandler:^(BOOL finished, id userInfo) {
-        if (finished) {
-            [[BluetoothManager share] stop];
-            [BluetoothManager share].deviceID = userInfo;
-            [[NSUserDefaults standardUserDefaults] setObject:[BluetoothManager share].deviceID forKey:@"userDeviceID"];
-            [[BluetoothManager share] connectingBlueTooth:weakSelf.selecedPeripheral.peripheral];
-            
-        }else{
-            
-        }
-    }];
+//    _operateViewModel = [[OperateViewModel alloc] init];
+//    
+//    __weak AddDeviceViewController *weakSelf = self;
+//    
+//    [_operateViewModel setFinishHandler:^(BOOL finished, id userInfo) {
+//        if (finished) {
+//            [[BluetoothManager share] stop];
+//            [BluetoothManager share].deviceID = userInfo;
+//            [[NSUserDefaults standardUserDefaults] setObject:[BluetoothManager share].deviceID forKey:@"userDeviceID"];
+//            [[BluetoothManager share] connectingBlueTooth:weakSelf.selecedPeripheral.peripheral];
+//            
+//        }else{
+//            
+//        }
+//    }];
     
     _peripherals = [[NSMutableArray alloc] init];
     _peripheralModels = [[NSMutableArray alloc] init];
@@ -93,6 +93,8 @@
     
     if (!success) {
         [self disConnectPeripheral];
+    } else {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
     }
 }
 
@@ -143,7 +145,7 @@
     PeripheralModel *model = _peripheralModels[indexPath.row];
     _selecedPeripheral = model;
     [BluetoothManager share].bindingPeripheral = model;
-    [_operateViewModel createExdeviceId];
+//    [_operateViewModel createExdeviceId];
 
     _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     _hud.labelText = @"正在绑定...";
@@ -159,9 +161,17 @@
 }
 
 - (void)disConnectPeripheral {
+    [[[BluetoothManager share] baby] cancelAllPeripheralsConnection];
     [_hud setHidden:YES];
     _hud = nil;
     [MBProgressHUD showHUDByContent:@"绑定失败" view:UI_Window afterDelay:1.5];
+    
+    [_peripherals removeAllObjects];
+    [_peripheralModels removeAllObjects];
+    [_tableView reloadData];
+    
+    [[BluetoothManager share] stop];
+    [[BluetoothManager share] start];
 }
 
 - (void)didReceiveMemoryWarning {
