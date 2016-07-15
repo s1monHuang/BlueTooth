@@ -154,6 +154,7 @@
      _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
     if (_changeModel.clockInterval) {
       _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
+        _frequencyStr = _frequencyLabel.text;
     }else{
         _frequencyStr =  @"30分钟";
        _frequencyLabel.text = @"30分钟";
