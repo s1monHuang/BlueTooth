@@ -390,7 +390,7 @@ static NSString *dbPath = nil;
             NSInteger ssmTime = 0;
             NSInteger qsmTime = 0;
             
-            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 3) sinceDate:[NSDate date]];
+            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 2) sinceDate:[NSDate date]];
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString = [formatter stringFromDate:date];
@@ -430,7 +430,7 @@ static NSString *dbPath = nil;
             
             NSInteger stepNum = 0;
             
-            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 3) sinceDate:[NSDate date]];
+            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 2) sinceDate:[NSDate date]];
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString = [formatter stringFromDate:date];

@@ -154,11 +154,6 @@
                 infoModel.height = [CurrentUser.high integerValue];
                 infoModel.weight = [CurrentUser.weight integerValue];
                 infoModel.distance = [CurrentUser.stepLong integerValue];
-//                if (info.target != 0) {
-//                    infoModel.target = info.target;
-//                }else{
-//                    infoModel.target = 10000;
-//                }
                 BOOL Info = [DBManager insertOrReplaceBasicInfomation:infoModel];
                 if (!Info) {
                     DLog(@"存入用户信息失败");

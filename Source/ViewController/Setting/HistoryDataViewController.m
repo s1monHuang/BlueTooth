@@ -37,6 +37,10 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
 
 @property (nonatomic , strong) OperateViewModel *operateVM;
 
+@property (nonatomic , strong) OperateViewModel *operateVM1;
+
+@property (nonatomic , strong) OperateViewModel *operateVM2;
+
 //步数
 @property (nonatomic , assign) NSInteger dayStepCount;
 @property (nonatomic , assign) NSInteger weekStepCount;
@@ -115,7 +119,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     
     self.title = @"数据中心";
     self.view.backgroundColor = kThemeGrayColor;
-    self.operateVM = [OperateViewModel defaultInstance];
+    self.operateVM = [OperateViewModel viewModel];
+    self.operateVM1 = [OperateViewModel viewModel];
+    self.operateVM2 = [OperateViewModel viewModel];
     self.dataType = 0;
     self.HistoryData = HistoryDataTypeDay;
     
@@ -528,8 +534,10 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     
     if ((showSsmData + showQsmData) > 10 &&(showSsmData + showQsmData) < 100) {
         count = 2;
-    }else if ((showSsmData + showQsmData) > 100){
+    }else if ((showSsmData + showQsmData) > 100 &&(showSsmData + showQsmData) < 1000){
         count = 3;
+    }else if ((showSsmData + showQsmData) >= 1000){
+        count = 4;
     }
     NSRange sleepHourRange = NSMakeRange(0, count);
     NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + 2, 2);
@@ -644,19 +652,11 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
 //日数据
 - (void)getDayData:(NSDate *)date
 {
-    NSDate *today = [NSDate date];
     __weak HistoryDataViewController *blockSelf = self;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY-MM-dd"];
     NSString *dateStr = [formatter stringFromDate:date];
-    NSString *todayStr = [formatter stringFromDate:today];
     if (self.dataType == 0) {
-        if ([dateStr isEqualToString:todayStr]) {
-            //今日的记步数据
-            self.dayStepCount = [DBManager selectTodayStepNumber];
-            [self setLabelText];
-            
-        }else{
         [blockSelf.operateVM getStepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
@@ -670,15 +670,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                 
             }
         };
-        }
+        
     }else{
-        if ([dateStr isEqualToString:todayStr]) {
-            //今日的睡眠数据
-            self.daySsmCount = [DBManager selectTodayssmNumber];
-            self.dayQsmCount = [DBManager selectTodayqsmNumber];
-            [self setSleepLabelText];
-            
-        }else{
         [blockSelf.operateVM getSleepDataStartDate:dateStr endDate:dateStr];
         blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
@@ -698,8 +691,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                 
             }
         };
-        }
     }
+    
     
 }
 
@@ -713,8 +706,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     NSString *startDateStr = [formatter stringFromDate:tempArray[0]];
     NSString *endDateStr = [formatter stringFromDate:tempArray[1]];
     if (self.dataType == 0) {
-        [blockSelf.operateVM getStepDataStartDate:startDateStr endDate:endDateStr];
-        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        [blockSelf.operateVM1 getStepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM1.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
                 blockSelf.weekStepCount = 0;
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
@@ -730,8 +723,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
         };
         
     }else{
-        [blockSelf.operateVM getSleepDataStartDate:startDateStr endDate:endDateStr];
-        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        [blockSelf.operateVM1 getSleepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM1.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
                 blockSelf.weekSsmCount = 0;
                 blockSelf.weekQsmCount = 0;
@@ -766,8 +759,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     NSInteger dayCount = [self dayCountFromMonth:date];
     NSString *endDateStr = [NSString stringWithFormat:@"%@-%ld",startStr,dayCount];
     if (self.dataType == 0) {
-        [blockSelf.operateVM getStepDataStartDate:startDateStr endDate:endDateStr];
-        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        [blockSelf.operateVM2 getStepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM2.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
                 blockSelf.monthStepCount = 0;
                 blockSelf.sportDataArray = [StepDataModel mj_objectArrayWithKeyValuesArray:userInfo];
@@ -782,8 +775,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
             }
         };
     }else{
-        [blockSelf.operateVM getSleepDataStartDate:startDateStr endDate:endDateStr];
-        blockSelf.operateVM.finishHandler = ^(BOOL finished, id userInfo) {
+        [blockSelf.operateVM2 getSleepDataStartDate:startDateStr endDate:endDateStr];
+        blockSelf.operateVM2.finishHandler = ^(BOOL finished, id userInfo) {
             if (finished) {
                 blockSelf.monthSsmCount = 0;
                 blockSelf.monthQsmCount = 0;
