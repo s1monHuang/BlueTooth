@@ -180,5 +180,5 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 
 
 + (NSString *)getBindingPeripheralUUID;
-
+- (void)firstReadHistroySportDataSuccess;
 @end

@@ -111,6 +111,8 @@
  */
 + (NSString *)selectHistorySportData;
 
++ (NSString *)testSelectHistorySleepData;
+
 /*!
  *  获取最近一次历史数据的时间
  *

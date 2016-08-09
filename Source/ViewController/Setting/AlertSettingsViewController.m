@@ -55,6 +55,7 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
 
 @property (nonatomic , strong) BasicInfomationModel *changeModel;
 
+@property (nonatomic , strong) UIView *backgroudView;
 
 
 @end
@@ -187,6 +188,13 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
         }
     }else{
         [clockSwitch setOn:NO];
+    }
+    
+    _backgroudView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, kScreenWidth, kScreenHeight)];
+    _backgroudView.backgroundColor = [UIColor lightGrayColor];
+    _backgroudView.alpha = 0.5;
+    if (!_alertSwitch.isOn) {
+        [_tableView addSubview:_backgroudView];
     }
     _tableView.allowsSelection = _alertSwitch.isOn;
     [clockSwitch addTarget:self action:@selector(openAlarmSetting:) forControlEvents:UIControlEventValueChanged];
@@ -370,8 +378,10 @@ typedef NS_ENUM(NSInteger, TimePickerSelected) {
     BOOL isButtonOn = [switchButton isOn];
     if (isButtonOn) {
         _tableView.allowsSelection = YES;
+        [_backgroudView removeFromSuperview];
     }else {
         _tableView.allowsSelection = NO;
+        [_tableView addSubview:_backgroudView];
     }
 }
 

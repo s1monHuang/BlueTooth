@@ -653,6 +653,9 @@ static BluetoothManager *manager = nil;
     NSTimeInterval timeInterval = byte[8] + (byte[9] << 8) + (byte[10] << 16) + (byte[11] << 24);
     
     model.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    NSString *message = [NSString stringWithFormat:@"时间：%@  次数：%@",model.date,@(model.sleep).stringValue];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"手环发的睡眠动作次数，小于10是深睡眠，10-254是浅睡眠，255无效" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
+    [alert show];
     return model;
     
 }
@@ -819,8 +822,6 @@ static BluetoothManager *manager = nil;
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     NSInteger time = byte[1];
                     Byte flag = byte[2];
-                    //保存历史运动数据到数据库
-                    [weakSelf saveNewHistroyData:characteristics.value time:time];
                     
                     //读取历史运动数据结束
                     if (flag == 0xEE) {
@@ -835,8 +836,12 @@ static BluetoothManager *manager = nil;
                         weakSelf.hud = nil;
                         
                         [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
+                        return ;
 
                     }
+                    
+                    //保存历史运动数据到数据库
+                    [weakSelf saveNewHistroyData:characteristics.value time:time];
                 }];
 }
 
@@ -880,9 +885,6 @@ static BluetoothManager *manager = nil;
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     NSInteger time = byte[1];
                     Byte flag = byte[2];
-                    //保存历史运动数据到数据库
-                    [weakSelf saveNewHistroyData:characteristics.value time:time];
-                    
                     //读取历史运动数据结束
                     if (flag == 0xEE) {
 
@@ -892,9 +894,12 @@ static BluetoothManager *manager = nil;
                         
                         [weakSelf.hud hide:YES];
                         weakSelf.hud = nil;
-                        
+                        return ;
 //                        [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
                     }
+                    //保存历史运动数据到数据库
+                    [weakSelf saveNewHistroyData:characteristics.value time:time];
+                    
                 }];
     
     
@@ -921,6 +926,9 @@ static BluetoothManager *manager = nil;
     OperateViewModel *operateVM = [OperateViewModel viewModel];
     [operateVM saveStepData:[DBManager selectHistorySportData]];
     [operateVM saveSleepData:[DBManager selectHistorySleepData]];
+    NSString *str = [DBManager testSelectHistorySleepData];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"历史睡眠数据" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 /*!

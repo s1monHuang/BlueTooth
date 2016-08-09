@@ -418,6 +418,62 @@ static NSString *dbPath = nil;
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
++ (NSString *)testSelectHistorySleepData {
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
+        for (NSInteger i = 0; i < 3; i++) {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now','start of day','%@ day') AND date < date('now','start of day','%@ day')",CurrentUser.userId,@(i - 2).stringValue,@(i - 1).stringValue];
+            FMResultSet *result = [db executeQuery:sql];
+//            NSInteger ssmTime = 0;
+//            NSInteger qsmTime = 0;
+            
+//            NSDate *date = [NSDate dateWithTimeInterval:(3600 * 24) * (i - 2) sinceDate:[NSDate date]];
+//            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//            [formatter setDateFormat:@"yyyy-MM-dd"];
+//            NSString *dateString = [formatter stringFromDate:date];
+            
+            while (result.next) {
+                
+                NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+                NSInteger ssmTime = 0;
+                NSInteger qsmTime = 0;
+                NSInteger sleep = [result intForColumn:@"sleep"];
+                
+                if (sleep < 10) {
+                    ssmTime += 1;
+                } else if (sleep >= 10 && sleep < 255) {
+                    qsmTime += 1;
+                }
+                
+                NSDate *date1 = [result dateForColumn:@"date"];
+                
+                NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
+                [formatter1 setDateFormat:@"yyyy-MM-dd"];
+                NSString *dateString1 = [formatter1 stringFromDate:date1];
+                
+                [dictionary setObject:@(ssmTime).stringValue forKey:@"ssmTime"];
+                [dictionary setObject:@(qsmTime).stringValue forKey:@"qsmTime"];
+                [dictionary setObject:@(sleep).stringValue forKey:@"actionNumber"];
+                
+                [dictionary setObject:dateString1 forKey:@"sleepDate"];
+                
+                [array addObject:dictionary];
+            }
+            
+            [result close];
+        }
+    }];
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
+
 + (NSString *)selectHistorySportData {
     __block NSMutableArray *array = [[NSMutableArray alloc] init];
     [dbQueue inDatabase:^(FMDatabase *db) {

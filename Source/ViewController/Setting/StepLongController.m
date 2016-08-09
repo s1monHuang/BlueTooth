@@ -149,8 +149,9 @@
     
     CGRect rulerFrame = CGRectMake(rulerX, rulerY, rulerWidth, rulerHeight);
     
-    ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:20 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:10];
+    ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:2 maxNuber:85 showType:rulerViewshowVerticalType rulerMultiple:1];
     _rulerView = rulerView;
+    rulerView.round = YES;
     rulerView.backgroundColor = [UIColor whiteColor];
     rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong integerValue];
     rulerView.delegate = self;

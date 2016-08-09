@@ -47,7 +47,7 @@ static const CGFloat rulerLableFont=12;
         self.indicatorStyle = UIScrollViewIndicatorStyleWhite;
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator=NO;
-        self.bounces=YES;
+        self.bounces=NO;
         self.scrollEnabled = YES;
         self.pagingEnabled = NO;
         self.decelerationRate=0.7;
@@ -67,7 +67,7 @@ static const CGFloat rulerLableFont=12;
 }
 
 -(void)setUpRuleImageView{
-    
+//    if (_showType==rulerViewshowHorizontalType) {
     for (NSInteger i=0; i<=BTminus(_maxNuber,_mixNuber)/_rulerMultiple ; i++) {
         UIImageView *rulerImageView=[[UIImageView alloc] initWithImage:_rulerImage];
         rulerImageView.tag=i;
@@ -78,7 +78,20 @@ static const CGFloat rulerLableFont=12;
         rulerLable.textColor=ZHColor(204, 204, 204);
         rulerLable.font=[UIFont systemFontOfSize:rulerLableFont];
         [self addSubview:rulerLable];
-    }
+        }
+//    }else{
+//        for (NSInteger i=_maxNuber; i>=BTminus(_maxNuber,_mixNuber)/_rulerMultiple ; i--) {
+//            UIImageView *rulerImageView=[[UIImageView alloc] initWithImage:_rulerImage];
+//            rulerImageView.tag=_maxNuber-i;
+//            [self addSubview:rulerImageView];
+//            UILabel *rulerLable=[[UILabel alloc] init];
+//            rulerLable.textAlignment=NSTextAlignmentCenter;
+//            rulerLable.text=[NSString stringWithFormat:@"%zd",_maxNuber-(_maxNuber-i)*_rulerMultiple];
+//            rulerLable.textColor=ZHColor(204, 204, 204);
+//            rulerLable.font=[UIFont systemFontOfSize:rulerLableFont];
+//            [self addSubview:rulerLable];
+//        }
+//    }
 }
 
 -(void)layoutSubviews{

@@ -48,6 +48,7 @@
 
 @property (nonatomic , strong) NSMutableArray *hourArray;
 
+@property (nonatomic , strong) UIView *backgroudView;
 
 
 @end
@@ -161,7 +162,6 @@
     }
     
     
-    
     UISwitch *clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     _clockSwitch = clockSwitch;
     BOOL switchOpen = [[NSUserDefaults standardUserDefaults] objectForKey:switchIsOpen];
@@ -175,6 +175,13 @@
         }
     }else{
         [clockSwitch setOn:NO];
+    }
+    
+    _backgroudView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, kScreenWidth, kScreenHeight)];
+    _backgroudView.backgroundColor = [UIColor lightGrayColor];
+    _backgroudView.alpha = 0.5;
+    if (!_clockSwitch.isOn) {
+        [_tableView addSubview:_backgroudView];
     }
     _tableView.allowsSelection = _clockSwitch.isOn;
     
@@ -424,8 +431,10 @@
     BOOL isButtonOn = [switchButton isOn];
     if (isButtonOn) {
         _tableView.allowsSelection = YES;
+        [_backgroudView removeFromSuperview];
     }else {
         _tableView.allowsSelection = NO;
+        [_tableView addSubview:_backgroudView];
     }
 }
 
