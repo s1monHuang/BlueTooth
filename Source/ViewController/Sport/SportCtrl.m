@@ -436,6 +436,8 @@
     
     //上传运动数据
     NSString *stepData = [DBManager selectHistorySportData];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"运动数据" message:stepData delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//    [alert show];
     [_operateVM saveStepData:[DBManager selectHistorySportData]];
     
 }

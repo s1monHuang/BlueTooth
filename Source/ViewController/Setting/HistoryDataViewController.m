@@ -532,9 +532,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     }
     NSInteger count = 1;
     
-    if ((showSsmData + showQsmData) > 10 &&(showSsmData + showQsmData) < 100) {
+    if ((showSsmData + showQsmData) >= 10 &&(showSsmData + showQsmData) < 100) {
         count = 2;
-    }else if ((showSsmData + showQsmData) > 100 &&(showSsmData + showQsmData) < 1000){
+    }else if ((showSsmData + showQsmData) >= 100 &&(showSsmData + showQsmData) < 1000){
         count = 3;
     }else if ((showSsmData + showQsmData) >= 1000){
         count = 4;
