@@ -836,6 +836,9 @@ static BluetoothManager *manager = nil;
                         weakSelf.hud = nil;
                         
                         [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
+                        
+                        //同步完发送来电提醒开关
+                        [[BluetoothManager share] openCallAlert];
 
                     }
                 }];
@@ -895,6 +898,9 @@ static BluetoothManager *manager = nil;
                         weakSelf.hud = nil;
                         
 //                        [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
+                        
+                        //同步完发送来电提醒开关
+                        [[BluetoothManager share] openCallAlert];
                     }
                 }];
     
