@@ -52,6 +52,7 @@ static BluetoothManager *manager = nil;
         //设置蓝牙委托
         [self babyDelegate];
         
+        
         [_baby cancelAllPeripheralsConnection];
         if (_isBindingPeripheral) {
             //设置委托后直接可以使用，无需等待CBCentralManagerStatePoweredOn状态。
@@ -694,13 +695,13 @@ static BluetoothManager *manager = nil;
 #pragma mark - 写数据到蓝牙设备中
 
 - (void)startTiming {
-    [_timer invalidate];
-    _timer = nil;
-    _timer = [NSTimer scheduledTimerWithTimeInterval:30
-                                              target:self
-                                            selector:@selector(timeOut)
-                                            userInfo:nil
-                                             repeats:NO];
+//    [_timer invalidate];
+//    _timer = nil;
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:30
+//                                              target:self
+//                                            selector:@selector(timeOut)
+//                                            userInfo:nil
+//                                             repeats:NO];
 }
 
 /*!

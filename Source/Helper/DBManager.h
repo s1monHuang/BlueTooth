@@ -132,5 +132,12 @@
  */
 + (NSInteger)selectSportHistoryDataCount;
 
+/*!
+ *  删除所有数据
+ *
+ *  @return
+ */
++ (BOOL)deleteAllSportData;
+
 
 @end

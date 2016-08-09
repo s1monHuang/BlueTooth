@@ -488,5 +488,18 @@ static NSString *dbPath = nil;
     return number;
 }
 
++ (BOOL)deleteAllSportData {
+    __block BOOL success = NO;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSString *deleteHistorySql = [NSString stringWithFormat:@"DELETE FROM 'histroy_sport_table'"];
+        NSString *deleteSportSql = [NSString stringWithFormat:@"DELETE FROM 'sport_table'"];
+        if ([db executeUpdate:deleteSportSql] && [db executeUpdate:deleteHistorySql]) {
+            success = YES;
+        }
+    }];
+    return success;
+}
+
 
 @end

@@ -21,6 +21,7 @@
 #import "prenventLostController.h"
 #import "SOSController.h"
 #import "AboutUsController.h"
+#import "DBManager.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -118,7 +119,9 @@
         [[UserManager defaultInstance] clearUser];
         [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:FIRSTDOWNLAOD];
         [self.navigationController pushViewController:loginCtl animated:YES];
-        
+        [DBManager deleteAllSportData];
+        [BluetoothManager clearBindingPeripheral];
+        [BluetoothManager share].isBindingPeripheral = NO;
     }
 }
 
