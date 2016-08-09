@@ -351,7 +351,7 @@ static NSString *dbPath = nil;
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
-            if (sleep < 10) {
+            if (sleep < 15) {
                 ssmNumber += 1;
             }
         }
@@ -367,7 +367,7 @@ static NSString *dbPath = nil;
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
-            if (sleep > 10 && sleep < 255) {
+            if (sleep > 15 && sleep < 255) {
                 qsmNumber += 1;
             }
         }
@@ -397,9 +397,9 @@ static NSString *dbPath = nil;
             
             while (result.next) {
                 NSInteger sleep = [result intForColumn:@"sleep"];
-                if (sleep < 10) {
+                if (sleep < 15) {
                     ssmTime += 1;
-                } else if (sleep >= 10 && sleep < 255) {
+                } else if (sleep >= 15 && sleep < 255) {
                     qsmTime += 1;
                 }
             }
@@ -542,6 +542,19 @@ static NSString *dbPath = nil;
         
     }];
     return number;
+}
+
++ (BOOL)deleteAllSportData {
+    __block BOOL success = NO;
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSString *deleteHistorySql = [NSString stringWithFormat:@"DELETE FROM 'histroy_sport_table'"];
+        NSString *deleteSportSql = [NSString stringWithFormat:@"DELETE FROM 'sport_table'"];
+        if ([db executeUpdate:deleteSportSql] && [db executeUpdate:deleteHistorySql]) {
+            success = YES;
+        }
+    }];
+    return success;
 }
 
 
