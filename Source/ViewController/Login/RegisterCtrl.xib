@@ -7,7 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterCtrl">
             <connections>
+                <outlet property="accountLabel" destination="O6b-c7-gle" id="980-Se-Rf1"/>
                 <outlet property="passwordTextField" destination="qcj-4p-RAs" id="KQ9-ir-cfF"/>
+                <outlet property="registerBtn" destination="Y4P-ye-HsV" id="DDg-F5-gfW"/>
+                <outlet property="securityLabel" destination="YgF-af-n3W" id="j9r-Yc-76d"/>
                 <outlet property="userNameTextField" destination="Icv-kz-vWM" id="edz-HD-717"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

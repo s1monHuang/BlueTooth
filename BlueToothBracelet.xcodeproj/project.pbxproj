@@ -38,6 +38,7 @@
 		3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE51C96BB24001BF5D2 /* ForgotPasswordCtrl.m */; };
 		3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */; };
 		474393261D26658900C2F77C /* AboutUsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 474393251D26658900C2F77C /* AboutUsController.m */; };
+		47546E481D5B14A700CAD6CF /* EnglishString.strings in Resources */ = {isa = PBXBuildFile; fileRef = 47546E4A1D5B14A700CAD6CF /* EnglishString.strings */; };
 		47815F7C1CB632370085275E /* CallAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47815F7B1CB632370085275E /* CallAlertViewController.m */; };
 		47E15D101C9902DB00D094A8 /* nickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E15D0E1C9902DB00D094A8 /* nickNameController.m */; };
 		47E15D111C9902DB00D094A8 /* nickNameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E15D0F1C9902DB00D094A8 /* nickNameController.xib */; };
@@ -369,6 +370,10 @@
 		3EF3BBE71C96BB40001BF5D2 /* ForgotPasswordCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordCtrl.xib; sourceTree = "<group>"; };
 		474393241D26658900C2F77C /* AboutUsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsController.h; sourceTree = "<group>"; };
 		474393251D26658900C2F77C /* AboutUsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsController.m; sourceTree = "<group>"; };
+		47546E3A1D5AD38900CAD6CF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		47546E3B1D5AD38900CAD6CF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		47546E4B1D5B14AC00CAD6CF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/EnglishString.strings"; sourceTree = "<group>"; };
+		47546E4C1D5B14AF00CAD6CF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EnglishString.strings; sourceTree = "<group>"; };
 		47815F7A1CB632370085275E /* CallAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallAlertViewController.h; sourceTree = "<group>"; };
 		47815F7B1CB632370085275E /* CallAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallAlertViewController.m; sourceTree = "<group>"; };
 		47E15D0D1C9902DB00D094A8 /* nickNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nickNameController.h; sourceTree = "<group>"; };
@@ -1473,6 +1478,7 @@
 				9F88F5BF1B45917A000BA054 /* Networking */,
 				9F88F5C01B45917A000BA054 /* View */,
 				9F88F5C11B45917A000BA054 /* ViewController */,
+				47546E4A1D5B14A700CAD6CF /* EnglishString.strings */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -2030,6 +2036,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				en,
+				"zh-Hans",
 			);
 			mainGroup = 9F88F5591B45873E000BA054;
 			productRefGroup = 9F88F5631B45873E000BA054 /* Products */;
@@ -2050,6 +2058,7 @@
 				3E956E261CAB6D51005DDF35 /* ShareCtrl.xib in Resources */,
 				9F59A3921B65071900C7B8D9 /* DeviceManagerViewController.xib in Resources */,
 				9F718F441B46DFB300E16298 /* LICENSE in Resources */,
+				47546E481D5B14A700CAD6CF /* EnglishString.strings in Resources */,
 				9F718F4B1B46E06F00E16298 /* LoginCtrl.xib in Resources */,
 				9F88F5711B45873E000BA054 /* Main.storyboard in Resources */,
 				9F718F511B46E14800E16298 /* RegisterCtrl.xib in Resources */,
@@ -2360,11 +2369,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		47546E4A1D5B14A700CAD6CF /* EnglishString.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				47546E4B1D5B14AC00CAD6CF /* zh-Hans */,
+				47546E4C1D5B14AF00CAD6CF /* en */,
+			);
+			name = EnglishString.strings;
+			sourceTree = "<group>";
+		};
 		9F88F56F1B45873E000BA054 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9F88F5701B45873E000BA054 /* Base */,
 				47E1CA591CA507820070FEE1 /* zh-Hans */,
+				47546E3A1D5AD38900CAD6CF /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -2374,6 +2393,7 @@
 			children = (
 				9F88F5751B45873E000BA054 /* Base */,
 				47E1CA5A1CA507820070FEE1 /* zh-Hans */,
+				47546E3B1D5AD38900CAD6CF /* en */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";

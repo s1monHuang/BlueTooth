@@ -10,6 +10,9 @@
 #import "OperateViewModel.h"
 
 @interface RegisterCtrl ()
+@property (weak, nonatomic) IBOutlet UILabel *accountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *securityLabel;
+@property (weak, nonatomic) IBOutlet UIButton *registerBtn;
 
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
