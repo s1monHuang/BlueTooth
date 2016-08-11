@@ -60,7 +60,7 @@
     [self.usernamebgbox addSubview:usericon];
     self.txtUserAccount = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
     
-    self.txtUserAccount.placeholder = @"请输入用户名";
+    self.txtUserAccount.placeholder = @"请输入邮箱";
     [self.usernamebgbox addSubview:self.txtUserAccount];
     
     

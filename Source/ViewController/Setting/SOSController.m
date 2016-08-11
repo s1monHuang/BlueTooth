@@ -63,7 +63,7 @@ static NSString *identifier = @"cell";
     [SOSChooseSegment addTarget:self action:@selector(chooseSOSWay:) forControlEvents:UIControlEventValueChanged];
     [bottomView addSubview:SOSChooseSegment];
     _SOSSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kScreenWidth - 64, 10, 44, 44)];
-    _SOSSwitch.onTintColor = KThemeGreenColor;
+//    _SOSSwitch.onTintColor = KThemeGreenColor;
     [_SOSSwitch setOn:[self sosSwtichStatus]];
     [_SOSSwitch addTarget:self action:@selector(openPreventLost:) forControlEvents:UIControlEventValueChanged];
     [bottomView addSubview:_SOSSwitch];

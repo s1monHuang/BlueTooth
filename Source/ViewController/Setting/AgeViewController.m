@@ -26,7 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"个人";
+    self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     self.ageArray = @[].mutableCopy;
@@ -46,7 +46,7 @@
     
     self.lblAgeValue = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120+28, 110, 20)];
     DLog(@"%ld",CurrentUser.age.length);
-    self.lblAgeValue.text = [CurrentUser.age isEqualToString:@"(null)"] ? @"1" : CurrentUser.age;
+    self.lblAgeValue.text = [CurrentUser.age isEqualToString:@"(null)"] ? @"18" : CurrentUser.age;
     self.lblAgeValue.font = [UIFont systemFontOfSize:18];
     self.lblAgeValue.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.lblAgeValue];
@@ -59,6 +59,7 @@
     self.pickerView.dataSource = self;
     self.pickerView.delegate = self;
     self.pickerView.backgroundColor = [UIColor whiteColor];
+    [self.pickerView selectRow:17 inComponent:0 animated:YES];
     [self.view addSubview:self.pickerView];
     
     if([CurrentUser.age integerValue] > 0){

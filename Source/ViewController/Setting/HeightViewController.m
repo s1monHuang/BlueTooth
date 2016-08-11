@@ -43,7 +43,7 @@
     CGFloat heightLabelX = CGRectGetMaxX(label.frame);
     UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX, labelY, 60, 40)];
     _heightLabel = heightLabel;
-    heightLabel.text = [CurrentUser.high isEqualToString:@"(null)"] ? @"170" : CurrentUser.high;
+    heightLabel.text = [CurrentUser.high isEqualToString:@"(null)"] ? @"100" : CurrentUser.high;
     heightLabel.font = [UIFont systemFontOfSize:25];
     heightLabel.textColor = KThemeGreenColor;
     [self.view addSubview:heightLabel];
@@ -138,7 +138,7 @@
     ZHRulerView *rulerView = [[ZHRulerView alloc] initWithMixNuber:55 maxNuber:245 showType:rulerViewshowVerticalType rulerMultiple:10];
     _rulerView = rulerView;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.high isEqualToString:@"(null)"] ? @"170" : CurrentUser.high integerValue];
+    rulerView.defaultVaule = [[CurrentUser.high isEqualToString:@"(null)"] ? @"100" : CurrentUser.high integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     

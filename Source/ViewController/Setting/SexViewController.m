@@ -80,6 +80,13 @@
         button.alpha = 0;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
+        
+        UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth, 50)];
+        [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+        [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
+        [self.view addSubview:btnPre];
     }
     
 }
@@ -94,6 +101,11 @@
        [[NSNotificationCenter defaultCenter] postNotificationName:sexIsChangeNotification object:sexValue];
     }
     [self PushToVC];
+}
+
+- (void)btnPreClick:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)btnMefaleClick:(id)sender

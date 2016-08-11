@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"步长";
+    self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
@@ -44,7 +44,7 @@
     CGFloat stepLabelX = CGRectGetMaxX(label.frame);
     UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 60, 40)];
     _stepLabel = stepLabel;
-    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong;
+    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"50" : CurrentUser.stepLong;
     stepLabel.font = [UIFont systemFontOfSize:25];
     stepLabel.textColor = KThemeGreenColor;
     [self.view addSubview:stepLabel];
@@ -153,7 +153,7 @@
     _rulerView = rulerView;
     rulerView.round = YES;
     rulerView.backgroundColor = [UIColor whiteColor];
-    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"70" : CurrentUser.stepLong integerValue];
+    rulerView.defaultVaule = [[CurrentUser.stepLong isEqualToString:@"(null)"] ? @"50" : CurrentUser.stepLong integerValue];
     rulerView.delegate = self;
     rulerView.frame = rulerFrame;
     

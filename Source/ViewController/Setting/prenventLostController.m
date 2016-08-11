@@ -72,7 +72,7 @@ static NSString *identifier = @"cell";
     label.font = [UIFont systemFontOfSize:16];
     [headerView addSubview:label];
     _lostSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kScreenWidth - 64, 8, 44, 44)];
-    _lostSwitch.onTintColor = KThemeGreenColor;
+//    _lostSwitch.onTintColor = KThemeGreenColor;
     [_lostSwitch setOn:[self lostSwtichStatus]];
     [_lostSwitch addTarget:self action:@selector(openPreventLost:) forControlEvents:UIControlEventValueChanged];
     [headerView addSubview:_lostSwitch];

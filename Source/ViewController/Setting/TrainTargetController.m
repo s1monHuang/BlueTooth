@@ -44,7 +44,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"每日运动目标";
+    self.title = @"我的资料";
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
     self.navigationItem.leftBarButtonItem.title = @"";
@@ -109,6 +109,13 @@
 //        _btnNext.alpha = 1;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
+        
+        UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth, 50)];
+        [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+        [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
+        [self.view addSubview:btnPre];
     }
     
 }
