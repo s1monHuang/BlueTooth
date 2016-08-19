@@ -930,10 +930,10 @@ static BluetoothManager *manager = nil;
     OperateViewModel *operateVM = [OperateViewModel viewModel];
     [operateVM saveStepData:[DBManager selectHistorySportData]];
     [operateVM saveSleepData:[DBManager selectHistorySleepData]];
-    NSString *str = [DBManager testSelectHistorySleepData];
-    NSString *Str = [DBManager selectHistorySportData];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"历史睡眠数据" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    [alert show];
+//    NSString *str = [DBManager testSelectHistorySleepData];
+//    NSString *Str = [DBManager selectHistorySportData];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"历史睡眠数据" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//    [alert show];
 //    UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"历史运动数据" message:Str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
 //    [alert1 show];
     

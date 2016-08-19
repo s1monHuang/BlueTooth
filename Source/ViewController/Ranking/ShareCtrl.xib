@@ -16,6 +16,7 @@
                 <outlet property="shareWechatButton" destination="kPD-jz-2Dh" id="1PB-Fq-s1e"/>
                 <outlet property="shareWechatFriendButton" destination="Nom-M5-iSZ" id="t57-Vk-IJZ"/>
                 <outlet property="shareWeiboButton" destination="oEe-NV-eik" id="LGC-xr-q0Z"/>
+                <outlet property="showLabel" destination="PhK-FJ-2SN" id="kzz-t3-ujk"/>
                 <outlet property="stepDetailLabel" destination="5l5-zh-7qR" id="PPx-BU-b9C"/>
                 <outlet property="stepLabel" destination="16v-NV-b8Y" id="Khh-ut-x5W"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Z6f-mi-Das"/>

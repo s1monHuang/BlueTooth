@@ -110,13 +110,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"智能闹钟";
+    self.title = NSLocalizedString(@"智能闹钟", nil);
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     _tableView.allowsSelection = NO;
     [self.tableView setTableFooterView:[UIView new]];
     
-    self.dataArray = @[@"闹钟",@"时间",@"提醒间隔",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六",@"星期天"];
+    self.dataArray = @[NSLocalizedString(@"闹钟", nil),NSLocalizedString(@"时间", nil),NSLocalizedString(@"提醒间隔", nil),NSLocalizedString(@"星期一", nil),NSLocalizedString(@"星期二", nil),NSLocalizedString(@"星期三", nil),NSLocalizedString(@"星期四", nil),NSLocalizedString(@"星期五", nil),NSLocalizedString(@"星期六", nil),NSLocalizedString(@"星期天", nil)];
     // 返回按钮
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setFrame:CGRectMake(0, 0, 30, 44)];
@@ -154,11 +154,11 @@
     
      _frequencyLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 0, 60, 44)];
     if (_changeModel.clockInterval) {
-      _frequencyLabel.text = [NSString stringWithFormat:@"%ld分钟",_changeModel.clockInterval];
+      _frequencyLabel.text = [NSString stringWithFormat:@"%ld%@",_changeModel.clockInterval,NSLocalizedString(@"分钟", nil)];
         _frequencyStr = _frequencyLabel.text;
     }else{
-        _frequencyStr =  @"30分钟";
-       _frequencyLabel.text = @"30分钟";
+        _frequencyStr =  [NSString stringWithFormat:@"30%@",NSLocalizedString(@"分钟", nil)];
+       _frequencyLabel.text = [NSString stringWithFormat:@"30%@",NSLocalizedString(@"分钟", nil)];
     }
     
     
@@ -192,7 +192,7 @@
                                                          0,
                                                          50,
                                                          30)];
-    [button setTitle:@"确定" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"确定", nil) forState:UIControlStateNormal];
     [button addTarget:self
                 action:@selector(clickButton:)
       forControlEvents:UIControlEventTouchUpInside];
@@ -383,7 +383,7 @@
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
     _toolBar = toolBar;
     toolBar.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"确定", nil) style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
     UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     toolBar.items = @[placeItem, cancelItem];
     [_coverView addSubview:_toolBar];
@@ -407,7 +407,7 @@
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
     _toolBar = toolBar;
     toolBar.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"确定", nil) style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
     UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     toolBar.items = @[placeItem, cancelItem];
     [_coverView addSubview:_toolBar];
@@ -447,7 +447,7 @@
         _timeLabel.text = _timeStr;
     }else{
         if (!_frequencyStr) {
-            _frequencyStr = @"30分钟";
+            _frequencyStr = [NSString stringWithFormat:@"30%@",NSLocalizedString(@"分钟", nil)];;
         }
         _frequencyLabel.text = _frequencyStr;
     }
@@ -530,7 +530,7 @@
 {
     //获取对应列，对应行的数据
     if (pickerView == self.miniPickerView) {
-        NSString *time = [NSString stringWithFormat:@"%@分钟",_miniArray[row]];
+        NSString *time = [NSString stringWithFormat:@"%@%@",_miniArray[row],NSLocalizedString(@"分钟", nil)];
         _frequencyStr = time;
     }else{
         NSString *hour;
@@ -597,7 +597,7 @@
 
 - (void)setBasicInfomationSuccess:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
-    [MBProgressHUD showHUDByContent:@"保存成功" view:UI_Window afterDelay:1];
+    [MBProgressHUD showHUDByContent:NSLocalizedString(@"保存成功", nil) view:UI_Window afterDelay:1];
     BOOL change = [DBManager insertOrReplaceBasicInfomation:_changeModel];
     if (!change) {
         DLog(@"存储闹钟失败");

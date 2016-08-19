@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"我的资料";
+    self.title = NSLocalizedString(@"我的资料", nil);
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
@@ -38,7 +38,7 @@
     CGFloat labelX = self.view.width / 2 - tempX;
     CGFloat labelY = 30;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
-    label.text = @"步长";
+    label.text = NSLocalizedString(@"步长", nil);
     [self.view addSubview:label];
     
     CGFloat stepLabelX = CGRectGetMaxX(label.frame);
@@ -73,7 +73,7 @@
      forControlEvents:UIControlEventTouchUpInside];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-    button.accessibilityLabel = @"返回";
+    button.accessibilityLabel = NSLocalizedString(@"返回", nil);
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -93,14 +93,14 @@
         
         UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
         [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-        [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+        [btnPre setTitle:NSLocalizedString(@"上一步", nil) forState:UIControlStateNormal];
         [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
         [self.view addSubview:btnPre];
         
         UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
         [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
-        [btnNext setTitle:@"下一步" forState:UIControlStateNormal];
+        [btnNext setTitle:NSLocalizedString(@"下一步", nil) forState:UIControlStateNormal];
         [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
         [self.view addSubview:btnNext];
@@ -110,12 +110,12 @@
                                                                            30,
                                                                            44)];
         [rightButton setTitle:
-         @"完成"forState:UIControlStateNormal];
+         NSLocalizedString(@"完成", nil) forState:UIControlStateNormal];
         [rightButton addTarget:self
                         action:@selector(PushToVC)
               forControlEvents:UIControlEventTouchUpInside];
         rightButton.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-        rightButton.accessibilityLabel = @"完成";
+        rightButton.accessibilityLabel = NSLocalizedString(@"完成", nil);
         UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
         self.navigationItem.rightBarButtonItem = rightBarButton;
     }

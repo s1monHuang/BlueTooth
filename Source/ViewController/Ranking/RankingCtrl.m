@@ -33,7 +33,7 @@
     // Do any additional setup after loading the view from its nib.
     
     
-    self.title = @"排名";
+    self.title = NSLocalizedString(@"排名", nil);
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [[OperateViewModel alloc] init];
 //    [self getRankData];
@@ -115,7 +115,7 @@
         }else
         {
             [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"排名信息获取失败" message:nil delegate:blockSelf cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"排名信息获取失败", nil) message:nil delegate:blockSelf cancelButtonTitle:NSLocalizedString(@"确定", nil) otherButtonTitles:nil, nil];
             [alert show];
         }
     };
@@ -160,10 +160,10 @@
     NSString *title = nil;
     if(section == 0)
     {
-        title = @"我的排名";
+        title = NSLocalizedString(@"我的排名", nil);
     }else
     {
-        title = @"当前排名";
+        title = NSLocalizedString(@"当前排名", nil);
     }
     
     return title;

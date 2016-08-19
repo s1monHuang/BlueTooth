@@ -26,7 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"社交";
+    self.title = NSLocalizedString(@"社交", nil);
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [[OperateViewModel alloc] init];
     
@@ -79,10 +79,10 @@
     NSString *title = nil;
     if(section == 0)
     {
-        title = @"我的分享码";
+        title = NSLocalizedString(@"我的分享码", nil);
     }else
     {
-        title = @"添加好友";
+        title = NSLocalizedString(@"添加好友", nil);
     }
     
     return title;
@@ -116,7 +116,7 @@
         [cell.contentView addSubview:lblUserName];
         
         UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 52, 60, 20)];
-        lblShareNumber.text = @"分享码:";
+        lblShareNumber.text = NSLocalizedString(@"分享码:", nil);
         lblShareNumber.font = [UIFont boldSystemFontOfSize:16];
         lblShareNumber.textAlignment = NSTextAlignmentLeft;
         lblShareNumber.textColor = [UIColor blackColor];
@@ -132,7 +132,7 @@
         lineView.backgroundColor = [UIColor grayColor];
         [cell.contentView addSubview:lineView];
         
-        NSString *text = @"分享 (点击复制分享码)";
+        NSString *text = NSLocalizedString(@"分享 (点击复制分享码)", nil);
         
         CGSize textSize = [text sizeWithFont:[UIFont boldSystemFontOfSize:13.0f] constrainedToSize:CGSizeMake(ScreenWidth, 15)];
         
@@ -151,7 +151,7 @@
     }else{
         
         UILabel *lbltiqutext = [[UILabel alloc] initWithFrame:CGRectMake(10, 35, 60, 20)];
-        lbltiqutext.text = @"提取码";
+        lbltiqutext.text = NSLocalizedString(@"提取码", nil);
         lbltiqutext.font = [UIFont boldSystemFontOfSize:16];
         lbltiqutext.textAlignment = NSTextAlignmentLeft;
         lbltiqutext.textColor = [UIColor blackColor];
@@ -165,7 +165,7 @@
         
         UIButton *btnAddShare = [[UIButton alloc] initWithFrame:CGRectMake(txtqueryCode.x+txtqueryCode.width+10, 32, 75, 30)];
         [btnAddShare setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [btnAddShare setTitle:@"添加" forState:UIControlStateNormal];
+        [btnAddShare setTitle:NSLocalizedString(@"添加", nil) forState:UIControlStateNormal];
         [btnAddShare setBackgroundImage:[UIImage imageNamed:@"share_button"] forState:UIControlStateNormal];
         [btnAddShare addTarget:self action:@selector(relateUserInfo) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:btnAddShare];
@@ -182,7 +182,7 @@
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     [pasteboard setString:CurrentUser.inviteCode];
-    [MBProgressHUD showHUDByContent:@"分享码已复制" view:UI_Window afterDelay:2];
+    [MBProgressHUD showHUDByContent:NSLocalizedString(@"分享码已复制", nil) view:UI_Window afterDelay:2];
 }
 
 - (void)relateUserInfo
@@ -199,7 +199,7 @@
                 [blockSelf.navigationController popViewControllerAnimated:YES];
             });
         }else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取排名失败，请重试" delegate:blockSelf cancelButtonTitle:@"取消" otherButtonTitles:@"重试", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"获取排名失败，请重试", nil) delegate:blockSelf cancelButtonTitle:NSLocalizedString(@"取消", nil) otherButtonTitles:NSLocalizedString(@"重试", nil), nil];
             [alert show];
         }
             

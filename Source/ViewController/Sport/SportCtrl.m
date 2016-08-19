@@ -75,7 +75,7 @@
     
     _operateVM = [OperateViewModel viewModel];
     
-    self.title = @"运动";
+    self.title = [NSString stringWithFormat:@"%@",NSLocalizedString(@"运动", nil)];
     self.view.backgroundColor = kThemeGrayColor;
     NSArray *tempIconArray = @[@"pic-foot",@"pic-distance",@"pic-fire"];
     
@@ -154,7 +154,7 @@
     
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
-    completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
+    completionRate = [NSString stringWithFormat:@"%@%@%%",NSLocalizedString(@"完成", nil),_sportModel?completionRate:@(0).stringValue];
     
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
     
@@ -174,10 +174,10 @@
     
     _totalStep = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 60 - 22*2)/2+35*2+10,tempView.frame.size.width, 20)];
     if (_stepCount) {
-        NSString *target = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
+        NSString *target = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"目标", nil),@(_stepCount).stringValue];
         _totalStep.text = target;
     }else{
-        _totalStep.text = @"目标 10000";
+        _totalStep.text = [NSString stringWithFormat:@"%@ 10000",NSLocalizedString(@"目标", nil)];
     }
     
     _totalStep.textAlignment = NSTextAlignmentCenter;
@@ -210,7 +210,7 @@
     UILabel *lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(18, 20+22+10, oneBoxWidth-15, 30)];
     lblBoxoneText.textAlignment = NSTextAlignmentLeft;
     lblBoxoneText.font = [UIFont systemFontOfSize:10];
-    lblBoxoneText.text = @"当天步数(步)";
+    lblBoxoneText.text = [NSString stringWithFormat:@"%@",NSLocalizedString(@"当天步数(步)", nil)];
     lblBoxoneText.numberOfLines = 0;
     [threeBox addSubview:lblBoxoneText];
     [self imageViewWithLabelCount:0 imageName:tempIconArray[0]];
@@ -225,7 +225,7 @@
     UILabel *lblBoxtwoText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth+18, 20+22+10, oneBoxWidth-15, 30)];
     lblBoxtwoText.textAlignment = NSTextAlignmentLeft;
     lblBoxtwoText.font = [UIFont systemFontOfSize:10];
-    lblBoxtwoText.text = @"活动距离(km)";
+    lblBoxtwoText.text = [NSString stringWithFormat:@"%@(km)",NSLocalizedString(@"活动距离", nil)];
     lblBoxtwoText.numberOfLines = 0;
     [threeBox addSubview:lblBoxtwoText];
     [self imageViewWithLabelCount:1 imageName:tempIconArray[1]];
@@ -239,7 +239,7 @@
     UILabel *lblBoxthreeText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*2+18, 20+22+10, oneBoxWidth-15, 30)];
     lblBoxthreeText.textAlignment = NSTextAlignmentLeft;
     lblBoxthreeText.font = [UIFont systemFontOfSize:10];
-    lblBoxthreeText.text = @"消耗能量(kCal)";
+    lblBoxthreeText.text = [NSString stringWithFormat:@"%@(kCal)",NSLocalizedString(@"消耗能量", nil)];
     lblBoxthreeText.numberOfLines = 0;
     [threeBox addSubview:lblBoxthreeText];
     [self imageViewWithLabelCount:2 imageName:tempIconArray[2]];
@@ -254,7 +254,7 @@
     UILabel *lblBoxFourText = [[UILabel alloc] initWithFrame:CGRectMake(oneBoxWidth*3+18, 20+22+10, oneBoxWidth, 30)];
     lblBoxFourText.textAlignment = NSTextAlignmentLeft;
     lblBoxFourText.font = [UIFont systemFontOfSize:10];
-    lblBoxFourText.text = @"脂肪燃烧(g)";
+    lblBoxFourText.text = [NSString stringWithFormat:@"%@(g)",NSLocalizedString(@"脂肪燃烧", nil)];
     lblBoxFourText.numberOfLines = 0;
     [threeBox addSubview:lblBoxFourText];
     [self imageViewWithLabelCount:3 imageName:tempIconArray[2]];
@@ -324,12 +324,12 @@
 
 - (void)changeStepCount:(NSNotification *)sender
 {
-    _totalStep.text = [NSString stringWithFormat:@"目标 %@",sender.object];
+    _totalStep.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"完成", nil),sender.object];
     _stepCount = [sender.object integerValue];
     
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSString *completionRate = [NSString stringWithFormat:@"%0.lf",completionRateFloat];
-    completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
+    completionRate = [NSString stringWithFormat:@"%@%@%%",NSLocalizedString(@"完成", nil),_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
 }
@@ -353,11 +353,11 @@
 - (void)refreshSportData {
     //没有绑定设备
     if (![BluetoothManager getBindingPeripheralUUID]) {
-        [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:NSLocalizedString(@"您尚未绑定设备", nil) view:UI_Window afterDelay:1.5];
         return;
     }
     if (![[BluetoothManager share] isExistCharacteristic]) {
-        [MBProgressHUD showHUDByContent:@"设备自动连接中，请稍后" view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:NSLocalizedString(@"设备自动连接中，请稍后", nil) view:UI_Window afterDelay:1.5];
         return;
     }
     _isLoading = YES;
@@ -376,7 +376,7 @@
 - (void)refreshSportDataError:(NSNotification *)notification {
     _isLoading = NO;
     _refreshBututton.userInteractionEnabled = YES;
-    [MBProgressHUD showHUDByContent:@"同步失败" view:UI_Window afterDelay:1.5];
+    [MBProgressHUD showHUDByContent:NSLocalizedString(@"同步失败", nil) view:UI_Window afterDelay:1.5];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [_refreshBututton.layer removeAllAnimations];
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
@@ -401,15 +401,15 @@
     CGFloat completionRateFloat = _stepCount == 0?_sportModel.step / 10000.0 * 100:_sportModel.step / (double)_stepCount * 100;
     NSInteger compeleteRate = (NSInteger)(completionRateFloat) / 1;
     NSString *completionRate = [NSString stringWithFormat:@"%ld",compeleteRate];
-    completionRate = [NSString stringWithFormat:@"完成%@%%",_sportModel?completionRate:@(0).stringValue];
+    completionRate = [NSString stringWithFormat:@"%@%@%%",NSLocalizedString(@"完成", nil),_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     
     _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
     if (_stepCount) {
-        NSString *target = [NSString stringWithFormat:@"目标 %@",@(_stepCount).stringValue];
+        NSString *target = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"目标", nil),@(_stepCount).stringValue];
         _totalStep.text = target;
     }else{
-        _totalStep.text = @"目标 10000";
+        _totalStep.text = [NSString stringWithFormat:@"%@ 10000",NSLocalizedString(@"目标", nil)];
     }
     
     [_circleChart updateChartByCurrent:@(completionRateFloat)];
@@ -446,7 +446,7 @@
 - (void)removeDevice {
     [_circleChart updateChartByCurrent:@(0)];
     
-    NSString *completionRate = [NSString stringWithFormat:@"完成0%%"];
+    NSString *completionRate = [NSString stringWithFormat:@"%@0%%",NSLocalizedString(@"完成", nil)];
     _complateValue.text = completionRate;
     _complateStep.text = @"0";
     

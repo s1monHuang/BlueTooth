@@ -93,6 +93,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
 
 @property (nonatomic , assign) HistoryDataType HistoryData;
 
+@property (nonatomic , assign) BOOL isEnglish;
+
 @end
 
 @implementation HistoryDataViewController
@@ -117,7 +119,9 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"数据中心";
+    _isEnglish = [self systemLanguageIsEnglish];
+    
+    self.title = NSLocalizedString(@"数据中心", nil);
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
     self.operateVM1 = [OperateViewModel viewModel];
@@ -148,6 +152,8 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     [self setUpStepView];
     //睡眠时间
     [self setUpSleepView];
+    
+    
 }
 
 - (void)setUpRightBarButtonItem
@@ -210,7 +216,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarY, kScreenWidth, 50)];
     _toolBar = toolBar;
     toolBar.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"确定", nil) style:UIBarButtonItemStylePlain target:self action:@selector(removeCoverView)];
     cancelItem.tintColor = KThemeGreenColor;
     UIBarButtonItem *placeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     toolBar.items = @[placeItem, cancelItem];
@@ -238,7 +244,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
 
 - (void)setUpBtn
 {
-    NSArray *arr = [[NSArray alloc]initWithObjects:@"运动历史记录",@"睡眠历史记录", nil];
+    NSArray *arr = [[NSArray alloc]initWithObjects:NSLocalizedString(@"运动历史记录", nil),NSLocalizedString(@"睡眠历史记录", nil), nil];
     UISegmentedControl *segmentedControl = [ [ UISegmentedControl alloc ]
                                             initWithItems:arr];
     _segmentedControl = segmentedControl;
@@ -253,7 +259,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     CGFloat btnWidth = (kScreenWidth - 120) / 3;
     //日按钮
     _dayBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 60, btnWidth, 50)];
-    [_dayBtn setTitle:@"日" forState:UIControlStateNormal];
+    [_dayBtn setTitle:NSLocalizedString(@"日", nil) forState:UIControlStateNormal];
     [_dayBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_dayBtn addTarget:self action:@selector(dayBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_dayBtn];
@@ -271,14 +277,14 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     
     //周按钮
     _weekBtn = [[UIButton alloc] initWithFrame:CGRectMake(60 + btnWidth, 60, btnWidth, 50)];
-    [_weekBtn setTitle:@"周" forState:UIControlStateNormal];
+    [_weekBtn setTitle:NSLocalizedString(@"周", nil) forState:UIControlStateNormal];
     [_weekBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_weekBtn addTarget:self action:@selector(weekBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_weekBtn];
     
     //月按钮
     _monthBtn = [[UIButton alloc] initWithFrame:CGRectMake(100 + 2 * btnWidth, 60, btnWidth, 50)];
-    [_monthBtn setTitle:@"月" forState:UIControlStateNormal];
+    [_monthBtn setTitle:NSLocalizedString(@"月", nil) forState:UIControlStateNormal];
     [_monthBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_monthBtn addTarget:self action:@selector(monthBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_monthBtn];
@@ -299,7 +305,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, centerView.width / 2 - 10, 100, 30)];
     _stepLabel = stepLabel;
     stepLabel.textAlignment = NSTextAlignmentCenter;
-    stepLabel.text = [NSString stringWithFormat:@"%ld步",self.dayStepCount];
+    stepLabel.text = [NSString stringWithFormat:@"%ld%@",self.dayStepCount,NSLocalizedString(@"步", nil)];
     [centerView addSubview:stepLabel];
     
     CGFloat bottomViewW = (kScreenWidth - 20) / 3;
@@ -336,13 +342,13 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     _bottomDistanceLabel = bottomDistanceLabel;
     
     NSArray *tempIconArray = @[@"pic-foot",@"pic-distance",@"pic-fire"];
-    NSArray *tempTitleArray = @[@"步数(步)",@"活动距离(km)",@"消耗能量(kCal)"];
+    NSArray *tempTitleArray = @[NSLocalizedString(@"步数(步)", nil),[NSString  stringWithFormat:@"%@(km)",NSLocalizedString(@"活动距离", nil)],[NSString  stringWithFormat:@"%@(kCal)",NSLocalizedString(@"消耗能量", nil)]];
     
     for (NSInteger i = 0; i < 3; i++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5 + i *bottomViewW, 35, 15, 15)];
         imageView.image = [UIImage imageNamed:tempIconArray[i]];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25 + i *bottomViewW, 35, bottomViewW - 25, 20)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25 + i *bottomViewW, 35, bottomViewW - 20, 20)];
         label.font = [UIFont systemFontOfSize:11];
         label.text = tempTitleArray[i];
         label.textAlignment = NSTextAlignmentCenter;
@@ -391,7 +397,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     [_circleChart addSubview:tempView];
     
     UILabel *sleepTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2,tempView.frame.size.width, 20)];
-    sleepTimeText.text = @"睡眠时长";
+    sleepTimeText.text = NSLocalizedString(@"睡眠时长", nil);
     sleepTimeText.textAlignment = NSTextAlignmentCenter;
     sleepTimeText.textColor = [UIColor grayColor];
     [tempView addSubview:sleepTimeText];
@@ -497,7 +503,7 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     }
     CGFloat distance = (showStepData * [CurrentUser.stepLong floatValue] ) / 100000;
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _stepLabel.text = [NSString stringWithFormat:@"%ld步",showStepData];
+    _stepLabel.text = [NSString stringWithFormat:@"%ld%@",showStepData,NSLocalizedString(@"步", nil)];
     _bottomStepLabel.text = [NSString stringWithFormat:@"%ld",showStepData];
     _bottomDistanceLabel.text = [NSString stringWithFormat:@"%.2lf",distance];
     _bottomEnergyLabel.text = [NSString stringWithFormat:@"%.2lf",(long)(fireEnergy*100)/100.0];
@@ -539,23 +545,35 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     }else if ((showSsmData + showQsmData) >= 1000){
         count = 4;
     }
+    NSInteger longcount = 0;
+    NSInteger deepCount = 0;
+    NSInteger lightCount = 0;
+    if (_isEnglish) {
+        longcount = 4;
+        deepCount = 5;
+        lightCount = 6;
+    }else{
+        count = 2;
+        deepCount = 3;
+        lightCount = 3;
+    }
     NSRange sleepHourRange = NSMakeRange(0, count);
-    NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + 2, 2);
-    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时00分钟",@((showSsmData + showQsmData)).stringValue]];
+    NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + longcount, 2);
+    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@00%@",@((showSsmData + showQsmData)).stringValue,NSLocalizedString(@"小时", nil),NSLocalizedString(@"分钟", nil)]];
     [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
                               range:sleepHourRange];
     [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
                               range:sleepMinuteRagne];
     _sleepTimeValue.attributedText = sleepValueString;
     
-    NSRange deepSleepRange = NSMakeRange(0, 3);
-    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★深睡%@小时00分钟",@(showSsmData).stringValue]];
+    NSRange deepSleepRange = NSMakeRange(0, deepCount);
+    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★%@%@%@00%@",NSLocalizedString(@"深睡", nil),@(showSsmData).stringValue,NSLocalizedString(@"小时", nil),NSLocalizedString(@"分钟", nil)]];
     [deepSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#1b6cff"]}
                                   range:deepSleepRange];
     _ssleepTimeValue.attributedText = deepSleepValueString;
     
-    NSRange shallowSleepRange = NSMakeRange(0, 3);
-    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆浅睡%@小时00分钟",@(showQsmData).stringValue]];
+    NSRange shallowSleepRange = NSMakeRange(0, lightCount);
+    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆%@%@%@00%@",NSLocalizedString(@"浅睡", nil),@(showQsmData).stringValue,NSLocalizedString(@"小时", nil),NSLocalizedString(@"分钟", nil)]];
     [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
                                      range:shallowSleepRange];
     _qsleepTimeValue.attributedText = shallowSleepValueString;
@@ -794,6 +812,20 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
                 
             }
         };
+    }
+    
+}
+
+
+- (BOOL)systemLanguageIsEnglish
+{
+    //获取系统当前语言版本（中文zh-Hans,英文en)
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage isEqualToString:@"en-CN"]) {
+        return YES;
+    }else{
+        return NO;
     }
     
 }

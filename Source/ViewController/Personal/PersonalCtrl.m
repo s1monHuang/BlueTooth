@@ -50,7 +50,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"个人";
+    self.title = NSLocalizedString(@"个人", nil);
     self.view.backgroundColor = kThemeGrayColor;
     UIButton *unDownloadBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [unDownloadBtn setImage:[UIImage imageNamed:@"exit"] forState:UIControlStateNormal];
@@ -60,7 +60,7 @@
     
     
     imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter"];
-    dataArray = [[NSArray alloc] initWithObjects:@"我的资料",@"运动目标",@"久坐提醒",@"智能闹钟",@"来电提醒",@"防丢提醒",@"一键求救",@"设备管理", @"关于我们",@"数据中心",nil];
+    dataArray = [[NSArray alloc] initWithObjects:NSLocalizedString(@"我的资料", nil),NSLocalizedString(@"运动目标", nil),NSLocalizedString(@"久坐提醒", nil),NSLocalizedString(@"智能闹钟", nil),NSLocalizedString(@"来电提醒", nil),NSLocalizedString(@"防丢提醒", nil),NSLocalizedString(@"一键求救", nil),NSLocalizedString(@"设备管理", nil), NSLocalizedString(@"关于我们", nil),NSLocalizedString(@"数据中心", nil),nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
@@ -107,7 +107,7 @@
 
 - (void)exitDownload
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"是否退出登录" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"是否退出登录", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"取消", nil) otherButtonTitles:NSLocalizedString(@"确定", nil), nil];
     [alert show];
 }
 

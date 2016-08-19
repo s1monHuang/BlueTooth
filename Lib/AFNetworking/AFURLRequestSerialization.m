@@ -352,13 +352,17 @@ forHTTPHeaderField:(NSString *)field
 {
     NSParameterAssert(method);
     NSParameterAssert(URLString);
-
+    
     NSURL *url = [NSURL URLWithString:URLString];
 
     NSParameterAssert(url);
 
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:url];
     mutableRequest.HTTPMethod = method;
+    //设置请求头
+    if ([self systemLanguageIsEnglish]) {
+        [mutableRequest setValue:@"1" forHTTPHeaderField:@"yuyan"];
+    }
 
     for (NSString *keyPath in AFHTTPRequestSerializerObservedKeyPaths()) {
         if ([self.mutableObservedChangedKeyPaths containsObject:keyPath]) {
@@ -369,6 +373,19 @@ forHTTPHeaderField:(NSString *)field
     mutableRequest = [[self requestBySerializingRequest:mutableRequest withParameters:parameters error:error] mutableCopy];
 
 	return mutableRequest;
+}
+
+- (BOOL)systemLanguageIsEnglish
+{
+    //获取系统当前语言版本（中文zh-Hans,英文en)
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage isEqualToString:@"en-CN"]) {
+        return YES;
+    }else{
+        return NO;
+    }
+    
 }
 
 - (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method

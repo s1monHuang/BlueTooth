@@ -44,7 +44,8 @@
 
 - (AFHTTPResponseSerializer *)createResponseSerializer
 {
-    return [AppResponseSerializer serializer];
+    AFHTTPResponseSerializer * ResponseSerializer = [AppResponseSerializer serializer];
+    return ResponseSerializer;
 }
 
 - (NSDictionary *)appendHeaderParams:(NSDictionary *)params
@@ -82,17 +83,25 @@
 //    [self cancelRequest];
     
     AFHTTPRequestSerializer <AFURLRequestSerialization> * requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    //设置请求头
+    if ([self systemLanguageIsEnglish]) {
+        [requestSerializer setValue:@"1" forHTTPHeaderField:@"yuyan"];
+    }
+    
     requestSerializer.timeoutInterval = timeOut > 0 ? timeOut : kSVRDefaultTimeout;
     
     parameters = [self appendHeaderParams:parameters];
     NSString *urlPath = [NSString stringWithFormat:@"%@/%@", host, path];
+    
     NSMutableURLRequest *request = [requestSerializer requestWithMethod:(isPost ? @"GET" : @"GET") URLString:[[NSURL URLWithString:urlPath] absoluteString] parameters:parameters error:nil];
+    
     self.afRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
     self.afRequestOperation.responseSerializer = [self createResponseSerializer];
     
     DLog(@"\nHTTP Requesting === %@, %@", [request.URL absoluteString] , parameters);
     [self.afRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //DLog(@"\nHTTP Request success === %@ , %@ \n Response === %@ ", urlPath, parameters , [[responseObject description] logUTF8String]);
         DLog(@"^^^^^^^^^^%@",responseObject[@"retMsg"]);
         if(callBackBlock) callBackBlock(YES, responseObject, nil);
     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -120,6 +129,10 @@
     
     NSString *urlPath = [NSString stringWithFormat:@"%@/%@", host, path];
     
+    //设置请求头
+    if ([self systemLanguageIsEnglish]) {
+        [requestSerializer setValue:@"1" forHTTPHeaderField:@"yuyan"];
+    }
     NSMutableURLRequest *request = [requestSerializer multipartFormRequestWithMethod:@"POST" URLString:urlPath parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if ([data isKindOfClass:[NSString class]]) {
             DLog(@"post muti filePath:%@",data);
@@ -136,7 +149,6 @@
     
     DLog(@"\nHTTP Requesting === %@, %@", [request.URL absoluteString] , parameters);
     [self.afRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //DLog(@"\nHTTP Request success === %@ , %@ \n Response === %@ ", urlPath, parameters , [[responseObject description] logUTF8String]);
         
         if (Dictionary(responseObject)) {
             if (responseObject[@"returnRoot"][@"resultCode"] && ([responseObject[@"returnRoot"][@"resultCode"] integerValue] == 0))
@@ -156,6 +168,34 @@
     
     [self.afRequestOperation start];
 }
+
+- (BOOL)systemLanguageIsEnglish
+{
+    //获取系统当前语言版本（中文zh-Hans,英文en)
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage isEqualToString:@"en-CN"]) {
+        return YES;
+    }else{
+        return NO;
+    }
+
+}
+
+//- (void)sethettpHeader
+//{
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+//    
+//    [request setHTTPMethod:@"GET"];
+//    [request setValue:kTParamObject.authorization forHTTPHeaderField:@"Authorization"];
+//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//    }];
+//    [operation start];
+//}
 
 
 

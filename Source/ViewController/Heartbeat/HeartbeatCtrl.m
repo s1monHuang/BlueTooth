@@ -25,7 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"心率";
+    self.title = NSLocalizedString(@"心率", nil);
     self.view.backgroundColor = kThemeGrayColor;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -44,7 +44,7 @@
                                                object:nil];
     
     _lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 40, 30)];
-    _lblHeartBeatNumber.text = @"0次/分钟";
+    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"0%@",NSLocalizedString(@"次/分钟", nil)];
     _lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:30];
     _lblHeartBeatNumber.textAlignment = NSTextAlignmentCenter;
     _lblHeartBeatNumber.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
@@ -81,7 +81,7 @@
                                                                               50)];
     remindTextView.backgroundColor = [UIColor clearColor];
     remindTextView.font = [UIFont systemFontOfSize:16];
-    remindTextView.text = @"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.";
+    remindTextView.text = NSLocalizedString(@"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.", nil);
     remindTextView.numberOfLines = 0;
     [self.view addSubview:remindTextView];
 
@@ -89,7 +89,7 @@
                                                                   0,
                                                                   50,
                                                                   30)];
-    [_button setTitle:@"开始" forState:UIControlStateNormal];
+    [_button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
     [_button addTarget:self
                action:@selector(clickButton:)
      forControlEvents:UIControlEventTouchUpInside];
@@ -107,22 +107,22 @@
 - (void)clickButton:(UIButton *)button {
     //没有绑定设备
     if (![BluetoothManager getBindingPeripheralUUID]) {
-        [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:NSLocalizedString(@"您尚未绑定设备", nil) view:UI_Window afterDelay:1.5];
         return;
     }
     if (![[BluetoothManager share] isExistCharacteristic]) {
-        [MBProgressHUD showHUDByContent:@"设备自动连接中，请稍后" view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:NSLocalizedString(@"设备自动连接中，请稍后", nil) view:UI_Window afterDelay:1.5];
         return;
     }
     if (button.selected) {
-        [button setTitle:@"开始" forState:UIControlStateNormal];
+        [button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
         [[BluetoothManager share] closeReadHeartRate];
         [MBProgressHUD hideHUDForView:self.view
                              animated:YES];
     } else {
-        [button setTitle:@"取消" forState:UIControlStateNormal];
+        [button setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateNormal];
         [[BluetoothManager share] readHeartRate];
-        [MBProgressHUD showHUDByContent:@"测定心率中…"
+        [MBProgressHUD showHUDByContent:NSLocalizedString(@"测定心率中…", nil)
                                    view:self.view
                              afterDelay:INT_MAX];
     }
@@ -130,17 +130,17 @@
 }
 
 - (void)readHeartRateSuccess {
-    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@次/分钟",@([BluetoothManager share].heartRate).stringValue];
+    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,NSLocalizedString(@"次/分钟", nil)];
 }
 
 - (void)readHeartRateFinished {
-    [_button setTitle:@"开始" forState:UIControlStateNormal];
+    [_button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
 }
 
 - (void)disConnectPeripheral {
-    [_button setTitle:@"开始" forState:UIControlStateNormal];
+    [_button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
 }

@@ -30,7 +30,7 @@ static NSString *identifier = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"防丢提醒";
+    self.title = NSLocalizedString(@"防丢提醒", nil);
     self.view.backgroundColor = kThemeGrayColor;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44 * 4)];
@@ -40,7 +40,7 @@ static NSString *identifier = @"cell";
     
     [self.view addSubview:_tableView];
     [self setUpHeaderView];
-    _distanceArray = @[@"近距离",@"中距离",@"远距离"];
+    _distanceArray = @[NSLocalizedString(@"近距离", nil),NSLocalizedString(@"中距离", nil),NSLocalizedString(@"远距离", nil)];
     _selectedRow = [self selectedDistance];
 }
 
@@ -67,8 +67,8 @@ static NSString *identifier = @"cell";
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
     _tableView.tableHeaderView = headerView;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 44)];
-    label.text = @"防丢提醒";
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 180, 44)];
+    label.text = NSLocalizedString(@"防丢提醒", nil);
     label.font = [UIFont systemFontOfSize:16];
     [headerView addSubview:label];
     _lostSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kScreenWidth - 64, 8, 44, 44)];

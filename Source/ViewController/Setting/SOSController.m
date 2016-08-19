@@ -32,7 +32,7 @@ static NSString *identifier = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"一键求救";
+    self.title = NSLocalizedString(@"一键求救", nil);
     self.view.backgroundColor = kThemeGrayColor;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44 * 3)];
@@ -43,7 +43,7 @@ static NSString *identifier = @"cell";
     
     [self.view addSubview:_tableView];
     [self setUpBottomView];
-    _distanceArray = @[@"是否开启求救",@"请输入电话号码:"];
+    _distanceArray = @[NSLocalizedString(@"是否开启求救", nil),NSLocalizedString(@"请输入电话号码:", nil)];
 }
 
 - (void)setUpBottomView
@@ -55,7 +55,7 @@ static NSString *identifier = @"cell";
     lineView.backgroundColor = [UIColor lightGrayColor];
     [bottomView addSubview:lineView];
     
-    NSArray *titleArray = @[@"电话求救",@"短信求救"];
+    NSArray *titleArray = @[NSLocalizedString(@"电话求救", nil),NSLocalizedString(@"短信求救", nil)];
     UISegmentedControl *SOSChooseSegment = [[UISegmentedControl alloc] initWithItems:titleArray];
     SOSChooseSegment.frame = CGRectMake(kScreenWidth / 2 - 70, 8, 140, 30);
     SOSChooseSegment.tintColor = KThemeGreenColor;
@@ -103,11 +103,11 @@ static NSString *identifier = @"cell";
             [[NSUserDefaults standardUserDefaults] setObject:_numberText.text forKey:SETPHONENO];
             //没有绑定设备
             if (![BluetoothManager getBindingPeripheralUUID]) {
-                [MBProgressHUD showHUDByContent:@"您尚未绑定设备" view:UI_Window afterDelay:1.5];
+                [MBProgressHUD showHUDByContent:NSLocalizedString(@"您尚未绑定设备", nil) view:UI_Window afterDelay:1.5];
                 return;
             }
             if (![[BluetoothManager share] isExistCharacteristic]) {
-                [MBProgressHUD showHUDByContent:@"设备自动连接中，请稍后" view:UI_Window afterDelay:1.5];
+                [MBProgressHUD showHUDByContent:NSLocalizedString(@"设备自动连接中，请稍后", nil) view:UI_Window afterDelay:1.5];
                 return;
             }
             
@@ -227,13 +227,13 @@ static NSString *identifier = @"cell";
     switch (result) {
         case MessageComposeResultSent:
         {
-            [MBProgressHUD showHUDByContent:@"发送成功" view:UI_Window afterDelay:2];
+            [MBProgressHUD showHUDByContent:NSLocalizedString(@"发送成功", nil) view:UI_Window afterDelay:2];
         }
             
             break;
         case MessageComposeResultFailed:
         {
-            [MBProgressHUD showHUDByContent:@"发送失败" view:UI_Window afterDelay:2];
+            [MBProgressHUD showHUDByContent:NSLocalizedString(@"发送失败", nil) view:UI_Window afterDelay:2];
         }
             
             break;

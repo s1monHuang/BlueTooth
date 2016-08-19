@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareWeiboButton;
 
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UILabel *showLabel;
 
 @end
 
@@ -49,7 +50,7 @@
     [self.view addSubview:btnClosed];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM月dd日"];
+    [formatter setDateFormat:@"MM-dd"];
     NSString *dateString = [formatter stringFromDate:[NSDate date]];
     if ([CurrentUser.sex isEqualToString:@"女"]) {
         _headImageView.image = [UIImage imageNamed:@"woman"];
@@ -59,11 +60,13 @@
     _nickNameView.text = CurrentUser.nickName;
     _dateView.text = dateString;
     _stepLabel.text = [NSString stringWithFormat:@"%@",model?@(model.step).stringValue:@(0).stringValue];
-    NSString *stepDetail = [NSString stringWithFormat:@"步行了%.2lf公里",(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001];
+    NSString *stepDetail = [NSString stringWithFormat:@"%@%.2lf%@",NSLocalizedString(@"步行", nil),(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001,NSLocalizedString(@"公里", nil)];
     _stepDetailLabel.text = stepDetail;
-    _expendLabel.text = [NSString stringWithFormat:@"%.2f千卡",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0];
-    NSString *expendDetail = [NSString stringWithFormat:@"≈%@个雪糕",@(model.calorie / (147 * 1000)).stringValue];
+    _expendLabel.text = [NSString stringWithFormat:@"%.2f%@",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0,NSLocalizedString(@"千卡", nil)];
+    NSString *expendDetail = [NSString stringWithFormat:@"≈%@%@",@(model.calorie / (147 * 1000)).stringValue,NSLocalizedString(@"雪糕", nil)];
     _expendDetailLabel.text = expendDetail;
+    
+    _showLabel.text = NSLocalizedString(@"快把你的光辉成绩晒一下吧!", nil);
 }
 
 - (void)rightBarButtonClick:(id)sender

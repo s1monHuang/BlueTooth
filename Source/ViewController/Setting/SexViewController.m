@@ -21,12 +21,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"我的资料";
+    self.title = NSLocalizedString(@"我的资料", nil);
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
     // 设置
-    UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithTitle:@"跳过" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonClick:)];
+    UIBarButtonItem *rightBarButton=[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"跳过", nil) style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonClick:)];
     if(self.isJump)
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
@@ -36,7 +36,7 @@
     [self.view addSubview:btnman];
     
     UILabel *lblman = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120, 110, 20)];
-    lblman.text = @"男";
+    lblman.text = NSLocalizedString(@"男", nil);
     lblman.font = [UIFont systemFontOfSize:18];
     lblman.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:lblman];
@@ -47,7 +47,7 @@
     [self.view addSubview:btnwoman];
     
     UILabel *lblwomen = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120 + 180, 110, 20)];
-    lblwomen.text = @"女";
+    lblwomen.text = NSLocalizedString(@"女", nil);
     lblwomen.font = [UIFont systemFontOfSize:18];
     lblwomen.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:lblwomen];
@@ -63,7 +63,7 @@
      forControlEvents:UIControlEventTouchUpInside];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-    button.accessibilityLabel = @"返回";
+    button.accessibilityLabel =NSLocalizedString(@"返回", nil) ;
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -83,7 +83,7 @@
         
         UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth, 50)];
         [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-        [btnPre setTitle:@"上一步" forState:UIControlStateNormal];
+        [btnPre setTitle:NSLocalizedString(@"上一步", nil)  forState:UIControlStateNormal];
         [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
         [self.view addSubview:btnPre];
@@ -94,7 +94,7 @@
 
 - (void)btnfaleClick:(id)sender
 {
-    NSString *sexValue = @"男";
+    NSString *sexValue = NSLocalizedString(@"男", nil);
     if (_first == 1) {
         CurrentUser.sex = sexValue;
     }else{
@@ -110,7 +110,7 @@
 
 - (void)btnMefaleClick:(id)sender
 {
-    NSString *sexValue = @"女";
+    NSString *sexValue = NSLocalizedString(@"女", nil);
     if (_first == 1) {
         CurrentUser.sex = sexValue;
     }else{

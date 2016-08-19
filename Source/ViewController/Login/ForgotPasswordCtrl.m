@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad
 {
-    self.title = @"找回密码";
+    self.title = NSLocalizedString(@"找回密码", nil);
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
     
@@ -46,19 +46,22 @@
     
     _resendBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 130, kScreenWidth - 30, 35)];
     _resendBtn.backgroundColor = KThemeGreenColor;
-    [_resendBtn setTitle:@"重新发送密码到邮箱" forState:UIControlStateNormal];
+    [_resendBtn setTitle:NSLocalizedString(@"重新发送密码到邮箱", nil) forState:UIControlStateNormal];
     [_resendBtn addTarget:self action:@selector(resendEmail) forControlEvents:UIControlEventTouchUpInside];
     _resendBtn.alpha = 0;
     [self.view addSubview:_resendBtn];
+    
+    _emailTextField.placeholder = NSLocalizedString(@"请输入邮箱", nil);
+    [_sendEmailBtn setTitle:NSLocalizedString(@"重新发送密码到邮箱", nil) forState:UIControlStateNormal];
     
 }
 
 - (IBAction)forgotPassword:(id)sender {
     if ([_emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                        message:@"账号格式不正确"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil)
+                                                        message:NSLocalizedString(@"账号格式不正确", nil)
                                                        delegate:nil
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:NSLocalizedString(@"确定", nil)
                                               otherButtonTitles:nil, nil];
         [alert show];
         return;

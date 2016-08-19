@@ -1,0 +1,207 @@
+/* 
+  Localizable.strings
+  BlueToothBracelet
+
+  Created by azz on 16/8/16.
+  Copyright © 2016年 dachen. All rights reserved.
+*/
+//设备管理
+"设备编号" = "Device ID";
+"设备管理" = "Device Management";
+//添加设备
+"添加设备" = "Add Device";
+"解除设备" = "Remove Device";
+"绑定成功" = "Bind Success";
+"正在绑定" = "Binding";
+"绑定失败" = "Bind Failed";
+//历史数据中心
+"数据中心" = "Data Center";
+"确定" = "OK";
+"运动历史记录" = "Sports History";
+"睡眠历史记录" = "Sleep History";
+"日" = "Day";
+"月" = "Month";
+"周" = "Week";
+"步" = "Step";
+"步数" = "Steps";
+"步数(步)" = "Steps";
+"活动距离" = "Sports Distance";
+"消耗能量" = "Energy Used";
+"睡眠时长" = "Hours of Sleep";
+"小时" = "Hour";
+"分钟" = "Min";
+"深睡" = "Deep Sleep";
+"浅睡" = "Light sleep";
+//年龄
+"个人" = "Me";
+"男" = "Male";
+"年龄" = "Age";
+"返回" = "Back";
+"上一步" = "Previous";
+"下一步" = "Next";
+"完成" = "Done";
+//性别
+"我的资料" = "Profile";
+"跳过" ="Skip";
+"女" = "Female";
+//身高
+"身高" ="Height";
+"完成" = "Done";
+//体重
+"体重" = "Weight";
+//昵称
+"昵称" = "Nickname";
+"昵称长度必须为4-16字符" = "Nickname must be within 4-16 characters";
+//步长
+"步长" = "Step Length";
+//智能闹钟
+"智能闹钟" = "Alarm Clock";
+"闹钟" = "Alarm";
+"时间" = "Time";
+"提醒间隔" = "Interval";
+"星期一" = "Monday";
+"星期二" = "Tuesday";
+"星期三" = "Wednesday";
+"星期四" = "Thursday";
+"星期五" = "Friday";
+"星期六" = "Saturday";
+"星期天" = "Sunday";
+"保存成功" = "Saved";
+//久坐提醒
+"久坐提醒" = "Sedentary Reminder";
+"提醒" = "Reminder";
+"开始时间" = "Start Time";
+"结束时间" = "End Time";
+//我的资料
+"性别" = "Gender";
+"重新设置" = "Reset";
+"个人信息设置成功" = " Profile Saved";
+//训练目标
+"每日运动目标" = "Daily Sports Target";
+"千卡" = "Kcal";
+"根据您的个人情况设置合理目标" = "To set reasonable goals based on your personal circumstances";
+//来电提醒
+"来电提醒" = "Reminder Center";
+"短信提醒" = "SMS ";
+"微信提醒" = "Wechat ";
+"QQ提醒" = "QQ ";
+"电话提醒" = "Call ";
+//防丢提醒
+"防丢提醒" = "Missing Reminder";
+"近距离" = "Near";
+"中距离" = "Middle";
+"远距离" = "Far";
+//SOS
+"一键求救" = "SOS";
+"是否开启求救" = "SOS On";
+"请输入电话号码:" = "Cell Phone Num:";
+"电话求救" = "Call";
+"短信求救" = "SMS";
+"您尚未绑定设备" = "You have not bound any device";
+"设备自动连接中，请稍后" = "Device is connecting automatically, waiting please";
+"发送成功" = "Send Success";
+"发送失败" = "Send Failed";
+//关于我们
+"关于我们" = "About Us";
+"当前版本" = "Copyright";
+//登录
+"登录失败" = "Login fail";
+"登录" = "Login";
+"请输入邮箱" = "Email Address";
+"请输入密码" = "Password";
+"登录中..." = "Logging...";
+"账号格式不正确" = "Account Incorrect";
+"快速注册" = "Quick Logon";
+"找回密码" = "Retrieve password";
+//注册
+"注册" = "Logon";
+"提示" = "Hint";
+"注册成功" = "Logon Success";
+"账户" = "account";
+"密码" = "password";
+//忘记密码
+"找回密码" = "Forget Password?";
+"重新发送密码到邮箱" = "Send The Password to My Mailbox";
+//排名
+"排名" = "Ranking";
+"排名信息获取失败" = "Ranking Request Failed";
+"我的排名" = "My Ranking";
+"当前排名" = "Current Ranking";
+//社交
+"社交" = "Social";
+"我的分享码" = "My Sharing Code";
+"添加好友" = "Add Sharing Code";
+"分享码:" = "Sharing Code:";
+"分享(点击复制分享码)" = "Copy";
+"提取码" = "Sharing Code";
+"添加" = "Add";
+"分享码已复制" = "Sharing Code Copied";
+"排名信息获取失败，请重试" = " Ranking Request Failed, Try again";
+"取消" = "Cancel";
+"重试" = "Retry";
+//分享
+"步行" = "Distance";
+"公里" = "Km";
+"千卡" = "Kcal";
+"雪糕" = "Ice-cream";
+"快把你的光辉成绩晒一下吧!" = "Show your results!";
+//心率
+"心率" = "Heart Rate";
+"次/分钟" = "Times/Min";
+"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考." = "Your heart rate will increase after sports. Don't worry. This is for your reference only.";
+"开始" = "Start";
+"测定心率中..." = "Heart Rate Measuring...";
+//个人
+"运动目标" = "Sports Target";
+"是否退出登录" = "Are You Sure to Exit";
+//睡眠
+"睡眠" = "Sleep Data";
+"近24小时时长" = "Nearly 24 hours";
+"同步成功" = "Synchronize Success";
+"时" = "Hours";
+//运动
+"运动" = "Sports Data";
+"完成" = "Achieve";
+"目标" = "Target:";
+"当天步数(步)" = "Steps";
+"活动距离" = "Distance";
+"消耗能量" = "Energy Used";
+"脂肪燃烧" = "fat-burning";
+"同步失败" = "Synchronize Failed";
+"同步数据中..." = "Data Synchronizing...";
+"[EasyFit提醒]我需要您的帮助，请尽快和TA联系！" = "[EasyFit]I need your HELP，contact with me ASAQ！";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
