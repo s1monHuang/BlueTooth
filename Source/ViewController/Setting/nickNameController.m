@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"昵称", nil);
+    self.title = BTLocalizedString(@"昵称");
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
@@ -42,12 +42,12 @@
      forControlEvents:UIControlEventTouchUpInside];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-    button.accessibilityLabel = NSLocalizedString(@"返回", nil);
+    button.accessibilityLabel = BTLocalizedString(@"返回");
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
-    [_sureBtn setTitle:NSLocalizedString(@"确定", nil) forState:UIControlStateNormal];
+    [_sureBtn setTitle:BTLocalizedString(@"确定") forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,14 +63,14 @@
         
         UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
         [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-        [btnPre setTitle:NSLocalizedString(@"上一步", nil) forState:UIControlStateNormal];
+        [btnPre setTitle:BTLocalizedString(@"上一步") forState:UIControlStateNormal];
         [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
         [self.view addSubview:btnPre];
         
         UIButton *btnNext = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
         [btnNext addTarget:self action:@selector(btnNextClick:) forControlEvents:UIControlEventTouchUpInside];
-        [btnNext setTitle:NSLocalizedString(@"下一步", nil) forState:UIControlStateNormal];
+        [btnNext setTitle:BTLocalizedString(@"下一步") forState:UIControlStateNormal];
         [btnNext setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [btnNext setBackgroundImage:[UIImage imageNamed:@"square-button1"] forState:UIControlStateNormal];
         [self.view addSubview:btnNext];
@@ -107,7 +107,7 @@
 {
     _nickName = _nickNameTextField.text;
     if (!_nickName || _nickName.length < 4 || _nickName.length > 16 ) {
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"昵称长度必须为4-16个字符！", nil) view:UI_Window afterDelay:2];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"昵称长度必须为4-16个字符！") view:UI_Window afterDelay:2];
         return;
     }
     if (_first == 1) {

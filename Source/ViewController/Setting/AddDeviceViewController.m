@@ -106,7 +106,7 @@
     _hud = nil;
     [_timer invalidate];
     _timer = nil;
-    [MBProgressHUD showHUDByContent:NSLocalizedString(@"绑定成功", nil) view:UI_Window afterDelay:1.5];
+    [MBProgressHUD showHUDByContent:BTLocalizedString(@"绑定成功") view:UI_Window afterDelay:1.5];
 }
 
 #pragma mark - Table view data source
@@ -149,7 +149,7 @@
     [[BluetoothManager share] connectingBlueTooth:_selecedPeripheral.peripheral];
 
     _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-    _hud.labelText = [NSString stringWithFormat:@"%@",NSLocalizedString(@"正在绑定...", nil)] ;
+    _hud.labelText = [NSString stringWithFormat:@"%@",BTLocalizedString(@"正在绑定...")] ;
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
     
@@ -165,7 +165,7 @@
     [[[BluetoothManager share] baby] cancelAllPeripheralsConnection];
     [_hud setHidden:YES];
     _hud = nil;
-    [MBProgressHUD showHUDByContent:NSLocalizedString(@"绑定失败", nil) view:UI_Window afterDelay:1.5];
+    [MBProgressHUD showHUDByContent:BTLocalizedString(@"绑定失败") view:UI_Window afterDelay:1.5];
     
     [_peripherals removeAllObjects];
     [_peripheralModels removeAllObjects];

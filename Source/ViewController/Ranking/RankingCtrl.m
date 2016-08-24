@@ -32,8 +32,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeLanguage:)
+                                                 name:NOTIFY_CHANGE_LANGUAGE
+                                               object:nil];
     
-    self.title = NSLocalizedString(@"排名", nil);
+    self.title = BTLocalizedString(@"排名");
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [[OperateViewModel alloc] init];
 //    [self getRankData];
@@ -115,7 +119,7 @@
         }else
         {
             [MBProgressHUD hideAllHUDsForView:UI_Window animated:YES];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"排名信息获取失败", nil) message:nil delegate:blockSelf cancelButtonTitle:NSLocalizedString(@"确定", nil) otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"排名信息获取失败") message:nil delegate:blockSelf cancelButtonTitle:BTLocalizedString(@"确定") otherButtonTitles:nil, nil];
             [alert show];
         }
     };
@@ -160,10 +164,10 @@
     NSString *title = nil;
     if(section == 0)
     {
-        title = NSLocalizedString(@"我的排名", nil);
+        title = BTLocalizedString(@"我的排名");
     }else
     {
-        title = NSLocalizedString(@"当前排名", nil);
+        title = BTLocalizedString(@"当前排名");
     }
     
     return title;
@@ -234,6 +238,11 @@
     SheJiaoViewController *VC = [[SheJiaoViewController alloc] init];
     VC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:VC animated:YES];
+}
+
+- (void)changeLanguage:(NSNotification *)notification {
+    self.title = BTLocalizedString(@"排名");
+    [_rankingtable reloadData];
 }
 
 - (void)dealloc

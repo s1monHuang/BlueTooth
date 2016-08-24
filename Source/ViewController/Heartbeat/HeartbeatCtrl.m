@@ -10,7 +10,9 @@
 #import "PNChartDelegate.h"
 #import "PNChart.h"
 
-@interface HeartbeatCtrl ()<PNChartDelegate>
+@interface HeartbeatCtrl ()<PNChartDelegate> {
+    UILabel *remindTextView;
+}
 
 @property (nonatomic) PNLineChart * lineChart;
 
@@ -25,9 +27,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = NSLocalizedString(@"心率", nil);
+    self.title = BTLocalizedString(@"心率");
     self.view.backgroundColor = kThemeGrayColor;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeLanguage:)
+                                                 name:NOTIFY_CHANGE_LANGUAGE
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(readHeartRateSuccess)
                                                  name:READ_HEARTRATE_SUCCESS
@@ -44,7 +50,7 @@
                                                object:nil];
     
     _lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 40, 30)];
-    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"0%@",NSLocalizedString(@"次/分钟", nil)];
+    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"0%@",BTLocalizedString(@"次/分钟")];
     _lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:30];
     _lblHeartBeatNumber.textAlignment = NSTextAlignmentCenter;
     _lblHeartBeatNumber.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
@@ -75,13 +81,13 @@
     lblNumber03.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
     [self.view addSubview:lblNumber03];
     
-    UILabel *remindTextView = [[UILabel alloc] initWithFrame:CGRectMake(10,
+    remindTextView = [[UILabel alloc] initWithFrame:CGRectMake(10,
                                                                               lblNumber03.height + lblNumber03.y + 100 ,
                                                                               SCREEN_WIDTH - 20,
                                                                               50)];
     remindTextView.backgroundColor = [UIColor clearColor];
     remindTextView.font = [UIFont systemFontOfSize:16];
-    remindTextView.text = NSLocalizedString(@"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.", nil);
+    remindTextView.text = BTLocalizedString(@"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.");
     remindTextView.numberOfLines = 0;
     [self.view addSubview:remindTextView];
 
@@ -89,7 +95,7 @@
                                                                   0,
                                                                   50,
                                                                   30)];
-    [_button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
+    [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [_button addTarget:self
                action:@selector(clickButton:)
      forControlEvents:UIControlEventTouchUpInside];
@@ -107,22 +113,22 @@
 - (void)clickButton:(UIButton *)button {
     //没有绑定设备
     if (![BluetoothManager getBindingPeripheralUUID]) {
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"您尚未绑定设备", nil) view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"您尚未绑定设备") view:UI_Window afterDelay:1.5];
         return;
     }
     if (![[BluetoothManager share] isExistCharacteristic]) {
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"设备自动连接中，请稍后", nil) view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"设备自动连接中，请稍后") view:UI_Window afterDelay:1.5];
         return;
     }
     if (button.selected) {
-        [button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
+        [button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
         [[BluetoothManager share] closeReadHeartRate];
         [MBProgressHUD hideHUDForView:self.view
                              animated:YES];
     } else {
-        [button setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateNormal];
+        [button setTitle:BTLocalizedString(@"取消") forState:UIControlStateNormal];
         [[BluetoothManager share] readHeartRate];
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"测定心率中…", nil)
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"测定心率中…")
                                    view:self.view
                              afterDelay:INT_MAX];
     }
@@ -130,19 +136,36 @@
 }
 
 - (void)readHeartRateSuccess {
-    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,NSLocalizedString(@"次/分钟", nil)];
+    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,BTLocalizedString(@"次/分钟")];
 }
 
 - (void)readHeartRateFinished {
-    [_button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
+    [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
 }
 
 - (void)disConnectPeripheral {
-    [_button setTitle:NSLocalizedString(@"开始", nil) forState:UIControlStateNormal];
+    [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
+}
+
+- (void)changeLanguage:(NSNotification *)notification {
+    self.title = BTLocalizedString(@"心率");
+    if (_button.selected) {
+        [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
+    } else {
+        [_button setTitle:BTLocalizedString(@"取消") forState:UIControlStateNormal];
+    }
+    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,BTLocalizedString(@"次/分钟")];
+    remindTextView.text = BTLocalizedString(@"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.");
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

@@ -12,7 +12,9 @@
 #import "HistorySportDataModel.h"
 #import "DBManager.h"
 
-@interface SleepCtrl ()
+@interface SleepCtrl () {
+    UILabel *sleepTimeText;
+}
 
 @property (strong,nonatomic) UIView *chartView;
 @property (strong,nonatomic) UIView *circleBgView;
@@ -49,6 +51,10 @@
 {
     self = [super init];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(changeLanguage:)
+                                                     name:NOTIFY_CHANGE_LANGUAGE
+                                                   object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshSleepDataSuccess)
                                                      name:READ_HISTORY_SPORTDATA_SUCCESS
@@ -91,7 +97,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = NSLocalizedString(@"睡眠", nil);
+    self.title = BTLocalizedString(@"睡眠");
     self.view.backgroundColor = kThemeGrayColor;
     
     _isEnglish = [self systemLanguageIsEnglish];
@@ -130,13 +136,13 @@
     tempView.backgroundColor = [UIColor whiteColor];
     [_circleChart addSubview:tempView];
     
-    UILabel *sleepTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2,tempView.frame.size.width, 20)];
-    sleepTimeText.text = NSLocalizedString(@"近24小时时长", nil);
+    sleepTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2,tempView.frame.size.width, 20)];
+    sleepTimeText.text = BTLocalizedString(@"近24小时时长");
     sleepTimeText.textAlignment = NSTextAlignmentCenter;
     sleepTimeText.textColor = [UIColor grayColor];
     [tempView addSubview:sleepTimeText];
     
-    _sleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32,tempView.frame.size.width, 20)];
+    _sleepTimeValue = [[UILabel alloc] initWithFrame:CGRectMake(0, (tempView.frame.size.height - 50 - 22*2)/2+32,tempView.frame.size.width, 30)];
     _sleepTimeValue.textAlignment = NSTextAlignmentCenter;
     _sleepTimeValue.textColor = [UIColor grayColor];
     [tempView addSubview:_sleepTimeValue];
@@ -198,7 +204,7 @@
 
 - (void)refreshSleepData {
     if (![[BluetoothManager share] isExistCharacteristic]) {
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"同步成功", nil) view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
         return;
     }
     _isLoading = YES;
@@ -212,7 +218,7 @@
     [self resetSleepValue];
     [_circleChart updateChartByCurrent:@(_deepSleepPercent) byTotal:@(100)];
     [self setSleepTimeValues];
-    [MBProgressHUD showHUDByContent:NSLocalizedString(@"同步成功", nil) view:UI_Window afterDelay:1.5];
+    [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
 }
 
 - (void)setSleepTimeValues {
@@ -230,21 +236,21 @@
     }
     NSRange sleepHourRange = NSMakeRange(0, _sleepValue >= 10? 2:1);
     NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + count, 2);
-    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@00%@",@(_sleepValue).stringValue, NSLocalizedString(@"小时", nil),NSLocalizedString(@"分钟", nil)]];
-    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
+    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@00%@",@(_sleepValue).stringValue, BTLocalizedString(@"小时"),BTLocalizedString(@"分钟")]];
+    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
                               range:sleepHourRange];
-    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName:[UIColor blackColor]}
+    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
                               range:sleepMinuteRagne];
     _sleepTimeValue.attributedText = sleepValueString;
     
     NSRange deepSleepRange = NSMakeRange(0, deepCount);
-    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★%@%@00%@",NSLocalizedString(@"深睡", nil),@(_deepSleepValue).stringValue, NSLocalizedString(@"小时", nil),NSLocalizedString(@"分钟", nil)]];
+    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★%@%@%@",BTLocalizedString(@"深睡"),(_deepSleepValue == 0?@"00":@(_deepSleepValue).stringValue), BTLocalizedString(@"小时"),BTLocalizedString(@"分钟")]];
     [deepSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#1b6cff"]}
                               range:deepSleepRange];
     _ssleepTimeValue.attributedText = deepSleepValueString;
     
     NSRange shallowSleepRange = NSMakeRange(0, lightCount);
-    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆%@%@%@00%@",NSLocalizedString(@"浅睡", nil),@(_shallowSleepValue).stringValue, NSLocalizedString(@"小时", nil),NSLocalizedString(@"分钟", nil)]];
+    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆%@%@%@00%@",BTLocalizedString(@"浅睡"),@(_shallowSleepValue).stringValue, BTLocalizedString(@"小时"),BTLocalizedString(@"分钟")]];
     [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
                               range:shallowSleepRange];
     _qsleepTimeValue.attributedText = shallowSleepValueString;
@@ -274,15 +280,35 @@
 
 - (BOOL)systemLanguageIsEnglish
 {
-    //获取系统当前语言版本（中文zh-Hans,英文en)
-    NSArray *languages = [NSLocale preferredLanguages];
-    NSString *currentLanguage = [languages objectAtIndex:0];
-    if ([currentLanguage isEqualToString:@"en-CN"]) {
-        return YES;
-    }else{
+    if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 0) {
+        //获取系统当前语言版本（中文zh-Hans,英文en)
+        NSArray *languages = [NSLocale preferredLanguages];
+        NSString *currentLanguage = [languages objectAtIndex:0];
+        if ([currentLanguage isEqualToString:@"zh-Hans-US"]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+    else if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 1) {
         return NO;
     }
-    
+    else {
+        return YES;
+    }
+}
+
+- (void)changeLanguage:(NSNotification *)notification {
+    _isEnglish = [self systemLanguageIsEnglish];
+    self.title = BTLocalizedString(@"睡眠");
+    sleepTimeText.text = BTLocalizedString(@"近24小时时长");
+    [self setSleepTimeValues];
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

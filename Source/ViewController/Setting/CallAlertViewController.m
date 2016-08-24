@@ -33,12 +33,12 @@ static NSString *identifier = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"来电提醒", nil);
+    self.title = BTLocalizedString(@"来电提醒");
     self.view.backgroundColor = kThemeGrayColor;
     _openCount = [[[NSUserDefaults standardUserDefaults] objectForKey:callAlertOpen] integerValue];
     _openStr = [self toBinarySystemWithDecimalSystem:_openCount];
     
-    _remindWayArray = @[NSLocalizedString(@"短信提醒", nil),NSLocalizedString(@"微信提醒", nil),NSLocalizedString(@"QQ提醒", nil),NSLocalizedString(@"电话提醒", nil)];
+    _remindWayArray = @[BTLocalizedString(@"短信提醒"),BTLocalizedString(@"微信提醒"),BTLocalizedString(@"QQ提醒"),BTLocalizedString(@"电话提醒")];
     [self setUpRemindSwitchArray];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44 * 4)];

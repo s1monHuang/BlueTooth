@@ -213,8 +213,8 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 			// Define the selector to call -forwardInvocation:.
 			if (!class_addMethod(class, selector, _objc_msgForward, typeEncoding)) {
 				NSDictionary *userInfo = @{
-					NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"A race condition occurred implementing %@ on class %@", nil), NSStringFromSelector(selector), class],
-					NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Invoke -rac_signalForSelector: again to override the implementation.", nil)
+					NSLocalizedDescriptionKey: [NSString stringWithFormat:BTLocalizedString(@"A race condition occurred implementing %@ on class %@"), NSStringFromSelector(selector), class],
+					NSLocalizedRecoverySuggestionErrorKey: BTLocalizedString(@"Invoke -rac_signalForSelector: again to override the implementation.")
 				};
 
 				return [RACSignal error:[NSError errorWithDomain:RACSelectorSignalErrorDomain code:RACSelectorSignalErrorMethodSwizzlingRace userInfo:userInfo]];

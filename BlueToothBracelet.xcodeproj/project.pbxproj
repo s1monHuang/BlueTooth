@@ -14,6 +14,7 @@
 		3E09391B1CACB2470073A6D5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E09391A1CACB2470073A6D5 /* Security.framework */; };
 		3E09391D1CACB2520073A6D5 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E09391C1CACB2520073A6D5 /* CoreText.framework */; };
 		3E09391F1CACB25C0073A6D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E09391E1CACB25C0073A6D5 /* CoreGraphics.framework */; };
+		3E46A25E1D6DAB5F00F6E049 /* LanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E46A25C1D6DAB5F00F6E049 /* LanguageViewController.m */; };
 		3E5179711CA21CBF004EB02B /* BasicInfomationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5179701CA21CBF004EB02B /* BasicInfomationModel.m */; };
 		3E5CAB621C9BD58200430442 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CAB611C9BD58200430442 /* DBManager.m */; };
 		3E5CAB651C9BEA8F00430442 /* SportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CAB641C9BEA8F00430442 /* SportDataModel.m */; };
@@ -326,6 +327,8 @@
 		3E09391A1CACB2470073A6D5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3E09391C1CACB2520073A6D5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		3E09391E1CACB25C0073A6D5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		3E46A25B1D6DAB5F00F6E049 /* LanguageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageViewController.h; sourceTree = "<group>"; };
+		3E46A25C1D6DAB5F00F6E049 /* LanguageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageViewController.m; sourceTree = "<group>"; };
 		3E51796F1CA21CBF004EB02B /* BasicInfomationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicInfomationModel.h; sourceTree = "<group>"; };
 		3E5179701CA21CBF004EB02B /* BasicInfomationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicInfomationModel.m; sourceTree = "<group>"; };
 		3E5CAB601C9BD58200430442 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
@@ -1337,6 +1340,8 @@
 				716691C01D240B9800399547 /* SOSController.m */,
 				474393241D26658900C2F77C /* AboutUsController.h */,
 				474393251D26658900C2F77C /* AboutUsController.m */,
+				3E46A25B1D6DAB5F00F6E049 /* LanguageViewController.h */,
+				3E46A25C1D6DAB5F00F6E049 /* LanguageViewController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -2143,6 +2148,7 @@
 				9F88F5A81B458EBD000BA054 /* UtilityUI+ErrorImageView.m in Sources */,
 				9F20F59E1B75A9680009AB38 /* RACTargetQueueScheduler.m in Sources */,
 				9FE544A81B72578E0008D9BD /* UserManager.m in Sources */,
+				3E46A25E1D6DAB5F00F6E049 /* LanguageViewController.m in Sources */,
 				47E1CA761CA527BD0070FEE1 /* NSObject+MJClass.m in Sources */,
 				9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */,
 				47E349F31CA950240026707C /* FSCalendar+IBExtension.m in Sources */,

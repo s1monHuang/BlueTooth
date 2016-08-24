@@ -45,14 +45,14 @@ static NSString* identifier =@"PersonalCell";
 -(NSArray *)keyArray
 {
     if (!_keyArray) {
-        _keyArray = @[NSLocalizedString(@"昵称", nil),NSLocalizedString(@"性别", nil),NSLocalizedString(@"年龄", nil),NSLocalizedString(@"身高", nil),NSLocalizedString(@"体重", nil),NSLocalizedString(@"步长", nil)];
+        _keyArray = @[BTLocalizedString(@"昵称"),BTLocalizedString(@"性别"),BTLocalizedString(@"年龄"),BTLocalizedString(@"身高"),BTLocalizedString(@"体重"),BTLocalizedString(@"步长")];
     }
     return _keyArray;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"我的资料", nil);
+    self.title = BTLocalizedString(@"我的资料");
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationController.navigationBar.backgroundColor = kThemeColor;
     self.navigationItem.leftBarButtonItem.title = @"";
@@ -118,7 +118,7 @@ static NSString* identifier =@"PersonalCell";
     
     UIButton *resetBtn = [[UIButton alloc] initWithFrame:CGRectMake((self.view.width - buttonWidth) / 2, 10, buttonWidth, 40)];
     resetBtn.backgroundColor = KThemeGreenColor;
-    [resetBtn setTitle:NSLocalizedString(@"重新设置", nil) forState:UIControlStateNormal];
+    [resetBtn setTitle:BTLocalizedString(@"重新设置") forState:UIControlStateNormal];
     [resetBtn addTarget:self action:@selector(resetClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:resetBtn];
     
@@ -169,7 +169,7 @@ static NSString* identifier =@"PersonalCell";
                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNickName" object:nil userInfo:tempDict];
             });
             
-            [MBProgressHUD showHUDByContent:NSLocalizedString(@"个人信息设置成功", nil) view:UI_Window afterDelay:2];
+            [MBProgressHUD showHUDByContent:BTLocalizedString(@"个人信息设置成功") view:UI_Window afterDelay:2];
         }else
         {
             [MBProgressHUD showHUDByContent:userInfo view:UI_Window afterDelay:2];

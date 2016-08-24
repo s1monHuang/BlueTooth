@@ -44,13 +44,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"我的资料", nil);
+    self.title = BTLocalizedString(@"我的资料");
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
     self.navigationItem.leftBarButtonItem.title = @"";
-    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 0, 80, 80)];
     _rightBtn = rightBtn;
-    [rightBtn setTitle:NSLocalizedString(@"完成", nil) forState:UIControlStateNormal];
+    [rightBtn setTitle:BTLocalizedString(@"完成") forState:UIControlStateNormal];
     [rightBtn addTarget:self action:@selector(changeTrainTarget) forControlEvents:UIControlEventTouchUpInside];
     UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     [rightView addSubview:rightBtn];
@@ -67,8 +67,8 @@
     _leftImageView.image = [UIImage imageNamed:@"pic-distance"];
     _rightImageView.image = [UIImage imageNamed:@"pic-fire"];
     
-    _everydayTrainLabel.text = NSLocalizedString(@"每日运动目标", nil);
-    _otherLabel.text = NSLocalizedString(@"根据您的个人情况设置合理目标", nil);
+    _everydayTrainLabel.text = BTLocalizedString(@"每日运动目标");
+    _otherLabel.text = BTLocalizedString(@"根据您的个人情况设置合理目标");
     _otherLabel.numberOfLines = 0;
     
     //设置绿条
@@ -89,13 +89,13 @@
     _stepCountLabel.textColor = KThemeGreenColor;
     _stepCountLabel.textAlignment = NSTextAlignmentCenter;
     _stepCountLabel.font = [UIFont systemFontOfSize:25];
-    _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf%@",_targetSlider.value * 10000,NSLocalizedString(@"步", nil)];
+    _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf%@",_targetSlider.value * 10000,BTLocalizedString(@"步")];
     _stepCount = 10000;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _rightLabel.text = [NSString stringWithFormat:@"%.2lf%@",fireEnergy,NSLocalizedString(@"千卡", nil)];
+    _rightLabel.text = [NSString stringWithFormat:@"%.2lf%@",fireEnergy,BTLocalizedString(@"千卡")];
     
 }
 
@@ -111,7 +111,7 @@
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.size = CGSizeMake(40, 40);
         button.alpha = 0;
-        _rightBtn.alpha = 0;
+        _rightBtn.alpha = 1;
 //        _btnPre.alpha = 1;
 //        _btnNext.alpha = 1;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -119,7 +119,7 @@
         
         UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth, 50)];
         [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
-        [btnPre setTitle:NSLocalizedString(@"上一步", nil) forState:UIControlStateNormal];
+        [btnPre setTitle:BTLocalizedString(@"上一步") forState:UIControlStateNormal];
         [btnPre setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnPre setBackgroundImage:[UIImage imageNamed:@"square-button2"] forState:UIControlStateNormal];
         [self.view addSubview:btnPre];
@@ -179,13 +179,13 @@
                 }
                 [[NSUserDefaults standardUserDefaults] setObject:@(2) forKey:FIRSTDOWNLAOD];
                 [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:DOWNLOADSUCCESS];
-                [MBProgressHUD showHUDByContent:NSLocalizedString(@"个人信息设置成功", nil) view:UI_Window afterDelay:2];
+                [MBProgressHUD showHUDByContent:BTLocalizedString(@"个人信息设置成功") view:UI_Window afterDelay:2];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [[AppDelegate defaultDelegate] exchangeRootViewControllerToMain];
                 });
                 return;
             }else{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:userInfo message:nil delegate:nil cancelButtonTitle:NSLocalizedString(@"确定", nil) otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:userInfo message:nil delegate:nil cancelButtonTitle:BTLocalizedString(@"确定") otherButtonTitles:nil, nil];
                 [alert show];
                 return;
             }
@@ -204,13 +204,13 @@
 - (void)valueChange
 {
     _stepCount = ((NSInteger)(_targetSlider.value * 10000 ) % 100) > 49 ? (100 - (NSInteger)(_targetSlider.value * 10000 ) % 100 + (NSInteger)(_targetSlider.value * 10000)) : ((NSInteger)(_targetSlider.value * 10000) - (NSInteger)(_targetSlider.value * 10000 ) % 100 );
-    _stepCountLabel.text = [NSString stringWithFormat:@"%ld%@",_stepCount,NSLocalizedString(@"步", nil)];
+    _stepCountLabel.text = [NSString stringWithFormat:@"%ld%@",_stepCount,BTLocalizedString(@"步")];
     _stepCountLabel.textColor = KThemeGreenColor;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
     _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _rightLabel.text = [NSString stringWithFormat:@"%.2lf%@",fireEnergy,NSLocalizedString(@"千卡", nil)];
+    _rightLabel.text = [NSString stringWithFormat:@"%.2lf%@",fireEnergy,BTLocalizedString(@"千卡")];
     
    
 

@@ -794,7 +794,7 @@ static BluetoothManager *manager = nil;
     
     if (count <= 0) {
         NSLog(@"不需要获取历史运动数据");
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"同步成功", nil) view:UI_Window afterDelay:1.5];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
         [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
                                                             object:nil];
         self.connectionType = BluetoothConnectingSuccess;
@@ -813,7 +813,7 @@ static BluetoothManager *manager = nil;
     [[BluetoothManager share] writeValue:data];
     
     _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-    _hud.labelText = NSLocalizedString(@"同步数据中...", nil);
+    _hud.labelText = BTLocalizedString(@"同步数据中...");
     
     __weak BluetoothManager *weakSelf = self;
     [self.baby notify:weakSelf.bindingPeripheral.peripheral
@@ -836,7 +836,7 @@ static BluetoothManager *manager = nil;
                         [weakSelf.hud hide:YES];
                         weakSelf.hud = nil;
                         
-                        [MBProgressHUD showHUDByContent:NSLocalizedString(@"同步成功", nil) view:UI_Window afterDelay:1.5];
+                        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
 
                         return ;
                     }

@@ -37,6 +37,8 @@
 #import "DBManager.h"
 #import "OperateViewModel.h"
 #import "BluetoothManager.h"
+#import "AppDelegate.h"
+
 #define FIRSTDOWNLAOD  @"THEFIRST"
 #define SETPHONENO  @"PHONENUMBER"
 

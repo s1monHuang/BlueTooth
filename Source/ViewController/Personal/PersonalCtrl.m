@@ -22,6 +22,7 @@
 #import "SOSController.h"
 #import "AboutUsController.h"
 #import "DBManager.h"
+#import "LanguageViewController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -50,7 +51,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = NSLocalizedString(@"个人", nil);
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeLanguage:)
+                                                 name:NOTIFY_CHANGE_LANGUAGE
+                                               object:nil];
+    
+    self.title = BTLocalizedString(@"个人");
     self.view.backgroundColor = kThemeGrayColor;
     UIButton *unDownloadBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [unDownloadBtn setImage:[UIImage imageNamed:@"exit"] forState:UIControlStateNormal];
@@ -59,8 +65,8 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     
-    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter"];
-    dataArray = [[NSArray alloc] initWithObjects:NSLocalizedString(@"我的资料", nil),NSLocalizedString(@"运动目标", nil),NSLocalizedString(@"久坐提醒", nil),NSLocalizedString(@"智能闹钟", nil),NSLocalizedString(@"来电提醒", nil),NSLocalizedString(@"防丢提醒", nil),NSLocalizedString(@"一键求救", nil),NSLocalizedString(@"设备管理", nil), NSLocalizedString(@"关于我们", nil),NSLocalizedString(@"数据中心", nil),nil];
+    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter",@"datacenter"];
+    dataArray = [[NSArray alloc] initWithObjects:BTLocalizedString(@"我的资料"),BTLocalizedString(@"运动目标"),BTLocalizedString(@"久坐提醒"),BTLocalizedString(@"智能闹钟"),BTLocalizedString(@"来电提醒"),BTLocalizedString(@"防丢提醒"),BTLocalizedString(@"一键求救"),BTLocalizedString(@"设备管理"), BTLocalizedString(@"关于我们"),BTLocalizedString(@"数据中心"),BTLocalizedString(@"语言"),nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
@@ -107,7 +113,7 @@
 
 - (void)exitDownload
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"是否退出登录", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"取消", nil) otherButtonTitles:NSLocalizedString(@"确定", nil), nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"是否退出登录") message:nil delegate:self cancelButtonTitle:BTLocalizedString(@"取消") otherButtonTitles:BTLocalizedString(@"确定"), nil];
     [alert show];
 }
 
@@ -133,7 +139,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 11;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -234,6 +240,12 @@
             [self.navigationController pushViewController:VC animated:YES];
         }
             break;
+        case 10: {
+            LanguageViewController *VC = [[LanguageViewController alloc] init];
+            VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+            break;
         default:
             break;
     }
@@ -305,15 +317,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)changeLanguage:(NSNotification *)notification {
+    self.title = BTLocalizedString(@"个人");
+    dataArray = [[NSArray alloc] initWithObjects:BTLocalizedString(@"我的资料"),BTLocalizedString(@"运动目标"),BTLocalizedString(@"久坐提醒"),BTLocalizedString(@"智能闹钟"),BTLocalizedString(@"来电提醒"),BTLocalizedString(@"防丢提醒"),BTLocalizedString(@"一键求救"),BTLocalizedString(@"设备管理"), BTLocalizedString(@"关于我们"),BTLocalizedString(@"数据中心"),BTLocalizedString(@"语言"),nil];
+    [_personalTable reloadData];
 }
-*/
+
+
 
 - (void)dealloc
 {

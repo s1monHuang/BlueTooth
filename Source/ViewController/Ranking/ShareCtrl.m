@@ -60,13 +60,13 @@
     _nickNameView.text = CurrentUser.nickName;
     _dateView.text = dateString;
     _stepLabel.text = [NSString stringWithFormat:@"%@",model?@(model.step).stringValue:@(0).stringValue];
-    NSString *stepDetail = [NSString stringWithFormat:@"%@%.2lf%@",NSLocalizedString(@"步行", nil),(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001,NSLocalizedString(@"公里", nil)];
+    NSString *stepDetail = [NSString stringWithFormat:@"%@%.2lf%@",BTLocalizedString(@"步行"),(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001,BTLocalizedString(@"公里")];
     _stepDetailLabel.text = stepDetail;
-    _expendLabel.text = [NSString stringWithFormat:@"%.2f%@",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0,NSLocalizedString(@"千卡", nil)];
-    NSString *expendDetail = [NSString stringWithFormat:@"≈%@%@",@(model.calorie / (147 * 1000)).stringValue,NSLocalizedString(@"雪糕", nil)];
+    _expendLabel.text = [NSString stringWithFormat:@"%.2f%@",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0,BTLocalizedString(@"千卡")];
+    NSString *expendDetail = [NSString stringWithFormat:@"≈%@%@",@(model.calorie / (147 * 1000)).stringValue,BTLocalizedString(@"雪糕")];
     _expendDetailLabel.text = expendDetail;
     
-    _showLabel.text = NSLocalizedString(@"快把你的光辉成绩晒一下吧!", nil);
+    _showLabel.text = BTLocalizedString(@"快把你的光辉成绩晒一下吧!");
 }
 
 - (void)rightBarButtonClick:(id)sender

@@ -12,12 +12,12 @@
 
 - (void)viewDidLoad
 {
-    self.title = NSLocalizedString(@"关于我们", nil);
+    self.title = BTLocalizedString(@"关于我们");
     self.view.backgroundColor = kThemeGrayColor;
     UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, kScreenHeight*0.5 - 60, kScreenWidth, 40)];
     NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
     NSString *version = [infoPlist objectForKey:@"CFBundleVersion"];
-    versionLabel.text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"当前版本", nil),version];
+    versionLabel.text = [NSString stringWithFormat:@"%@:%@",BTLocalizedString(@"当前版本"),version];
     versionLabel.font = [UIFont systemFontOfSize:18];
     versionLabel.textColor = [UIColor lightGrayColor];
     versionLabel.textAlignment = NSTextAlignmentCenter;

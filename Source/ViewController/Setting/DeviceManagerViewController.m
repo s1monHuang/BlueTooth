@@ -25,7 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title  = [NSString stringWithFormat:@"%@",NSLocalizedString(@"设备管理", nil)];
+    self.title  = [NSString stringWithFormat:@"%@",BTLocalizedString(@"设备管理")];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -38,10 +38,10 @@
     _titleArray = nil;
     _imageArray = nil;
     if ([BluetoothManager share].isBindingPeripheral) {
-        _titleArray = @[NSLocalizedString(@"解除设备", nil)];
+        _titleArray = @[BTLocalizedString(@"解除设备")];
         _imageArray = @[@"remove"];
     } else {
-        _titleArray = @[NSLocalizedString(@"添加设备", nil)];
+        _titleArray = @[BTLocalizedString(@"添加设备")];
         _imageArray = @[@"add"];
     }
 }
@@ -73,7 +73,7 @@
     if ([BluetoothManager share].isBindingPeripheral){
     _deviceIDLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 77)/2 - 10, 180, ScreenWidth - 50, 40)];
         NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:User_DeviceID];
-    _deviceIDLabel.text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"设备编号", nil),deviceId];
+    _deviceIDLabel.text = [NSString stringWithFormat:@"%@:%@",BTLocalizedString(@"设备编号"),deviceId];
 //    _deviceIDLabel.alpha = 0;
     [headerview addSubview:_deviceIDLabel];
     }

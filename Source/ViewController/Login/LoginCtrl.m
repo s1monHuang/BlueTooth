@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"登录", nil);
+    self.title = BTLocalizedString(@"登录");
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [[OperateViewModel alloc] init];
     self.iconImage.image = [UIImage imageNamed:@"logo"];
@@ -60,18 +60,18 @@
     [self.usernamebgbox addSubview:usericon];
     self.txtUserAccount = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
     
-    self.txtUserAccount.placeholder = NSLocalizedString(@"请输入邮箱", nil);
+    self.txtUserAccount.placeholder = BTLocalizedString(@"请输入邮箱");
     [self.usernamebgbox addSubview:self.txtUserAccount];
     
-    [_btn_login setTitle:NSLocalizedString(@"登录", nil) forState:UIControlStateNormal];
-    [_btn_register setTitle:NSLocalizedString(@"快速注册", nil) forState:UIControlStateNormal];
-    [_btn_FindPwd setTitle:NSLocalizedString(@"找回密码", nil) forState:UIControlStateNormal];
+    [_btn_login setTitle:BTLocalizedString(@"登录") forState:UIControlStateNormal];
+    [_btn_register setTitle:BTLocalizedString(@"快速注册") forState:UIControlStateNormal];
+    [_btn_FindPwd setTitle:BTLocalizedString(@"找回密码") forState:UIControlStateNormal];
     // 用户
     UIImageView *passwordicon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 13, 20, 20)];
     passwordicon.image = [UIImage imageNamed:@"password"];
     [self.passwordbgbox addSubview:passwordicon];
     self.txtUserPassword = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
-    self.txtUserPassword.placeholder = NSLocalizedString(@"请输入密码", nil);
+    self.txtUserPassword.placeholder = BTLocalizedString(@"请输入密码");
     [self.passwordbgbox addSubview:self.txtUserPassword];
     if (userName && password) {
         NSInteger isAppIn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appDelegateToLogin"] integerValue];
@@ -122,14 +122,14 @@
     
     if (self.txtUserAccount.text.length > 0 && [self.txtUserAccount.text rangeOfString:@"@"].location != NSNotFound ) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-        hud.labelText = NSLocalizedString(@"登录中...", nil);
+        hud.labelText = BTLocalizedString(@"登录中...");
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserAccount.text forKey:@"userName"];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserPassword.text forKey:@"password"];
         
     }else
     {
-        [MBProgressHUD showHUDByContent:NSLocalizedString(@"账号格式不正确", nil) view:UI_Window afterDelay:2];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"账号格式不正确") view:UI_Window afterDelay:2];
     }
     
     __block LoginCtrl *blockSelf = self;
@@ -190,7 +190,7 @@
     NSString *password = sender.userInfo[@"password"];
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-    hud.labelText = NSLocalizedString(@"登录中...", nil);
+    hud.labelText = BTLocalizedString(@"登录中...");
     [self.operateVM loginWithUserName:userName password:password];
     [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"userName"];
     [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];

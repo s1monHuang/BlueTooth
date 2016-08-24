@@ -36,15 +36,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = NSLocalizedString(@"注册", nil);
+    self.title = BTLocalizedString(@"注册");
     self.view.backgroundColor = kThemeGrayColor;
     self.operateVM = [OperateViewModel viewModel];
     self.operateVM1 = [OperateViewModel viewModel];
-    _accountLabel.text = NSLocalizedString(@"账户", nil);
-    _securityLabel.text = NSLocalizedString(@"密码", nil);
-    [_registerBtn setTitle:NSLocalizedString(@"注册", nil) forState:UIControlStateNormal];
-    _userNameTextField.placeholder = NSLocalizedString(@"请输入邮箱", nil);
-    _passwordTextField.placeholder = NSLocalizedString(@"请输入密码", nil);
+    _accountLabel.text = BTLocalizedString(@"账户");
+    _securityLabel.text = BTLocalizedString(@"密码");
+    [_registerBtn setTitle:BTLocalizedString(@"注册") forState:UIControlStateNormal];
+    _userNameTextField.placeholder = BTLocalizedString(@"请输入邮箱");
+    _passwordTextField.placeholder = BTLocalizedString(@"请输入密码");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,10 +54,10 @@
 
 - (IBAction)clickRegister:(id)sender {
     if ([_userNameTextField.text rangeOfString:@"@"].location == NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil)
-                                                        message:NSLocalizedString(@"账号格式不正确", nil)
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"提示")
+                                                        message:BTLocalizedString(@"账号格式不正确")
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"确定", nil)
+                                              cancelButtonTitle:BTLocalizedString(@"确定")
                                               otherButtonTitles:nil, nil];
         [alert show];
         return;
@@ -69,7 +69,7 @@
         _password = _passwordTextField.text;
         self.operateVM.finishHandler = ^(BOOL finished, id userInfo){
             if (finished) {
-                [MBProgressHUD showHUDByContent:NSLocalizedString(@"注册成功", nil) view:blockSelf.view afterDelay:1];
+                [MBProgressHUD showHUDByContent:BTLocalizedString(@"注册成功") view:blockSelf.view afterDelay:1];
                 CurrentUser.userId = userInfo;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     //注册成功后登陆
@@ -93,7 +93,7 @@
 {
     __weak RegisterCtrl *blockSelf = self;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-    hud.labelText = NSLocalizedString(@"登录中...", nil);
+    hud.labelText = BTLocalizedString(@"登录中...");
     [[NSUserDefaults standardUserDefaults] setObject:_userName forKey:@"userName"];
     [[NSUserDefaults standardUserDefaults] setObject:_password forKey:@"password"];
     
@@ -106,7 +106,7 @@
             nickNameController *nickNameCtl = [[nickNameController alloc] init];
             [blockSelf.navigationController pushViewController:nickNameCtl animated:YES];
         }else{
-             [MBProgressHUD showHUDByContent:NSLocalizedString(@"登录失败", nil) view:blockSelf.view afterDelay:1];
+             [MBProgressHUD showHUDByContent:BTLocalizedString(@"登录失败") view:blockSelf.view afterDelay:1];
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [blockSelf.navigationController popViewControllerAnimated:YES];

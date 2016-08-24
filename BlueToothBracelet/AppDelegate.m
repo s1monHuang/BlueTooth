@@ -22,7 +22,12 @@
 
 
 
-@interface AppDelegate () <UIAlertViewDelegate,WXApiDelegate,WeiboSDKDelegate,MFMessageComposeViewControllerDelegate>
+@interface AppDelegate () <UIAlertViewDelegate,WXApiDelegate,WeiboSDKDelegate,MFMessageComposeViewControllerDelegate> {
+    UITabBarItem * tabBarItem1;
+    UITabBarItem * tabBarItem2;
+    UITabBarItem * tabBarItem3;
+    UITabBarItem * tabBarItem4;
+}
 
 #define WX_KEY @"wx5ac8c621e7ca98a9"
 #define WB_KEY @"1468435197"
@@ -43,6 +48,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    _languageIndex = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_SELECTED_LANGUAGE] integerValue];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeLanguage:)
+                                                 name:NOTIFY_CHANGE_LANGUAGE
+                                               object:nil];
+    
     [WXApi registerApp:WX_KEY];
     [WeiboSDK registerApp:WB_KEY];
     
@@ -124,7 +137,7 @@
                 [blockSelf translateToMainController];
             }else{
                 [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:DOWNLOADSUCCESS];
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"登录失败", nil) message:nil delegate:blockSelf cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"确定", nil), nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"登录失败") message:nil delegate:blockSelf cancelButtonTitle:nil otherButtonTitles:BTLocalizedString(@"确定"), nil];
                 [alert show];
                 return;
             }
@@ -156,7 +169,7 @@
     = [[UINavigationController alloc] initWithRootViewController:sportVC];
     UIImage * normalImage1 = [[UIImage imageNamed:@"movement2.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * selectImage1 = [[UIImage imageNamed:@"movement1.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UITabBarItem * tabBarItem1 = [[UITabBarItem alloc]initWithTitle:NSLocalizedString(@"运动", nil) image:normalImage1 selectedImage:selectImage1];
+    tabBarItem1 = [[UITabBarItem alloc]initWithTitle:BTLocalizedString(@"运动") image:normalImage1 selectedImage:selectImage1];
     navSport.tabBarItem = tabBarItem1;
     [UtilityUI setNavigationStyle:navSport.navigationBar];
     [UtilityUI setTabBarStyle:tabBarItem1];
@@ -166,7 +179,8 @@
     = [[UINavigationController alloc] initWithRootViewController:RankVC];
     UIImage * normalImage2 = [[UIImage imageNamed:@"ranking2.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * selectImage2 = [[UIImage imageNamed:@"ranking1.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    navRanding.tabBarItem = [[UITabBarItem alloc]initWithTitle:NSLocalizedString(@"排名", nil) image:normalImage2 selectedImage:selectImage2];
+    tabBarItem2 =[[UITabBarItem alloc]initWithTitle:BTLocalizedString(@"排名") image:normalImage2 selectedImage:selectImage2];
+    navRanding.tabBarItem = tabBarItem2;
     [UtilityUI setNavigationStyle:navRanding.navigationBar];
     [UtilityUI setTabBarStyle:navRanding.tabBarItem];
     
@@ -175,7 +189,7 @@
     = [[UINavigationController alloc] initWithRootViewController:sleepVC];
     UIImage * normalImage3 = [[UIImage imageNamed:@"sleep2.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * selectImage3 = [[UIImage imageNamed:@"sleep1.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UITabBarItem * tabBarItem3 = [[UITabBarItem alloc]initWithTitle:NSLocalizedString(@"睡眠", nil) image:normalImage3 selectedImage:selectImage3];
+    tabBarItem3 = [[UITabBarItem alloc]initWithTitle:BTLocalizedString(@"睡眠") image:normalImage3 selectedImage:selectImage3];
     navSleep.tabBarItem = tabBarItem3;
     [UtilityUI setNavigationStyle:navSleep.navigationBar];
     [UtilityUI setTabBarStyle:tabBarItem3];
@@ -185,7 +199,7 @@
     = [[UINavigationController alloc] initWithRootViewController:heartVC];
     UIImage * normalImage4 = [[UIImage imageNamed:@"heartbeat2.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * selectImage4 = [[UIImage imageNamed:@"heartbeat1.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UITabBarItem * tabBarItem4 = [[UITabBarItem alloc]initWithTitle:NSLocalizedString(@"心率", nil) image:normalImage4 selectedImage:selectImage4];
+    tabBarItem4 = [[UITabBarItem alloc]initWithTitle:BTLocalizedString(@"心率") image:normalImage4 selectedImage:selectImage4];
     navHeart.tabBarItem = tabBarItem4;
     [UtilityUI setNavigationStyle:navHeart.navigationBar];
     [UtilityUI setTabBarStyle:tabBarItem4];
@@ -196,7 +210,7 @@
     = [[UINavigationController alloc] initWithRootViewController:personalVC];
     UIImage * normalImage5 = [[UIImage imageNamed:@"personal2.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * selectImage5 = [[UIImage imageNamed:@"personal1.png"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UITabBarItem * tabBarItem5 = [[UITabBarItem alloc]initWithTitle:NSLocalizedString(@"个人", nil) image:normalImage5 selectedImage:selectImage5];
+    UITabBarItem * tabBarItem5 = [[UITabBarItem alloc]initWithTitle:BTLocalizedString(@"个人") image:normalImage5 selectedImage:selectImage5];
     navPersonal.tabBarItem = tabBarItem5;
     //[navSetting.navigationBarAppearance setShadowImage:[UIImage new]];
     //navSetting.navigationBar.shadowImage = [UIImage imagewi]
@@ -232,7 +246,7 @@
     NSString *phoneNO = [[NSUserDefaults standardUserDefaults] objectForKey:SETPHONENO];
     MFMessageComposeViewController *messageController=[[MFMessageComposeViewController alloc]init];
     messageController.recipients= @[phoneNO];
-    messageController.body = NSLocalizedString(@"[EasyFit提醒]我需要您的帮助，请尽快和TA联系！", nil);
+    messageController.body = BTLocalizedString(@"[EasyFit提醒]我需要您的帮助，请尽快和TA联系！");
     messageController.messageComposeDelegate = self;
     [self.mainTabBarController presentViewController:messageController animated:YES completion:nil];
 }
@@ -251,13 +265,13 @@
     switch (result) {
         case MessageComposeResultSent:
         {
-            [MBProgressHUD showHUDByContent:NSLocalizedString(@"发送成功", nil) view:UI_Window afterDelay:2];
+            [MBProgressHUD showHUDByContent:BTLocalizedString(@"发送成功") view:UI_Window afterDelay:2];
         }
             
             break;
         case MessageComposeResultFailed:
         {
-            [MBProgressHUD showHUDByContent:NSLocalizedString(@"发送失败", nil) view:UI_Window afterDelay:2];
+            [MBProgressHUD showHUDByContent:BTLocalizedString(@"发送失败") view:UI_Window afterDelay:2];
         }
             
             break;
@@ -349,5 +363,24 @@
 - (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
     
 }
+
+- (NSString *)localizedString:(NSString *)string {
+    switch (_languageIndex) {
+        case 1:
+            return CustomLocalizedString(string,@"zh-Hans");
+        case 2:
+            return CustomLocalizedString(string,@"en");
+        default:
+            return NSLocalizedString(string, nil);
+    }
+}
+
+- (void)changeLanguage:(NSNotification *)notification {
+    tabBarItem1.title = BTLocalizedString(@"运动");
+    tabBarItem2.title = BTLocalizedString(@"排名");
+    tabBarItem3.title = BTLocalizedString(@"睡眠");
+    tabBarItem4.title = BTLocalizedString(@"心率");
+}
+
 
 @end

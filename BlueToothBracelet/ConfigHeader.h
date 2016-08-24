@@ -40,6 +40,16 @@
 #define UI_Window    [[[UIApplication sharedApplication] delegate] window] //获得window
 
 
+
+#define NOTIFY_CHANGE_LANGUAGE @"changelanguage"
+#define KEY_SELECTED_LANGUAGE @"SelectedLanguage"
+
+#define CustomLocalizedString(key, language) \
+[[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:language ofType:@"lproj"]] localizedStringForKey:(key) value:@"" table:nil]
+
+#define BTLocalizedString(string) \
+[(AppDelegate *)[[UIApplication sharedApplication] delegate] localizedString:string]
+
 #endif
 
 

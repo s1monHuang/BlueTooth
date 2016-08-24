@@ -19,12 +19,16 @@
 
 @property (nonatomic , copy) NSString *password;
 
+@property (nonatomic, assign)NSInteger languageIndex;
+
 // 当前类的一个单例方法
 + (AppDelegate *)defaultDelegate;
 
 
 - (void)exchangeRootViewControllerToLogin;
 - (void)exchangeRootViewControllerToMain;
+
+- (NSString *)localizedString:(NSString *)string;
 
 /*
  
