@@ -65,7 +65,7 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     
-    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter",@"datacenter"];
+    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter",@"ic_language"];
     dataArray = [[NSArray alloc] initWithObjects:BTLocalizedString(@"我的资料"),BTLocalizedString(@"运动目标"),BTLocalizedString(@"久坐提醒"),BTLocalizedString(@"智能闹钟"),BTLocalizedString(@"来电提醒"),BTLocalizedString(@"防丢提醒"),BTLocalizedString(@"一键求救"),BTLocalizedString(@"设备管理"), BTLocalizedString(@"关于我们"),BTLocalizedString(@"数据中心"),BTLocalizedString(@"语言"),nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];

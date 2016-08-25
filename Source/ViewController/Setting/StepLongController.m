@@ -107,7 +107,7 @@
     }else{
         UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
                                                                            0,
-                                                                           30,
+                                                                           50,
                                                                            44)];
         [rightButton setTitle:
          BTLocalizedString(@"完成") forState:UIControlStateNormal];

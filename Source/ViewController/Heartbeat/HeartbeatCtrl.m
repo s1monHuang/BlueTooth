@@ -93,7 +93,7 @@
 
     _button = [[UIButton alloc] initWithFrame:CGRectMake(0,
                                                                   0,
-                                                                  50,
+                                                                  70,
                                                                   30)];
     [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [_button addTarget:self
