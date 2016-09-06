@@ -164,7 +164,7 @@
                   moduleName = "BlueToothBracelet"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/azz/Desktop/gitHub%20project/Source/Helper/BluetoothManager.m"
-                  timestampString = "494850454.054905"
+                  timestampString = "494861507.060423"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "901"
@@ -179,7 +179,7 @@
                   moduleName = "BlueToothBracelet"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/azz/Desktop/gitHub%20project/Source/Helper/BluetoothManager.m"
-                  timestampString = "494850454.054977"
+                  timestampString = "494861507.060504"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "901"
@@ -194,7 +194,7 @@
                   moduleName = "BlueToothBracelet"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/azz/Desktop/gitHub%20project/Source/Helper/BluetoothManager.m"
-                  timestampString = "494850454.055041"
+                  timestampString = "494861507.060571"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "901"
@@ -351,16 +351,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/ViewController/Setting/myDataController.m"
-            timestampString = "494845029.084292"
+            filePath = "Lib/FSCalendar/FSCalendar.m"
+            timestampString = "494861506.018098"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "-resetClick"
+            startingLineNumber = "1598"
+            endingLineNumber = "1598"
+            landmarkName = "-invalidateWeekdaySymbols"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
