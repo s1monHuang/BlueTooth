@@ -22,15 +22,8 @@
                             <constraint firstAttribute="width" constant="22" id="3aB-8w-vPU"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hKS-qr-6q0">
-                        <rect key="frame" x="50" y="12" width="36" height="36"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="36" id="OSo-VE-JrN"/>
-                            <constraint firstAttribute="width" constant="36" id="gUx-gw-ug8"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9O9-6Z-ggt">
-                        <rect key="frame" x="87" y="19" width="130" height="20"/>
+                        <rect key="frame" x="52" y="19" width="130" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="ZcY-MG-fcL"/>
                             <constraint firstAttribute="width" constant="130" id="l5f-no-p1c"/>
@@ -51,14 +44,12 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="9O9-6Z-ggt" firstAttribute="leading" secondItem="hKS-qr-6q0" secondAttribute="trailing" constant="1" id="2lS-t5-xR1"/>
                     <constraint firstItem="Y2p-Zc-1g3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="5jB-a3-Nmp"/>
                     <constraint firstItem="IhT-D3-7fq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="62g-Uo-vOp"/>
                     <constraint firstItem="9O9-6Z-ggt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="11" id="9ON-BS-kyJ"/>
-                    <constraint firstItem="hKS-qr-6q0" firstAttribute="leading" secondItem="Y2p-Zc-1g3" secondAttribute="trailing" constant="13" id="Kec-bN-Dle"/>
-                    <constraint firstItem="hKS-qr-6q0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="LiK-Te-NER"/>
                     <constraint firstItem="Y2p-Zc-1g3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="Mmp-xC-gha"/>
                     <constraint firstItem="IhT-D3-7fq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="fJ6-mv-OQA"/>
+                    <constraint firstItem="9O9-6Z-ggt" firstAttribute="leading" secondItem="Y2p-Zc-1g3" secondAttribute="trailing" constant="15" id="xBU-fi-YkK"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -66,6 +57,7 @@
                 <outlet property="lblRankNo" destination="IhT-D3-7fq" id="uDz-jr-jY9"/>
                 <outlet property="rankNoimg" destination="Y2p-Zc-1g3" id="4Rv-99-g9a"/>
             </connections>
+            <point key="canvasLocation" x="36" y="526"/>
         </tableViewCell>
     </objects>
 </document>

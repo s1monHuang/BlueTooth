@@ -23,6 +23,11 @@
 
 @property (nonatomic , strong) NSString *stepLongStr;
 
+@property (nonatomic , strong) UILabel *stepLonglabel;
+
+@property (nonatomic , assign) BOOL isEnglish;
+
+
 
 @end
 
@@ -33,27 +38,35 @@
     self.title = BTLocalizedString(@"我的资料");
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
+    _isEnglish = [self systemLanguageIsEnglish];
+    CGFloat tempX = 0;
+    if (_isEnglish) {
+        tempX = kScreenWidth > 320 ? 110 : 100;
+    }else{
+        tempX = kScreenWidth > 320 ? 140 : 140;
+    }
     
-    CGFloat tempX = kScreenWidth > 320 ? 40 : 50;
     CGFloat labelX = self.view.width / 2 - tempX;
     CGFloat labelY = 30;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
-    label.text = BTLocalizedString(@"步长");
-    [self.view addSubview:label];
+    _stepLonglabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 120, 40)];
+    _stepLonglabel.text = BTLocalizedString(@"步长");
+    _stepLonglabel.textAlignment = NSTextAlignmentRight;
+//    label.font = [UIFont systemFontOfSize:20];
+    [self.view addSubview:_stepLonglabel];
     
-    CGFloat stepLabelX = CGRectGetMaxX(label.frame);
-    UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX, labelY, 60, 40)];
+    CGFloat stepLabelX = CGRectGetMaxX(_stepLonglabel.frame);
+    UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX +10, labelY, 200, 40)];
     _stepLabel = stepLabel;
-    stepLabel.text = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"50" : CurrentUser.stepLong;
-    stepLabel.font = [UIFont systemFontOfSize:25];
-    stepLabel.textColor = KThemeGreenColor;
+    _stepLabel.textAlignment = NSTextAlignmentLeft;
+    _stepLabel.font = [UIFont systemFontOfSize:20];
+    NSString *tempStr = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"50" : CurrentUser.stepLong;
+    _stepLongStr = tempStr;
+    NSRange range = NSMakeRange(0, tempStr.length);
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",tempStr]];
+    [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
+                       range:range];
+    _stepLabel.attributedText = stepStr;
     [self.view addSubview:stepLabel];
-    
-    CGFloat otherLabelX = CGRectGetMaxX(stepLabel.frame);
-    UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
-    otherLabel.text = @"cm";
-    otherLabel.textColor = KThemeGreenColor;
-    [self.view addSubview:otherLabel];
     
     //设置脚印
     [self setUpFootView];
@@ -180,7 +193,7 @@
 
 - (void)PushToVC
 {
-    _stepLongStr = _stepLabel.text;
+    
     if (_first == 1) {
         TrainTargetController *VC = [[TrainTargetController alloc] init];
         CurrentUser.stepLong = _stepLongStr;
@@ -195,9 +208,34 @@
 #pragma mark - rulerviewDelagete
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
-    _stepLabel.text = valueStr;
+    _stepLongStr = valueStr;
+    NSRange range = NSMakeRange(0, valueStr.length);
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",valueStr]];
+    [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
+                     range:range];
+    _stepLabel.attributedText = stepStr;
   
     
+}
+
+- (BOOL)systemLanguageIsEnglish
+{
+    if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 0) {
+        //获取系统当前语言版本（中文zh-Hans,英文en)
+        NSArray *languages = [NSLocale preferredLanguages];
+        NSString *currentLanguage = [languages objectAtIndex:0];
+        if ([currentLanguage isEqualToString:@"en-US"] ||[currentLanguage isEqualToString:@"en-CN"]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+    else if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 1) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

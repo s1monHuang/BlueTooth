@@ -55,6 +55,7 @@
                                              selector:@selector(changeLanguage:)
                                                  name:NOTIFY_CHANGE_LANGUAGE
                                                object:nil];
+    _isEnglish = [self systemLanguageIsEnglish];
     
     [WXApi registerApp:WX_KEY];
     [WeiboSDK registerApp:WB_KEY];
@@ -375,7 +376,29 @@
     }
 }
 
+- (BOOL)systemLanguageIsEnglish
+{
+    if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 0) {
+        //获取系统当前语言版本（中文zh-Hans,英文en)
+        NSArray *languages = [NSLocale preferredLanguages];
+        NSString *currentLanguage = [languages objectAtIndex:0];
+        if ([currentLanguage isEqualToString:@"en-US"] ||[currentLanguage isEqualToString:@"en-CN"]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+    else if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 1) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
+}
+
 - (void)changeLanguage:(NSNotification *)notification {
+    
+    _isEnglish = [self systemLanguageIsEnglish];
     tabBarItem1.title = BTLocalizedString(@"运动");
     tabBarItem2.title = BTLocalizedString(@"排名");
     tabBarItem3.title = BTLocalizedString(@"睡眠");

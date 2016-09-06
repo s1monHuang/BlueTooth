@@ -88,14 +88,19 @@
     [self.view bringSubviewToFront:_targetSlider];
     _stepCountLabel.textColor = KThemeGreenColor;
     _stepCountLabel.textAlignment = NSTextAlignmentCenter;
-    _stepCountLabel.font = [UIFont systemFontOfSize:25];
-    _stepCountLabel.text = [NSString stringWithFormat:@"%2.0lf%@",_targetSlider.value * 10000,BTLocalizedString(@"步")];
+    _stepCountLabel.font = [UIFont systemFontOfSize:16];
+    NSString *tempStr = [NSString stringWithFormat:@"%2.0lf",_targetSlider.value * 10000];
+    NSRange targetRange = NSMakeRange(0, tempStr.length);
+    NSMutableAttributedString *targetValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%2.0lf %@",_targetSlider.value * 10000,BTLocalizedString(@"步")]];
+    [targetValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:32],NSForegroundColorAttributeName:KThemeGreenColor}
+                              range:targetRange];
+    _stepCountLabel.attributedText = targetValueString;
     _stepCount = 10000;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
-    _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
+    _leftLabel.text = [NSString stringWithFormat:@"%.1lf km",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _rightLabel.text = [NSString stringWithFormat:@"%.2lf%@",fireEnergy,BTLocalizedString(@"千卡")];
+    _rightLabel.text = [NSString stringWithFormat:@"%.2lf %@",fireEnergy,BTLocalizedString(@"千卡")];
     
 }
 
@@ -204,13 +209,20 @@
 - (void)valueChange
 {
     _stepCount = ((NSInteger)(_targetSlider.value * 10000 ) % 100) > 49 ? (100 - (NSInteger)(_targetSlider.value * 10000 ) % 100 + (NSInteger)(_targetSlider.value * 10000)) : ((NSInteger)(_targetSlider.value * 10000) - (NSInteger)(_targetSlider.value * 10000 ) % 100 );
-    _stepCountLabel.text = [NSString stringWithFormat:@"%ld%@",_stepCount,BTLocalizedString(@"步")];
+    
+    NSString *tempStr = [NSString stringWithFormat:@"%ld",_stepCount];
+    NSRange targetRange = NSMakeRange(0, tempStr.length);
+    NSMutableAttributedString *targetValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld %@",_stepCount,BTLocalizedString(@"步")]];
+    [targetValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:32],NSForegroundColorAttributeName:KThemeGreenColor}
+                               range:targetRange];
+    _stepCountLabel.attributedText = targetValueString;
+//    _stepCountLabel.text = [NSString stringWithFormat:@"%ld%@",_stepCount,BTLocalizedString(@"步")];
     _stepCountLabel.textColor = KThemeGreenColor;
     
     CGFloat distance = (_targetSlider.value * [CurrentUser.stepLong floatValue] ) / 10;
-    _leftLabel.text = [NSString stringWithFormat:@"%.1lfkm",distance];
+    _leftLabel.text = [NSString stringWithFormat:@"%.1lf km",distance];
     CGFloat fireEnergy = [CurrentUser.weight floatValue] * distance * 1.036 * 0.001;
-    _rightLabel.text = [NSString stringWithFormat:@"%.2lf%@",fireEnergy,BTLocalizedString(@"千卡")];
+    _rightLabel.text = [NSString stringWithFormat:@"%.2lf %@",fireEnergy,BTLocalizedString(@"千卡")];
     
    
 

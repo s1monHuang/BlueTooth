@@ -17,7 +17,7 @@
 @property (nonatomic) PNLineChart * lineChart;
 
 @property (nonatomic) UILabel *lblHeartBeatNumber;
-@property (nonatomic) UIButton *button;
+@property (nonatomic) UIButton *startButton;
 
 @end
 
@@ -50,8 +50,10 @@
                                                object:nil];
     
     _lblHeartBeatNumber = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, ScreenWidth - 40, 30)];
-    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"0%@",BTLocalizedString(@"次/分钟")];
-    _lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:30];
+    _lblHeartBeatNumber.font = [UIFont boldSystemFontOfSize:18];
+    _lblHeartBeatNumber.attributedText = [self attributeTextWithString:@"0"];
+//    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"0%@",BTLocalizedString(@"次/分钟")];
+    
     _lblHeartBeatNumber.textAlignment = NSTextAlignmentCenter;
     _lblHeartBeatNumber.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
     [self.view addSubview:_lblHeartBeatNumber];
@@ -84,23 +86,23 @@
     remindTextView = [[UILabel alloc] initWithFrame:CGRectMake(10,
                                                                               lblNumber03.height + lblNumber03.y + 100 ,
                                                                               SCREEN_WIDTH - 20,
-                                                                              50)];
+                                                                              100)];
     remindTextView.backgroundColor = [UIColor clearColor];
     remindTextView.font = [UIFont systemFontOfSize:16];
     remindTextView.text = BTLocalizedString(@"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.");
     remindTextView.numberOfLines = 0;
     [self.view addSubview:remindTextView];
 
-    _button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+    _startButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
                                                                   0,
                                                                   70,
                                                                   30)];
-    [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
-    [_button addTarget:self
-               action:@selector(clickButton:)
-     forControlEvents:UIControlEventTouchUpInside];
+    [_startButton addTarget:self
+                action:@selector(clickButton:)
+      forControlEvents:UIControlEventTouchUpInside];
+    [_startButton setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_button];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_startButton];
     self.navigationItem.rightBarButtonItem = item;
     
 }
@@ -136,30 +138,48 @@
 }
 
 - (void)readHeartRateSuccess {
-    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,BTLocalizedString(@"次/分钟")];
+    NSString *rateStr = [NSString stringWithFormat:@"%@",@([BluetoothManager share].heartRate).stringValue];
+    _lblHeartBeatNumber.attributedText = [self attributeTextWithString:rateStr];
+//    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,BTLocalizedString(@"次/分钟")];
 }
 
 - (void)readHeartRateFinished {
-    [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
+    [_startButton setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
 }
 
 - (void)disConnectPeripheral {
-    [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
+    [_startButton setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
 }
 
 - (void)changeLanguage:(NSNotification *)notification {
     self.title = BTLocalizedString(@"心率");
-    if (_button.selected) {
-        [_button setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
-    } else {
-        [_button setTitle:BTLocalizedString(@"取消") forState:UIControlStateNormal];
-    }
-    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"%@%@",@([BluetoothManager share].heartRate).stringValue,BTLocalizedString(@"次/分钟")];
+//    if (_startButton.selected) {
+        [_startButton setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
+//    } else {
+//        [_startButton setTitle:BTLocalizedString(@"取消") forState:UIControlStateNormal];
+//    }
+    NSString *rateStr = [NSString stringWithFormat:@"%@",@([BluetoothManager share].heartRate).stringValue];
+    _lblHeartBeatNumber.attributedText = [self attributeTextWithString:rateStr];
     remindTextView.text = BTLocalizedString(@"运动后心率加快属正常现象,请不要担心.心率信息仅提供参考.");
+}
+
+- (NSMutableAttributedString *)attributeTextWithString:(NSString *)string
+{
+    if (string.length > 0) {
+        NSRange range = NSMakeRange(0, string.length);
+        NSMutableAttributedString *textString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",string,BTLocalizedString(@"次/分钟")]];
+        [textString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:32]} range:range];
+        return textString;
+    }else{
+        NSRange range = NSMakeRange(0, 1);
+        NSMutableAttributedString *textString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"0 %@",BTLocalizedString(@"次/分钟")]];
+        [textString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:32]} range:range];
+        return textString;
+    }
 }
 
 

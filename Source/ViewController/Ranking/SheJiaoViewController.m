@@ -56,7 +56,7 @@
 {
     if(indexPath.section == 0)
     {
-        return 130;
+        return 150;
     }
     else{
         return 85;
@@ -67,26 +67,50 @@
 {
     if(section == 0)
     {
-        return 28;
+        return 38;
     }
     else{
-        return 25;
+        return 35;
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *title = nil;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 38)];
     if(section == 0)
     {
-        title = BTLocalizedString(@"我的分享码");
-    }else
-    {
-        title = BTLocalizedString(@"添加好友");
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, ScreenWidth - 20, 38)];
+        label.text = BTLocalizedString(@"我的分享码");
+        label.textAlignment = NSTextAlignmentLeft;
+        label.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+        [view addSubview:label];
+        return view;
     }
-    
-    return title;
+    else{
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, -5, ScreenWidth - 20, 35)];
+        label.text = BTLocalizedString(@"添加好友");
+        label.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+        label.textAlignment = NSTextAlignmentLeft;
+        [view addSubview:label];
+        return view;
+    }
 }
+
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    NSString *title = nil;
+//    if(section == 0)
+//    {
+//        NSString *tempStr = BTLocalizedString(@"我的分享码");
+//        title = tempStr;
+//    }else
+//    {
+//        NSString *tempStr = BTLocalizedString(@"添加好友");
+//        title = tempStr;
+//    }
+//    
+//    return title;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -102,7 +126,7 @@
     
     if (indexPath.section == 0) {
         
-        UIImageView *headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
+        UIImageView *headerImageBg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 30, 60, 60)];
         NSString *imageStr = [CurrentUser.sex isEqualToString:@"男"] ? @"man":@"woman";
         headerImageBg.image = [UIImage imageNamed:imageStr];
         [cell.contentView addSubview:headerImageBg];
@@ -115,49 +139,58 @@
         lblUserName.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lblUserName];
         
-        UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 52, 60, 20)];
+        UILabel *lblShareNumber = [[UILabel alloc] initWithFrame:CGRectMake(100, 62, 120, 20)];
         lblShareNumber.text = BTLocalizedString(@"分享码:");
         lblShareNumber.font = [UIFont boldSystemFontOfSize:16];
         lblShareNumber.textAlignment = NSTextAlignmentLeft;
         lblShareNumber.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lblShareNumber];
         
-        UILabel *inviteCodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 40, ScreenWidth - 180, 35)];
+        UILabel *inviteCodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(215, 50, ScreenWidth - 220, 45)];
         inviteCodeLabel.text = CurrentUser.inviteCode;
         inviteCodeLabel.textColor = KThemeGreenColor;
-        inviteCodeLabel.font = [UIFont systemFontOfSize:25];
+        inviteCodeLabel.numberOfLines = 0;
+        inviteCodeLabel.font = [UIFont systemFontOfSize:20];
         [cell.contentView addSubview:inviteCodeLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 94, ScreenWidth, 1)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 104, ScreenWidth, 1)];
         lineView.backgroundColor = [UIColor grayColor];
         [cell.contentView addSubview:lineView];
         
-        NSString *text = BTLocalizedString(@"分享 (点击复制分享码)");
+        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 95, ScreenWidth, 35)];
+        
+        
+        NSString *text = BTLocalizedString(@"分享(点击复制分享码)");
         
         CGSize textSize = [text sizeWithFont:[UIFont boldSystemFontOfSize:13.0f] constrainedToSize:CGSizeMake(ScreenWidth, 15)];
         
-        UIButton *btnShare = [[UIButton alloc] initWithFrame:CGRectMake((ScreenWidth - textSize.width - 20)/2, 105, 14, 14)];
+        UIButton *btnShare = [[UIButton alloc] initWithFrame:CGRectMake((ScreenWidth - textSize.width - 20)/2, 25, 14, 14)];
         [btnShare setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
         [btnShare addTarget:self action:@selector(btnShareClick:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.contentView addSubview:btnShare];
+        [backView addSubview:btnShare];
         
-        UILabel *lblShareText = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - textSize.width)/2+14, 104, textSize.width+20, 14)];
+        UILabel *lblShareText = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - textSize.width)/2+14, 25, textSize.width+100, 14)];
         lblShareText.text = text;
         lblShareText.font = [UIFont boldSystemFontOfSize:13];
         lblShareText.textAlignment = NSTextAlignmentLeft;
         lblShareText.textColor = [UIColor blackColor];
-        [cell.contentView addSubview:lblShareText];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnShareClick:)];
+        [backView addGestureRecognizer:tap];
+        backView.userInteractionEnabled = YES;
+        [backView addSubview:lblShareText];
+        [cell.contentView addSubview:backView];
         
     }else{
         
-        UILabel *lbltiqutext = [[UILabel alloc] initWithFrame:CGRectMake(10, 35, 60, 20)];
+        UILabel *lbltiqutext = [[UILabel alloc] initWithFrame:CGRectMake(10, 25, 60, 40)];
         lbltiqutext.text = BTLocalizedString(@"提取码");
+        lbltiqutext.numberOfLines = 0;
         lbltiqutext.font = [UIFont boldSystemFontOfSize:16];
         lbltiqutext.textAlignment = NSTextAlignmentLeft;
         lbltiqutext.textColor = [UIColor blackColor];
         [cell.contentView addSubview:lbltiqutext];
         
-        UITextField *txtqueryCode = [[UITextField alloc] initWithFrame:CGRectMake(78, 32, 145, 30)];
+        UITextField *txtqueryCode = [[UITextField alloc] initWithFrame:CGRectMake(78, 32, ScreenWidth - 170, 30)];
         txtqueryCode.background = [UIImage imageNamed:@"share_inputbox"];
         _txtqueryCode = txtqueryCode;
         txtqueryCode.delegate = self;

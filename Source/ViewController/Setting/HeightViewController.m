@@ -34,25 +34,27 @@
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
-    CGFloat labelX = self.view.width / 2 - 50;
+    CGFloat labelX = self.view.width / 2 - 100;
     CGFloat labelY = 20;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 70, 40)];
+    label.textAlignment = NSTextAlignmentRight;
     label.text = BTLocalizedString(@"身高");
     [self.view addSubview:label];
     
     CGFloat heightLabelX = CGRectGetMaxX(label.frame);
-    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX, labelY, 60, 40)];
+    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX+5, labelY, 200, 40)];
     _heightLabel = heightLabel;
-    heightLabel.text = [CurrentUser.high isEqualToString:@"(null)"] ? @"100" : CurrentUser.high;
-    heightLabel.font = [UIFont systemFontOfSize:25];
-    heightLabel.textColor = KThemeGreenColor;
-    [self.view addSubview:heightLabel];
+    heightLabel.textAlignment = NSTextAlignmentLeft;
+    heightLabel.font = [UIFont systemFontOfSize:20];
+    NSString *tempStr = [CurrentUser.high isEqualToString:@"(null)"] ? @"100" : CurrentUser.high;
+    _heightStr = tempStr;
+    NSRange range = NSMakeRange(0, tempStr.length);
+    NSMutableAttributedString *heightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",tempStr]];
+    [heightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
+                                 range:range];
+    _heightLabel.attributedText = heightStr;
     
-    CGFloat otherLabelX = CGRectGetMaxX(heightLabel.frame);
-    UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
-    otherLabel.text = @"cm";
-    otherLabel.textColor = KThemeGreenColor;
-    [self.view addSubview:otherLabel];
+    [self.view addSubview:heightLabel];
     
     NSString *sexNamed = [CurrentUser.sex isEqualToString:BTLocalizedString(@"男")]?@"man2":@"woman2";
     CGFloat heightViewHeight = kScreenHeight > 480 ? 350 : 280;
@@ -162,7 +164,7 @@
 
 - (void)PushToVC
 {
-    _heightStr = _heightLabel.text;
+//    _heightStr = _heightLabel.text;
     if (_first == 1) {
         WeightViewController *VC = [[WeightViewController alloc] init];
         CurrentUser.high = _heightStr;
@@ -183,7 +185,12 @@
         rulerValue = 0;
     }
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
-    _heightLabel.text = valueStr;
+    _heightStr = valueStr;
+    NSRange range = NSMakeRange(0, valueStr.length);
+    NSMutableAttributedString *heightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",valueStr]];
+    [heightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
+                       range:range];
+    _heightLabel.attributedText = heightStr;
     
 //    //修改数据库信息
 //    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];

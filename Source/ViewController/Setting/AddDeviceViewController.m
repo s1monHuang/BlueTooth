@@ -12,7 +12,7 @@
 #import "BluetoothManager.h"
 #import "OperateViewModel.h"
 
-@interface AddDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,BluetoothManagerDelegate> {
+@interface AddDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,BluetoothManagerDelegate,UIGestureRecognizerDelegate> {
 //    OperateViewModel *_operateViewModel;
     MBProgressHUD *_hud;
 }
@@ -43,6 +43,23 @@
     [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
     [BluetoothManager share].isReadedPripheralAllData = NO;
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  30,
+                                                                  44)];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_nor"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"common_btn_back_pre"] forState:UIControlStateHighlighted];
+    [button addTarget:self
+               action:@selector(PushToVC)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    button.accessibilityLabel = BTLocalizedString(@"返回");
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
 //    _operateViewModel = [[OperateViewModel alloc] init];
 //    
@@ -173,6 +190,11 @@
     
     [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
+}
+
+- (void)PushToVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -12,7 +12,7 @@
 "添加设备" = "Add Device";
 "解除设备" = "Remove Device";
 "绑定成功" = "Bind Success";
-"正在绑定" = "Binding";
+"正在绑定..." = "Binding...";
 "绑定失败" = "Bind Failed";
 //历史数据中心
 "数据中心" = "Data Center";
@@ -22,7 +22,7 @@
 "日" = "Day";
 "月" = "Month";
 "周" = "Week";
-"步" = "Step";
+"步" = "Steps";
 "步数" = "Steps";
 "步数(步)" = "Steps";
 "活动距离" = "Sports Distance";
@@ -30,6 +30,7 @@
 "睡眠时长" = "Hours of Sleep";
 "小时" = "Hour";
 "分钟" = "Min";
+"小时1" = "H";
 "深睡" = "Deep Sleep";
 "浅睡" = "Light sleep";
 //年龄
@@ -79,7 +80,7 @@
 //训练目标
 "每日运动目标" = "Daily Sports Target";
 "千卡" = "Kcal";
-"根据您的个人情况设置合理目标" = "To set reasonable goals based on your personal circumstances";
+"根据您的个人情况设置合理目标" = "Set reasonable target according to your personal circumstance";
 //来电提醒
 "来电提醒" = "Reminder Center";
 "短信提醒" = "SMS ";
@@ -103,20 +104,20 @@
 "发送失败" = "Send Failed";
 //关于我们
 "关于我们" = "About Us";
-"当前版本" = "Copyright";
+"当前版本" = "Version";
 //登录
 "登录失败" = "Login fail";
-"登录" = "Login";
+"登录" = "Logon";
 "请输入邮箱" = "Email Address";
 "请输入密码" = "Password";
 "登录中..." = "Logging...";
 "账号格式不正确" = "Account Incorrect";
-"快速注册" = "Quick Logon";
+"快速注册" = "Register";
 "找回密码" = "Retrieve password";
 //注册
-"注册" = "Logon";
+"注册" = "Register";
 "提示" = "Hint";
-"注册成功" = "Logon Success";
+"注册成功" = "Register Success";
 "账户" = "account";
 "密码" = "password";
 //忘记密码
@@ -132,7 +133,7 @@
 "我的分享码" = "My Sharing Code";
 "添加好友" = "Add Sharing Code";
 "分享码:" = "Sharing Code:";
-"分享(点击复制分享码)" = "Copy";
+"分享(点击复制分享码)" = "Share (Click to copy sharing code)";
 "提取码" = "Sharing Code";
 "添加" = "Add";
 "分享码已复制" = "Sharing Code Copied";
@@ -144,7 +145,7 @@
 "公里" = "Km";
 "千卡" = "Kcal";
 "雪糕" = "Ice-cream";
-"快把你的光辉成绩晒一下吧!" = "Show your results!";
+"快把你的光辉成绩晒一下吧!" = "Show your result!";
 //心率
 "心率" = "Heart Rate";
 "次/分钟" = "Times/Min";
@@ -155,22 +156,24 @@
 "运动目标" = "Sports Target";
 "是否退出登录" = "Are You Sure to Exit";
 //睡眠
-"睡眠" = "Sleep Data";
+"睡眠" = "Sleep";
 "近24小时时长" = "Nearly 24 hours";
 "同步成功" = "Synchronize Success";
 "时" = "Hours";
 //运动
-"运动" = "Sports Data";
+"运动" = "Sports";
 "完成" = "Achieve";
 "目标" = "Target:";
-"当天步数(步)" = "Steps";
+"当天步数" = "Steps";
+"(步)" = "(step)";
 "活动距离" = "Distance";
 "消耗能量" = "Energy Used";
-"脂肪燃烧" = "fat-burning";
+"脂肪燃烧" = "Fat Burning";
 "同步失败" = "Synchronize Failed";
 "同步数据中..." = "Data Synchronizing...";
 "[EasyFit提醒]我需要您的帮助，请尽快和TA联系！" = "[EasyFit]I need your HELP，contact with me ASAQ！";
 //语言
 "语言" = "Language";
-
+"亲，你的网络不给力" = "Pro, your network is not to force, try again later... ";
+"me" = "me_English";
 

@@ -35,6 +35,8 @@
 
 @property (nonatomic,strong) OperateViewModel *operateVM;
 
+@property (nonatomic , assign) BOOL isEnglish;
+
 
 @end
 
@@ -57,6 +59,8 @@ static NSString* identifier =@"PersonalCell";
     self.navigationController.navigationBar.backgroundColor = kThemeColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     self.operateVM = [OperateViewModel viewModel];
+    
+    _isEnglish = [self systemLanguageIsEnglish];
     //tableView
     [self setUpTableView];
     
@@ -94,7 +98,13 @@ static NSString* identifier =@"PersonalCell";
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
     }
-    _valueArray = @[CurrentUser.nickName, CurrentUser.sex, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
+    NSString *sexStr = BTLocalizedString(@"男");
+    if ([CurrentUser.sex isEqualToString:@"男"]) {
+        sexStr = BTLocalizedString(@"男");
+    }else{
+        sexStr = BTLocalizedString(@"女");
+    }
+    _valueArray = @[CurrentUser.nickName, sexStr, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
     
     _unitArray = @[@"",@"",@"",@"cm",@"kg",@"cm"];
 }
@@ -130,7 +140,20 @@ static NSString* identifier =@"PersonalCell";
 
 - (void)authorPropertyIsChange:(NSNotification *)sender
 {
-    _selectedCell.valueLabel.text = sender.object;
+    NSIndexPath *index = [_tableView indexPathForCell:_selectedCell];
+    if (index.row == 1) {
+        NSString *sexStr = @"";
+        if ([sender.object isEqualToString:@"男"]) {
+            sexStr = BTLocalizedString(@"男");
+            _selectedCell.valueLabel.text = sexStr;
+        }else{
+            sexStr = BTLocalizedString(@"女");
+            _selectedCell.valueLabel.text = sexStr;
+        }
+    }else{
+        NSString *valueStr = [NSString stringWithFormat:@"%@%@",sender.object,_unitArray[index.row]];
+        _selectedCell.valueLabel.text = valueStr;
+    }
 }
 //
 #pragma mark - buttonClick
@@ -138,7 +161,16 @@ static NSString* identifier =@"PersonalCell";
 - (void)resetClick
 {
     CurrentUser.nickName = [self currentUserValue:0];
+    if (_isEnglish) {
+        NSString *tempStr = [self currentUserValue:1];
+        if (tempStr.length == 4) {
+            CurrentUser.sex = @"男";
+        }else{
+            CurrentUser.sex = @"女";
+        }
+    }else{
     CurrentUser.sex = [self currentUserValue:1];
+    }
     CurrentUser.age = [self currentUserValue:2];
     CurrentUser.high = [self currentUserValue:3];
     CurrentUser.weight = [self currentUserValue:4];
@@ -180,7 +212,35 @@ static NSString* identifier =@"PersonalCell";
 - (NSString *)currentUserValue: (NSInteger)row
 {
     myDataCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
-    NSString *valueStr = cell.valueLabel.text;
+     NSString *valueStr = @"";
+    NSString *tempStr = cell.valueLabel.text;
+    NSRange range = NSMakeRange(0, cell.valueLabel.text.length - 2);
+    switch (row) {
+        case 3:
+        {
+            valueStr = [tempStr substringWithRange:range];
+        }
+            break;
+            
+        case 4:
+        {
+            valueStr = [tempStr substringWithRange:range];
+        }
+            break;
+            
+        case 5:
+        {
+            valueStr = [tempStr substringWithRange:range];
+        }
+            break;
+            
+        default:
+        {
+          valueStr = cell.valueLabel.text;
+        }
+            break;
+    }
+   
     return valueStr;
 }
 
@@ -200,8 +260,8 @@ static NSString* identifier =@"PersonalCell";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = self.keyArray[indexPath.row];
-    [cell.valueLabel setText:self.valueArray[indexPath.row]];
-    cell.unitLabel.text = _unitArray[indexPath.row];
+    NSString *valueStr = [NSString stringWithFormat:@"%@ %@",self.valueArray[indexPath.row],_unitArray[indexPath.row]];
+    [cell.valueLabel setText:valueStr];
 
 
     cell.valueLabel.textAlignment = NSTextAlignmentRight;
@@ -251,6 +311,26 @@ static NSString* identifier =@"PersonalCell";
             break;
     }
     
+}
+
+- (BOOL)systemLanguageIsEnglish
+{
+    if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 0) {
+        //获取系统当前语言版本（中文zh-Hans,英文en)
+        NSArray *languages = [NSLocale preferredLanguages];
+        NSString *currentLanguage = [languages objectAtIndex:0];
+        if ([currentLanguage isEqualToString:@"en-US"] ||[currentLanguage isEqualToString:@"en-CN"]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+    else if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 1) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

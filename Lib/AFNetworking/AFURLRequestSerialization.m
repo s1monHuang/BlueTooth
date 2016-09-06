@@ -377,14 +377,23 @@ forHTTPHeaderField:(NSString *)field
 
 - (BOOL)systemLanguageIsEnglish
 {
-    //获取系统当前语言版本（中文zh-Hans,英文en)
-    NSArray *languages = [NSLocale preferredLanguages];
-    NSString *currentLanguage = [languages objectAtIndex:0];
-    if ([currentLanguage isEqualToString:@"en-CN"]) {
-        return YES;
-    }else{
+    if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 0) {
+        //获取系统当前语言版本（中文zh-Hans,英文en)
+        NSArray *languages = [NSLocale preferredLanguages];
+        NSString *currentLanguage = [languages objectAtIndex:0];
+        if ([currentLanguage isEqualToString:@"en-US"] ||[currentLanguage isEqualToString:@"en-CN"]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+    else if ([(AppDelegate *)[UIApplication sharedApplication].delegate languageIndex] == 1) {
         return NO;
     }
+    else {
+        return YES;
+    }
+
     
 }
 

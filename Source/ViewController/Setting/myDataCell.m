@@ -21,15 +21,10 @@
         [self addSubview:_keyLabel];
         
         CGFloat valueLabelX = CGRectGetMaxX(_keyLabel.frame);
-        CGFloat valueLabelW = kScreenWidth - valueLabelX - 50;
+        CGFloat valueLabelW = kScreenWidth - valueLabelX - 30;
         _valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(valueLabelX, 0, valueLabelW, self.height)];
         _valueLabel.textAlignment = NSTextAlignmentRight;
         [self addSubview:_valueLabel];
-        CGFloat unitLabelX = CGRectGetMaxX(_valueLabel.frame);
-        _unitLabel = [[UILabel alloc] initWithFrame:CGRectMake(unitLabelX, 0, 30, self.height)];
-        _unitLabel.textAlignment = NSTextAlignmentLeft;
-        [self addSubview:_unitLabel];
-        
     }
     return self;
 }

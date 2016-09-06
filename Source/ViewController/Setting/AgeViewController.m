@@ -47,7 +47,7 @@
     self.lblAgeValue = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 110)/2, 60 + 120+28, 110, 20)];
     DLog(@"%ld",CurrentUser.age.length);
     self.lblAgeValue.text = [CurrentUser.age isEqualToString:@"(null)"] ? @"18" : CurrentUser.age;
-    self.lblAgeValue.font = [UIFont systemFontOfSize:18];
+    self.lblAgeValue.font = [UIFont systemFontOfSize:25];
     self.lblAgeValue.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.lblAgeValue];
     

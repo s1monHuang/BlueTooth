@@ -84,11 +84,6 @@
     
     AFHTTPRequestSerializer <AFURLRequestSerialization> * requestSerializer = [AFHTTPRequestSerializer serializer];
     
-    //设置请求头
-    if ([self systemLanguageIsEnglish]) {
-        [requestSerializer setValue:@"1" forHTTPHeaderField:@"yuyan"];
-    }
-    
     requestSerializer.timeoutInterval = timeOut > 0 ? timeOut : kSVRDefaultTimeout;
     
     parameters = [self appendHeaderParams:parameters];
@@ -129,10 +124,6 @@
     
     NSString *urlPath = [NSString stringWithFormat:@"%@/%@", host, path];
     
-    //设置请求头
-    if ([self systemLanguageIsEnglish]) {
-        [requestSerializer setValue:@"1" forHTTPHeaderField:@"yuyan"];
-    }
     NSMutableURLRequest *request = [requestSerializer multipartFormRequestWithMethod:@"POST" URLString:urlPath parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if ([data isKindOfClass:[NSString class]]) {
             DLog(@"post muti filePath:%@",data);
@@ -161,25 +152,12 @@
         if(callBackBlock) callBackBlock(YES, responseObject, nil);
     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         [UtilityUI showHUDWithErrorText:@"网络好像不给力！"];
+         [UtilityUI showHUDWithErrorText:BTLocalizedString(@"亲，你的网络不给力")];
          DLog(@"\nHTTP Request End Failed === %@, %@, \n %@", urlPath, parameters , error);
          if(callBackBlock) callBackBlock(NO, nil, error);
      }];
     
     [self.afRequestOperation start];
-}
-
-- (BOOL)systemLanguageIsEnglish
-{
-    //获取系统当前语言版本（中文zh-Hans,英文en)
-    NSArray *languages = [NSLocale preferredLanguages];
-    NSString *currentLanguage = [languages objectAtIndex:0];
-    if ([currentLanguage isEqualToString:@"en-CN"]) {
-        return YES;
-    }else{
-        return NO;
-    }
-
 }
 
 //- (void)sethettpHeader

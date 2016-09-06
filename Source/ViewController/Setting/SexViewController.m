@@ -94,7 +94,7 @@
 
 - (void)btnfaleClick:(id)sender
 {
-    NSString *sexValue = BTLocalizedString(@"男");
+    NSString *sexValue = @"男";
     if (_first == 1) {
         CurrentUser.sex = sexValue;
     }else{
@@ -110,7 +110,7 @@
 
 - (void)btnMefaleClick:(id)sender
 {
-    NSString *sexValue = BTLocalizedString(@"女");
+    NSString *sexValue = @"女";
     if (_first == 1) {
         CurrentUser.sex = sexValue;
     }else{

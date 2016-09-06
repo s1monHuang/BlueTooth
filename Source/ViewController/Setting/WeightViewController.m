@@ -34,25 +34,26 @@
     self.view.backgroundColor = kThemeGrayColor;
     self.navigationItem.leftBarButtonItem.title = @"";
     
-    CGFloat labelX = self.view.width / 2 - 60;
+    CGFloat labelX = self.view.width / 2 - 100;
     CGFloat labelY = 30;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 50, 40)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, 70, 40)];
     label.text = BTLocalizedString(@"体重");
+    label.textAlignment = NSTextAlignmentRight;
     [self.view addSubview:label];
     
     CGFloat weightLabelX = CGRectGetMaxX(label.frame);
-    UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX, labelY, 60, 40)];
+    UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX+10, labelY, 200, 40)];
     _weightLabel = weightLabel;
-    weightLabel.text = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight;
-    weightLabel.font = [UIFont systemFontOfSize:25];
-    weightLabel.textColor = KThemeGreenColor;
+    weightLabel.textAlignment = NSTextAlignmentLeft;
+    weightLabel.font = [UIFont systemFontOfSize:20];
+    NSString *tempStr = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight;
+    _weightStr = tempStr;
+    NSRange range = NSMakeRange(0, tempStr.length);
+    NSMutableAttributedString *weightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ kg",tempStr]];
+    [weightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
+                       range:range];
+    weightLabel.attributedText = weightStr;
     [self.view addSubview:weightLabel];
-    
-    CGFloat otherLabelX = CGRectGetMaxX(weightLabel.frame);
-    UILabel *otherLabel = [[UILabel alloc] initWithFrame:CGRectMake(otherLabelX, labelY, 30, 40)];
-    otherLabel.text = @"kg";
-    otherLabel.textColor = KThemeGreenColor;
-    [self.view addSubview:otherLabel];
     
     NSString *sexNamed = [CurrentUser.sex isEqualToString:BTLocalizedString(@"男")]?@"man3":@"woman3";
     CGFloat heightViewHeight = kScreenHeight > 480 ? 260 : 220;
@@ -162,7 +163,7 @@
 
 - (void)PushToVC
 {
-    _weightStr = _weightLabel.text;
+    
     if (_first == 1) {
         StepLongController *VC = [[StepLongController alloc] init];
         CurrentUser.weight = _weightStr;
@@ -177,14 +178,12 @@
 #pragma mark - rulerviewDelagete
 -(void)getRulerValue:(CGFloat)rulerValue withScrollRulerView:(ZHRulerView *)rulerView{
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
-    _weightLabel.text = valueStr;
-//    BasicInfomationModel *changeModel = [DBManager selectBasicInfomation];
-//    changeModel.weight = [valueStr integerValue];
-//    BOOL change = [DBManager insertOrReplaceBasicInfomation:changeModel];
-//    if (!change) {
-//        DLog(@"修改体重失败");
-//    }
-//    [[NSNotificationCenter defaultCenter] postNotificationName:weightNotification object:weightStr];
+    _weightStr = valueStr;
+    NSRange range = NSMakeRange(0, valueStr.length);
+    NSMutableAttributedString *weightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ kg",valueStr]];
+    [weightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
+                       range:range];
+    _weightLabel.attributedText = weightStr;
 }
 
 - (void)didReceiveMemoryWarning {

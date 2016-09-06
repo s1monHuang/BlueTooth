@@ -21,6 +21,8 @@
 
 @property (nonatomic, assign)NSInteger languageIndex;
 
+@property (nonatomic , assign) BOOL isEnglish;
+
 // 当前类的一个单例方法
 + (AppDelegate *)defaultDelegate;
 

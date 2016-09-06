@@ -22,9 +22,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *expendLabel;
 @property (weak, nonatomic) IBOutlet UILabel *expendDetailLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *shareWechatButton;
-@property (weak, nonatomic) IBOutlet UIButton *shareWechatFriendButton;
-@property (weak, nonatomic) IBOutlet UIButton *shareWeiboButton;
+//@property (weak, nonatomic) IBOutlet UIButton *shareWechatButton;
+//@property (weak, nonatomic) IBOutlet UIButton *shareWechatFriendButton;
+//@property (weak, nonatomic) IBOutlet UIButton *shareWeiboButton;
+
+
+@property (strong, nonatomic) UIButton *shareWechatButton;
+@property (strong, nonatomic) UIButton *shareWechatFriendButton;
+@property (strong, nonatomic) UIButton *shareWeiboButton;
 
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
 @property (weak, nonatomic) IBOutlet UILabel *showLabel;
@@ -59,14 +64,54 @@
     }
     _nickNameView.text = CurrentUser.nickName;
     _dateView.text = dateString;
-    _stepLabel.text = [NSString stringWithFormat:@"%@",model?@(model.step).stringValue:@(0).stringValue];
-    NSString *stepDetail = [NSString stringWithFormat:@"%@%.2lf%@",BTLocalizedString(@"步行"),(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001,BTLocalizedString(@"公里")];
+    
+    
+    NSString *tempStr = [NSString stringWithFormat:@"%@",@(model.step).stringValue];
+    NSRange range = NSMakeRange(0, tempStr.length == 0?1:tempStr.length);
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ ",tempStr,BTLocalizedString(@"步")]];
+    [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28]}
+                     range:range];
+    
+    _stepLabel.attributedText = stepStr;
+    
+//    _stepLabel.text = [NSString stringWithFormat:@"%@",model?@(model.step).stringValue:@(0).stringValue];
+    NSString *stepDetail = [NSString stringWithFormat:@"%@ %.2lf%@",BTLocalizedString(@"步行"),(model?model.step * [CurrentUser.stepLong floatValue]:0)*0.00001,BTLocalizedString(@"公里")];
     _stepDetailLabel.text = stepDetail;
-    _expendLabel.text = [NSString stringWithFormat:@"%.2f%@",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0,BTLocalizedString(@"千卡")];
+    
+    NSString *tempStr1 = [NSString stringWithFormat:@"%.2f",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0];
+    NSRange range1 = NSMakeRange(0, tempStr1.length == 0?4:tempStr1.length);NSMutableAttributedString *expendStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ ",tempStr1,BTLocalizedString(@"千卡")]];
+    [expendStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28]}
+                     range:range1];
+    
+    _expendLabel.attributedText = expendStr;
+    
+//    _expendLabel.text = [NSString stringWithFormat:@"%.2f%@",model?[CurrentUser.weight floatValue] * model.distance*0.01 * 1.036 * 0.001:0,BTLocalizedString(@"千卡")];
+    
+    
     NSString *expendDetail = [NSString stringWithFormat:@"≈%@%@",@(model.calorie / (147 * 1000)).stringValue,BTLocalizedString(@"雪糕")];
     _expendDetailLabel.text = expendDetail;
     
     _showLabel.text = BTLocalizedString(@"快把你的光辉成绩晒一下吧!");
+    
+    CGFloat buttonX = ScreenWidth / 6;
+    CGFloat buttonY = 25;
+    CGFloat buttonW = 40;
+    
+    _shareWeiboButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX * 5 - 20, buttonY, buttonW, buttonW)];
+    [_shareWeiboButton setBackgroundImage:[UIImage imageNamed:@"share_weibo"] forState:UIControlStateNormal];
+    [_shareWeiboButton addTarget:self action:@selector(shareToWeibo:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _shareWechatButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX - 20, buttonY, buttonW, buttonW)];
+    [_shareWechatButton setBackgroundImage:[UIImage imageNamed:@"share_wechat"] forState:UIControlStateNormal];
+    [_shareWechatButton addTarget:self action:@selector(shareToWechat:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _shareWechatFriendButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX * 3 - 20, buttonY, buttonW, buttonW)];
+    [_shareWechatFriendButton setBackgroundImage:[UIImage imageNamed:@"share_wechat_friend"] forState:UIControlStateNormal];
+    [_shareWechatFriendButton addTarget:self action:@selector(shareToWechatFrends:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_bottomView addSubview:_shareWechatButton];
+    [_bottomView addSubview:_shareWechatFriendButton];
+    [_bottomView addSubview:_shareWeiboButton];
 }
 
 - (void)rightBarButtonClick:(id)sender
@@ -79,15 +124,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)shareToWechat:(id)sender {
+
+- (void)shareToWechat:(id)sender {
     [self sendImageContentWithScene:WXSceneSession];
 }
 
-- (IBAction)shareToWechatFrends:(id)sender {
+- (void)shareToWechatFrends:(id)sender {
     [self sendImageContentWithScene:WXSceneTimeline];
 }
 
-- (IBAction)shareToWeibo:(id)sender {
+- (void)shareToWeibo:(id)sender {
     [self sendWeiboImageContent];
 }
 

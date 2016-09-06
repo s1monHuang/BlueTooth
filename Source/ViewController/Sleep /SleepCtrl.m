@@ -227,30 +227,30 @@
     NSInteger lightCount = 0;
     if (_isEnglish) {
         count = 4;
-        deepCount = 5;
-        lightCount = 6;
+        deepCount = 11;
+        lightCount = 12;
     }else{
         count = 2;
         deepCount = 3;
         lightCount = 3;
     }
     NSRange sleepHourRange = NSMakeRange(0, _sleepValue >= 10? 2:1);
-    NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + count, 2);
-    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@00%@",@(_sleepValue).stringValue, BTLocalizedString(@"小时"),BTLocalizedString(@"分钟")]];
+//    NSRange sleepMinuteRagne = NSMakeRange(sleepHourRange.length + count, 2);
+    NSMutableAttributedString *sleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",(_sleepValue == 0?@"0":@(_sleepValue).stringValue), BTLocalizedString(@"小时1")]];
     [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
                               range:sleepHourRange];
-    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
-                              range:sleepMinuteRagne];
+//    [sleepValueString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
+//                              range:sleepMinuteRagne];
     _sleepTimeValue.attributedText = sleepValueString;
     
     NSRange deepSleepRange = NSMakeRange(0, deepCount);
-    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★%@%@%@",BTLocalizedString(@"深睡"),(_deepSleepValue == 0?@"00":@(_deepSleepValue).stringValue), BTLocalizedString(@"小时"),BTLocalizedString(@"分钟")]];
+    NSMutableAttributedString *deepSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"★%@ %@ %@",BTLocalizedString(@"深睡"),(_deepSleepValue == 0?@"0":@(_deepSleepValue).stringValue), BTLocalizedString(@"小时1")]];
     [deepSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#1b6cff"]}
                               range:deepSleepRange];
     _ssleepTimeValue.attributedText = deepSleepValueString;
     
     NSRange shallowSleepRange = NSMakeRange(0, lightCount);
-    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆%@%@%@00%@",BTLocalizedString(@"浅睡"),@(_shallowSleepValue).stringValue, BTLocalizedString(@"小时"),BTLocalizedString(@"分钟")]];
+    NSMutableAttributedString *shallowSleepValueString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"☆%@ %@ %@",BTLocalizedString(@"浅睡"),(_shallowSleepValue == 0?@"0":@(_shallowSleepValue).stringValue), BTLocalizedString(@"小时1")]];
     [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
                               range:shallowSleepRange];
     _qsleepTimeValue.attributedText = shallowSleepValueString;
@@ -284,7 +284,7 @@
         //获取系统当前语言版本（中文zh-Hans,英文en)
         NSArray *languages = [NSLocale preferredLanguages];
         NSString *currentLanguage = [languages objectAtIndex:0];
-        if ([currentLanguage isEqualToString:@"zh-Hans-US"]) {
+        if ([currentLanguage isEqualToString:@"en-US"] ||[currentLanguage isEqualToString:@"en-CN"]) {
             return YES;
         }else{
             return NO;

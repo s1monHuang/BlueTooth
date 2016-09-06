@@ -24,6 +24,9 @@
 @property (nonatomic, strong) NSString *token;
 
 
+
+@property (nonatomic, assign)NSInteger languageIndex;
+
 @property (nonatomic , copy) NSString *inviteCode;    //邀请码
 
 - (instancetype)initUserEntityWithDic:(NSDictionary *)dict;

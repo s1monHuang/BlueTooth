@@ -73,6 +73,6 @@
 
 #define Font(A) [UIFont systemFontOfSize:A]
 
-#define errorMsg @"亲,您的网络不给力呀。请稍后再试..."
+#define errorMsg BTLocalizedString(@"亲，你的网络不给力")
 
 #endif

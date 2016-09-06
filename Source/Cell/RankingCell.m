@@ -27,19 +27,25 @@
 
 - (void)configRankingCell:(RankingEntity *)rankEntity rankNo:(NSInteger)row
 {
+    self.lblRankName.text = rankEntity.userName;
+    
+    self.lblStepNumber = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 170, 15, 150, 25)];
+    self.lblStepNumber.textAlignment = NSTextAlignmentRight;
+    NSRange StepDataRange = NSMakeRange(0, rankEntity.sumSteps.length);
+    NSMutableAttributedString *StepDataString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",rankEntity.sumSteps,BTLocalizedString(@"步")]];
     
     if ([rankEntity.userId isEqualToString:CurrentUser.userId]) {
         self.ismeimg = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth - 25, 3, 12, 12)];
-        self.ismeimg.image = [UIImage imageNamed:@"me"];
-        [self.contentView addSubview:self.ismeimg];
+        NSString *imageName = BTLocalizedString(@"me");
+        self.ismeimg.image = [UIImage imageNamed:imageName];
+        [self.contentView addSubview:self.ismeimg];[StepDataString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:22],NSForegroundColorAttributeName:[UIColor orangeColor]}
+                                                                           range:StepDataRange];
     }else{
         self.ismeimg.hidden = YES;
+        [StepDataString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:22],NSForegroundColorAttributeName:[UIColor blackColor]}
+                                                          range:StepDataRange];
     }
-    self.lblRankName.text = rankEntity.userName;
-    
-    self.lblStepNumber = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 120, 15, 100, 25)];
-    self.lblStepNumber.textAlignment = NSTextAlignmentRight;
-    self.lblStepNumber.text = [NSString stringWithFormat:@"%@步",rankEntity.sumSteps];
+    self.lblStepNumber.attributedText = StepDataString;
     [self.contentView addSubview:self.lblStepNumber];
 //    CGFloat lblRankNameW = kScreenWidth - _lblStepNumber.x;
 //    _lblRankName.width = lblRankNameW;
