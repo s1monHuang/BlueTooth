@@ -107,12 +107,12 @@
 "当前版本" = "Version";
 //登录
 "登录失败" = "Login fail";
-"登录" = "Logon";
+"登录" = "LOGIN";
 "请输入邮箱" = "Email Address";
 "请输入密码" = "Password";
 "登录中..." = "Logging...";
 "账号格式不正确" = "Account Incorrect";
-"快速注册" = "Register";
+"快速注册" = "REGISTER";
 "找回密码" = "Retrieve password";
 //注册
 "注册" = "Register";
