@@ -647,9 +647,22 @@ static BluetoothManager *manager = nil;
     model.battery = byte[7];                            //电量
     NSTimeInterval timeInterval = byte[8] + (byte[9] << 8) + (byte[10] << 16) + (byte[11] << 24);
     
-    model.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+//    model.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
 //    NSString *message = [NSString stringWithFormat:@"时间：%@  次数：%@",model.date,@(model.sleep).stringValue];
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"手环发的睡眠动作次数，小于10是深睡眠，10-254是浅睡眠，255无效" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *twoStr = @"2000-01-01 00:00:00";
+    NSDate *twoDate = [formatter dateFromString:twoStr];
+    model.date = [NSDate dateWithTimeInterval:timeInterval sinceDate:twoDate];
+    
+//    NSTimeInterval twoSec = [twoDate timeIntervalSince1970];
+//    NSTimeInterval nowSec = [date timeIntervalSince1970];
+//    NSTimeInterval interval = nowSec - twoSec;
+    
+    
+    
 //    [alert show];
     return model;
     
@@ -786,15 +799,15 @@ static BluetoothManager *manager = nil;
     //需要获取几次历史数据
     NSInteger count = [self getHistoryDataCount];
     
-    if (count <= 0) {
-        NSLog(@"不需要获取历史运动数据");
-        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
-        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
-                                                            object:nil];
-        self.connectionType = BluetoothConnectingSuccess;
-        [self handleBluetoothQueue];
-        return;
-    }
+//    if (count <= 0) {
+//        NSLog(@"不需要获取历史运动数据");
+//        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+//                                                            object:nil];
+//        self.connectionType = BluetoothConnectingSuccess;
+//        [self handleBluetoothQueue];
+//        return;
+//    }
     
     Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
     if (count < 72 && count != 0) {
@@ -851,11 +864,11 @@ static BluetoothManager *manager = nil;
     //需要获取几次历史数据
     NSInteger count = [self getHistoryDataCount];
     
-    if (count <= 0) {
-        NSLog(@"不需要获取历史运动数据");
-        [self firstReadHistroySportDataSuccess];
-        return;
-    }
+//    if (count <= 0) {
+//        NSLog(@"不需要获取历史运动数据");
+//        [self firstReadHistroySportDataSuccess];
+//        return;
+//    }
     
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
@@ -1078,7 +1091,7 @@ static BluetoothManager *manager = nil;
     NSDate *twoDate = [formatter dateFromString:twoStr];
     NSTimeInterval twoSec = [twoDate timeIntervalSince1970];
     NSTimeInterval nowSec = [date timeIntervalSince1970];
-    NSTimeInterval interval = nowSec - twoSec;
+    NSInteger interval = nowSec - twoSec;
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0xDA;
