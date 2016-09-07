@@ -505,8 +505,8 @@ static BluetoothManager *manager = nil;
             case BluetoothConnectingReadSportDataSuccess: {
                 Byte *byte = (Byte *)characteristic.value.bytes;
                 if (!(byte[0] == 0xAA && byte[18] == 0x04)) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_ERROR
-                                                                        object:nil];
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_ERROR
+//                                                                        object:nil];
                     weakSelf.connectionType = BluetoothConnectingSuccess;
                 }
                 else {
@@ -1070,7 +1070,15 @@ static BluetoothManager *manager = nil;
 //设置时间戳
 - (void)setTimestamp {
     _connectionType = BluetoothConnectingSetTimestamp;
-    NSInteger interval = [NSDate date].timeIntervalSince1970;
+//    NSInteger interval = [NSDate date].timeIntervalSince1970;
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *twoStr = @"2000-01-01 00:00:00";
+    NSDate *twoDate = [formatter dateFromString:twoStr];
+    NSTimeInterval twoSec = [twoDate timeIntervalSince1970];
+    NSTimeInterval nowSec = [date timeIntervalSince1970];
+    NSTimeInterval interval = nowSec - twoSec;
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0xDA;
