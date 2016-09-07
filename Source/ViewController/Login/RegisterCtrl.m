@@ -92,6 +92,10 @@
 - (void)setPersonalInformationView
 {
     __weak RegisterCtrl *blockSelf = self;
+    _firstDownload = 1;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@(1) forKey:FIRSTDOWNLAOD];
+    [userDefaults synchronize];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
     hud.labelText = BTLocalizedString(@"登录中...");
     [[NSUserDefaults standardUserDefaults] setObject:_userName forKey:@"userName"];
