@@ -112,10 +112,10 @@
 "请输入密码" = "Password";
 "登录中..." = "Logging...";
 "账号格式不正确" = "Account Incorrect";
-"快速注册" = "REGISTER";
+"快速注册" = "Register";
 "找回密码" = "Retrieve password";
 //注册
-"注册" = "Register";
+"注册" = "REGISTER";
 "提示" = "Hint";
 "注册成功" = "Register Success";
 "账户" = "Account";
