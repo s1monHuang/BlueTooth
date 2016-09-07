@@ -45,6 +45,7 @@
     UILabel *weightLabel = [[UILabel alloc] initWithFrame:CGRectMake(weightLabelX+10, labelY, 200, 40)];
     _weightLabel = weightLabel;
     weightLabel.textAlignment = NSTextAlignmentLeft;
+    weightLabel.textColor = KThemeGreenColor;
     weightLabel.font = [UIFont systemFontOfSize:20];
     NSString *tempStr = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight;
     _weightStr = tempStr;

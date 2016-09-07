@@ -55,7 +55,7 @@
 //    _lblHeartBeatNumber.text = [NSString stringWithFormat:@"0%@",BTLocalizedString(@"次/分钟")];
     
     _lblHeartBeatNumber.textAlignment = NSTextAlignmentCenter;
-    _lblHeartBeatNumber.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
+    _lblHeartBeatNumber.textColor = [UIColor blackColor];
     [self.view addSubview:_lblHeartBeatNumber];
     
     UIImageView *TipView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 150, SCREEN_WIDTH - 40, 10)];
@@ -66,21 +66,21 @@
     lblNumber01.text = @"< 60";
     lblNumber01.font = [UIFont boldSystemFontOfSize:13];
     lblNumber01.textAlignment = NSTextAlignmentCenter;
-    lblNumber01.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
+    lblNumber01.textColor = [UIColor blackColor];
     [self.view addSubview:lblNumber01];
     
     UILabel *lblNumber02 = [[UILabel alloc] initWithFrame:CGRectMake(20+(SCREEN_WIDTH - 40)/3, 170, (SCREEN_WIDTH - 40)/3, 20)];
     lblNumber02.text = @" 60 - 90 ";
     lblNumber02.font = [UIFont boldSystemFontOfSize:13];
     lblNumber02.textAlignment = NSTextAlignmentCenter;
-    lblNumber02.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
+    lblNumber02.textColor = [UIColor blackColor];
     [self.view addSubview:lblNumber02];
     
     UILabel *lblNumber03 = [[UILabel alloc] initWithFrame:CGRectMake(20+(SCREEN_WIDTH - 40)/3*2, 170, (SCREEN_WIDTH - 40)/3, 20)];
     lblNumber03.text = @"> 90";
     lblNumber03.font = [UIFont boldSystemFontOfSize:13];
     lblNumber03.textAlignment = NSTextAlignmentCenter;
-    lblNumber03.textColor = [UtilityUI stringTOColor:@"#a4a9ad"];
+    lblNumber03.textColor = [UIColor blackColor];
     [self.view addSubview:lblNumber03];
     
     remindTextView = [[UILabel alloc] initWithFrame:CGRectMake(10,
@@ -172,12 +172,12 @@
     if (string.length > 0) {
         NSRange range = NSMakeRange(0, string.length);
         NSMutableAttributedString *textString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",string,BTLocalizedString(@"次/分钟")]];
-        [textString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:32]} range:range];
+        [textString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:36]} range:range];
         return textString;
     }else{
         NSRange range = NSMakeRange(0, 1);
         NSMutableAttributedString *textString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"0 %@",BTLocalizedString(@"次/分钟")]];
-        [textString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:32]} range:range];
+        [textString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:36]} range:range];
         return textString;
     }
 }
