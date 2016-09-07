@@ -371,8 +371,15 @@
             return CustomLocalizedString(string,@"zh-Hans");
         case 2:
             return CustomLocalizedString(string,@"en");
-        default:
+        default: {
+            NSArray *languages = [NSLocale preferredLanguages];
+            NSString *currentLanguage = [languages objectAtIndex:0];
+            if (!([currentLanguage isEqualToString:@"en-US"] ||
+                  [currentLanguage isEqualToString:@"en-CN"])) {
+                return CustomLocalizedString(string,@"zh-Hans");
+            }
             return NSLocalizedString(string, nil);
+        }
     }
 }
 

@@ -118,8 +118,8 @@
 "注册" = "Register";
 "提示" = "Hint";
 "注册成功" = "Register Success";
-"账户" = "account";
-"密码" = "password";
+"账户" = "Account";
+"密码" = "Password";
 //忘记密码
 "找回密码" = "Forget Password?";
 "重新发送密码到邮箱" = "Send The Password to My Mailbox";
@@ -168,7 +168,7 @@
 "(步)" = "(step)";
 "活动距离" = "Distance";
 "消耗能量" = "Energy Used";
-"脂肪燃烧" = "Fat Burning";
+"脂肪燃烧" = "Fat-Burning";
 "同步失败" = "Synchronize Failed";
 "同步数据中..." = "Data Synchronizing...";
 "[EasyFit提醒]我需要您的帮助，请尽快和TA联系！" = "[EasyFit]I need your HELP，contact with me ASAQ！";
