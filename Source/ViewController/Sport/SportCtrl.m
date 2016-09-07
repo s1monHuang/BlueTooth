@@ -225,13 +225,15 @@
     _lblBoxoneValue.text = [NSString stringWithFormat:@"%@",_sportModel?@(_sportModel.step).stringValue:@(0).stringValue];
     [threeBox addSubview:_lblBoxoneValue];
     
-    lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(_imageX /2-30, boxTextY, oneBoxWidth, boxTextH)];
+    CGFloat lblBoxoneTextX = ScreenWidth > 320 ? 42 : 30;
+    
+    lblBoxoneText = [[UILabel alloc] initWithFrame:CGRectMake(_imageX /2 - lblBoxoneTextX, boxTextY, oneBoxWidth, boxTextH)];
     lblBoxoneText.textAlignment = NSTextAlignmentCenter;
     lblBoxoneText.font = [UIFont systemFontOfSize:fontSize];
     lblBoxoneText.text = [NSString stringWithFormat:@"%@",BTLocalizedString(@"当天步数")];
     [threeBox addSubview:lblBoxoneText];
     [self imageViewWithLabelCount:0 imageName:tempIconArray[0]];
-   _lblBoxOneTextUnit = [[UILabel alloc] initWithFrame:CGRectMake(_imageX /2-30, boxTextY + 20, oneBoxWidth, boxTextH)];
+   _lblBoxOneTextUnit = [[UILabel alloc] initWithFrame:CGRectMake(_imageX /2 - lblBoxoneTextX, boxTextY + 20, oneBoxWidth, boxTextH)];
     _lblBoxOneTextUnit.textAlignment = NSTextAlignmentCenter;
     _lblBoxOneTextUnit.font = [UIFont systemFontOfSize:fontSize];
     _lblBoxOneTextUnit.text = [NSString stringWithFormat:@"%@",BTLocalizedString(@"(步)")];
@@ -352,23 +354,15 @@
 
 - (void)imageViewWithLabelCount:(NSInteger)count imageName:(NSString *)imageName
 {
-    BOOL isEnglish = [self systemLanguageIsEnglish];
     if (count == 0) {
-        
-//        if (isEnglish) {
-            UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageX / 2 - 30, 20+22+15, 15, 15)];
-            iconImage.image = [UIImage imageNamed:imageName];
-            [_threeBoxView addSubview:iconImage];
-//        }else{
-//            UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageX*count, 20+22+15, 15, 15)];
-//            iconImage.image = [UIImage imageNamed:imageName];
-//            [_threeBoxView addSubview:iconImage];
-//        }
-        
+        CGFloat imageViewX = kScreenWidth > 320 ? 35 : 30;
+        UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageX / 2 - imageViewX, 20+22+15, 15, 15)];
+        iconImage.image = [UIImage imageNamed:imageName];
+        [_threeBoxView addSubview:iconImage];
     }else{
-    UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageX*count + 3, 20+22+15, 15, 15)];
-    iconImage.image = [UIImage imageNamed:imageName];
-    [_threeBoxView addSubview:iconImage];
+        UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageX*count + 3, 20+22+15, 15, 15)];
+        iconImage.image = [UIImage imageNamed:imageName];
+        [_threeBoxView addSubview:iconImage];
     }
 }
 
@@ -459,7 +453,16 @@
     completionRate = [NSString stringWithFormat:@"%@ %@%%",BTLocalizedString(@"完成"),_sportModel?completionRate:@(0).stringValue];
     _complateValue.text = completionRate;
     
-    _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
+//    _complateStep.text = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
+    
+    NSString *tempStr = [NSString stringWithFormat:@"%@",@(_sportModel.step).stringValue];
+    NSRange range = NSMakeRange(0, tempStr.length == 0?1:tempStr.length);
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ ",tempStr,BTLocalizedString(@"步")]];
+    [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
+                     range:range];
+    
+    _complateStep.attributedText = stepStr;
+    
     if (_stepCount) {
         NSString *target = [NSString stringWithFormat:@"%@ %@",BTLocalizedString(@"目标"),@(_stepCount).stringValue];
         _totalStep.text = target;

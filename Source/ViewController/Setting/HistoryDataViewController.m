@@ -351,18 +351,28 @@ typedef NS_ENUM(NSInteger, HistoryDataType) {
     NSArray *tempIconArray = @[@"pic-foot",@"pic-distance",@"pic-fire"];
     NSArray *tempTitleArray = @[BTLocalizedString(@"步数(步)"),[NSString  stringWithFormat:@"%@(km)",BTLocalizedString(@"活动距离")],[NSString  stringWithFormat:@"%@ (kCal)",BTLocalizedString(@"消耗能量")]];
     
+    CGFloat labelX = ScreenWidth > 320 ? 50 : 40;
+    CGFloat imageViewX = ScreenWidth > 320 ? 25 : 15;
+    
     for (NSInteger i = 0; i < 3; i++) {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5 + i *bottomViewW, 35, 15, 15)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10 + i *bottomViewW, 35, 15, 15)];
+        if (i == 0) {
+            [imageView setFrame:CGRectMake(imageViewX + i *bottomViewW, 35, 15, 15)];
+        }
         imageView.image = [UIImage imageNamed:tempIconArray[i]];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25 + i *bottomViewW, 30, bottomViewW - 25, 30)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(28 + i *bottomViewW, 30, bottomViewW - 25, 30)];
+        
+        if (i == 0) {
+            [label setFrame:CGRectMake(labelX + i *bottomViewW, 30, bottomViewW - 25, 30)];
+        }
         label.font = [UIFont systemFontOfSize:11];
         label.text = tempTitleArray[i];
-        label.textAlignment = NSTextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentLeft;
         label.numberOfLines = 0;
-        if (i == 0) {
-            label.center = CGPointMake(bottomView.width / 3 / 2 + 7.5 , 45);
-        }
+//        if (i == 0) {
+//            label.center = CGPointMake(bottomView.width / 3 / 2 + 7.5 , 45);
+//        }
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(bottomViewW + i *bottomViewW, 0, 0.5, bottomViewH)];
         lineView.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5];
         [bottomView addSubview:imageView];

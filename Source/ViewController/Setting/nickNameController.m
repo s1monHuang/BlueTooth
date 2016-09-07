@@ -107,7 +107,7 @@
 {
     _nickName = _nickNameTextField.text;
     if (!_nickName || _nickName.length < 4 || _nickName.length > 16 ) {
-        [MBProgressHUD showHUDByContent:BTLocalizedString(@"昵称长度必须为4-16个字符！") view:UI_Window afterDelay:2];
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"昵称长度必须为4-16字符") view:UI_Window afterDelay:2];
         return;
     }
     if (_first == 1) {

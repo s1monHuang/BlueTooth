@@ -45,6 +45,7 @@
     UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightLabelX+5, labelY, 200, 40)];
     _heightLabel = heightLabel;
     heightLabel.textAlignment = NSTextAlignmentLeft;
+    heightLabel.textColor = KThemeGreenColor;
     heightLabel.font = [UIFont systemFontOfSize:20];
     NSString *tempStr = [CurrentUser.high isEqualToString:@"(null)"] ? @"100" : CurrentUser.high;
     _heightStr = tempStr;

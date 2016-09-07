@@ -72,6 +72,7 @@
     [self.passwordbgbox addSubview:passwordicon];
     self.txtUserPassword = [[UITextField alloc] initWithFrame:CGRectMake(50, 8, 300, 30)];
     self.txtUserPassword.placeholder = BTLocalizedString(@"请输入密码");
+    self.txtUserPassword.secureTextEntry = YES;
     [self.passwordbgbox addSubview:self.txtUserPassword];
     if (userName && password) {
         NSInteger isAppIn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appDelegateToLogin"] integerValue];

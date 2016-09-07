@@ -58,6 +58,7 @@
     UILabel *stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(stepLabelX +10, labelY, 200, 40)];
     _stepLabel = stepLabel;
     _stepLabel.textAlignment = NSTextAlignmentLeft;
+    _stepLabel.textColor = KThemeGreenColor;
     _stepLabel.font = [UIFont systemFontOfSize:20];
     NSString *tempStr = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"50" : CurrentUser.stepLong;
     _stepLongStr = tempStr;
