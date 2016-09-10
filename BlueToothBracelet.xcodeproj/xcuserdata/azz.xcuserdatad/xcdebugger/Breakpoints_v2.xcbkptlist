@@ -155,53 +155,6 @@
             endingLineNumber = "900"
             landmarkName = "-readHistroySportDataWithValue:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__50-[BluetoothManager readHistroySportDataWithValue:]_block_invoke"
-                  moduleName = "BlueToothBracelet"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/azz/Desktop/gitHub%20project/Source/Helper/BluetoothManager.m"
-                  timestampString = "494945147.471233"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "901"
-                  endingLineNumber = "901"
-                  offsetFromSymbolStart = "1008">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_.465"
-                  moduleName = "BlueToothBracelet"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/azz/Desktop/gitHub%20project/Source/Helper/BluetoothManager.m"
-                  timestampString = "494945147.47131"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "901"
-                  endingLineNumber = "901"
-                  offsetFromSymbolStart = "37">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.466"
-                  moduleName = "BlueToothBracelet"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/azz/Desktop/gitHub%20project/Source/Helper/BluetoothManager.m"
-                  timestampString = "494945147.471375"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "901"
-                  endingLineNumber = "901"
-                  offsetFromSymbolStart = "25">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
