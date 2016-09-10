@@ -75,19 +75,19 @@
     self.txtUserPassword.secureTextEntry = YES;
     [self.passwordbgbox addSubview:self.txtUserPassword];
     if (userName && password) {
-        NSInteger isAppIn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appDelegateToLogin"] integerValue];
-        if (isAppIn == 1) {
+//        NSInteger isAppIn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appDelegateToLogin"] integerValue];
+//        if (isAppIn == 1) {
             self.txtUserAccount.text = userName;
             self.txtUserPassword.text = password;
-            [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"appDelegateToLogin"];
-        }
+//            [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"appDelegateToLogin"];
+//        }
     }else{
 #if DEBUG
        self.txtUserAccount.text = @"1989215@qq.com";
         self.txtUserPassword.text = @"123456";
 #else
-        self.txtUserAccount.text = @"";
-        self.txtUserPassword.text = @"";
+//        self.txtUserAccount.text = @"";
+//        self.txtUserPassword.text = @"";
 #endif
     }
 
@@ -127,6 +127,7 @@
         [self.operateVM loginWithUserName:self.txtUserAccount.text password:self.txtUserPassword.text];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserAccount.text forKey:@"userName"];
         [[NSUserDefaults standardUserDefaults] setObject:self.txtUserPassword.text forKey:@"password"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
     }else
     {

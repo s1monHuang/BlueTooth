@@ -70,13 +70,13 @@
     bracelet.image = [UIImage imageNamed:@"bracelet"];
     [headerview addSubview:bracelet];
     
-    if ([BluetoothManager share].isBindingPeripheral){
-    _deviceIDLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 77)/2 - 10, 180, ScreenWidth - 50, 40)];
-        NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:User_DeviceID];
-    _deviceIDLabel.text = [NSString stringWithFormat:@"%@:%@",BTLocalizedString(@"设备编号"),deviceId];
+//    if ([BluetoothManager share].isBindingPeripheral){
+//    _deviceIDLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth - 77)/2 - 10, 180, ScreenWidth - 50, 40)];
+//        NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:User_DeviceID];
+//    _deviceIDLabel.text = [NSString stringWithFormat:@"%@:%@",BTLocalizedString(@"设备编号"),deviceId];
 //    _deviceIDLabel.alpha = 0;
-    [headerview addSubview:_deviceIDLabel];
-    }
+//    [headerview addSubview:_deviceIDLabel];
+//    }
     return headerview;
 }
 

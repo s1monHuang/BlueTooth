@@ -47,6 +47,11 @@
     self.navigationItem.leftBarButtonItem = leftBarButton;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
+    NSString *nickStr = CurrentUser.nickName;
+    if (![nickStr isEqualToString:@"(null)"]) {
+        self.nickNameTextField.text = nickStr;
+    }
+    
     [_sureBtn setTitle:BTLocalizedString(@"确定") forState:UIControlStateNormal];
 }
 
@@ -60,7 +65,7 @@
         button.alpha = 0;
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.leftBarButtonItem = item;
-        
+        self.nickNameTextField.text = @"";
         UIButton *btnPre = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight - 50 - 64, ScreenWidth/2, 50)];
         [btnPre addTarget:self action:@selector(btnPreClick:) forControlEvents:UIControlEventTouchUpInside];
         [btnPre setTitle:BTLocalizedString(@"上一步") forState:UIControlStateNormal];

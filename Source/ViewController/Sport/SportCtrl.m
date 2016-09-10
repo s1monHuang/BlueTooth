@@ -18,6 +18,8 @@
     UILabel *lblBoxtwoText;
     UILabel *lblBoxthreeText;
     UILabel *lblBoxFourText;
+    
+    NSTimer *_timer;
 }
 
 @property (strong,nonatomic) UIView *chartView;
@@ -412,7 +414,24 @@
     _isLoading = YES;
     _refreshBututton.userInteractionEnabled = NO;
     [[BluetoothManager share] readSportData];
+
+    _timer = [NSTimer scheduledTimerWithTimeInterval:30
+                                              target:self
+                                            selector:@selector(timeOut)
+                                            userInfo:nil
+                                             repeats:NO];
     [self startAnimation];
+}
+
+- (void)timeOut {
+    [self releaseTimer];
+    [_refreshBututton.layer removeAllAnimations];
+    _isLoading = NO;
+}
+
+- (void)releaseTimer {
+    [_timer invalidate];
+    _timer = nil;
 }
 
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
@@ -423,6 +442,7 @@
 }
 
 - (void)refreshSportDataError:(NSNotification *)notification {
+    [self releaseTimer];
     _isLoading = NO;
     _refreshBututton.userInteractionEnabled = YES;
     [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步失败") view:UI_Window afterDelay:1.5];
@@ -433,6 +453,7 @@
 }
 
 - (void)firstRefreshSportDataSuccess:(NSNotification *)notification {
+    [self releaseTimer];
     _isLoading = NO;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -496,7 +517,7 @@
 //    NSString *stepData = [DBManager selectHistorySportData];
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"运动数据" message:stepData delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
 //    [alert show];
-    [_operateVM saveStepData:[DBManager selectHistorySportData]];
+//    [_operateVM saveStepData:[DBManager selectHistorySportData]];
     
 }
 
@@ -525,6 +546,7 @@
 - (void)disConnectPeripheral {
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
+    [self releaseTimer];
     _isLoading = NO;
 }
 

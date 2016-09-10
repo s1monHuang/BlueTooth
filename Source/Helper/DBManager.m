@@ -351,7 +351,7 @@ static NSString *dbPath = nil;
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
-            if (sleep < 15) {
+            if (sleep < 10) {
                 ssmNumber += 1;
             }
         }
@@ -367,7 +367,7 @@ static NSString *dbPath = nil;
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
-            if (sleep > 15 && sleep < 255) {
+            if (sleep > 10 && sleep < 255) {
                 qsmNumber += 1;
             }
         }
@@ -397,9 +397,9 @@ static NSString *dbPath = nil;
             
             while (result.next) {
                 NSInteger sleep = [result intForColumn:@"sleep"];
-                if (sleep < 15) {
+                if (sleep < 10) {
                     ssmTime += 1;
-                } else if (sleep >= 15 && sleep < 255) {
+                } else if (sleep >= 10 && sleep < 255) {
                     qsmTime += 1;
                 }
             }
@@ -480,7 +480,6 @@ static NSString *dbPath = nil;
         
         for (NSInteger i = 0; i < 3; i++) {
             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date > date('now','start of day','%@ day') AND date < date('now','start of day','%@ day')",CurrentUser.userId,@(i - 2).stringValue,@(i - 1).stringValue];
-            FMResultSet *result = [db executeQuery:sql];
             
             NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
             
@@ -491,8 +490,10 @@ static NSString *dbPath = nil;
             [formatter setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString = [formatter stringFromDate:date];
             
+            FMResultSet *result = [db executeQuery:sql];
             while (result.next) {
                 stepNum += [result intForColumn:@"step"];
+                NSLog(@"stepNum = %@",@([result intForColumn:@"step"]).stringValue);
             }
             
             [dictionary setObject:@(stepNum).stringValue forKey:@"stepNum"];

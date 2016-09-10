@@ -397,7 +397,7 @@ static BluetoothManager *manager = nil;
                 break;
                 //成功读取蓝牙设备中的运动数据后,读取72小时蓝牙设备中的运动数据
             case BluetoothConnectingReadSportDataSuccess: {
-                NSLog(@"获取蓝牙设备中的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+//                NSLog(@"获取蓝牙设备中的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                 //如果没有绑定设备,获取历史运动数据
 //                if (![BluetoothManager getBindingPeripheralUUID]) {
                     [weakSelf saveNewSportData:characteristics.value];
@@ -421,7 +421,7 @@ static BluetoothManager *manager = nil;
                 //如果还没获取完72小时数据,继续获取下一个小时的数据
                 //如果获取完,
             case BluetoothConnectingHistroyReadSportDataSuccess: {
-                NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                NSLog(@"获取蓝牙历史数据 name:%@ value is:%@",characteristics.UUID,characteristics.value);
             }
                 break;
             default: {
@@ -511,12 +511,14 @@ static BluetoothManager *manager = nil;
                 }
                 else {
                     SportDataModel *model = [weakSelf sportDataModelWithData:characteristic.value];
-                    [weakSelf saveNewSportData:characteristic.value];
                     DLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
-                    //下面两个调用顺序不能更改
-                    weakSelf.connectionType = BluetoothConnectingSuccess;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
-                                                                        object:model];
+                    if ([weakSelf saveNewSportData:characteristic.value]) {
+                        //下面两个调用顺序不能更改
+                        weakSelf.connectionType = BluetoothConnectingSuccess;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:READ_SPORTDATA_SUCCESS
+                                                                            object:model];
+                    }
+                    
                 }
                 [weakSelf handleBluetoothQueue];
             }
@@ -534,7 +536,7 @@ static BluetoothManager *manager = nil;
                 //如果还没获取完72小时数据,继续获取下一个小时的数据
                 //如果获取完,
             case BluetoothConnectingHistroyReadSportDataSuccess: {
-                NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+//                NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
                 
@@ -691,14 +693,14 @@ static BluetoothManager *manager = nil;
 
 #pragma mark - 读取蓝牙中的数据,写入数据成功
 
-- (void)saveNewSportData:(NSData *)data {
+- (BOOL)saveNewSportData:(NSData *)data {
     SportDataModel *model = [self sportDataModelWithData:data];
-    [DBManager insertOrReplaceSportData:model];
+    return [DBManager insertOrReplaceSportData:model];
 }
 
-- (void)saveNewHistroyData:(NSData *)data time:(NSInteger)time {
+- (BOOL)saveNewHistroyData:(NSData *)data time:(NSInteger)time {
     HistorySportDataModel *model = [self histroySportDataModelWithData:data];
-    [DBManager insertOrReplaceHistroySportData:model];
+    return [DBManager insertOrReplaceHistroySportData:model];
 }
 
 
@@ -842,7 +844,9 @@ static BluetoothManager *manager = nil;
                         
                         [weakSelf.hud hide:YES];
                         weakSelf.hud = nil;
-                        
+                        OperateViewModel *operateVM = [OperateViewModel viewModel];
+                        [operateVM saveStepData:[DBManager selectHistorySportData]];
+                        [operateVM saveSleepData:[DBManager selectHistorySleepData]];
                         [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
 
                         return ;
@@ -889,7 +893,7 @@ static BluetoothManager *manager = nil;
     [self.baby notify:weakSelf.bindingPeripheral.peripheral
        characteristic:weakSelf.characteristics
                 block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                    NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                    NSLog(@"获取蓝牙历史数据 name:%@ value is:%@",characteristics.UUID,characteristics.value);
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     NSInteger time = byte[1];
                     Byte flag = byte[2];

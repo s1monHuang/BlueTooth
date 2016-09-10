@@ -146,7 +146,7 @@
 
     }
     }else{
-        [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"appDelegateToLogin"];
+//        [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"appDelegateToLogin"];
         LoginCtrl *loginVC = [[LoginCtrl alloc] init];
         
         UINavigationController *nav
@@ -296,7 +296,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
-    [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"appDelegateToLogin"];
+//    [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"appDelegateToLogin"];
     LoginCtrl *loginVC = [[LoginCtrl alloc] init];
     
     UINavigationController *nav
