@@ -113,7 +113,7 @@
 
 - (void)exitDownload
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"是否退出登录") message:nil delegate:self cancelButtonTitle:BTLocalizedString(@"取消") otherButtonTitles:BTLocalizedString(@"确定"), nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"确认退出?退出后历史数据将被清除") message:nil delegate:self cancelButtonTitle:BTLocalizedString(@"取消") otherButtonTitles:BTLocalizedString(@"确定"), nil];
     [alert show];
 }
 

@@ -9,7 +9,7 @@
 #import "DeviceManagerViewController.h"
 #import "AddDeviceViewController.h"
 
-@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *titleArray;
@@ -30,7 +30,6 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.tableFooterView = [UIView new];
-
     [self reloadData];
 }
 
@@ -111,16 +110,10 @@
         case 0:
         {
             if ([BluetoothManager share].isBindingPeripheral) {
-                [[BluetoothManager share] stop];
-                [[BluetoothManager share].baby cancelAllPeripheralsConnection];
-                [BluetoothManager share].isBindingPeripheral = NO;
-                [BluetoothManager clearBindingPeripheral];
-                [BluetoothManager share].isReadedPripheralAllData = NO;
                 
-                [self reloadData];
-                [tableView reloadData];
-                //解除绑定通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:REMOVE_DEVICE object:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BTLocalizedString(@"是否解除设备") message:nil delegate:self cancelButtonTitle:BTLocalizedString(@"取消") otherButtonTitles:BTLocalizedString(@"确定"), nil];
+                [alert show];
+               
                 
             } else {
                 AddDeviceViewController *VC = [[AddDeviceViewController alloc] init];
@@ -132,6 +125,22 @@
             break;
     }
     
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [[BluetoothManager share] stop];
+        [[BluetoothManager share].baby cancelAllPeripheralsConnection];
+        [BluetoothManager share].isBindingPeripheral = NO;
+        [BluetoothManager clearBindingPeripheral];
+        [BluetoothManager share].isReadedPripheralAllData = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:didConnectDevice];
+        [self reloadData];
+        [self.tableView reloadData];
+        //解除绑定通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:REMOVE_DEVICE object:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

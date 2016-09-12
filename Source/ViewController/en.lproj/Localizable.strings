@@ -11,9 +11,10 @@
 //添加设备
 "添加设备" = "Add Device";
 "解除设备" = "Remove Device";
-"绑定成功" = "Bind Success";
+"是否解除设备" = "Are you sure to remove device";
+"绑定成功" = "Bind success";
 "正在绑定..." = "Binding...";
-"绑定失败" = "Bind Failed";
+"绑定失败" = "Bind failed";
 //历史数据中心
 "数据中心" = "Data Center";
 "确定" = "OK";
@@ -76,9 +77,9 @@
 //我的资料
 "性别" = "Gender";
 "重新设置" = "Reset";
-"个人信息设置成功" = " Profile Saved";
+"个人信息设置成功" = " Profile saved";
 //训练目标
-"每日运动目标" = "Daily Sports Target";
+"每日运动目标" = "Daily sports target";
 "千卡" = "Kcal";
 "根据您的个人情况设置合理目标" = "Set reasonable target according to your personal circumstance";
 //来电提醒
@@ -95,13 +96,13 @@
 //SOS
 "一键求救" = "SOS";
 "是否开启求救" = "SOS On";
-"请输入电话号码:" = "Cell Phone Num:";
+"请输入电话号码:" = "Cell phone Num:";
 "电话求救" = "Call";
 "短信求救" = "SMS";
 "您尚未绑定设备" = "You have not bound any device";
 "设备自动连接中，请稍后" = "Device is connecting automatically, waiting please";
-"发送成功" = "Send Success";
-"发送失败" = "Send Failed";
+"发送成功" = "Send success";
+"发送失败" = "Send failed";
 //关于我们
 "关于我们" = "About Us";
 "当前版本" = "Version";
@@ -111,21 +112,21 @@
 "请输入邮箱" = "Email Address";
 "请输入密码" = "Password";
 "登录中..." = "Logging...";
-"账号格式不正确" = "Account Incorrect";
+"账号格式不正确" = "Account incorrect";
 "快速注册" = "Register";
 "找回密码" = "Retrieve password";
 //注册
 "注册" = "REGISTER";
 "提示" = "Hint";
-"注册成功" = "Register Success";
+"注册成功" = "Register success";
 "账户" = "Account";
 "密码" = "Password";
 //忘记密码
-"找回密码" = "Forget Password?";
-"重新发送密码到邮箱" = "Send The Password to My Mailbox";
+"找回密码" = "Forget password?";
+"重新发送密码到邮箱" = "Send the password to my mailbox";
 //排名
 "排名" = "Ranking";
-"排名信息获取失败" = "Ranking Request Failed";
+"排名信息获取失败" = "Ranking request failed";
 "我的排名" = "My Ranking";
 "当前排名" = "Current Ranking";
 //社交
@@ -136,8 +137,8 @@
 "分享(点击复制分享码)" = "Share (Click to copy sharing code)";
 "提取码" = "Sharing Code";
 "添加" = "Add";
-"分享码已复制" = "Sharing Code Copied";
-"排名信息获取失败，请重试" = " Ranking Request Failed, Try again";
+"分享码已复制" = "Sharing code copied";
+"排名信息获取失败，请重试" = " Ranking request failed, try again";
 "取消" = "Cancel";
 "重试" = "Retry";
 //分享
@@ -151,10 +152,10 @@
 "次/分钟" = "Times/Min";
 "运动后心率加快属正常现象,请不要担心.心率信息仅提供参考." = "Your heart rate will increase after sports. Don't worry. This is for your reference only.";
 "开始" = "Start";
-"测定心率中..." = "Heart Rate Measuring...";
+"测定心率中..." = "Heart rate measuring...";
 //个人
 "运动目标" = "Sports Target";
-"是否退出登录" = "Are You Sure to Exit";
+"确认退出?退出后历史数据将被清除" = "Are you sure to exit? Data will be REMOVED after exit";
 //睡眠
 "睡眠" = "Sleep";
 "近24小时时长" = "Nearly 24 hours";
@@ -169,8 +170,8 @@
 "活动距离" = "Distance";
 "消耗能量" = "Energy Used";
 "脂肪燃烧" = "Fat-Burning";
-"同步失败" = "Synchronize Failed";
-"同步数据中..." = "Data Synchronizing...";
+"同步失败" = "Synchronize failed";
+"同步数据中..." = "Data synchronizing...";
 "[EasyFit提醒]我需要您的帮助，请尽快和TA联系！" = "[EasyFit]I need your HELP，contact with me ASAQ！";
 //语言
 "语言" = "Language";

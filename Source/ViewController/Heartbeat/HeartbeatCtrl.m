@@ -114,7 +114,8 @@
 
 - (void)clickButton:(UIButton *)button {
     //没有绑定设备
-    if (![BluetoothManager getBindingPeripheralUUID]) {
+    NSString *connectDeviceUUID = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+    if (!connectDeviceUUID) {
         [MBProgressHUD showHUDByContent:BTLocalizedString(@"您尚未绑定设备") view:UI_Window afterDelay:1.5];
         return;
     }
@@ -130,7 +131,7 @@
     } else {
         [button setTitle:BTLocalizedString(@"取消") forState:UIControlStateNormal];
         [[BluetoothManager share] readHeartRate];
-        [MBProgressHUD showHUDByContent:BTLocalizedString(@"测定心率中…")
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"测定心率中...")
                                    view:self.view
                              afterDelay:INT_MAX];
     }

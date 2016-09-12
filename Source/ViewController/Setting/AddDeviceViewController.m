@@ -11,6 +11,7 @@
 #import "PeripheralModel.h"
 #import "BluetoothManager.h"
 #import "OperateViewModel.h"
+#import "DeviceManagerViewController.h"
 
 @interface AddDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,BluetoothManagerDelegate,UIGestureRecognizerDelegate> {
 //    OperateViewModel *_operateViewModel;
@@ -42,6 +43,8 @@
     [[[BluetoothManager share] baby] cancelAllPeripheralsConnection];
     [[BluetoothManager share] stop];
     [[BluetoothManager share] start];
+    [[BluetoothManager share] reScanBluetoothPeripheral];
+    
     [BluetoothManager share].isReadedPripheralAllData = NO;
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0,
@@ -118,6 +121,7 @@
 //绑定蓝牙设备成功并且获取历史运动数据成功
 - (void)didBindingPeripheralFinished {
     [BluetoothManager share].bindingPeripheral = _selecedPeripheral;
+    [[NSUserDefaults standardUserDefaults] setObject:_selecedPeripheral.name forKey:didConnectDevice];
     [self.navigationController popToRootViewControllerAnimated:YES];
     [_hud setHidden:YES];
     _hud = nil;
@@ -204,8 +208,15 @@
 
 - (void)dealloc
 {
+    //没有绑定设备
+    NSString *connectDeviceUUID = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+//    if (!connectDeviceUUID) {
+//        [[BluetoothManager share] stop];
+//    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [BluetoothManager share].deleagete = nil;
+    
 }
 
 @end

@@ -13,6 +13,7 @@
 #import "OperateViewModel.h"
 #import "prenventLostController.h"
 #import "SOSController.h"
+#import "DeviceManagerViewController.h"
 
 #define ServiceUUID   @"FFF0"
 #define specifiedUUID @"FFF1"
@@ -26,10 +27,20 @@ static BluetoothManager *manager = nil;
 
 @property (nonatomic, strong) OperateViewModel *operateViewModel;
 
+@property (nonatomic, strong) NSMutableDictionary *identifierDict;   //连接过的设备UUID
+
 @end
 
 
 @implementation BluetoothManager
+
+- (NSMutableDictionary *)identifierDict
+{
+    if (!_identifierDict) {
+        _identifierDict = [NSMutableDictionary dictionary];
+    }
+    return _identifierDict;
+}
 
 
 + (BluetoothManager *)share {
@@ -54,10 +65,10 @@ static BluetoothManager *manager = nil;
         
         
         [_baby cancelAllPeripheralsConnection];
-        if (_isBindingPeripheral) {
+//        if (_isBindingPeripheral) {
             //设置委托后直接可以使用，无需等待CBCentralManagerStatePoweredOn状态。
-            _baby.scanForPeripherals().begin();
-        }
+//            _baby.scanForPeripherals().begin();
+//        }
         _deviceID = [[NSUserDefaults standardUserDefaults] objectForKey:User_DeviceID];
         _connectionType = BluetoothConnectingNormal;
         _successType = BluetoothConnectingNormalSuccess;
@@ -69,6 +80,11 @@ static BluetoothManager *manager = nil;
         
     }
     return self;
+}
+
+- (void)cancelAllPeripherals
+{
+    [_baby cancelAllPeripheralsConnection];
 }
 
 #pragma mark -蓝牙配置和操作
@@ -97,24 +113,52 @@ static BluetoothManager *manager = nil;
         }
     }];
     
-    //设置扫描到设备的委托
+    CBCentralManager *central = [_baby centralManager];
+    NSDictionary *tempDict = [BluetoothManager getBindingPeripheralUUID];
+    CBPeripheral *peripheral;
+    if (tempDict) {
+        NSString *lastConnectName = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+        if (lastConnectName) {
+            NSArray *keyArray = [tempDict allKeys];
+            for (NSString *tempName in keyArray) {
+                if ([tempName isEqualToString:lastConnectName]) {
+                    NSString *uuidStr = [tempDict objectForKey:tempName];
+                    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidStr];
+                    NSArray *array = [central retrievePeripheralsWithIdentifiers:@[uuid]];
+                    peripheral = array.firstObject;
+                }
+            }
+        }
+        
+    }
+    
+    
+    if (peripheral) {
+        _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:peripheral
+                                                               advertisementData:nil];
+//        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
+        [self connectingBlueTooth:peripheral];
+    }
+    else {
+        //设置扫描到设备的委托
     [_baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         NSLog(@"搜索到了设备:%@  uuid:%@",peripheral.name,peripheral.identifier.UUIDString);
         NSString *peripheralUUID = peripheral.identifier.UUIDString;
         //如果搜索到的设备是已经绑定的设备,直接连接该设备
-        if ([[BluetoothManager getBindingPeripheralUUID] isEqualToString:peripheralUUID] &&
-            peripheral.state == CBPeripheralStateDisconnected) {
-            [weakSelf connectingBlueTooth:peripheral];
-            [weakSelf.baby cancelScan];
-            weakSelf.bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:peripheral
-                                                                   advertisementData:advertisementData];
-            NSLog(@"自动连接已绑定设备:%@",peripheral.name);
-            return ;
-        }
+//        if ([[BluetoothManager getBindingPeripheralUUID] isEqualToString:peripheralUUID] &&
+//            peripheral.state == CBPeripheralStateDisconnected) {
+//            [weakSelf connectingBlueTooth:peripheral];
+//            [weakSelf.baby cancelScan];
+//            weakSelf.bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:peripheral
+//                                                                   advertisementData:advertisementData];
+//            NSLog(@"自动连接已绑定设备:%@",peripheral.name);
+//            return ;
+//        }
         if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
             [weakSelf.deleagete didSearchPeripheral:peripheral advertisementData:advertisementData];
         }
     }];
+    }
     
     //设置发现设备的Services的委
     [_baby setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
@@ -346,6 +390,46 @@ static BluetoothManager *manager = nil;
                             scanForPeripheralsWithServices:nil
                                       discoverWithServices:nil
                                discoverWithCharacteristics:nil];
+}
+
+- (void)reScanBluetoothPeripheral
+{
+    __weak typeof(self) weakSelf = self;
+    [_baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
+        NSLog(@"搜索到了设备:%@  uuid:%@",peripheral.name,peripheral.identifier.UUIDString);
+        
+        CBCentralManager *recentral = [weakSelf.baby centralManager];
+        NSDictionary *tempDict = [BluetoothManager getBindingPeripheralUUID];
+        
+        NSString *lastConnectName = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+        NSArray *keyArray = [tempDict allKeys];
+        for (NSString *nameStr in keyArray) {
+            NSString *UUIDStr = [tempDict objectForKey:nameStr];
+            NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:UUIDStr];
+            NSArray *array = [recentral retrievePeripheralsWithIdentifiers:@[uuid]];
+            CBPeripheral *connectPeripheral = array.firstObject;
+            if (connectPeripheral) {
+                if ([nameStr isEqualToString:lastConnectName] && connectPeripheral.state == CBPeripheralStateDisconnected){
+                    
+                    _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:connectPeripheral
+                                                                   advertisementData:nil];
+                    //        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
+                    [weakSelf connectingBlueTooth:connectPeripheral];
+                    [weakSelf.baby cancelScan];
+                    return ;
+                }
+                if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
+                    [weakSelf.deleagete didSearchPeripheral:connectPeripheral advertisementData:advertisementData];
+                }
+            }
+            
+        }
+        
+        if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
+            [weakSelf.deleagete didSearchPeripheral:peripheral advertisementData:advertisementData];
+        }
+    }];
+
 }
 
 #pragma mark - 第一次连接设备,获取蓝牙设备中的信息
@@ -985,7 +1069,7 @@ static BluetoothManager *manager = nil;
    characteristic:self.characteristics
             block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
                 Byte *byte = (Byte *)characteristics.value.bytes;
-                weakSelf.heartRate = byte[1];
+                weakSelf.heartRate = 0;
                 [[NSNotificationCenter defaultCenter] postNotificationName:READ_HEARTRATE_SUCCESS
                                                                     object:nil];
                 DLog(@"获取心率 : %@      %@",characteristics.value,@(weakSelf.heartRate).stringValue);
@@ -1096,9 +1180,29 @@ static BluetoothManager *manager = nil;
     NSTimeInterval twoSec = [twoDate timeIntervalSince1970];
     NSTimeInterval nowSec = [date timeIntervalSince1970];
     NSInteger interval = nowSec - twoSec;
+    
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSYearCalendarUnit |
+    NSMonthCalendarUnit |
+    NSDayCalendarUnit |
+    NSWeekdayCalendarUnit |
+    NSHourCalendarUnit |
+    NSMinuteCalendarUnit |
+    NSSecondCalendarUnit;
+    comps = [calendar components:unitFlags fromDate:date];
+    
     Byte b[20];
     b[0] = 0xAA;
     b[1] = 0xDA;
+    b[6] = [comps year] % 100;
+    b[7] = [comps month];
+    b[8] = [comps day];
+    b[9] = [comps hour];
+    b[10] = [comps minute];
+    b[11] = [comps second];
+    
     char *p_time = (char *)&interval;
     for(int i = 2 ;i < 19 ;i++) {
         if (i > 5) {
@@ -1129,7 +1233,8 @@ static BluetoothManager *manager = nil;
     NSDayCalendarUnit |
     NSWeekdayCalendarUnit |
     NSHourCalendarUnit |
-    NSMinuteCalendarUnit;
+    NSMinuteCalendarUnit |
+    NSSecondCalendarUnit;
     comps = [calendar components:unitFlags fromDate:date];
 
     Byte b[20];
@@ -1181,19 +1286,28 @@ static BluetoothManager *manager = nil;
 
 + (BOOL)saveBindingPeripheralUUID:(CBPeripheral *)peripheral {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:peripheral.identifier.UUIDString forKey:@"peripheralIdentifier"];
+    NSDictionary *dict = [defaults objectForKey:@"peripheralIdentifier"];
+    if (!dict) {
+        [BluetoothManager share].identifierDict = [NSMutableDictionary dictionary];
+    }else
+    {
+        [BluetoothManager share].identifierDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+    }
+    [[BluetoothManager share].identifierDict setObject:peripheral.identifier.UUIDString forKey:peripheral.name];
+    [defaults setObject:[BluetoothManager share].identifierDict forKey:@"peripheralIdentifier"];
     [defaults setObject:@(YES) forKey:@"isbindingPeripheral"];
     return [defaults synchronize];
 }
 
-+ (NSString *)getBindingPeripheralUUID {
++ (NSDictionary *)getBindingPeripheralUUID {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults objectForKey:@"peripheralIdentifier"];
+    NSDictionary *dict = [defaults objectForKey:@"peripheralIdentifier"];
+    return dict;
 }
 
 + (BOOL)clearBindingPeripheral {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:nil forKey:@"peripheralIdentifier"];
+//    [defaults setObject:nil forKey:@"peripheralIdentifier"];
     [defaults setObject:nil forKey:@"isbindingPeripheral"];
     [BluetoothManager share].isConnectSuccess = NO;
     return [defaults synchronize];

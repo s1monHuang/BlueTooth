@@ -367,7 +367,7 @@ static NSString *dbPath = nil;
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             NSInteger sleep = [result intForColumn:@"sleep"];
-            if (sleep > 10 && sleep < 255) {
+            if (sleep >= 10 && sleep < 255) {
                 qsmNumber += 1;
             }
         }

@@ -49,6 +49,8 @@
 
 #define LOSTSELECTEDDISTANCE  @"LOSTSELECTEDDISTANCE"    //选择的防丢失距离
 
+#define didConnectDevice  @"didConnectDevice"  //最后连接的设备
+
 #endif
 
 

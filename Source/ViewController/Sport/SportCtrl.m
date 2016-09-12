@@ -12,6 +12,7 @@
 #import "SportDataModel.h"
 #import "ShareCtrl.h"
 #import "TrainTargetController.h"
+#import "DeviceManagerViewController.h"
 
 @interface SportCtrl () {
     UILabel *lblBoxoneText;
@@ -403,7 +404,8 @@
 
 - (void)refreshSportData {
     //没有绑定设备
-    if (![BluetoothManager getBindingPeripheralUUID]) {
+    NSString *connectDeviceUUID = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+    if (!connectDeviceUUID) {
         [MBProgressHUD showHUDByContent:BTLocalizedString(@"您尚未绑定设备") view:UI_Window afterDelay:1.5];
         return;
     }
@@ -527,7 +529,13 @@
     
     NSString *completionRate = [NSString stringWithFormat:@"%@0%%",BTLocalizedString(@"完成")];
     _complateValue.text = completionRate;
-    _complateStep.text = @"0";
+    NSString *tempStr = [NSString stringWithFormat:@"%@",@"0"];
+    NSRange range = NSMakeRange(0, tempStr.length == 0?1:tempStr.length);
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ ",tempStr,BTLocalizedString(@"步")]];
+    [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:[UIColor blackColor]}
+                     range:range];
+    
+    _complateStep.attributedText = stepStr;
     
     _lblBoxoneValue.text = @"0";
     _lblBoxtwoValue.text = @"0";
