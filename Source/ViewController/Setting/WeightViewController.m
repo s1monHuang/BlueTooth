@@ -50,7 +50,7 @@
     NSString *tempStr = [CurrentUser.weight isEqualToString:@"(null)"] ? @"50" : CurrentUser.weight;
     _weightStr = tempStr;
     NSRange range = NSMakeRange(0, tempStr.length);
-    NSMutableAttributedString *weightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ kg",tempStr]];
+    NSMutableAttributedString *weightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@kg",tempStr]];
     [weightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
                        range:range];
     weightLabel.attributedText = weightStr;
@@ -181,7 +181,7 @@
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _weightStr = valueStr;
     NSRange range = NSMakeRange(0, valueStr.length);
-    NSMutableAttributedString *weightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ kg",valueStr]];
+    NSMutableAttributedString *weightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@kg",valueStr]];
     [weightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
                        range:range];
     _weightLabel.attributedText = weightStr;

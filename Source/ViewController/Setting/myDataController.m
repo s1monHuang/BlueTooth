@@ -106,7 +106,7 @@ static NSString* identifier =@"PersonalCell";
     }
     _valueArray = @[CurrentUser.nickName, sexStr, CurrentUser.age, CurrentUser.high, CurrentUser.weight, CurrentUser.stepLong];
     
-    _unitArray = @[@"",@"",@"",@"cm",@"kg",@"cm"];
+    _unitArray = @[@"cm",@"kg",@"cm"];
 }
 
 - (void)setUpTableView
@@ -151,7 +151,13 @@ static NSString* identifier =@"PersonalCell";
             _selectedCell.valueLabel.text = sexStr;
         }
     }else{
-        NSString *valueStr = [NSString stringWithFormat:@"%@%@",sender.object,_unitArray[index.row]];
+        NSString *valueStr = @"";
+        if (index.row < 3) {
+            valueStr = sender.object;
+        }else{
+           valueStr = [NSString stringWithFormat:@"%@%@",sender.object,_unitArray[index.row - 3]];
+        }
+        
         _selectedCell.valueLabel.text = valueStr;
     }
 }
@@ -260,7 +266,13 @@ static NSString* identifier =@"PersonalCell";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = self.keyArray[indexPath.row];
-    NSString *valueStr = [NSString stringWithFormat:@"%@ %@",self.valueArray[indexPath.row],_unitArray[indexPath.row]];
+    NSString *valueStr = @"";
+    if (indexPath.row < 3) {
+        valueStr = [NSString stringWithFormat:@"%@",self.valueArray[indexPath.row]];
+    }else{
+      valueStr = [NSString stringWithFormat:@"%@%@",self.valueArray[indexPath.row],_unitArray[indexPath.row - 3]];
+    }
+    
     [cell.valueLabel setText:valueStr];
 
 
