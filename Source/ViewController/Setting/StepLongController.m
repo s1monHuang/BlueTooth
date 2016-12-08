@@ -63,7 +63,7 @@
     NSString *tempStr = [CurrentUser.stepLong isEqualToString:@"(null)"] ? @"50" : CurrentUser.stepLong;
     _stepLongStr = tempStr;
     NSRange range = NSMakeRange(0, tempStr.length);
-    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",tempStr]];
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@cm",tempStr]];
     [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
                        range:range];
     _stepLabel.attributedText = stepStr;
@@ -211,7 +211,7 @@
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _stepLongStr = valueStr;
     NSRange range = NSMakeRange(0, valueStr.length);
-    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",valueStr]];
+    NSMutableAttributedString *stepStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@cm",valueStr]];
     [stepStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
                      range:range];
     _stepLabel.attributedText = stepStr;

@@ -50,7 +50,7 @@
     NSString *tempStr = [CurrentUser.high isEqualToString:@"(null)"] ? @"100" : CurrentUser.high;
     _heightStr = tempStr;
     NSRange range = NSMakeRange(0, tempStr.length);
-    NSMutableAttributedString *heightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",tempStr]];
+    NSMutableAttributedString *heightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@cm",tempStr]];
     [heightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
                                  range:range];
     _heightLabel.attributedText = heightStr;
@@ -188,7 +188,7 @@
     NSString *valueStr =[NSString stringWithFormat:@"%.0f",rulerValue];
     _heightStr = valueStr;
     NSRange range = NSMakeRange(0, valueStr.length);
-    NSMutableAttributedString *heightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ cm",valueStr]];
+    NSMutableAttributedString *heightStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@cm",valueStr]];
     [heightStr addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:28],NSForegroundColorAttributeName:KThemeGreenColor}
                        range:range];
     _heightLabel.attributedText = heightStr;
