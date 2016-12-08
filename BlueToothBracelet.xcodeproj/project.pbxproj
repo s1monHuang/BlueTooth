@@ -2028,6 +2028,7 @@
 				TargetAttributes = {
 					9F88F5611B45873E000BA054 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 6C7QEGP2K7;
 					};
 					9F88F57A1B45873E000BA054 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -2492,8 +2493,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Stock Exchange";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen Stock Exchange";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
+				DEVELOPMENT_TEAM = 6C7QEGP2K7;
 				GCC_PREFIX_HEADER = BlueToothBracelet/BlueToothBracelet_Prefix.pch;
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -2504,9 +2506,10 @@
 					"$(PROJECT_DIR)/Lib/libWeiboSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.szse.djtstg;
+				PRODUCT_BUNDLE_IDENTIFIER = com.szse.nmoastg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d4343e03-381d-4c34-a443-e1d9378dcd61";
+				PROVISIONING_PROFILE = "1f8ef4fa-0521-4087-852c-d261791b4f80";
+				PROVISIONING_PROFILE_SPECIFIER = NMOA_Development;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2516,8 +2519,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Stock Exchange";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen Stock Exchange";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
+				DEVELOPMENT_TEAM = 6C7QEGP2K7;
 				GCC_PREFIX_HEADER = BlueToothBracelet/BlueToothBracelet_Prefix.pch;
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -2528,9 +2532,10 @@
 					"$(PROJECT_DIR)/Lib/libWeiboSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.szse.djtstg;
+				PRODUCT_BUNDLE_IDENTIFIER = com.szse.nmoastg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d4343e03-381d-4c34-a443-e1d9378dcd61";
+				PROVISIONING_PROFILE = "1f8ef4fa-0521-4087-852c-d261791b4f80";
+				PROVISIONING_PROFILE_SPECIFIER = NMOA_Development;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -125,6 +125,7 @@ static BluetoothManager *manager = nil;
                     NSString *uuidStr = [tempDict objectForKey:tempName];
                     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidStr];
                     NSArray *array = [central retrievePeripheralsWithIdentifiers:@[uuid]];
+                    
                     peripheral = array.firstObject;
                 }
             }
