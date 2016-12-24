@@ -125,7 +125,6 @@ static BluetoothManager *manager = nil;
                     NSString *uuidStr = [tempDict objectForKey:tempName];
                     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidStr];
                     NSArray *array = [central retrievePeripheralsWithIdentifiers:@[uuid]];
-                    
                     peripheral = array.firstObject;
                 }
             }
@@ -396,43 +395,44 @@ static BluetoothManager *manager = nil;
 - (void)reScanBluetoothPeripheral
 {
     __weak typeof(self) weakSelf = self;
-    [_baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
-        NSLog(@"搜索到了设备:%@  uuid:%@",peripheral.name,peripheral.identifier.UUIDString);
-        
-        CBCentralManager *recentral = [weakSelf.baby centralManager];
-        NSDictionary *tempDict = [BluetoothManager getBindingPeripheralUUID];
-        
-        NSString *lastConnectName = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
-        NSArray *keyArray = [tempDict allKeys];
-        for (NSString *nameStr in keyArray) {
-            NSString *UUIDStr = [tempDict objectForKey:nameStr];
-            NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:UUIDStr];
-            NSArray *array = [recentral retrievePeripheralsWithIdentifiers:@[uuid]];
-            CBPeripheral *connectPeripheral = array.firstObject;
-            if (connectPeripheral) {
-                if ([nameStr isEqualToString:lastConnectName] && connectPeripheral.state == CBPeripheralStateDisconnected){
-                    
-                    _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:connectPeripheral
-                                                                   advertisementData:nil];
-                    //        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
-                    [weakSelf connectingBlueTooth:connectPeripheral];
-                    [weakSelf.baby cancelScan];
-                    return ;
-                }
-                if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
-                    [weakSelf.deleagete didSearchPeripheral:connectPeripheral advertisementData:advertisementData];
-                }
+    
+    CBCentralManager *recentral = [weakSelf.baby centralManager];
+    NSDictionary *tempDict = [BluetoothManager getBindingPeripheralUUID];
+    
+    NSString *lastConnectName = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+    NSArray *keyArray = [tempDict allKeys];
+    for (NSString *nameStr in keyArray) {
+        NSString *UUIDStr = [tempDict objectForKey:nameStr];
+        //        NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:UUIDStr];
+        CBUUID *DBID = [CBUUID UUIDWithString:@"FFF0"];
+        //        NSArray *array = [recentral retrievePeripheralsWithIdentifiers:@[uuid]];
+        NSArray *newA = [recentral retrieveConnectedPeripheralsWithServices:@[DBID]];
+        CBPeripheral *connectPeripheral = newA.firstObject;
+        if (connectPeripheral) {
+            if ([nameStr isEqualToString:lastConnectName] && connectPeripheral.state == CBPeripheralStateDisconnected){
+                
+                _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:connectPeripheral
+                                                               advertisementData:nil];
+                //        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
+                [weakSelf connectingBlueTooth:connectPeripheral];
+                [weakSelf.baby cancelScan];
+                return ;
             }
-            
+            if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
+                [weakSelf.deleagete didSearchPeripheral:connectPeripheral advertisementData:nil];
+            }
         }
         
+    }
+    
+    [_baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
+        NSLog(@"搜索到了设备:%@  uuid:%@",peripheral.name,peripheral.identifier.UUIDString);
         if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
             [weakSelf.deleagete didSearchPeripheral:peripheral advertisementData:advertisementData];
         }
     }];
-
+    
 }
-
 #pragma mark - 第一次连接设备,获取蓝牙设备中的信息
 
 - (void)firstReadPripheralData:(BluetoothManager *)weakSelf characteristic:(CBCharacteristic *)characteristics {
