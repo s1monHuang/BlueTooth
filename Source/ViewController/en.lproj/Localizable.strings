@@ -177,4 +177,10 @@
 "语言" = "Language";
 "亲，你的网络不给力" = "Pro, your network is not to force, try again later... ";
 "me" = "me_English";
+"结束" = "Stop";
+"单次" = "Single";
+"暂无设备" = "No Devices";
+
+"蓝牙功能未打开" = "BlueTooth is closed";
+"蓝牙功能已关闭" = "BlueTooth is closed";
 

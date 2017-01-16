@@ -109,8 +109,60 @@ static BluetoothManager *manager = nil;
     //监测蓝牙是否打开
     [_baby setBlockOnCentralManagerDidUpdateState:^(CBCentralManager *central) {
         if (central.state == CBCentralManagerStatePoweredOn) {
-            //            [SVProgressHUD showInfoWithStatus:@"设备打开成功，开始扫描设备"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ManagerStatePoweredOn];
+//            [weakSelf connectingBlueTooth:peripheral];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                CBCentralManager *recentral = [weakSelf.baby centralManager];
+                NSDictionary *tempDict = [BluetoothManager getBindingPeripheralUUID];
+                
+                NSString *lastConnectName = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
+                NSArray *keyArray = [tempDict allKeys];
+                for (NSString *nameStr in keyArray) {
+                    CBUUID *DBID = [CBUUID UUIDWithString:@"FFF0"];
+                    NSArray *newA = [recentral retrieveConnectedPeripheralsWithServices:@[DBID]];
+                    if (newA.count > 0 && newA) {
+                        for (CBPeripheral *model in newA) {
+                            if ([nameStr isEqualToString:lastConnectName] && model.state == CBPeripheralStateDisconnected){
+                                
+                                _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:model
+                                                                               advertisementData:nil];
+                                [weakSelf connectingBlueTooth:model];
+                                return ;
+                            }
+                            
+                        }
+                    }
+                }
+
+            });
         }
+        else if (central.state == CBCentralManagerStatePoweredOff){
+             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:ManagerStatePoweredOn];
+            [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECT_PERIPHERAL object:nil];
+            [MBProgressHUD showHUDByContent:BTLocalizedString(@"蓝牙功能已关闭") view:UI_Window afterDelay:2];
+            weakSelf.connectionType = BluetoothConnectingNormal;
+            weakSelf.successType = BluetoothConnectingNormalSuccess;
+            weakSelf.characteristics = nil;
+            weakSelf.sosCharacteristic = nil;
+            weakSelf.isConnectSuccess = NO;
+            [weakSelf removeAllQueue];
+            
+            if (weakSelf.isBindingPeripheral && !weakSelf.deleagete) {
+                if (weakSelf.bindingPeripheral.peripheral && weakSelf.characteristics) {
+                    [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                                 characteristic:weakSelf.characteristics];
+                }
+                if (weakSelf.bindingPeripheral.peripheral && weakSelf.sosCharacteristic) {
+                    [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                                 characteristic:weakSelf.sosCharacteristic];
+                }
+                
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECT_PERIPHERAL
+                                                                object:nil];
+
+        }
+        
     }];
     
     CBCentralManager *central = [_baby centralManager];
@@ -143,7 +195,7 @@ static BluetoothManager *manager = nil;
         //设置扫描到设备的委托
     [_baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         NSLog(@"搜索到了设备:%@  uuid:%@",peripheral.name,peripheral.identifier.UUIDString);
-        NSString *peripheralUUID = peripheral.identifier.UUIDString;
+//        NSString *peripheralUUID = peripheral.identifier.UUIDString;
         //如果搜索到的设备是已经绑定的设备,直接连接该设备
 //        if ([[BluetoothManager getBindingPeripheralUUID] isEqualToString:peripheralUUID] &&
 //            peripheral.state == CBPeripheralStateDisconnected) {
@@ -380,9 +432,9 @@ static BluetoothManager *manager = nil;
      CBConnectPeripheralOptionNotifyOnNotificationKey:
      当应用挂起时，使用该key值表示只要接收到给定peripheral端的通知就显示一个提
      */
-    NSDictionary *connectOptions = @{CBConnectPeripheralOptionNotifyOnConnectionKey:@YES,
-                                     CBConnectPeripheralOptionNotifyOnDisconnectionKey:@YES,
-                                     CBConnectPeripheralOptionNotifyOnNotificationKey:@YES};
+    NSDictionary *connectOptions = @{CBConnectPeripheralOptionNotifyOnConnectionKey:@NO,
+                                     CBConnectPeripheralOptionNotifyOnDisconnectionKey:@NO,
+                                     CBConnectPeripheralOptionNotifyOnNotificationKey:@NO};
     
     
     [_baby setBabyOptionsWithScanForPeripheralsWithOptions:scanForPeripheralsWithOptions
@@ -402,26 +454,43 @@ static BluetoothManager *manager = nil;
     NSString *lastConnectName = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
     NSArray *keyArray = [tempDict allKeys];
     for (NSString *nameStr in keyArray) {
-        NSString *UUIDStr = [tempDict objectForKey:nameStr];
+//        NSString *UUIDStr = [tempDict objectForKey:nameStr];
         //        NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:UUIDStr];
         CBUUID *DBID = [CBUUID UUIDWithString:@"FFF0"];
         //        NSArray *array = [recentral retrievePeripheralsWithIdentifiers:@[uuid]];
         NSArray *newA = [recentral retrieveConnectedPeripheralsWithServices:@[DBID]];
-        CBPeripheral *connectPeripheral = newA.firstObject;
-        if (connectPeripheral) {
-            if ([nameStr isEqualToString:lastConnectName] && connectPeripheral.state == CBPeripheralStateDisconnected){
-                
-                _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:connectPeripheral
-                                                               advertisementData:nil];
-                //        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
-                [weakSelf connectingBlueTooth:connectPeripheral];
-                [weakSelf.baby cancelScan];
-                return ;
-            }
-            if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
-                [weakSelf.deleagete didSearchPeripheral:connectPeripheral advertisementData:nil];
+        if (newA.count > 0 && newA) {
+            for (CBPeripheral *model in newA) {
+                if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
+                    [weakSelf.deleagete didSearchPeripheral:model advertisementData:nil];
+                }
+                if ([nameStr isEqualToString:lastConnectName] && model.state == CBPeripheralStateDisconnected){
+                    
+                    _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:model
+                                                                   advertisementData:nil];
+                    //        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
+                    [weakSelf connectingBlueTooth:model];
+                    [weakSelf.baby cancelScan];
+                    return ;
+                }
+
             }
         }
+//        CBPeripheral *connectPeripheral = newA.firstObject;
+//        if (connectPeripheral) {
+//            if ([nameStr isEqualToString:lastConnectName] && connectPeripheral.state == CBPeripheralStateDisconnected){
+//                
+//                _bindingPeripheral = [[PeripheralModel alloc] initWithPeripheral:connectPeripheral
+//                                                               advertisementData:nil];
+//                //        NSLog(@"自动连接已绑定设备:%@",peripheral.name);
+//                [weakSelf connectingBlueTooth:connectPeripheral];
+//                [weakSelf.baby cancelScan];
+//                return ;
+//            }
+//            if (weakSelf.deleagete && [weakSelf.deleagete respondsToSelector:@selector(didSearchPeripheral:advertisementData:)]) {
+//                [weakSelf.deleagete didSearchPeripheral:connectPeripheral advertisementData:nil];
+//            }
+//        }
         
     }
     
@@ -486,7 +555,7 @@ static BluetoothManager *manager = nil;
                 //如果没有绑定设备,获取历史运动数据
 //                if (![BluetoothManager getBindingPeripheralUUID]) {
                     [weakSelf saveNewSportData:characteristics.value];
-                    [weakSelf readHistroySportDataWithValue:characteristics.value];
+//                    [weakSelf readHistroySportDataWithValue:characteristics.value];
 //                } else {
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     if ((byte[0] == 0xAA && byte[18] == 0x04)) {
@@ -566,7 +635,7 @@ static BluetoothManager *manager = nil;
         }
         switch (weakSelf.successType) {
             case BluetoothConnectingNormalSuccess: {
-                [weakSelf startBindingPeripheral];
+//                [weakSelf startBindingPeripheral];
                 DLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
             }
                 break;
@@ -694,7 +763,7 @@ static BluetoothManager *manager = nil;
             }
                 break;
             case BluetoothQueueHeartRate: {
-                [self readHeartRate];
+                [self readHeartRateIsOnce:NO];
             }
                 break;
             case BluetoothQueueCallAlert: {
@@ -719,6 +788,7 @@ static BluetoothManager *manager = nil;
     model.calorie = (byte[6] << 8) + byte[5];           //卡路里
     model.target = (byte[8] << 8) + byte[7];            //目标
     model.battery = byte[9];                            //电量
+    model.heatRate = byte[10];                          //心率
 //     NSLog(@"步数 = %ld   距离 = %ld  卡路里 = %ld  目标 = %ld  电量 = %ld",model.step,model.distance,model.calorie,model.target,model.battery);
     return model;
 }
@@ -739,6 +809,7 @@ static BluetoothManager *manager = nil;
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"手环发的睡眠动作次数，小于10是深睡眠，10-254是浅睡眠，255无效" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     NSString *twoStr = @"2000-01-01 00:00:00";
     NSDate *twoDate = [formatter dateFromString:twoStr];
@@ -785,6 +856,7 @@ static BluetoothManager *manager = nil;
 
 - (BOOL)saveNewHistroyData:(NSData *)data time:(NSInteger)time {
     HistorySportDataModel *model = [self histroySportDataModelWithData:data];
+    NSLog(@"saveNewHistroyData:%ld,saveNewHistroyData-date:%@",model.step,model.date);
     return [DBManager insertOrReplaceHistroySportData:model];
 }
 
@@ -859,11 +931,11 @@ static BluetoothManager *manager = nil;
  *  @param value
  */
 - (void)readSportData {
-    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
-        NSDictionary *dictionary = @{@"type":@(BluetoothQueueReadSportData)};
-        [_bluetoothQueue addObject:dictionary];
-        return;
-    }
+//    if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
+//        NSDictionary *dictionary = @{@"type":@(BluetoothQueueReadSportData)};
+//        [_bluetoothQueue addObject:dictionary];
+//        return;
+//    }
     [self startTiming];
     _connectionType = BluetoothConnectingReadSportData;
     Byte b[20];
@@ -886,21 +958,24 @@ static BluetoothManager *manager = nil;
     //需要获取几次历史数据
     NSInteger count = [self getHistoryDataCount];
     
-//    if (count <= 0) {
-//        NSLog(@"不需要获取历史运动数据");
+    if (count <= 1) {
+        NSLog(@"不需要获取历史运动数据");
 //        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
-//                                                            object:nil];
-//        self.connectionType = BluetoothConnectingSuccess;
-//        [self handleBluetoothQueue];
-//        return;
-//    }
+        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+                                                            object:nil];
+        self.connectionType = BluetoothConnectingSuccess;
+        [self handleBluetoothQueue];
+        
+        [self.hud hide:YES];
+        self.hud = nil;
+        return;
+    }
     
     Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-    if (count < 72 && count != 0) {
+    if (count < 72) {
         b[2] = count;
     }else{
-        b[2] = 0xFF;
+        b[2] = 72;
     }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
@@ -919,7 +994,7 @@ static BluetoothManager *manager = nil;
                     Byte flag = byte[2];
                     
                     //读取历史运动数据结束
-                    if (flag == 0xEE) {
+                    if (flag == 0xEE || (byte[6] == 0x00 && byte[7] == 0x00 && byte[8] == 0x00 )) {
                         [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
                                      characteristic:weakSelf.characteristics];
                         [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
@@ -930,7 +1005,8 @@ static BluetoothManager *manager = nil;
                         [weakSelf.hud hide:YES];
                         weakSelf.hud = nil;
                         OperateViewModel *operateVM = [OperateViewModel viewModel];
-                        [operateVM saveStepData:[DBManager selectHistorySportData]];
+                        NSString *tempStr = [DBManager selectHistorySportData];
+                        [operateVM saveStepData:tempStr];
                         [operateVM saveSleepData:[DBManager selectHistorySleepData]];
                         [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
 
@@ -1040,7 +1116,7 @@ static BluetoothManager *manager = nil;
  *
  *  @param value
  */
-- (void)readHeartRate {
+- (void)readHeartRateIsOnce:(BOOL)once {
     if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothQueueHeartRate)};
         [_bluetoothQueue addObject:dictionary];
@@ -1057,24 +1133,37 @@ static BluetoothManager *manager = nil;
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
     
-    [_heartRateTimer invalidate];
-    _heartRateTimer = nil;
-    _heartRateTimer = [NSTimer scheduledTimerWithTimeInterval:30
-                                                       target:self
-                                                     selector:@selector(closeReadHeartRate)
-                                                     userInfo:nil
-                                                      repeats:NO];
     
-    __weak typeof(self) weakSelf = self;
-    [_baby notify:self.bindingPeripheral.peripheral
-   characteristic:self.characteristics
-            block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                Byte *byte = (Byte *)characteristics.value.bytes;
-                weakSelf.heartRate = 0;
-                [[NSNotificationCenter defaultCenter] postNotificationName:READ_HEARTRATE_SUCCESS
-                                                                    object:nil];
-                DLog(@"获取心率 : %@      %@",characteristics.value,@(weakSelf.heartRate).stringValue);
-            }];
+    if (once) {
+        [_heartRateTimer invalidate];
+        _heartRateTimer = nil;
+        _heartRateTimer = [NSTimer scheduledTimerWithTimeInterval:30
+                                                           target:self
+                                                         selector:@selector(closeReadHeartRate)
+                                                         userInfo:nil
+                                                          repeats:NO];
+        
+    }
+    [_heartingTimer invalidate];
+    _heartingTimer = nil;
+    _heartingTimer = [NSTimer scheduledTimerWithTimeInterval:2
+                                                       target:self
+                                                     selector:@selector(readSportData)
+                                                     userInfo:nil
+                                                      repeats:YES];
+    [_heartingTimer fire];
+    
+    
+//    __weak typeof(self) weakSelf = self;
+//    [_baby notify:self.bindingPeripheral.peripheral
+//   characteristic:self.characteristics
+//            block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+//                Byte *byte = (Byte *)characteristics.value.bytes;
+//                weakSelf.heartRate = 0;
+//                [[NSNotificationCenter defaultCenter] postNotificationName:READ_HEARTRATE_SUCCESS
+//                                                                    object:nil];
+//                DLog(@"获取心率 : %@      %@",characteristics.value,@(weakSelf.heartRate).stringValue);
+//            }];
 }
 
 /*!
@@ -1089,6 +1178,9 @@ static BluetoothManager *manager = nil;
                                 forCharacteristic:self.characteristics
                                              type:CBCharacteristicWriteWithResponse];
     [_heartRateTimer invalidate];
+    _heartRateTimer = nil;
+    [_heartingTimer invalidate];
+    _heartingTimer = nil;
     [_baby cancelNotify:self.bindingPeripheral.peripheral
          characteristic:self.characteristics];
     self.connectionType = BluetoothConnectingSuccess;
@@ -1346,11 +1438,16 @@ static BluetoothManager *manager = nil;
 
 - (NSInteger)getHistoryDataCount
 {
+    NSDate *nowdate = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: nowdate];
+    NSDate *localeDate = [nowdate  dateByAddingTimeInterval: interval];
+    
     NSDate *date = [DBManager selectNewestHistoryData];
     
     NSInteger historyTime = date.timeIntervalSince1970;
     NSInteger getHistoryDataCount = 0;
-    NSInteger nowTime = [NSDate date].timeIntervalSince1970;
+    NSInteger nowTime = localeDate.timeIntervalSince1970;
     getHistoryDataCount = (nowTime - historyTime) / 3600;
     
     return getHistoryDataCount;

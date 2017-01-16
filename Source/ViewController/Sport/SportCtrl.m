@@ -61,19 +61,21 @@
 @property (nonatomic , strong) UIView *threeBoxView;
 @property (nonatomic , strong) UILabel *lblBoxOneTextUnit;
 
-
+@property (nonatomic , assign) BOOL isVisible;   //界面是否正在显示
 
 @end
 
 @implementation SportCtrl
 
 - (void)viewWillAppear:(BOOL)animated {
+    _isVisible = YES;
     if (_isLoading) {
         [self startAnimation];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    _isVisible = NO;
     [_refreshBututton.layer removeAllAnimations];
 //    _refreshBututton.userInteractionEnabled = YES;
 }
@@ -403,6 +405,12 @@
 }
 
 - (void)refreshSportData {
+    
+    BOOL isOn = [[[NSUserDefaults standardUserDefaults] objectForKey:ManagerStatePoweredOn] boolValue];
+    if (!isOn) {
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"蓝牙功能未打开") view:UI_Window afterDelay:1.5];
+        return;
+    }
     //没有绑定设备
     NSString *connectDeviceUUID = [[NSUserDefaults standardUserDefaults] objectForKey:didConnectDevice];
     if (!connectDeviceUUID) {
@@ -438,8 +446,10 @@
 
 - (void)refreshSportDataSuccess:(NSNotification *)notification {
     
-    [[BluetoothManager share] readHistroySportData];
-    [self firstRefreshSportDataSuccess:notification];
+    if (_isVisible) {
+        [[BluetoothManager share] readHistroySportData];
+        [self firstRefreshSportDataSuccess:notification];
+    }
     
 }
 
@@ -455,6 +465,7 @@
 }
 
 - (void)firstRefreshSportDataSuccess:(NSNotification *)notification {
+    
     [self releaseTimer];
     _isLoading = NO;
     
@@ -552,6 +563,7 @@
 }
 
 - (void)disConnectPeripheral {
+    [self removeMBProgress];
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
     [self releaseTimer];

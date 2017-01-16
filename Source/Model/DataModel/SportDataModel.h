@@ -15,5 +15,6 @@
 @property(assign) NSInteger calorie;           //卡路里
 @property(assign) NSInteger target;            //目标
 @property(assign) NSInteger battery;           //电量
+@property(assign) NSInteger heatRate;           //心率
 
 @end

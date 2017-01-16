@@ -96,6 +96,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 @property (strong, nonatomic) BabyBluetooth *baby;
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) NSTimer *heartRateTimer;          //心跳计时器
+@property (strong, nonatomic) NSTimer *heartingTimer;          //计算心跳计时器
 @property (strong, nonatomic) NSTimer *rssiTimer;               //信号强度计时器
 
 @property (assign, nonatomic) id<BluetoothManagerDelegate> deleagete;
@@ -158,7 +159,7 @@ typedef NS_ENUM(NSInteger,BluetoothQueueType) {
 - (void)lostDevice:(BOOL)open;
 
 
-- (void)readHeartRate;
+- (void)readHeartRateIsOnce:(BOOL)once;
 
 - (void)closeReadHeartRate;
 

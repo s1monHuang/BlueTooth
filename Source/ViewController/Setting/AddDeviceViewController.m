@@ -25,6 +25,9 @@
 
 @property (strong, nonatomic) NSTimer *timer;
 
+
+@property (strong, nonatomic) NSTimer *HUDTimer;
+
 @end
 
 @implementation AddDeviceViewController
@@ -34,6 +37,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _peripherals = [[NSMutableArray alloc] init];
+    _peripheralModels = [[NSMutableArray alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(disConnectPeripheral)
                                                  name:DISCONNECT_PERIPHERAL
@@ -64,6 +69,8 @@
     self.navigationItem.leftBarButtonItem = leftBarButton;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
+    [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
+    
 //    _operateViewModel = [[OperateViewModel alloc] init];
 //    
 //    __weak AddDeviceViewController *weakSelf = self;
@@ -80,17 +87,33 @@
 //        }
 //    }];
     
-    _peripherals = [[NSMutableArray alloc] init];
-    _peripheralModels = [[NSMutableArray alloc] init];
+    
+    [_HUDTimer invalidate];
+    _HUDTimer = nil;
+    _HUDTimer = [NSTimer scheduledTimerWithTimeInterval:30
+                                                       target:self
+                                                     selector:@selector(closeHUD)
+                                                     userInfo:nil
+                                                      repeats:NO];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView setTableFooterView:[UIView new]];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    __weak AddDeviceViewController *blockSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       
+    });
+}
+
 
 
 - (void)didSearchPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData {
+   
     if (![_peripherals containsObject:peripheral]) {
         PeripheralModel *model = [[PeripheralModel alloc] initWithPeripheral:peripheral
                                                            advertisementData:advertisementData];
@@ -100,7 +123,20 @@
         } 
         [_peripherals addObject:peripheral];
         [_peripheralModels addObject:model];
+         [self closeHUD];
         [_tableView reloadData];
+    }
+}
+
+- (void)closeHUD
+{
+    
+    [_HUDTimer invalidate];
+    _HUDTimer = nil;
+    [MBProgressHUD hideHUDForView:UI_Window animated:YES];
+    if (_peripherals.count == 0 && _peripheralModels.count == 0) {
+        [MBProgressHUD showHUDByContent:BTLocalizedString(@"暂无设备") view:UI_Window afterDelay:2];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -213,7 +249,7 @@
 //    if (!connectDeviceUUID) {
 //        [[BluetoothManager share] stop];
 //    }
-    
+    [self closeHUD];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [BluetoothManager share].deleagete = nil;
     

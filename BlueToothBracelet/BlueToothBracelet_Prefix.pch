@@ -51,6 +51,8 @@
 
 #define didConnectDevice  @"didConnectDevice"  //最后连接的设备
 
+#define ManagerStatePoweredOn  @"ManagerStatePoweredOn"  //蓝牙功能是否关闭
+
 #endif
 
 
