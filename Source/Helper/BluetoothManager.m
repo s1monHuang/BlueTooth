@@ -555,7 +555,7 @@ static BluetoothManager *manager = nil;
                 //如果没有绑定设备,获取历史运动数据
 //                if (![BluetoothManager getBindingPeripheralUUID]) {
                     [weakSelf saveNewSportData:characteristics.value];
-//                    [weakSelf readHistroySportDataWithValue:characteristics.value];
+                    [weakSelf readHistroySportDataWithValue:characteristics.value];
 //                } else {
                     Byte *byte = (Byte *)characteristics.value.bytes;
                     if ((byte[0] == 0xAA && byte[18] == 0x04)) {
@@ -803,11 +803,13 @@ static BluetoothManager *manager = nil;
     model.sleep = byte[6];                              //睡眠动作次数
     model.battery = byte[7];                            //电量
     NSTimeInterval timeInterval = byte[8] + (byte[9] << 8) + (byte[10] << 16) + (byte[11] << 24);
-    
+    if (timeInterval == 0) {
+        return nil;
+    }
 //    model.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
 //    NSString *message = [NSString stringWithFormat:@"时间：%@  次数：%@",model.date,@(model.sleep).stringValue];
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"手环发的睡眠动作次数，小于10是深睡眠，10-254是浅睡眠，255无效" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
-    NSDate *date = [NSDate date];
+//    NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
@@ -818,10 +820,6 @@ static BluetoothManager *manager = nil;
 //    NSTimeInterval twoSec = [twoDate timeIntervalSince1970];
 //    NSTimeInterval nowSec = [date timeIntervalSince1970];
 //    NSTimeInterval interval = nowSec - twoSec;
-    
-    
-    
-//    [alert show];
     return model;
     
 }
@@ -856,8 +854,13 @@ static BluetoothManager *manager = nil;
 
 - (BOOL)saveNewHistroyData:(NSData *)data time:(NSInteger)time {
     HistorySportDataModel *model = [self histroySportDataModelWithData:data];
-    NSLog(@"saveNewHistroyData:%ld,saveNewHistroyData-date:%@",model.step,model.date);
-    return [DBManager insertOrReplaceHistroySportData:model];
+    if (model) {
+        NSLog(@"saveNewHistroyData:%ld,saveNewHistroyData-date:%@",model.step,model.date);
+        return [DBManager insertOrReplaceHistroySportData:model];
+    }
+    else{
+        return NO;
+    }
 }
 
 
@@ -994,7 +997,7 @@ static BluetoothManager *manager = nil;
                     Byte flag = byte[2];
                     
                     //读取历史运动数据结束
-                    if (flag == 0xEE || (byte[6] == 0x00 && byte[7] == 0x00 && byte[8] == 0x00 )) {
+                    if (flag == 0xEE) {
                         [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
                                      characteristic:weakSelf.characteristics];
                         [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
@@ -1047,9 +1050,6 @@ static BluetoothManager *manager = nil;
     NSData *data = [NSData dataWithBytes:b length:value.length];
     [[BluetoothManager share] writeValue:data];
     
-//    _hud = [MBProgressHUD showHUDAddedTo:UI_Window animated:YES];
-//    _hud.labelText = @"同步数据中...";
-    
     __weak BluetoothManager *weakSelf = self;
     [self.baby notify:weakSelf.bindingPeripheral.peripheral
        characteristic:weakSelf.characteristics
@@ -1068,10 +1068,6 @@ static BluetoothManager *manager = nil;
                         [weakSelf.hud hide:YES];
                         weakSelf.hud = nil;
                         return ;
-//                        [MBProgressHUD showHUDByContent:@"同步成功" view:UI_Window afterDelay:1.5];
-                        
-                        //同步完发送来电提醒开关
-//                        [[BluetoothManager share] openCallAlert];
                     }
                     //保存历史运动数据到数据库
                     [weakSelf saveNewHistroyData:characteristics.value time:time];
@@ -1263,15 +1259,19 @@ static BluetoothManager *manager = nil;
 
 //设置时间戳
 - (void)setTimestamp {
-    _connectionType = BluetoothConnectingSetTimestamp;
-//    NSInteger interval = [NSDate date].timeIntervalSince1970;
-    NSDate *date = [NSDate date];
+    _connectionType = BluetoothConnectingSetTimestamp;    
+    NSDate *nowdate = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger nowdateInterval = [zone secondsFromGMTForDate: nowdate];
+    NSDate *localeDate = [nowdate  dateByAddingTimeInterval: nowdateInterval];
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     NSString *twoStr = @"2000-01-01 00:00:00";
     NSDate *twoDate = [formatter dateFromString:twoStr];
     NSTimeInterval twoSec = [twoDate timeIntervalSince1970];
-    NSTimeInterval nowSec = [date timeIntervalSince1970];
+    NSTimeInterval nowSec = [localeDate timeIntervalSince1970];
     NSInteger interval = nowSec - twoSec;
     
     
@@ -1284,7 +1284,7 @@ static BluetoothManager *manager = nil;
     NSHourCalendarUnit |
     NSMinuteCalendarUnit |
     NSSecondCalendarUnit;
-    comps = [calendar components:unitFlags fromDate:date];
+    comps = [calendar components:unitFlags fromDate:nowdate];
     
     Byte b[20];
     b[0] = 0xAA;
@@ -1318,7 +1318,8 @@ static BluetoothManager *manager = nil;
         return;
     }
     _connectionType = BluetoothConnectingSetBasicInfomation;
-    NSDate *date = [NSDate date];
+    NSDate *nowdate = [NSDate date];
+    
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     NSInteger unitFlags = NSYearCalendarUnit |
@@ -1328,7 +1329,7 @@ static BluetoothManager *manager = nil;
     NSHourCalendarUnit |
     NSMinuteCalendarUnit |
     NSSecondCalendarUnit;
-    comps = [calendar components:unitFlags fromDate:date];
+    comps = [calendar components:unitFlags fromDate:nowdate];
 
     Byte b[20];
     b[0] = 0xAA;
