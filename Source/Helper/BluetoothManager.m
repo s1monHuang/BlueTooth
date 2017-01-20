@@ -220,7 +220,7 @@ static BluetoothManager *manager = nil;
     //设置读取characteristics的委托
     [_baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
         //如果是第一次绑定设备,读取蓝牙设备中的相关信息 
-        if (!weakSelf.isReadedPripheralAllData) {
+        if (!weakSelf.isBindingPeripheral) {
             [weakSelf firstReadPripheralData:weakSelf
                               characteristic:characteristics];
         }
@@ -636,7 +636,11 @@ static BluetoothManager *manager = nil;
         switch (weakSelf.successType) {
             case BluetoothConnectingNormalSuccess: {
 //                [weakSelf startBindingPeripheral];
-                DLog(@"开始绑定蓝牙设备 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                DLog(@"链接蓝牙设备成功 name:%@ value is:%@",characteristic.UUID,characteristic.value);
+                
+                self.successType = BluetoothConnectingAllSuccess;
+                self.isReadedPripheralAllData = YES;
+                self.connectionType = BluetoothConnectingSuccess;
             }
                 break;
                 //绑定请求发送后,要再次确认绑定蓝牙设备
@@ -959,27 +963,27 @@ static BluetoothManager *manager = nil;
     [self startTiming];
     _connectionType = BluetoothConnectingHistroyReadSportData;
     //需要获取几次历史数据
-    NSInteger count = [self getHistoryDataCount];
+//    NSInteger count = [self getHistoryDataCount];
     
-    if (count <= 1) {
-        NSLog(@"不需要获取历史运动数据");
-//        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
-        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
-                                                            object:nil];
-        self.connectionType = BluetoothConnectingSuccess;
-        [self handleBluetoothQueue];
-        
-        [self.hud hide:YES];
-        self.hud = nil;
-        return;
-    }
+//    if (count <= 1) {
+//        NSLog(@"不需要获取历史运动数据");
+////        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+//                                                            object:nil];
+//        self.connectionType = BluetoothConnectingSuccess;
+//        [self handleBluetoothQueue];
+//        
+//        [self.hud hide:YES];
+//        self.hud = nil;
+//        return;
+//    }
     
     Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-    if (count < 72) {
-        b[2] = count;
-    }else{
-        b[2] = 72;
-    }
+//    if (count < 72) {
+//        b[2] = count;
+//    }else{
+//        b[2] = 0xFF;
+//    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
@@ -1030,7 +1034,7 @@ static BluetoothManager *manager = nil;
     [self startTiming];
     
     //需要获取几次历史数据
-    NSInteger count = [self getHistoryDataCount];
+//    NSInteger count = [self getHistoryDataCount];
     
 //    if (count <= 0) {
 //        NSLog(@"不需要获取历史运动数据");
@@ -1041,11 +1045,11 @@ static BluetoothManager *manager = nil;
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xA1;
-    if (count < 72 && count != 0) {
-        b[2] = count;
-    }else{
-    b[2] = 0xFF;
-    }
+//    if (count < 72 && count != 0) {
+//        b[2] = count;
+//    }else{
+//    b[2] = 0xFF;
+//    }
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
     [[BluetoothManager share] writeValue:data];
@@ -1296,15 +1300,7 @@ static BluetoothManager *manager = nil;
     b[10] = [comps minute];
     b[11] = [comps second];
     
-    char *p_time = (char *)&interval;
-    for(int i = 2 ;i < 19 ;i++) {
-        if (i > 5) {
-            b[i] = 0;
-        } else {
-            b[i] = *p_time;
-            p_time ++;
-        }
-    }
+
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [[NSData alloc] initWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
