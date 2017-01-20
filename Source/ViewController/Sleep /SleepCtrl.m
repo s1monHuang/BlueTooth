@@ -169,8 +169,8 @@
 //               forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:_refreshBututton];
     
+    [self resetSleepValue];
     [self setSleepTimeValues];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -254,12 +254,14 @@
     [shallowSleepValueString addAttributes:@{NSForegroundColorAttributeName:[UtilityUI stringTOColor:@"#6dabff"]}
                               range:shallowSleepRange];
     _qsleepTimeValue.attributedText = shallowSleepValueString;
+    
 }
 
 - (void)disConnectPeripheral {
     [_refreshBututton.layer removeAllAnimations];
     _refreshBututton.userInteractionEnabled = YES;
     _isLoading = NO;
+
 }
 
 - (void)firstRefreshSportDataSuccess:(NSNotification *)notification {

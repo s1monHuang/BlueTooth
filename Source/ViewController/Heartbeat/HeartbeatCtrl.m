@@ -241,6 +241,7 @@
     }
     [_startButton setTitle:BTLocalizedString(@"开始") forState:UIControlStateNormal];
     [_startButton.titleLabel sizeToFit];
+    
 //    [MBProgressHUD hideHUDForView:self.view
 //                         animated:YES];
 }
