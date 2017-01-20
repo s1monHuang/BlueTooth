@@ -437,6 +437,7 @@
     [self releaseTimer];
     [_refreshBututton.layer removeAllAnimations];
     _isLoading = NO;
+    _refreshBututton.userInteractionEnabled = YES;
 }
 
 - (void)releaseTimer {
