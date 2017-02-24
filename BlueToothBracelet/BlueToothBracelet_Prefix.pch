@@ -53,6 +53,8 @@
 
 #define ManagerStatePoweredOn  @"ManagerStatePoweredOn"  //蓝牙功能是否关闭
 
+#define LASTSYNCDATE    @"lastSyncDate"     //用户最后手动点击同步数据时间
+
 #endif
 
 

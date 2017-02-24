@@ -144,6 +144,14 @@
 + (NSArray *)selectAllHistorySportData;
 
 
+/**
+ 获取date与当前时间之间丢失了哪几个小时的数据
+
+ @param date 某个时间段(不得大于72小时)
+ @return
+ */
 + (NSArray *)selectLostHistorySportDataByDate:(NSDate *)date;
+
++ (NSInteger)getDifferenceByDate:(NSDate *)date;
 
 @end

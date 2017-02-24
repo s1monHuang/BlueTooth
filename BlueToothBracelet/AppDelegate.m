@@ -82,11 +82,14 @@
         [self exchangeRootViewControllerToLogin];
     }
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *date = [formatter dateFromString:@"2017-02-22 00:00:00"];
-    NSArray *array = [DBManager selectLostHistorySportDataByDate:date];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//    NSDate *date = [formatter dateFromString:@"2017-02-21 15:00:00"];
+//    NSArray *array = [DBManager selectLostHistorySportDataByDate:date];
+//    NSDate *date = [[NSDate date] dateByAddingTimeInterval:-(3600 * 72)];
+//    NSInteger interger = [DBManager getDifferenceByDate:date];
 
+    
     return YES;
 }
 

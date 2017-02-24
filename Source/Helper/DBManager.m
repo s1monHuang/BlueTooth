@@ -588,15 +588,22 @@ static NSString *dbPath = nil;
     __block NSMutableArray *lostNumbers = [[NSMutableArray alloc] init];
     [dbQueue inDatabase:^(FMDatabase *db) {
         
-        NSMutableArray *array = [[NSMutableArray alloc] init];
+//        NSMutableArray *array = [[NSMutableArray alloc] init];
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
         [db setDateFormat:formatter];
         
-        NSString *historyDate = [formatter stringFromDate:date];
+        NSDate *newDate = date;
+        if ([DBManager getDifferenceByDate:date] >= 72) {
+            newDate = [[NSDate date] dateByAddingTimeInterval:-(3600 * 72)];
+        }
         
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date >= '%@' ORDER BY time ASC",@"2",historyDate];
+        NSString *historyDate = [formatter stringFromDate:newDate];
+        
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date >= '%@' ORDER BY time ASC",CurrentUser.userId,historyDate];
+//        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date >= '%@' ORDER BY time ASC",@"1",historyDate];
         FMResultSet *result = [db executeQuery:sql];
         while (result.next) {
             HistorySportDataModel *model = [[HistorySportDataModel alloc] init];
@@ -606,31 +613,20 @@ static NSString *dbPath = nil;
             model.battery = [result intForColumn:@"battery"];
             model.date = [result dateForColumn:@"date"];
             model.step = [result intForColumn:@"step"];
-            [array addObject:model];
+
+            NSInteger interval = [DBManager getDifferenceByDate:model.date];
+            [dictionary setObject:@(interval) forKey:@(interval)];
         }
         [result close];
         
-        if (array.count > 1) {
-            for (NSInteger i = 0; i < array.count - 1; i++) {
-                HistorySportDataModel *firstModel = [array objectAtIndex:i];
-                HistorySportDataModel *secondModel = [array objectAtIndex:i + 1];
-                
-                NSInteger first = [DBManager getDifferenceByDate:firstModel.date];
-                NSInteger second = [DBManager getDifferenceByDate:secondModel.date];
-                
-                NSInteger difference = first - second;
-                
-                if (difference > 1) {
-                    for (NSInteger j = 1; j < difference; j++) {
-                        NSInteger lostNumber = second + j;
-                        [lostNumbers addObject:@(lostNumber)];
-                    }
-                }
-                
+        NSInteger interval = [DBManager getDifferenceByDate:newDate];
+        
+        for (NSInteger i = 0; i < interval; i ++) {
+            NSNumber *number = [dictionary objectForKey:@(i)];
+            if (!number) {
+                [lostNumbers addObject:@(i)];
             }
         }
-        
-        array = nil;
         
     }];
     return lostNumbers;

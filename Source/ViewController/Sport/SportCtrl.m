@@ -424,6 +424,10 @@
     _isLoading = YES;
     _refreshBututton.userInteractionEnabled = NO;
     [[BluetoothManager share] readSportData];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date]
+                                              forKey:LASTSYNCDATE];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
     _timer = [NSTimer scheduledTimerWithTimeInterval:30
                                               target:self

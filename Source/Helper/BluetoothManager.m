@@ -954,6 +954,7 @@ static BluetoothManager *manager = nil;
 }
 
 
+//用户手动点击同步数据
 - (void)readHistroySportData {
     if (_connectionType != BluetoothConnectingSuccess && self.isReadedPripheralAllData) {
         NSDictionary *dictionary = @{@"type":@(BluetoothQueueHistroyReadSportData)};
@@ -962,28 +963,9 @@ static BluetoothManager *manager = nil;
     }
     [self startTiming];
     _connectionType = BluetoothConnectingHistroyReadSportData;
-    //需要获取几次历史数据
-//    NSInteger count = [self getHistoryDataCount];
     
-//    if (count <= 1) {
-//        NSLog(@"不需要获取历史运动数据");
-////        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
-//                                                            object:nil];
-//        self.connectionType = BluetoothConnectingSuccess;
-//        [self handleBluetoothQueue];
-//        
-//        [self.hud hide:YES];
-//        self.hud = nil;
-//        return;
-//    }
-    
-    Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-//    if (count < 72) {
-//        b[2] = count;
-//    }else{
-//        b[2] = 0xFF;
-//    }
+    Byte b[20] = {0xAA,0xA1,0xFF,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
     [[BluetoothManager share] writeValue:data];
@@ -1002,21 +984,20 @@ static BluetoothManager *manager = nil;
                     
                     //读取历史运动数据结束
                     if (flag == 0xEE) {
+                        
                         [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
                                      characteristic:weakSelf.characteristics];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
-                                                                            object:nil];
-                        weakSelf.connectionType = BluetoothConnectingSuccess;
-                        [weakSelf handleBluetoothQueue];
                         
-                        [weakSelf.hud hide:YES];
-                        weakSelf.hud = nil;
-                        OperateViewModel *operateVM = [OperateViewModel viewModel];
-                        NSString *tempStr = [DBManager selectHistorySportData];
-                        [operateVM saveStepData:tempStr];
-                        [operateVM saveSleepData:[DBManager selectHistorySleepData]];
-                        [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
-
+                        NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:LASTSYNCDATE];
+                        //如果没有最后一次同步时间,结束同步
+                        if (!date) {
+                             [weakSelf handleReadHistroySportDataSuccess:weakSelf];
+                        }
+                        //如果有最后一次同步时间,获取最后一次同步时间到当前的遗漏时间
+                        else {
+                            [weakSelf readSpecifiedHistroySportDataByDate:date];
+                        }
+                        
                         return ;
                     }
                     
@@ -1025,8 +1006,73 @@ static BluetoothManager *manager = nil;
                 }];
 }
 
+- (void)readSpecifiedHistroySportDataByDate:(NSDate *)date {
+    
+    __block NSMutableArray *lostNumbers = [NSMutableArray arrayWithArray:[DBManager selectLostHistorySportDataByDate:date]]; 
+    
+    if (!lostNumbers.count) {
+         [self handleReadHistroySportDataSuccess:self];
+        return;
+    }
+    
+    [self readSpecifiedHistroySportData:[[lostNumbers lastObject] integerValue]];
+    
+    __weak BluetoothManager *weakSelf = self;
+    [self.baby notify:weakSelf.bindingPeripheral.peripheral
+       characteristic:weakSelf.characteristics
+                block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+                    NSLog(@"获取蓝牙设备中3天的运动数据成功 name:%@ value is:%@",characteristics.UUID,characteristics.value);
+                    Byte *byte = (Byte *)characteristics.value.bytes;
+                    NSInteger time = byte[1];
+                    
+                    //保存历史运动数据到数据库
+                    if([weakSelf saveNewHistroyData:characteristics.value time:time]) {
+                        //如果还有数据,删除最后一条数据
+                        if (lostNumbers.count) {
+                            [lostNumbers removeLastObject];
+                            //如果还有数据,继续获取丢失的历史记录
+                            if (lostNumbers.count) {
+                                [weakSelf readSpecifiedHistroySportData:[[lostNumbers lastObject] integerValue]];
+                            }
+                        }
+                        //获取丢失的历史记录完成
+                        else {
+                            
+                            [weakSelf.baby cancelNotify:weakSelf.bindingPeripheral.peripheral
+                                         characteristic:weakSelf.characteristics];
+                            
+                            [weakSelf handleReadHistroySportDataSuccess:weakSelf];
+                        }
+                    }
+                }];
+}
+
+- (void)readSpecifiedHistroySportData:(NSInteger)specified {
+    Byte b[20] = {0xAA,0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    Byte byte = specified;
+    b[2] = byte;
+    b[19] = [BluetoothManager calculateTotal:b];
+    NSData *data = [NSData dataWithBytes:b length:sizeof(b)];
+    [[BluetoothManager share] writeValue:data];
+}
+
+- (void)handleReadHistroySportDataSuccess:(BluetoothManager *)manager {
+    [[NSNotificationCenter defaultCenter] postNotificationName:READ_HISTORY_SPORTDATA_SUCCESS
+                                                        object:nil];
+    manager.connectionType = BluetoothConnectingSuccess;
+    [manager handleBluetoothQueue];
+    
+    [manager.hud hide:YES];
+    manager.hud = nil;
+    OperateViewModel *operateVM = [OperateViewModel viewModel];
+    NSString *tempStr = [DBManager selectHistorySportData];
+    [operateVM saveStepData:tempStr];
+    [operateVM saveSleepData:[DBManager selectHistorySleepData]];
+    [MBProgressHUD showHUDByContent:BTLocalizedString(@"同步成功") view:UI_Window afterDelay:1.5];
+}
+
 /*!
- *  读取72小时内的运动数据
+ *  读取72小时内的运动数据(手机连接上蓝牙设备自动同步)
  *
  *  @param value
  */
@@ -1045,11 +1091,7 @@ static BluetoothManager *manager = nil;
     _connectionType = BluetoothConnectingHistroyReadSportData;
     Byte *b = (Byte *)value.bytes;
     b[1] = 0xA1;
-//    if (count < 72 && count != 0) {
-//        b[2] = count;
-//    }else{
-//    b[2] = 0xFF;
-//    }
+    b[2] = 0xFF;
     b[19] = [BluetoothManager calculateTotal:b];
     NSData *data = [NSData dataWithBytes:b length:value.length];
     [[BluetoothManager share] writeValue:data];
