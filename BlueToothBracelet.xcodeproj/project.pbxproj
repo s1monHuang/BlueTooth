@@ -78,6 +78,9 @@
 		47E504E01CA0D1B2005F18F0 /* TrainTargetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E504DE1CA0D1B2005F18F0 /* TrainTargetController.m */; };
 		47E504E11CA0D1B2005F18F0 /* TrainTargetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */; };
 		711891761D23F12D00F24413 /* prenventLostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 711891751D23F12D00F24413 /* prenventLostController.m */; };
+		71465BCF1E5574BC00ECE04A /* TestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71465BCD1E5574BC00ECE04A /* TestTableViewCell.m */; };
+		71465BD01E5574BC00ECE04A /* TestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71465BCE1E5574BC00ECE04A /* TestTableViewCell.xib */; };
+		71465BD61E5574E100ECE04A /* TestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71465BD51E5574E100ECE04A /* TestTableViewController.m */; };
 		716691C11D240B9800399547 /* SOSController.m in Sources */ = {isa = PBXBuildFile; fileRef = 716691C01D240B9800399547 /* SOSController.m */; };
 		9F1B14591B7B8E01008CEF15 /* AgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B14581B7B8E01008CEF15 /* AgeViewController.m */; };
 		9F1B145C1B7B95A6008CEF15 /* SexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B145B1B7B95A6008CEF15 /* SexViewController.m */; };
@@ -454,6 +457,11 @@
 		47E504DF1CA0D1B2005F18F0 /* TrainTargetController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrainTargetController.xib; sourceTree = "<group>"; };
 		711891741D23F12D00F24413 /* prenventLostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prenventLostController.h; sourceTree = "<group>"; };
 		711891751D23F12D00F24413 /* prenventLostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prenventLostController.m; sourceTree = "<group>"; };
+		71465BCC1E5574BC00ECE04A /* TestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewCell.h; sourceTree = "<group>"; };
+		71465BCD1E5574BC00ECE04A /* TestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewCell.m; sourceTree = "<group>"; };
+		71465BCE1E5574BC00ECE04A /* TestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestTableViewCell.xib; sourceTree = "<group>"; };
+		71465BD41E5574E100ECE04A /* TestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewController.h; sourceTree = "<group>"; };
+		71465BD51E5574E100ECE04A /* TestTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewController.m; sourceTree = "<group>"; };
 		716691BF1D240B9800399547 /* SOSController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSController.h; sourceTree = "<group>"; };
 		716691C01D240B9800399547 /* SOSController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSController.m; sourceTree = "<group>"; };
 		9F1B14571B7B8E01008CEF15 /* AgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeViewController.h; sourceTree = "<group>"; };
@@ -1477,6 +1485,11 @@
 		9F88F5901B458AB9000BA054 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				71465BCC1E5574BC00ECE04A /* TestTableViewCell.h */,
+				71465BCD1E5574BC00ECE04A /* TestTableViewCell.m */,
+				71465BCE1E5574BC00ECE04A /* TestTableViewCell.xib */,
+				71465BD41E5574E100ECE04A /* TestTableViewController.h */,
+				71465BD51E5574E100ECE04A /* TestTableViewController.m */,
 				9FE544A51B7257590008D9BD /* Helper */,
 				9FA3F2261B6F6DDD00977D2B /* Cell */,
 				9F88F5BE1B45917A000BA054 /* Model */,
@@ -2070,6 +2083,7 @@
 				9F718F511B46E14800E16298 /* RegisterCtrl.xib in Resources */,
 				9F9D121F1B803B0100B7D75C /* RecommendViewController.xib in Resources */,
 				9F6883221B88C1D500A83273 /* AlarmClockViewController.xib in Resources */,
+				71465BD01E5574BC00ECE04A /* TestTableViewCell.xib in Resources */,
 				9F88F5761B45873E000BA054 /* LaunchScreen.xib in Resources */,
 				47E349FC1CA950240026707C /* Info.plist in Resources */,
 				3EF3BBE81C96BB40001BF5D2 /* ForgotPasswordCtrl.xib in Resources */,
@@ -2173,6 +2187,7 @@
 				9F20F5AF1B75A9680009AB38 /* UIRefreshControl+RACCommandSupport.m in Sources */,
 				9F6A9BA81B70590200487088 /* SheJiaoViewController.m in Sources */,
 				47E349F41CA950240026707C /* FSCalendar.m in Sources */,
+				71465BD61E5574E100ECE04A /* TestTableViewController.m in Sources */,
 				9F20F5951B75A9680009AB38 /* RACSignal.m in Sources */,
 				9F20F5B61B75A9680009AB38 /* UITextField+RACSignalSupport.m in Sources */,
 				9F20F5741B75A9680009AB38 /* RACArraySequence.m in Sources */,
@@ -2290,6 +2305,7 @@
 				9F20F48D1B75A4DC0009AB38 /* BaseTableViewController.m in Sources */,
 				9F20F5961B75A9680009AB38 /* RACSignalProvider.d in Sources */,
 				9F6A9BA41B703D3700487088 /* HistoryDataViewController.m in Sources */,
+				71465BCF1E5574BC00ECE04A /* TestTableViewCell.m in Sources */,
 				9F20F56E1B75A9680009AB38 /* NSSet+RACSequenceAdditions.m in Sources */,
 				3EF3BBE61C96BB24001BF5D2 /* ForgotPasswordCtrl.m in Sources */,
 				9F88F6251B4597A5000BA054 /* MTLTransformerErrorHandling.m in Sources */,
@@ -2493,8 +2509,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Stock Exchange";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen Stock Exchange";
 				DEVELOPMENT_TEAM = 6C7QEGP2K7;
 				GCC_PREFIX_HEADER = BlueToothBracelet/BlueToothBracelet_Prefix.pch;
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
@@ -2508,8 +2524,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.szse.nmoastg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1f8ef4fa-0521-4087-852c-d261791b4f80";
-				PROVISIONING_PROFILE_SPECIFIER = NMOA_Development;
+				PROVISIONING_PROFILE = "b5fbf3fd-d4fc-4ae4-9106-168e15562f4f";
+				PROVISIONING_PROFILE_SPECIFIER = NMOA_StgInhouse;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2519,8 +2535,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 双南 黄 (JXJPSFJD9R)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Stock Exchange";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen Stock Exchange";
 				DEVELOPMENT_TEAM = 6C7QEGP2K7;
 				GCC_PREFIX_HEADER = BlueToothBracelet/BlueToothBracelet_Prefix.pch;
 				INFOPLIST_FILE = BlueToothBracelet/Info.plist;
@@ -2534,8 +2550,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.szse.nmoastg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1f8ef4fa-0521-4087-852c-d261791b4f80";
-				PROVISIONING_PROFILE_SPECIFIER = NMOA_Development;
+				PROVISIONING_PROFILE = "b5fbf3fd-d4fc-4ae4-9106-168e15562f4f";
+				PROVISIONING_PROFILE_SPECIFIER = NMOA_StgInhouse;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

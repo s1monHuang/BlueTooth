@@ -559,4 +559,96 @@ static NSString *dbPath = nil;
 }
 
 
++ (NSArray *)selectAllHistorySportData {
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' ORDER BY time ASC",CurrentUser.userId];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            HistorySportDataModel *model = [[HistorySportDataModel alloc] init];
+            model.time = [result intForColumn:@"time"];
+            model.calorie = [result intForColumn:@"calorie"];
+            model.sleep = [result intForColumn:@"sleep"];
+            model.battery = [result intForColumn:@"battery"];
+            model.date = [result dateForColumn:@"date"];
+            model.step = [result intForColumn:@"step"];
+            [array addObject:model];
+        }
+        [result close];
+    }];
+    return array;
+}
+
++ (NSArray *)selectLostHistorySportDataByDate:(NSDate *)date {
+    __block NSMutableArray *lostNumbers = [[NSMutableArray alloc] init];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [db setDateFormat:formatter];
+        
+        NSString *historyDate = [formatter stringFromDate:date];
+        
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM 'histroy_sport_table' WHERE user_id = '%@' AND date >= '%@' ORDER BY time ASC",@"2",historyDate];
+        FMResultSet *result = [db executeQuery:sql];
+        while (result.next) {
+            HistorySportDataModel *model = [[HistorySportDataModel alloc] init];
+            model.time = [result intForColumn:@"time"];
+            model.calorie = [result intForColumn:@"calorie"];
+            model.sleep = [result intForColumn:@"sleep"];
+            model.battery = [result intForColumn:@"battery"];
+            model.date = [result dateForColumn:@"date"];
+            model.step = [result intForColumn:@"step"];
+            [array addObject:model];
+        }
+        [result close];
+        
+        if (array.count > 1) {
+            for (NSInteger i = 0; i < array.count - 1; i++) {
+                HistorySportDataModel *firstModel = [array objectAtIndex:i];
+                HistorySportDataModel *secondModel = [array objectAtIndex:i + 1];
+                
+                NSInteger first = [DBManager getDifferenceByDate:firstModel.date];
+                NSInteger second = [DBManager getDifferenceByDate:secondModel.date];
+                
+                NSInteger difference = first - second;
+                
+                if (difference > 1) {
+                    for (NSInteger j = 1; j < difference; j++) {
+                        NSInteger lostNumber = second + j;
+                        [lostNumbers addObject:@(lostNumber)];
+                    }
+                }
+                
+            }
+        }
+        
+        array = nil;
+        
+    }];
+    return lostNumbers;
+}
+
++ (NSInteger)getDifferenceByDate:(NSDate *)date {
+    //获得当前时间
+    NSDate *now = [NSDate date];
+    //实例化一个NSDateFormatter对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH"];
+    NSString *oladDateString = [dateFormatter stringFromDate:date];
+    NSDate *oldDate = [dateFormatter dateFromString:oladDateString];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned int unitFlags = NSCalendarUnitHour;
+    NSDateComponents *comps = [gregorian components:unitFlags fromDate:oldDate  toDate:now  options:NSCalendarMatchLast];
+    return [comps hour];
+}
+
 @end

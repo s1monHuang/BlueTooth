@@ -81,6 +81,11 @@
     else{
         [self exchangeRootViewControllerToLogin];
     }
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *date = [formatter dateFromString:@"2017-02-22 00:00:00"];
+    NSArray *array = [DBManager selectLostHistorySportDataByDate:date];
 
     return YES;
 }

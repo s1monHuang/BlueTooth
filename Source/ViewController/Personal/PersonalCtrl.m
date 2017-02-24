@@ -23,6 +23,7 @@
 #import "AboutUsController.h"
 #import "DBManager.h"
 #import "LanguageViewController.h"
+#import "TestTableViewController.h"
 
 @interface PersonalCtrl ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
@@ -65,8 +66,11 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     
-    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter",@"ic_language"];
-    dataArray = [[NSArray alloc] initWithObjects:BTLocalizedString(@"我的资料"),BTLocalizedString(@"运动目标"),BTLocalizedString(@"久坐提醒"),BTLocalizedString(@"智能闹钟"),BTLocalizedString(@"来电提醒"),BTLocalizedString(@"防丢提醒"),BTLocalizedString(@"一键求救"),BTLocalizedString(@"设备管理"), BTLocalizedString(@"关于我们"),BTLocalizedString(@"数据中心"),BTLocalizedString(@"语言"),nil];
+//    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter",@"ic_language"];
+//    dataArray = [[NSArray alloc] initWithObjects:BTLocalizedString(@"我的资料"),BTLocalizedString(@"运动目标"),BTLocalizedString(@"久坐提醒"),BTLocalizedString(@"智能闹钟"),BTLocalizedString(@"来电提醒"),BTLocalizedString(@"防丢提醒"),BTLocalizedString(@"一键求救"),BTLocalizedString(@"设备管理"), BTLocalizedString(@"关于我们"),BTLocalizedString(@"数据中心"),BTLocalizedString(@"语言"),nil];
+    
+    imageArray = @[@"data",@"target",@"bell",@"clock",@"ic_call_remind",@"ic_antilost",@"ic_sos",@"setup",@"i",@"datacenter",@"ic_language",@""];
+    dataArray = [[NSArray alloc] initWithObjects:BTLocalizedString(@"我的资料"),BTLocalizedString(@"运动目标"),BTLocalizedString(@"久坐提醒"),BTLocalizedString(@"智能闹钟"),BTLocalizedString(@"来电提醒"),BTLocalizedString(@"防丢提醒"),BTLocalizedString(@"一键求救"),BTLocalizedString(@"设备管理"), BTLocalizedString(@"关于我们"),BTLocalizedString(@"数据中心"),BTLocalizedString(@"语言"),@"测试历史数据",nil];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     headerView.backgroundColor = [UtilityUI stringTOColor:@"#06bd90"];
@@ -139,7 +143,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 11;
+    return dataArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -246,7 +250,11 @@
             [self.navigationController pushViewController:VC animated:YES];
         }
             break;
-        default:
+        default: {
+            TestTableViewController *vc = [[TestTableViewController alloc] init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
             break;
     }
 }

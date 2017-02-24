@@ -141,5 +141,9 @@
  */
 + (BOOL)deleteAllSportData;
 
++ (NSArray *)selectAllHistorySportData;
+
+
++ (NSArray *)selectLostHistorySportDataByDate:(NSDate *)date;
 
 @end
